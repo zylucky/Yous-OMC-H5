@@ -15,13 +15,8 @@
     <section id="header">
       <header1></header1>
     </section>
-    <!--header end-->
-<!--    <router-link to="/list/search">
-      <button>显示</button>
-    </router-link>-->
      <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
-
-       <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50" @focus="changeRou">
+       <input type="text" id="keyword" placeholder="请输入关键字搜索"  v-model="para.search_keywork" maxlength="50" @focus="changeRou">
     </a>
     <router-view></router-view>
     <section class="section" :class="{'in-filter':this.currentFilterTab=='district'||this.currentFilterTab=='price'||this.currentFilterTab=='area'||this.currentFilterTab=='features'}">
@@ -216,13 +211,15 @@
           "orderby": "D",
           "curr_page": 1,
           "items_perpage": 10,
-          "keyword":""
         },
         resultData: []
       }
     },
     mounted(){
         this.init()
+    },
+    created:function () {
+
     },
     computed:{
       unitword(){
@@ -240,13 +237,18 @@
          this.resetGetData();
          this.getFilters();
         },
+      getQueryString: function (key) {
+        var t = new RegExp("(^|&)" + key + "=([^&]*)(&|$)", "i"),
+          n = window.location.search.substr(1).match(t);
+        return null != n ? decodeURI(n[2]) : "";
+      },
       closeFilter:function(){
         this.currentFilterTab='nth';
       },
       changeRou:function(){
-        //VueRouter.go({name: 'list/search', params: {}});
+        this.$router.push({path:'/list/search'})
       },
-       searchChoose:function(code, val, value, e){
+      searchChoose:function(code, val, value, e){
          switch ($(e.target).closest('li').attr('data-type')){
            case 'district':
              $('h2.district-h').html(value);
@@ -278,7 +280,7 @@
          this.resultData = [];
          this.getData();
        },
-       getFilters:function(){
+      getFilters:function(){
          var paraObj = {
            "parameters":{},
            "foreEndType":2,
@@ -295,14 +297,14 @@
 
          });
        },
-       chooseFilter:function(e){
+      chooseFilter:function(e){
              var e= e || window.event;
              this.currentFilterTab = $(e.target).closest('li').attr('data-type')
       },
        resetGetData:function () {
          var paraObj ={
            "parameters": {
-             "search_keywork": this.para.keyword,
+             "search_keywork": this.para.search_keywork,
              "district": this.para.district,
              "business": this.para.business,
              "line_id": this.para.line_id,
@@ -378,7 +380,7 @@
        getData(){
          var paraObj ={
            "parameters": {
-             "search_keywork": this.para.keyword,
+             "search_keywork": this.para.search_keywork,
              "district": this.para.district,
              "business": this.para.business,
              "line_id": this.para.line_id,
@@ -445,6 +447,14 @@
                 this.getData();
            }
       }
+    },
+    watch: {
+      '$route' (to, from) {
+          if(to['query']['keyword']){
+            this.para.search_keywork = to['query']['keyword'];
+            this.resetGetData();
+          }
+      },
     }
   }
 </script>
