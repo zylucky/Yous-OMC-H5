@@ -1,6 +1,6 @@
-# Yous-OMC-H5
+# Yous-H5
 
-> Yous-OMC-H5
+> Yous-H5
 
 ## Build Setup
 
