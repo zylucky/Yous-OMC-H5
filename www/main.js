@@ -55,6 +55,14 @@ var router = new VueRouter({
       component: require('./routers/households_msg.vue')
     },
     {
+      path: '/area_msg', //面积信息
+      component: require('./routers/area_msg.vue')
+    },
+    {
+      path: '/image_msg', //图片信息
+      component: require('./routers/image_msg.vue')
+    },
+    {
       path: '*',
       component: require('./routers/login.vue')
     }
