@@ -1,0 +1,91 @@
+@import "../color.less";
+
+.login_bg {
+  height: 100%;
+  width: 100%;
+  background: url("../../images/login_bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+.login_box{
+  width:5.4rem;
+  margin: 0 auto;
+}
+
+.login_wrap {
+  position: absolute;
+  left: 0;
+  bottom: 2.8rem;
+  width:100%;
+  .inp_item {
+    height: 1.1rem;
+    width:100%;
+    background: url("../../images/icons/user/login_inp01.png") no-repeat;
+    background-position: 0 -.4rem;
+    background-size: 5.4rem 2.48rem;
+    position: relative;
+    &.login{
+      background: url("../../images/icons/user/login_inp02.png") no-repeat;
+      background-position: 0 -.4rem;
+      background-size: 5.4rem 2.48rem;
+    }
+    .ys_icon{
+      width:.28rem;
+      height:.32rem;
+      position: absolute;
+      left:.9rem;
+      top:.65rem;
+      background: gold;
+      &.user{
+        background: url("../../images/icons/user/user_icon.png") no-repeat;
+        background-size: .28rem .32rem;
+      }
+
+      &.pass{
+        background: url("../../images/icons/user/pass_icon.png") no-repeat;
+        background-size: .28rem .32rem;
+      }
+    }
+    input{
+      height:1rem;
+      line-height: 1rem;
+      margin-left: 1.45rem;
+      color: @cl_white;
+      font-size: @font30;
+      background-color: transparent;
+      &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: @cl_white;
+      }
+
+      &::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: @cl_white;
+      }
+
+      &:-ms-input-placeholder{
+        color: @cl_white;
+      }
+
+      &::-webkit-input-placeholder{
+        color: @cl_white;
+      }
+    }
+  }
+}
+
+.pt33{
+   padding-top: .33rem;
+ }
+
+.pt23{
+  padding-top: .23rem;
+}
+
+.ys_btn{
+  display: block;
+  width:100%;
+  line-height: 1.2rem;
+  height:1.2rem;
+  text-align: center;
+  color: @cl_white;
+  font-size: @font32;
+}
+

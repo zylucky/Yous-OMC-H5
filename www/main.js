@@ -16,36 +16,40 @@ Vue.prototype.$resouceUrl = "http://localhost:8081/"  //资源文件地址
 Vue.config.debug = true;// 开启debug模式
 
 var router = new VueRouter({
-    mode: "history",
-    hashbang: false,
-    routes: [
-        {
-            path: '/list',
-            component: require('./routers/list.vue'),
-            children: [
-            { path: "/list/search", component: search }
-          ]
-        },
-        {
-            path: '/detail',
-            component: require('./routers/detail.vue')
-        },
-        {
-            path: '/order',
-            component: require('./routers/order.vue')
-        },
-        {
-            path: '*',
-            component: require('./routers/list.vue')
-        }
+  mode: "history",
+  hashbang: false,
+  routes: [
+    {
+      path: '/list',
+      component: require('./routers/list.vue'),
+      children: [
+        {path: "/list/search", component: search}
+      ]
+    },
+    {
+      path: '/detail',
+      component: require('./routers/detail.vue')
+    },
+    {
+      path: '/order',
+      component: require('./routers/order.vue')
+    },
+    {
+      path: '/login',
+      component: require('./routers/login.vue')
+    },
+    {
+      path: '*',
+      component: require('./routers/login.vue')
+    }
 
-    ]
+  ]
 });
 
 new Vue({
-    el: '#app',
-    router: router,
-    render: function (h) {
-        return h(App)
-    }
+  el: '#app',
+  router: router,
+  render: function (h) {
+    return h(App)
+  }
 });
