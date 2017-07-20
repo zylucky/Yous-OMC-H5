@@ -1,0 +1,94 @@
+/*文字色*/
+/*黑色*/
+/*白色*/
+/*粉红色*/
+/*蓝色*/
+/*bg色*/
+/*背景默认色*/
+/*浅绿色*/
+/*边线颜色*/
+/*输入框描边*/
+/*hr*/
+/*字号*/
+.login_bg {
+  height: 100%;
+  width: 100%;
+  background: url("../../images/login_bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+.login_box {
+  width: 5.4rem;
+  margin: 0 auto;
+}
+.login_wrap {
+  position: absolute;
+  left: 0;
+  bottom: 2.8rem;
+  width: 100%;
+}
+.login_wrap .inp_item {
+  height: 1.1rem;
+  width: 100%;
+  background: url("../../images/icons/user/login_inp01.png") no-repeat;
+  background-position: 0 -0.4rem;
+  background-size: 5.4rem 2.48rem;
+  position: relative;
+}
+.login_wrap .inp_item.login {
+  background: url("../../images/icons/user/login_inp02.png") no-repeat;
+  background-position: 0 -0.4rem;
+  background-size: 5.4rem 2.48rem;
+}
+.login_wrap .inp_item .ys_icon {
+  width: .28rem;
+  height: .32rem;
+  position: absolute;
+  left: .9rem;
+  top: .65rem;
+  background: gold;
+}
+.login_wrap .inp_item .ys_icon.user {
+  background: url("../../images/icons/user/user_icon.png") no-repeat;
+  background-size: .28rem .32rem;
+}
+.login_wrap .inp_item .ys_icon.pass {
+  background: url("../../images/icons/user/pass_icon.png") no-repeat;
+  background-size: .28rem .32rem;
+}
+.login_wrap .inp_item input {
+  height: 1rem;
+  line-height: 1rem;
+  margin-left: 1.45rem;
+  color: #fff;
+  font-size: 0.3rem;
+  background-color: transparent;
+}
+.login_wrap .inp_item input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #fff;
+}
+.login_wrap .inp_item input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #fff;
+}
+.login_wrap .inp_item input:-ms-input-placeholder {
+  color: #fff;
+}
+.login_wrap .inp_item input::-webkit-input-placeholder {
+  color: #fff;
+}
+.pt33 {
+  padding-top: .33rem;
+}
+.pt23 {
+  padding-top: .23rem;
+}
+.ys_btn {
+  display: block;
+  width: 100%;
+  line-height: 1.2rem;
+  height: 1.2rem;
+  text-align: center;
+  color: #fff;
+  font-size: 0.32rem;
+}
