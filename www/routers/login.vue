@@ -12,8 +12,7 @@
 
 </style>
 <template>
-    <div class="all_elements">
-      <div class="login_bg"></div>
+    <div class="all_elements" id="ys_user">
       <div class="login_wrap">
         <div class="login_box">
           <div class="inp_item pt33">
