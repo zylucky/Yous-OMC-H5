@@ -43,6 +43,10 @@ var router = new VueRouter({
       component: require('./routers/build_msg.vue')
     },
     {
+      path: '/parking_msg',
+      component: require('./routers/parking_msg.vue')
+    },
+    {
       path: '*',
       component: require('./routers/login.vue')
     }
