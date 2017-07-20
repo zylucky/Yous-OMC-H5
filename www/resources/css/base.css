@@ -59,3 +59,102 @@
   width: 100%;
   padding-top: .88rem;
 }
+.cl_link {
+  color: #16abdc;
+}
+.bg_gray {
+  background-color: #f0eff5;
+}
+.w570 {
+  width: 5.4rem;
+}
+.ys_item_ul {
+  background-color: #fff;
+}
+.ys_item_ul li {
+  padding-left: .24rem;
+  line-height: .72rem;
+  border-bottom: 1px solid #dbdadf;
+}
+.ys_item_ul li .ys_tit {
+  float: left;
+  width: 1.4rem;
+  margin-right: .3rem;
+}
+.ys_tag {
+  display: inline-block;
+  padding: 0 .25rem;
+  height: .45rem;
+  line-height: .45rem;
+  background-color: #dbdadf;
+  font-size: 0.24rem;
+  margin-right: .08rem;
+  border-radius: .1rem;
+}
+.calendar_icon {
+  width: .4rem;
+  height: .4rem;
+  background-color: #ccc;
+  position: absolute;
+  right: .3rem;
+  top: .2rem;
+}
+.right_arrow {
+  width: .4rem;
+  height: .4rem;
+  text-align: center;
+  line-height: .4rem;
+  font-size: 0.3rem;
+  position: absolute;
+  right: .32rem;
+  top: .12rem;
+}
+.right_unit {
+  position: absolute;
+  right: .32rem;
+  top: .08em;
+}
+.cl_333 {
+  color: #333;
+}
+.cl_666 {
+  color: #666;
+}
+.cl_999 {
+  color: #999;
+}
+.check_wrap {
+  float: left;
+  margin-right: .5rem;
+}
+.check_wrap input[type="checkbox"] {
+  float: left;
+  width: .3rem;
+  height: .3rem;
+  margin-top: .2rem;
+}
+.pt10 {
+  padding-top: .2rem;
+}
+.w224 {
+  width: 2.24rem !important;
+}
+.ys_tit_sm {
+  width: 60px;
+  line-height: normal;
+  display: inline-block;
+}
+.ys_default_btn {
+  display: block;
+  width: 4.4rem;
+  height: .7rem;
+  text-align: center;
+  line-height: .7rem;
+  color: #fff;
+  border-radius: .08rem;
+  margin: 0 auto;
+  background-color: #16abdc;
+}
+.mb80 {
+  margin-bottom: .8rem;
+}
