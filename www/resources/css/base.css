@@ -205,3 +205,30 @@
   width: .95rem;
   height: .95rem;
 }
+.analy_item {
+  background-color: #fff;
+  padding: .4rem .2rem 0;
+}
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 1.6rem;
+  resize: none;
+  border: 1px solid #dbdadf;
+  padding: .2rem;
+  background-color: #f0eff5;
+}
+textarea:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #999;
+}
+textarea::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #999;
+}
+textarea:-ms-input-placeholder {
+  color: #999;
+}
+textarea::-webkit-input-placeholder {
+  color: #999;
+}

@@ -63,6 +63,10 @@ var router = new VueRouter({
       component: require('./routers/image_msg.vue')
     },
     {
+      path: '/analyse_msg', //楼盘分析信息
+      component: require('./routers/analyse_msg.vue')
+    },
+    {
       path: '*',
       component: require('./routers/login.vue')
     }
