@@ -14,50 +14,13 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <ul class="ys_item_ul mb60">
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位数：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位月租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位年租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地下车位：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地下车位租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地下车位月租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-      </ul>
+      <div class="common_title">楼盘照片</div>
+      <div class="image_wrap clearfix">
+        <div class="upload_btn mr10 fl"></div>
+        <div class="img_demo fl">
+          <img class="upload_demo_img" src="../resources/images/demo_img.png" alt="">
+        </div>
+      </div>
       <a href="javascript:;" class="ys_default_btn mb80">保存</a>
     </div>
   </div>
