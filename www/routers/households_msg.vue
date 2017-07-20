@@ -16,43 +16,25 @@
     <div class="build_top">
       <ul class="ys_item_ul mb60">
         <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位数：</span>
+          <span class="ys_tit w224">总户数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位租金：</span>
+          <span class="ys_tit w224">开发商总数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位月租金：</span>
+          <span class="ys_tit w224">业主总户数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">地上车位年租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地下车位：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地下车位租金：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">地下车位月租金：</span>
+          <span class="ys_tit w224">商业总户数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>

@@ -39,12 +39,20 @@ var router = new VueRouter({
       component: require('./routers/login.vue')
     },
     {
-      path: '/build_msg',
+      path: '/build_msg', //楼盘基础信息
       component: require('./routers/build_msg.vue')
     },
     {
-      path: '/parking_msg',
+      path: '/parking_msg', //车位信息
       component: require('./routers/parking_msg.vue')
+    },
+    {
+      path: '/property_msg', //物业信息
+      component: require('./routers/property_msg.vue')
+    },
+    {
+      path: '/households_msg', //户数信息
+      component: require('./routers/households_msg.vue')
     },
     {
       path: '*',

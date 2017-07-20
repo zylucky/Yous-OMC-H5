@@ -1,7 +1,6 @@
 <style scoped lang="less">
   @import "../resources/css/reset.css";
   @import "../resources/css/base.less";
-  @import "../resources/css/website/build_msg.less";
 
   .page-infinite-loading {
     text-align: center;
