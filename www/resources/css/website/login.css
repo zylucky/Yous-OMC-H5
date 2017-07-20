@@ -12,6 +12,7 @@
 /*字号*/
 #ys_user {
   background: url("../../images/login_bg.png") no-repeat;
+  background-size: 100% 100%;
 }
 .login_box {
   width: 5.4rem;
@@ -88,4 +89,9 @@
   text-align: center;
   color: #fff;
   font-size: 0.32rem;
+}
+@media screen and (min-width: 7.5rem) {
+  #ys_user {
+    background-size: cover;
+  }
 }
