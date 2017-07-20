@@ -18,11 +18,16 @@
   width: 5.4rem;
   margin: 0 auto;
 }
-.login_wrap {
+.all_wrap {
   position: absolute;
-  left: 0;
-  bottom: 2.8rem;
   width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 99;
+}
+.login_wrap {
+  margin-top: 6.5rem;
 }
 .login_wrap .inp_item {
   height: 1.1rem;

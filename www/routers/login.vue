@@ -13,21 +13,23 @@
 </style>
 <template>
     <div class="all_elements" id="ys_user">
-      <div class="login_wrap">
-        <div class="login_box">
-          <div class="inp_item pt33">
-            <i class="ys_icon user"></i>
-            <input type="text" value="" placeholder="请输入用户名">
-          </div>
-          <div class="inp_item pt33">
-            <i class="ys_icon pass"></i>
-            <input type="text" value="" placeholder="请输入密码">
-          </div>
-          <div class="inp_item login pt23">
-            <router-link class="ys_btn" :to="{path:'/list'}">登 录</router-link>
+      <div class="all_wrap">
+        <div class="login_wrap">
+          <div class="login_box">
+            <div class="inp_item pt33">
+              <i class="ys_icon user"></i>
+              <input type="text" value="" placeholder="请输入用户名">
+            </div>
+            <div class="inp_item pt33">
+              <i class="ys_icon pass"></i>
+              <input type="text" value="" placeholder="请输入密码">
+            </div>
+            <div class="inp_item login pt23">
+              <router-link class="ys_btn" :to="{path:'/list'}">登 录</router-link>
+            </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
 </template>
 <script>
