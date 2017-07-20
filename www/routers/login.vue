@@ -25,7 +25,7 @@
             <input type="text" value="" placeholder="请输入密码">
           </div>
           <div class="inp_item login pt23">
-            <a href="javascript:;" class="ys_btn">登 录</a>
+            <router-link class="ys_btn" :to="{path:'/list'}">登 录</router-link>
           </div>
         </div>
         </div>
