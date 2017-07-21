@@ -86,6 +86,14 @@ var router = new VueRouter({
       path: '/price_msg', //价格信息
       component: require('./routers/price_msg.vue')
     },
+    {
+      path: '/rent_msg', //租赁部信息
+      component: require('./routers/rent_msg.vue')
+    },
+    {
+      path: '/price_msg', //价格信息
+      component: require('./routers/price_msg.vue')
+    },
 
     {
       path: '*',

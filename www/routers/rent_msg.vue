@@ -15,44 +15,36 @@
   <div class="all_elements">
     <div class="build_top">
       <ul class="ys_item_ul mb60">
-        <li class="clearfix pr bg_gray">
-          <span class="ys_tit w224">市场近期成交价</span>
-        </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">单价：</span>
+          <span class="ys_tit w224">租赁部合作方式：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
-            <i class="right_unit">元/㎡/天</i>
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">月租金：</span>
+          <span class="ys_tit w224">租赁返佣比例：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
-            <i class="right_unit">元/㎡/天</i>
           </div>
-        </li>
-
-
-        <li class="clearfix pr bg_gray">
-          <span class="ys_tit w224">历史三年成交价</span>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">单价：</span>
+          <span class="ys_tit w224">租赁返佣周期：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
-            <i class="right_unit">元/㎡/天</i>
           </div>
-
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">月租金：</span>
+          <span class="ys_tit w224">租赁部地址：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
-            <i class="right_unit">元/㎡/天</i>
           </div>
         </li>
-
+        <li class="clearfix pr">
+          <span class="ys_tit w224">租赁部电话：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" placeholder="请输入">
+          </div>
+        </li>
       </ul>
       <a href="javascript:;" class="ys_default_btn mb80">保存</a>
     </div>
