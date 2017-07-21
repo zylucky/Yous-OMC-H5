@@ -16,33 +16,28 @@
     <div class="build_top">
       <ul class="ys_item_ul mb60">
         <li class="clearfix pr">
-          <span class="ys_tit w224">建筑面积：</span>
+          <span class="ys_tit w224">总户数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">业主面积：</span>
+          <span class="ys_tit w224">空置户数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">开发商自持面积：</span>
+          <span class="ys_tit w224">商业户数：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">单层总面积：</span>
+          <span class="ys_tit w224">空置比例：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">空置面积：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <span class="cl_999">自动生成</span>
+            <i class="right_unit">%</i>
           </div>
         </li>
       </ul>

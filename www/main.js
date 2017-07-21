@@ -78,6 +78,14 @@ var router = new VueRouter({
       path: '/area2_msg', //电梯信息
       component: require('./routers/area2_msg.vue')
     },
+    {
+      path: '/bal_households_msg', //座栋户数信息
+      component: require('./routers/bal_households_msg.vue')
+    },
+    {
+      path: '/price_msg', //价格信息
+      component: require('./routers/price_msg.vue')
+    },
 
     {
       path: '*',
