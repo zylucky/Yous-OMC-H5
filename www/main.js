@@ -132,8 +132,8 @@ var router = new VueRouter({
     },
 
     {
-      path: '/user_center', //个人中心
-      component: require('./routers/user_center.vue')
+      path: '/need_task', //个人中心
+      component: require('./routers/need_task.vue')
     },
 
     {
