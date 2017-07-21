@@ -82,7 +82,7 @@
 }
 .ys_item_ul li .ys_tit {
   float: left;
-  width: 1.4rem;
+  width: 1.7rem;
   height: .72rem;
   margin-right: .1rem;
 }
@@ -317,6 +317,16 @@ textarea::-webkit-input-placeholder {
   display: inline-block;
   vertical-align: middle;
   background-size: .37rem .28rem;
+}
+.work_title {
+  height: .72rem;
+  line-height: .72rem;
+  background-color: #fff;
+  padding: 0 .25rem;
+  color: #16abdc;
+  position: relative;
+  border-bottom: 1px solid #dbdadf;
+  margin-bottom: .1rem;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

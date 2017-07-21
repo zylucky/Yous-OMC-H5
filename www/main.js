@@ -144,6 +144,14 @@ var router = new VueRouter({
       path: '/my_distri_list', //我派发的列表
       component: require('./routers/my_distri_list.vue')
     },
+    {
+      path: '/work_detail', //工单详情
+      component: require('./routers/work_detail.vue')
+    },
+    {
+      path: '/attach_record', //跟进记录
+      component: require('./routers/attach_record.vue')
+    },
 
     {
       path: '*',
