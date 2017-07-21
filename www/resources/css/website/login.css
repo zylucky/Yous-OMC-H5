@@ -43,12 +43,11 @@
   background-size: 5.4rem 2.48rem;
 }
 .login_wrap .inp_item .ys_icon {
-  width: .28rem;
-  height: .32rem;
+  width: .32rem;
+  height: .3rem;
   position: absolute;
   left: .9rem;
   top: .65rem;
-  background: gold;
 }
 .login_wrap .inp_item .ys_icon.user {
   background: url("../../images/icons/user/user_icon.png") no-repeat;

@@ -126,6 +126,14 @@ var router = new VueRouter({
       path: '/add_agent', //添加代理人
       component: require('./routers/add_agent.vue')
     },
+    {
+      path: '/agenter_msg', //房源代理人信息
+      component: require('./routers/agenter_msg.vue')
+    },
+    {
+      path: '/build_reg_msg', //楼盘注册信息
+      component: require('./routers/build_reg_msg.vue')
+    },
 
     {
       path: '*',
