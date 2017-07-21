@@ -59,6 +59,12 @@
   width: 100%;
   padding-top: .88rem;
 }
+.bor_bot_none {
+  border-bottom: none !important;
+}
+.bor_bot_one {
+  border-bottom: 1px solid #dbdadf;
+}
 .cl_link {
   color: #16abdc;
 }
@@ -208,6 +214,27 @@
 .analy_item {
   background-color: #fff;
   padding: .4rem .2rem 0;
+}
+.ys_item_con {
+  width: 4.7rem;
+}
+.ys_item_con input {
+  width: 100%;
+  height: .7rem;
+}
+.ys_item_con input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #999;
+}
+.ys_item_con input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #999;
+}
+.ys_item_con input:-ms-input-placeholder {
+  color: #999;
+}
+.ys_item_con input::-webkit-input-placeholder {
+  color: #999;
 }
 textarea {
   box-sizing: border-box;

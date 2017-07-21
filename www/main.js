@@ -67,6 +67,19 @@ var router = new VueRouter({
       component: require('./routers/analyse_msg.vue')
     },
     {
+      path: '/balcony_msg', //座栋基本信息
+      component: require('./routers/balcony_msg.vue')
+    },
+    {
+      path: '/elevator_msg', //电梯信息
+      component: require('./routers/elevator_msg.vue')
+    },
+    {
+      path: '/area2_msg', //电梯信息
+      component: require('./routers/area2_msg.vue')
+    },
+
+    {
       path: '*',
       component: require('./routers/login.vue')
     }

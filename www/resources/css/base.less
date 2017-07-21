@@ -60,6 +60,14 @@
 
 //公用css
 
+.bor_bot_none {
+  border-bottom: none !important;
+}
+
+.bor_bot_one {
+  border-bottom: 1px solid @bdc_df;
+}
+
 .cl_link {
   color: @cl_link;
 }
@@ -238,10 +246,33 @@
   padding: .4rem .2rem 0;
 }
 
+.ys_item_con {
+  width: 4.7rem;
+  input {
+    width:100%;
+    height:.7rem;
+    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: @cl_999;
+    }
+
+    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: @cl_999;
+    }
+
+    &:-ms-input-placeholder {
+      color: @cl_999;
+    }
+
+    &::-webkit-input-placeholder {
+      color: @cl_999;
+    }
+  }
+}
+
 textarea {
   box-sizing: border-box;
-  width:100%;
-  height:1.6rem;
+  width: 100%;
+  height: 1.6rem;
   resize: none;
   border: 1px solid @bdc_df;
   padding: .2rem;
