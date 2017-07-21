@@ -34,13 +34,6 @@
             <textarea name="" cols="30" rows="10" placeholder="请输入"></textarea>
           </div>
         </div>
-        <div class="analy_item">
-          <span class="analy_tit db mb10">劣势分析结果</span>
-          <div class="analy_content">
-            <textarea name="" cols="30" rows="10" placeholder="请输入"></textarea>
-          </div>
-        </div>
-
       </div>
       <a href="javascript:;" class="ys_default_btn mb80">保存</a>
     </div>
