@@ -114,6 +114,10 @@ var router = new VueRouter({
       path: '/image_more_msg', //房源图片信息
       component: require('./routers/image_more_msg.vue')
     },
+    {
+      path: '/house_analy_msg', //房源分析信息
+      component: require('./routers/house_analy_msg.vue')
+    },
 
     {
       path: '*',
