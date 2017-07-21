@@ -122,6 +122,10 @@ var router = new VueRouter({
       path: '/add_owner', //添加业主
       component: require('./routers/add_owner.vue')
     },
+    {
+      path: '/add_agent', //添加代理人
+      component: require('./routers/add_agent.vue')
+    },
 
     {
       path: '*',
