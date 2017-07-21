@@ -274,6 +274,9 @@ textarea::-webkit-input-placeholder {
   height: 1px;
   background-color: #333;
 }
+.border_top {
+  border-top: 1px solid #dbdadf;
+}
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {
     width: 2.3rem !important;

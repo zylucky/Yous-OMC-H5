@@ -94,6 +94,14 @@ var router = new VueRouter({
       path: '/price_msg', //价格信息
       component: require('./routers/price_msg.vue')
     },
+    {
+      path: '/property_more_msg', //物业2信息
+      component: require('./routers/property_more_msg.vue')
+    },
+    {
+      path: '/house_msg', //房源基本信息
+      component: require('./routers/house_msg.vue')
+    },
 
     {
       path: '*',
