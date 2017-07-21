@@ -44,10 +44,10 @@
 }
 .login_wrap .inp_item .ys_icon {
   width: .34rem;
-  height: .32rem;
+  height: .34rem;
   position: absolute;
   left: .9rem;
-  top: .66rem;
+  top: .64rem;
 }
 .login_wrap .inp_item .ys_icon.user {
   background: url("../../images/icons/user/user_icon.png") no-repeat;
