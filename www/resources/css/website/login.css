@@ -51,11 +51,11 @@
 }
 .login_wrap .inp_item .ys_icon.user {
   background: url("../../images/icons/user/user_icon.png") no-repeat;
-  background-size: .28rem .32rem;
+  background-size: .28rem .3rem;
 }
 .login_wrap .inp_item .ys_icon.pass {
   background: url("../../images/icons/user/pass_icon.png") no-repeat;
-  background-size: .28rem .32rem;
+  background-size: .28rem .3rem;
 }
 .login_wrap .inp_item input {
   height: 1rem;
