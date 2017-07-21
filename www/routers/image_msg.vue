@@ -15,7 +15,7 @@
   <div class="all_elements">
     <div class="build_top">
       <div class="common_title">楼盘照片</div>
-      <div class="image_wrap clearfix">
+      <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl"></div>
         <div class="img_demo fl">
           <img class="upload_demo_img" src="../resources/images/demo_img.png" alt="">

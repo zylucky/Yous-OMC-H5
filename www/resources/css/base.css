@@ -162,6 +162,9 @@
 .mb80 {
   margin-bottom: .8rem;
 }
+.mb140 {
+  margin-bottom: 1.4rem;
+}
 .h72 {
   height: .72rem !important;
 }
@@ -195,7 +198,6 @@
 .image_wrap {
   min-height: 2.9rem;
   background-color: #fff;
-  margin-bottom: 1.4rem;
   padding: .35rem 0 0 .55rem;
 }
 .upload_btn {
