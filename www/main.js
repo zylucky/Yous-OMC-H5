@@ -118,6 +118,10 @@ var router = new VueRouter({
       path: '/house_analy_msg', //房源分析信息
       component: require('./routers/house_analy_msg.vue')
     },
+    {
+      path: '/add_owner', //添加业主
+      component: require('./routers/add_owner.vue')
+    },
 
     {
       path: '*',
