@@ -62,7 +62,7 @@
 .bor_bot_none {
   border-bottom: none !important;
 }
-.bor_bot_one {
+.bor_bot {
   border-bottom: 1px solid #dbdadf;
 }
 .cl_link {
@@ -139,7 +139,7 @@
   margin-top: .2rem;
 }
 .pt10 {
-  padding-top: .2rem;
+  padding-top: .2rem !important;
 }
 .w224 {
   width: 2.24rem !important;
@@ -166,8 +166,14 @@
 .mb140 {
   margin-bottom: 1.4rem;
 }
+.mb5 {
+  margin-bottom: .1rem !important;
+}
 .h72 {
   height: .72rem !important;
+}
+.mt72 {
+  margin-top: .72rem !important;
 }
 .ver_line {
   width: 1px;
@@ -282,6 +288,35 @@ textarea::-webkit-input-placeholder {
 }
 .border_right {
   border-right: 1px solid #dbdadf;
+}
+.down_arrow {
+  display: inline-block;
+  vertical-align: middle;
+  width: .15rem;
+  height: .07rem;
+  background: url("../images/icons/down_arrow.png") no-repeat;
+  background-size: .15rem .07rem;
+}
+.cl_red {
+  color: #f61f3a;
+}
+.ys_mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.hand_icon {
+  width: .37rem;
+  height: .28rem;
+  background: url("../images/icons/hand_icon.png") no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  background-size: .37rem .28rem;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

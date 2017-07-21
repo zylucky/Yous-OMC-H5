@@ -132,8 +132,17 @@ var router = new VueRouter({
     },
 
     {
-      path: '/need_task', //个人中心
+      path: '/need_task', //待办任务
       component: require('./routers/need_task.vue')
+    },
+
+    {
+      path: '/doc_attach', //跟进中列表
+      component: require('./routers/doc_attach.vue')
+    },
+    {
+      path: '/my_distri_list', //我派发的列表
+      component: require('./routers/my_distri_list.vue')
     },
 
     {

@@ -37,7 +37,7 @@
         </li>
         <li class="clearfix pr bor_bot_none">
           <span class="ys_tit w224 h72"></span>
-          <div class="ys_item_con fl bor_bot_one">
+          <div class="ys_item_con fl bor_bot">
             <input type="text" value="" placeholder="请选择站点">
             <i class="right_arrow">&gt;</i>
           </div>
