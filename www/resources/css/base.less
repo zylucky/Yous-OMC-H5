@@ -81,15 +81,15 @@
 }
 
 .ys_item_ul {
-  background-color: @cl_white;
   li {
     padding-left: .24rem;
     line-height: .72rem;
     border-bottom: 1px solid @bdc_df;
+    background-color: @cl_white;
     .ys_tit {
       float: left;
       width: 1.4rem;
-      margin-right: .3rem;
+      margin-right: .1rem;
     }
   }
 }
@@ -157,6 +157,7 @@
 .pt10 {
   padding-top: .2rem;
 }
+
 
 .w224 {
   width: 2.24rem !important;
@@ -266,7 +267,20 @@
     &::-webkit-input-placeholder {
       color: @cl_999;
     }
+
+    &.inp_sm{
+      width:1.3rem;
+      text-align: center;
+    }
+
   }
+}
+
+input[type="radio"]{
+  width:.3rem;
+  height:.3rem;
+  margin-top: -2px;
+  vertical-align: middle;
 }
 
 textarea {
@@ -293,3 +307,35 @@ textarea {
     color: @cl_999;
   }
 }
+
+.hor_line{
+  display: inline-block;
+  vertical-align: middle;
+
+  width:.25rem;
+  height:1px;
+  background-color: @cl_333;
+}
+
+
+
+
+
+
+//media
+
+@media screen and (max-width:320px){
+  .ys_item_ul{
+    li{
+      .ys_tit{
+        width:2.3rem !important;
+      }
+      .ys_item_con{
+        width:4.4rem;
+      }
+    }
+  }
+}
+
+
+

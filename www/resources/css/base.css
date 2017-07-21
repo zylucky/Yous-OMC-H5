@@ -74,18 +74,16 @@
 .w570 {
   width: 5.4rem;
 }
-.ys_item_ul {
-  background-color: #fff;
-}
 .ys_item_ul li {
   padding-left: .24rem;
   line-height: .72rem;
   border-bottom: 1px solid #dbdadf;
+  background-color: #fff;
 }
 .ys_item_ul li .ys_tit {
   float: left;
   width: 1.4rem;
-  margin-right: .3rem;
+  margin-right: .1rem;
 }
 .ys_tag {
   display: inline-block;
@@ -236,6 +234,16 @@
 .ys_item_con input::-webkit-input-placeholder {
   color: #999;
 }
+.ys_item_con input.inp_sm {
+  width: 1.3rem;
+  text-align: center;
+}
+input[type="radio"] {
+  width: .3rem;
+  height: .3rem;
+  margin-top: -2px;
+  vertical-align: middle;
+}
 textarea {
   box-sizing: border-box;
   width: 100%;
@@ -258,4 +266,19 @@ textarea:-ms-input-placeholder {
 }
 textarea::-webkit-input-placeholder {
   color: #999;
+}
+.hor_line {
+  display: inline-block;
+  vertical-align: middle;
+  width: .25rem;
+  height: 1px;
+  background-color: #333;
+}
+@media screen and (max-width: 320px) {
+  .ys_item_ul li .ys_tit {
+    width: 2.3rem !important;
+  }
+  .ys_item_ul li .ys_item_con {
+    width: 4.4rem;
+  }
 }
