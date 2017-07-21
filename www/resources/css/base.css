@@ -69,7 +69,7 @@
   color: #16abdc;
 }
 .bg_gray {
-  background-color: #f0eff5;
+  background-color: #f0eff5 !important;
 }
 .w570 {
   width: 5.4rem;
