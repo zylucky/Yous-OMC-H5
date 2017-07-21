@@ -102,6 +102,10 @@ var router = new VueRouter({
       path: '/house_msg', //房源基本信息
       component: require('./routers/house_msg.vue')
     },
+    {
+      path: '/renter_msg', //租户信息
+      component: require('./routers/renter_msg.vue')
+    },
 
     {
       path: '*',
