@@ -130,9 +130,10 @@ var router = new VueRouter({
       path: '/agenter_msg', //房源代理人信息
       component: require('./routers/agenter_msg.vue')
     },
+
     {
-      path: '/build_reg_msg', //楼盘注册信息
-      component: require('./routers/build_reg_msg.vue')
+      path: '/user_center', //个人中心
+      component: require('./routers/user_center.vue')
     },
 
     {
