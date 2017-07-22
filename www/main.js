@@ -160,6 +160,16 @@ var router = new VueRouter({
       path: '/negotiate_order', //业拓谈判工单
       component: require('./routers/negotiate_order.vue')
     },
+    {
+      path: '/commerce_dist', //商机派发
+      component: require('./routers/commerce_dist.vue')
+    },
+    {
+      path: '/accept_order', //接单
+      component: require('./routers/accept_order.vue')
+    },
+
+
 
 
 

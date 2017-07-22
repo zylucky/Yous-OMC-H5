@@ -67,7 +67,7 @@
     },
     beforeDestroy(){
       document.body.style.backgroundColor = "#f0eff5";
-    },
+    }
 
   }
 </script>

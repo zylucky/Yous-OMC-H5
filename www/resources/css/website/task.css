@@ -136,3 +136,28 @@
   padding-left: .2rem;
   background-color: #16abdc;
 }
+.ys_task_top {
+  position: fixed;
+  top: .25rem;
+  padding: 0 .4rem;
+  width: 100%;
+}
+.ys_task_top .user_icon {
+  width: .3rem;
+  height: .33rem;
+  background: url("../../images/icons/user_icon.png") no-repeat;
+  background-size: .3rem .33rem;
+}
+.ys_task_top .alarm_icon {
+  width: .3rem;
+  height: .33rem;
+  background: url("../../images/icons/alarm_icon.png") no-repeat;
+  background-size: .3rem .33rem;
+}
+.ys_task_top .alarm_icon .alarm_num {
+  font-size: 0.24rem;
+  color: #f61f3a;
+  float: right;
+  margin-top: -0.12rem;
+  margin-right: -0.15rem;
+}

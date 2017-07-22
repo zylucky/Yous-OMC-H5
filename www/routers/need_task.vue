@@ -16,6 +16,12 @@
   <div class="all_elements">
     <div class="build_top">
       <div class="task_bg"></div>
+
+      <div class="ys_task_top clearfix">
+        <div class="fl user_icon"></div>
+        <div class="fr alarm_icon"><i class="alarm_num">5</i></div>
+      </div>
+
       <div class="task_col_wrap clearfix mb10">
         <div class="task_col_item"><i class="task_icon task1"></i><span class="db">待接单</span></div>
         <div class="task_col_item"><i class="task_icon task2"></i><span class="db">跟进中</span></div>

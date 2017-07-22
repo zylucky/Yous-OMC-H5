@@ -24,23 +24,11 @@
             <div class="fl distri_block mb5">
               <span class="db">建外SOHO A座 2201 业主约见谈判</span>
               <span class="cl_999 f24">约见时间：<i>2017-08-01 14:00</i></span>
-              <span class="db cl_999"><em class="hand_icon mr05"></em>业拓：<i>张三</i></span>
+              <span class="db cl_999"><em class="hand_icon mr05"></em>收购部：<i>张三</i></span>
             </div>
             <div class="fr tr cl_999">
-              <span>2017-07-21</span>
-              <a href="javascript:;" class="db cl_red">已结单</a>
-            </div>
-          </li>
-          <li class="attach_item clearfix pt10">
-            <div class="fl distri_block mb5">
-              <span class="db">建外SOHO A座 2201 业主约见谈判</span>
-              <span class="db cl_999">约见时间：<i class="f24">2017-08-01 14:00</i></span>
-              <span class="db cl_999">派单时间：<i class="f24">2017-08-01 14:00</i></span>
-              <span class="db cl_999"><em class="hand_icon mr05"></em>业拓：<i>张三</i></span>
-            </div>
-            <div class="fr tr cl_999">
-              <span>2017-07-21</span>
-              <a href="javascript:;" class="db cl_red">未结单</a>
+              <span class="db mb20">2017-07-21</span>
+              <a href="javascript:;" class="db ys_sm_btn">结单</a>
             </div>
           </li>
         </ul>
