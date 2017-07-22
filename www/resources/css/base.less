@@ -201,6 +201,10 @@
   margin-top: .72rem !important;
 }
 
+.mt15{
+  margin-top: .15rem;
+}
+
 .ver_line {
   width: 1px;
   height: .23rem;
@@ -390,6 +394,7 @@ textarea {
   text-align: center;
   line-height: .42rem;
   color: #fff;
+  font-size: @font24;
   border-radius: .08rem;
   background-color: @cl_link;
 }
@@ -440,6 +445,49 @@ textarea {
   &.bot{
     height:.55rem;
     bottom: 0;
+  }
+}
+
+.textarea_wrap{
+  padding-right:.2rem;
+}
+
+.star_wrap{
+  width:2rem;
+  .star_gray{
+    position: absolute;
+    left:0;
+    width:100%;
+    top:.18rem;
+    height:.4rem;
+    background-color: gold;
+  }
+  .star_gold{
+    position: absolute;
+    left:0;
+    top:.18rem;
+    height:.4rem;
+    width:50%;
+    background-color: red;
+  }
+}
+
+.btn_group{
+  padding: 0 .2rem;
+}
+
+.ys_two_btn {
+  display: block;
+  width: 3.4rem;
+  height: .7rem;
+  text-align: center;
+  line-height: .7rem;
+  color: @cl_white;
+  border-radius: .08rem;
+  background-color: @cl_link;
+  &.btn_gray{
+    background-color: @bg_btn_gray;
+    color: @cl_white;
   }
 }
 

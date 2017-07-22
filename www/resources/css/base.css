@@ -175,6 +175,9 @@
 .mt72 {
   margin-top: .72rem !important;
 }
+.mt15 {
+  margin-top: .15rem;
+}
 .ver_line {
   width: 1px;
   height: .23rem;
@@ -336,6 +339,7 @@ textarea::-webkit-input-placeholder {
   text-align: center;
   line-height: .42rem;
   color: #fff;
+  font-size: 0.24rem;
   border-radius: .08rem;
   background-color: #16abdc;
 }
@@ -381,6 +385,45 @@ textarea::-webkit-input-placeholder {
 .log_ver_blueline.bot {
   height: .55rem;
   bottom: 0;
+}
+.textarea_wrap {
+  padding-right: .2rem;
+}
+.star_wrap {
+  width: 2rem;
+}
+.star_wrap .star_gray {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: .18rem;
+  height: .4rem;
+  background-color: gold;
+}
+.star_wrap .star_gold {
+  position: absolute;
+  left: 0;
+  top: .18rem;
+  height: .4rem;
+  width: 50%;
+  background-color: red;
+}
+.btn_group {
+  padding: 0 .2rem;
+}
+.ys_two_btn {
+  display: block;
+  width: 3.4rem;
+  height: .7rem;
+  text-align: center;
+  line-height: .7rem;
+  color: #fff;
+  border-radius: .08rem;
+  background-color: #16abdc;
+}
+.ys_two_btn.btn_gray {
+  background-color: #dddce1;
+  color: #fff;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

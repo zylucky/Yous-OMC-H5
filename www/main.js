@@ -156,6 +156,10 @@ var router = new VueRouter({
       path: '/attach_log_detail', //跟进记录详情
       component: require('./routers/attach_log_detail.vue')
     },
+    {
+      path: '/negotiate_order', //业拓谈判工单
+      component: require('./routers/negotiate_order.vue')
+    },
 
 
 

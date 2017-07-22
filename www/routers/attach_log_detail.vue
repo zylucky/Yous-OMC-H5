@@ -39,7 +39,7 @@
           </span>
           <div class="fl pt20">
             <div class="clearfix log_sta_btn mb5">
-              <div class="status_per_tit fl">业务人员</div>
+              <div class="status_per_tit fl">业拓人员</div>
               <div class="status_per_tit fr">张三</div>
             </div>
             <span>跟进内容</span>
@@ -54,7 +54,7 @@
           </span>
           <div class="fl pt20">
             <div class="clearfix log_sta_btn mb5">
-              <div class="status_per_tit fl">业务人员</div>
+              <div class="status_per_tit fl">业拓人员</div>
               <div class="status_per_tit fr">张三</div>
             </div>
             <span>跟进内容</span>
