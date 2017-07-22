@@ -14,7 +14,7 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <ul class="ys_item_ul mb60">
+      <ul class="ys_item_ul">
         <li class="clearfix">
           <span class="fl">建外SOHO A座 2201</span>
           <div class="fr pt10 pr10"><a href="javascript:;" class="ys_sm_btn">签到</a></div>
@@ -110,68 +110,62 @@
           </div>
         </li>
 
-
+        <li class="clearfix pr">
+          <span class="ys_tit">欠费金额：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" placeholder="请输入">
+          </div>
+        </li>
+        <li class="clearfix pr">
+          <span class="ys_tit">计算方式：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" placeholder="请输入">
+          </div>
+        </li>
 
         <li class="clearfix">
-          <span class="ys_tit">产权性质：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">请选择标签</a></div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">楼盘品质：</span>
+          <span class="ys_tit w224">取暖费欠费：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请选择">
-            <i class="right_arrow">&gt;</i>
+            <label class="mr20"><input type="radio" name="hot">是</label>
+            <label><input type="radio" name="hot">否</label>
           </div>
         </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">楼盘均价：</span>
+
+        <li class="clearfix">
+          <span class="ys_tit w224">制冷费：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-            <i class="right_unit">元/m³/天</i>
+            <label class="mr20"><input type="radio" name="cold">是</label>
+            <label><input type="radio" name="cold">否</label>
           </div>
         </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">使用率：</span>
+
+        <li class="clearfix">
+          <span class="ys_tit w224">水费是否结清：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请选择">
-            <i class="right_arrow">&gt;</i>
+            <label class="mr20"><input type="radio" name="water">是</label>
+            <label><input type="radio" name="water">否</label>
           </div>
         </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">空置比例：</span>
-          <div class="cl_999">自动生成</div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit pt10">
-            <i class="ys_tit_sm">装修配套设施明细</i>
-          </span>
-          <div class="ys_item_con fl pt10">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">空置比例：</span>
-          <div class="cl_999">自动生成</div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">楼盘设计公司：</span>
+
+        <li class="clearfix">
+          <span class="ys_tit w224">是否有代缴费用：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <label class="mr20"><input type="radio" name="help_pay02">是</label>
+            <label><input type="radio" name="help_pay02">否</label>
           </div>
         </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">楼盘设计师：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">楼盘设计师风格：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
-          </div>
+
+        <li class="clearfix bg_gray">
+          <span class="ys_tit">上传交割单：</span>
         </li>
       </ul>
+      <div class="image_wrap clearfix mb140" style="margin-left: -.2rem">
+        <div class="upload_btn mr10 fl"></div>
+        <div class="img_demo fl pr">
+          <img class="upload_demo_img" src="../resources/images/demo_img.png" alt="">
+          <i class="delete_icon"></i>
+        </div>
+      </div>
       <a href="javascript:;" class="ys_default_btn mb80">保存</a>
     </div>
   </div>
