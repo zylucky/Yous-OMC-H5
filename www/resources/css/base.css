@@ -319,7 +319,6 @@ textarea::-webkit-input-placeholder {
   background-size: .37rem .28rem;
 }
 .work_title {
-  height: .72rem;
   line-height: .72rem;
   background-color: #fff;
   padding: 0 .25rem;
@@ -327,6 +326,27 @@ textarea::-webkit-input-placeholder {
   position: relative;
   border-bottom: 1px solid #dbdadf;
   margin-bottom: .1rem;
+}
+.log_title {
+  line-height: .72rem;
+  background-color: #fff;
+  padding: 0 .25rem;
+  position: relative;
+  border-bottom: 1px solid #dbdadf;
+}
+.attach_text {
+  height: 2.2rem;
+  border-radius: .1rem;
+}
+.ys_sm_btn {
+  display: block;
+  width: 1.45rem;
+  height: .42rem;
+  text-align: center;
+  line-height: .42rem;
+  color: #fff;
+  border-radius: .08rem;
+  background-color: #16abdc;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

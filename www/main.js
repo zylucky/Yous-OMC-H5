@@ -149,9 +149,11 @@ var router = new VueRouter({
       component: require('./routers/work_detail.vue')
     },
     {
-      path: '/attach_record', //跟进记录
-      component: require('./routers/attach_record.vue')
+      path: '/attach_log', //业主约见跟进
+      component: require('./routers/attach_log.vue')
     },
+
+
 
     {
       path: '*',
