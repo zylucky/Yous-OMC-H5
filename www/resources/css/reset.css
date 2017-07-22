@@ -230,6 +230,9 @@ header .noText-logo {
 a {
   color: #302f35;
 }
+.line_nor {
+  line-height: normal !important;
+}
 .bg-white {
   background-color: #FFF !important;
 }
@@ -332,6 +335,9 @@ a {
 .ph20,
 .pa20 {
   padding-top: .4rem !important;
+}
+.pr10 {
+  padding-right: .2rem !important;
 }
 .pr15,
 .pv15,

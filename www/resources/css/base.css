@@ -425,8 +425,23 @@ textarea::-webkit-input-placeholder {
   background-color: #dddce1;
   color: #fff;
 }
+.ys_third_btn {
+  width: 1.85rem;
+  height: .5rem;
+  background-color: #16abdc;
+  border-radius: .1rem;
+  text-align: center;
+  line-height: .5rem;
+  display: inline-block;
+  margin: 0 .1rem;
+  vertical-align: middle;
+  color: #fff;
+}
 .add_common_box {
   padding: 1rem 0;
+}
+.ys_tips {
+  margin-top: -0.25rem;
 }
 .status_block_wrap {
   width: 4.1rem;
@@ -468,6 +483,15 @@ textarea::-webkit-input-placeholder {
   background: url("../images/icons/slide_block.png") no-repeat;
   background-size: .91rem .25rem;
 }
+.delete_icon {
+  width: .2rem;
+  height: .2rem;
+  position: absolute;
+  right: -0.1rem;
+  top: -0.06rem;
+  background: url("../images/icons/delete_icon.png") no-repeat;
+  background-size: .2rem .2rem;
+}
 .commerce_head {
   padding: .3rem .48rem 0 .2rem;
 }
@@ -478,6 +502,13 @@ textarea::-webkit-input-placeholder {
   vertical-align: middle;
   background: url("../images/icons/commerce_icon.png") no-repeat;
   background-size: .33rem .26rem;
+}
+.add_more_button {
+  width: .76rem;
+  height: .76rem;
+  background: url("../images/icons/add_icon.png") no-repeat;
+  background-size: .76rem .76rem;
+  margin: 3rem auto 0;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

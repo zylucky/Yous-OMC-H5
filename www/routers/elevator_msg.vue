@@ -54,10 +54,8 @@
         <li class="clearfix">
           <span class="ys_tit w224">货梯层级区分：</span>
           <div class="ys_item_con fl">
-            <input type="radio" name="ele_type" id="frei_ele_yes">
-            <label for="ele_yes" class="mr20">是</label>
-            <input type="radio" name="ele_type">
-            <label for="ele_no" id="frei_ele_no">否</label>
+            <label for="ele_yes" class="mr20"><input type="radio" name="ele_type" id="frei_ele_yes">是</label>
+            <label for="ele_no" id="frei_ele_no"><input type="radio" name="ele_type">否</label>
           </div>
         </li>
 

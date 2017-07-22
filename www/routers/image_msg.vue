@@ -17,8 +17,9 @@
       <div class="common_title">楼盘照片</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl"></div>
-        <div class="img_demo fl">
+        <div class="img_demo fl pr">
           <img class="upload_demo_img" src="../resources/images/demo_img.png" alt="">
+          <i class="delete_icon"></i>
         </div>
       </div>
       <a href="javascript:;" class="ys_default_btn mb80">保存</a>

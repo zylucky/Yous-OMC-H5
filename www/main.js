@@ -168,6 +168,10 @@ var router = new VueRouter({
       path: '/accept_order', //接单
       component: require('./routers/accept_order.vue')
     },
+    {
+      path: '/project_order', //工程管理部工单
+      component: require('./routers/project_order.vue')
+    },
 
 
 
