@@ -152,6 +152,11 @@ var router = new VueRouter({
       path: '/attach_log', //业主约见跟进
       component: require('./routers/attach_log.vue')
     },
+    {
+      path: '/attach_log_detail', //跟进记录详情
+      component: require('./routers/attach_log_detail.vue')
+    },
+
 
 
 

@@ -14,7 +14,7 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <div class="log_title clearfix pb15 mb10">
+      <div class="work_title clearfix pb15 mb10">
         <span class="ys_tit db">建外SOHO A座 2201</span>
         <div>
           <textarea name="" class="attach_text" cols="30" rows="10" placeholder="请输入"></textarea>

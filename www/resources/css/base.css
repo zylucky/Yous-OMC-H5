@@ -322,15 +322,6 @@ textarea::-webkit-input-placeholder {
   line-height: .72rem;
   background-color: #fff;
   padding: 0 .25rem;
-  color: #16abdc;
-  position: relative;
-  border-bottom: 1px solid #dbdadf;
-  margin-bottom: .1rem;
-}
-.log_title {
-  line-height: .72rem;
-  background-color: #fff;
-  padding: 0 .25rem;
   position: relative;
   border-bottom: 1px solid #dbdadf;
 }
@@ -347,6 +338,49 @@ textarea::-webkit-input-placeholder {
   color: #fff;
   border-radius: .08rem;
   background-color: #16abdc;
+}
+.log_item {
+  height: 1.3rem;
+}
+.log_date {
+  height: 1.3rem;
+  line-height: 1.3rem;
+}
+.round_wrap {
+  height: 100%;
+  width: .4rem;
+  text-align: center;
+  line-height: 1.3rem;
+}
+.circle_icon {
+  display: inline-block;
+  width: .27rem;
+  height: .27rem;
+  background: url("../images/icons/circle.png") no-repeat;
+  background-size: .27rem .27rem;
+}
+.log_sta_btn {
+  min-width: 2.2rem;
+  height: .4rem;
+  padding: .04rem .3rem;
+  font-size: 0.24rem;
+  border-radius: .2rem;
+  color: #fff;
+  background-color: #16abdc;
+}
+.log_ver_blueline {
+  width: .03rem;
+  background-color: #16abdc;
+  position: absolute;
+  left: .18rem;
+}
+.log_ver_blueline.top {
+  top: 0;
+  height: .48rem;
+}
+.log_ver_blueline.bot {
+  height: .55rem;
+  bottom: 0;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

@@ -14,7 +14,7 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <div class="work_title">
+      <div class="work_title cl_link mb10">
         <span class="ys_tit ">查看跟进</span>
         <div class="ys_item_con fl">
           <i class="right_arrow">&gt;</i>

@@ -179,7 +179,7 @@
   color: @cl_white;
   border-radius: .08rem;
   margin: 0 auto;
-  background-color: @bg_mid_blue;
+  background-color: @cl_link;
 }
 
 .mb80 {
@@ -374,16 +374,6 @@ textarea {
   line-height: .72rem;
   background-color: @cl_white;
   padding:0 .25rem;
-  color: @cl_link;
-  position: relative;
-  border-bottom: 1px solid @bdc_df;
-  margin-bottom: .1rem;
-}
-
-.log_title{
-  line-height: .72rem;
-  background-color: @cl_white;
-  padding:0 .25rem;
   position: relative;
   border-bottom: 1px solid @bdc_df;
 }
@@ -404,6 +394,54 @@ textarea {
   background-color: @cl_link;
 }
 
+.log_item{
+  height:1.3rem;
+}
+
+.log_date{
+  height:1.3rem;
+  line-height: 1.3rem;
+}
+
+.round_wrap{
+  height:100%;
+  width:.4rem;
+  text-align: center;
+  line-height: 1.3rem;
+}
+
+.circle_icon{
+  display: inline-block;
+  width:.27rem;
+  height:.27rem;
+  background: url("../images/icons/circle.png") no-repeat;
+  background-size: .27rem .27rem;
+}
+
+.log_sta_btn{
+  min-width:2.2rem;
+  height:.4rem;
+  padding: .04rem .3rem;
+  font-size: @font24;
+  border-radius: .2rem;
+  color: @cl_white;
+  background-color: @cl_link;
+}
+
+.log_ver_blueline{
+  width:.03rem;
+  background-color: @cl_link;
+  position: absolute;
+  left: .18rem;
+  &.top{
+    top: 0;
+    height:.48rem;
+  }
+  &.bot{
+    height:.55rem;
+    bottom: 0;
+  }
+}
 
 
 
