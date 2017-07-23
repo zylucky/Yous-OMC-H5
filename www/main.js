@@ -16,40 +16,6 @@ Vue.prototype.$resouceUrl = "http://localhost:8081/"  //资源文件地址
 Vue.config.debug = true;// 开启debug模式
 
 var router = new VueRouter({
-<<<<<<< HEAD
-    mode: "history",
-    hashbang: false,
-    routes: [
-        {
-            path: '/list',
-            component: require('./routers/list.vue'),
-            children: [
-            { path: "/list/search", component: search }
-          ]
-        },
-        {
-            path: '/detail',
-            component: require('./routers/detail.vue')
-        },
-        {
-            path: '/order',
-            component: require('./routers/order.vue')
-        },
-        {
-            path: '*',
-            component: require('./routers/list.vue')
-        }
-
-    ]
-});
-
-new Vue({
-    el: '#app',
-    router: router,
-    render: function (h) {
-        return h(App)
-    }
-=======
   mode: "history",
   hashbang: false,
   routes: [
@@ -213,9 +179,65 @@ new Vue({
 
 
     {
+      path: '/order_following', //工單跟進中
+      component: require('./routers/order_following.vue')
+    },
+    {
+      path: '/owner_talk', //业主约见跟进记录
+      component: require('./routers/owner_talk.vue')
+    },
+    {
+      path: '/owner_talk_recoding', //业主约见记录
+      component: require('./routers/owner_talk_recoding.vue')
+    },
+    {
+      path: '/process_order', //跟进工单
+      component: require('./routers/process_order.vue')
+    },
+    {
+      path: '/init_meet', //形成约见
+      component: require('./routers/init_meet.vue')
+    },
+    {
+      path: '/get_house', //收房派单
+      component: require('./routers/get_house.vue')
+    },
+    {
+      path: '/need_receive', //签单后待接单
+      component: require('./routers/need_receive.vue')
+    },
+    {
+      path: '/sent_me', //派发给我的
+      component: require('./routers/sent_me')
+    },
+    {
+      path: '/sent_me_input', //派发给我的信息填写
+      component: require('./routers/sent_me_input')
+    },
+    {
+      path: '/sent_me_input_two', //派发给我的信息填写2
+      component: require('./routers/sent_me_input_two')
+    },
+    {
+      path: '/receive_order_detail', //接单详情
+      component: require('./routers/receive_order_detail')
+    },
+
+    {
+      path: '/work_list', //业务跟进中列表
+      component: require('./routers/work_list.vue')
+    },
+    {
+      path: '/follow_up_record', //跟进记录
+      component: require('./routers/follow_up_record')
+    },
+
+
+    {
       path: '*',
       component: require('./routers/login.vue')
     }
+
 
   ]
 });
@@ -226,5 +248,4 @@ new Vue({
   render: function (h) {
     return h(App)
   }
->>>>>>> 72a7bba489bef81348624e7c95509d39a3a9669a
 });
