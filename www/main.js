@@ -243,6 +243,10 @@ var router = new VueRouter({
       path: '/sign_page', //签到
       component: require('./routers/sign_page.vue')
     },
+    {
+      path: '/inner_message', //签到
+      component: require('./routers/inner_message.vue')
+    },
 
     {
       path: '*',
