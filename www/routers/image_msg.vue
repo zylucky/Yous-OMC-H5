@@ -1,0 +1,45 @@
+<style scoped lang="less">
+  @import "../resources/css/reset.css";
+  @import "../resources/css/base.less";
+
+  .page-infinite-loading {
+    text-align: center;
+    background-color: #FFF;
+    & > span {
+      display: inline-block;
+    }
+  }
+
+</style>
+<template>
+  <div class="all_elements">
+    <div class="build_top">
+      <div class="common_title">楼盘照片</div>
+      <div class="image_wrap clearfix mb140">
+        <div class="upload_btn mr10 fl"></div>
+        <div class="img_demo fl pr">
+          <img class="upload_demo_img" src="../resources/images/demo_img.png" alt="">
+          <i class="delete_icon"></i>
+        </div>
+      </div>
+      <a href="javascript:;" class="ys_default_btn mb80">保存</a>
+    </div>
+  </div>
+</template>
+<script>
+  import {Indicator} from 'mint-ui';
+  import {InfiniteScroll} from 'mint-ui';
+  export default {
+    components: {
+      InfiniteScroll
+    },
+
+    data () {
+      return {}
+    },
+    methods: {},
+    mounted(){
+
+    },
+  }
+</script>
