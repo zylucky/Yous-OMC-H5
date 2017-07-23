@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8ff5ccb-de32-4be2-9604-95aac8943524" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/OMC.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,7 +24,7 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="492">
-              <caret line="40" column="35" lean-forward="true" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="35" />
+              <caret line="40" column="35" lean-forward="false" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -117,15 +119,15 @@
       <option name="presentableId" value="Default" />
       <updated>1500820854125</updated>
       <workItem from="1500820855440" duration="401000" />
-      <workItem from="1500823570389" duration="224000" />
+      <workItem from="1500823570389" duration="419000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="625000" />
+    <option name="totallyTimeSpent" value="820000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -161,7 +163,7 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="492">
-          <caret line="40" column="35" lean-forward="true" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="35" />
+          <caret line="40" column="35" lean-forward="false" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="35" />
           <folding />
         </state>
       </provider>
