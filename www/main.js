@@ -239,6 +239,10 @@ var router = new VueRouter({
       path: '/decoration_part', //装修部
       component: require('./routers/decoration_part.vue')
     },
+    {
+      path: '/sign_page', //签到
+      component: require('./routers/sign_page.vue')
+    },
 
     {
       path: '*',
