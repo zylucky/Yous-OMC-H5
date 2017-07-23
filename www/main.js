@@ -229,9 +229,12 @@ var router = new VueRouter({
     },
     {
       path: '/follow_up_record', //跟进记录
-      component: require('./routers/follow_up_record')
+      component: require('./routers/follow_up_record.vue')
     },
-
+    {
+      path: '/sales', //跟进记录
+      component: require('./routers/sales.vue')
+    },
 
     {
       path: '*',
