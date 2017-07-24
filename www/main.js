@@ -177,8 +177,16 @@ var router = new VueRouter({
       component: require('./routers/accept_work_detail.vue')
     },
     {
-      path: '/add_schedule', //66添加日程提醒 add_schedule
+      path: '/add_schedule', //67添加日程提醒 add_schedule
       component: require('./routers/add_schedule.vue')
+    },
+    {
+      path: '/schedule_list', //68日程列表 add_schedule
+      component: require('./routers/schedule_list.vue')
+    },
+    {
+      path: '/finance_order', //70金融服务工单 finance_order
+      component: require('./routers/finance_order.vue')
     },
 
 

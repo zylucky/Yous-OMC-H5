@@ -120,13 +120,13 @@
   top: .08em;
 }
 .cl_333 {
-  color: #333;
+  color: #333 !important;
 }
 .cl_666 {
-  color: #666;
+  color: #666 !important;
 }
 .cl_999 {
-  color: #999;
+  color: #999 !important;
 }
 .check_wrap {
   float: left;
@@ -423,7 +423,7 @@ textarea::-webkit-input-placeholder {
 }
 .ys_two_btn.btn_gray {
   background-color: #dddce1;
-  color: #fff;
+  color: #333;
 }
 .ys_third_btn {
   width: 1.85rem;
@@ -509,6 +509,48 @@ textarea::-webkit-input-placeholder {
   background: url("../images/icons/add_icon.png") no-repeat;
   background-size: .76rem .76rem;
   margin: 3rem auto 0;
+}
+.sche_search_wrap {
+  height: .9rem;
+  background-color: #fff;
+}
+.detail-search {
+  float: left;
+  position: relative;
+  z-index: 1000;
+  width: 54%;
+  height: .62rem;
+  line-height: .62rem;
+  padding-left: .7rem;
+  margin: .12rem 0 0 1.7rem;
+  background: #fff url(../images/icons/detail-icon.png) 0.16rem 0.06rem no-repeat;
+  background-size: .48rem auto;
+  border-radius: .1rem;
+  box-sizing: border-box;
+  border: 1px solid #dbdadf;
+}
+#keyword1 {
+  display: block;
+  width: 94%;
+  height: 100%;
+  color: #666;
+  background: none;
+  border: none;
+  text-align: center;
+  font-size: 0.24rem;
+}
+.add_enter_wrap {
+  position: absolute;
+  right: .2rem;
+  top: .1rem;
+}
+.add_enter {
+  width: .37rem;
+  height: .36rem;
+  margin: 0 auto;
+  display: block;
+  background: url("../images/icons/add_enter.png") no-repeat;
+  background-size: .37rem .36rem;
 }
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {

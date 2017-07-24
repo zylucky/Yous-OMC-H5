@@ -15,20 +15,22 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
+      <div class="sche_search_wrap mb10 pr">
+        <!--搜索-->
+        <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
+          <input type="text" id="keyword1" placeholder="请输入关键字搜索" maxlength="50">
+        </a>
+        <a href="javascript:;" class="add_enter_wrap  f24"><i class="add_enter"></i>添加录入</a>
+      </div>
 
-      <!--我派发的列表-->
-
+      <!--日程列表-->
       <div class="attach_list_wrap">
         <ul>
           <li class="attach_item clearfix pt10">
             <div class="fl distri_block mb5">
-              <span class="db">建外SOHO A座 2201 业主约见谈判</span>
-              <span class="cl_999 f24">约见时间：<i>2017-08-01 14:00</i></span>
-              <span class="db cl_999"><em class="hand_icon mr05"></em>收购部：<i>张三</i></span>
-            </div>
-            <div class="fr tr cl_999">
-              <span class="db mb20">2017-07-21</span>
-              <a href="javascript:;" class="db ys_sm_btn">接单</a>
+              <span class="db">建外SOHO A座 2201 业主打电话</span>
+              <span class="cl_999 f24">具体内容</span>
+              <span class="cl_999 f24 db">2017-08-01 14:00</span>
             </div>
           </li>
         </ul>
