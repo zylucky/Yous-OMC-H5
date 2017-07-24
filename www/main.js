@@ -39,31 +39,31 @@ var router = new VueRouter({
       component: require('./routers/login.vue')
     },
     {
-      path: '/build_msg', //楼盘基础信息
+      path: '/build_msg', //6楼盘基础信息
       component: require('./routers/build_msg.vue')
     },
     {
-      path: '/parking_msg', //车位信息
+      path: '/parking_msg', //7车位信息
       component: require('./routers/parking_msg.vue')
     },
     {
-      path: '/property_msg', //物业信息
+      path: '/property_msg', //8物业信息
       component: require('./routers/property_msg.vue')
     },
     {
-      path: '/households_msg', //户数信息
+      path: '/households_msg', //9户数信息
       component: require('./routers/households_msg.vue')
     },
     {
-      path: '/area_msg', //面积信息
+      path: '/area_msg', //10面积信息
       component: require('./routers/area_msg.vue')
     },
     {
-      path: '/image_msg', //图片信息
+      path: '/image_msg', //10图片信息
       component: require('./routers/image_msg.vue')
     },
     {
-      path: '/analyse_msg', //楼盘分析信息
+      path: '/analyse_msg', //11楼盘分析信息
       component: require('./routers/analyse_msg.vue')
     },
     {
@@ -169,9 +169,18 @@ var router = new VueRouter({
       component: require('./routers/accept_order.vue')
     },
     {
-      path: '/project_order', //工程管理部工单
+      path: '/project_order', //61工程管理部工单
       component: require('./routers/project_order.vue')
     },
+    {
+      path: '/accept_work_detail', //64收房工单详情
+      component: require('./routers/accept_work_detail.vue')
+    },
+    {
+      path: '/add_schedule', //66添加日程提醒 add_schedule
+      component: require('./routers/add_schedule.vue')
+    },
+
 
 
 
@@ -244,7 +253,7 @@ var router = new VueRouter({
       component: require('./routers/sign_page.vue')
     },
     {
-      path: '/inner_message', //签到
+      path: '/inner_message', //消息
       component: require('./routers/inner_message.vue')
     },
 

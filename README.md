@@ -55,11 +55,14 @@
 ###59. 工程管理部跟进记录 重复（50）
 ###60. 工程管理部跟进详情 重复（53）
 ###61.工程管理部工单
-###62.工程管理部工单
-###63.装修部
-###64.另一个工单详情（与31重复）
-###65.签到 sign_page
-###65.站内消息 inner_message
+
+62.销售部 sales
+63.装修 decoration_part
+64.收房工单详情 accept_work_detail
+65.签到 sign_page
+66.站内消息 inner_message
+67. 添加日程提醒 add_schedule
+
 
 
 
