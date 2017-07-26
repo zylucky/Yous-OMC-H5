@@ -419,7 +419,7 @@
         });
       });
 
-      $('#close_msg').click(function (e) {
+      $('#close_msg,.shadow').click(function (e) {
         e.stopPropagation();
         $('#msg_super_wrap').animate({
           bottom: '-100%'

@@ -17,11 +17,11 @@
       <ul class="ys_item_ul mb60">
         <li class="clearfix">
           <span class="ys_tit">楼盘名称：</span>
-          <div class="ys_item_con fl">建外SOHO</div>
+          <div class="ys_item_con fl" v-text="topic"></div>
         </li>
         <li class="clearfix">
           <span class="ys_tit">楼盘地址：</span>
-          <div class="ys_item_con fl">北京市朝阳区建国门外大街4号</div>
+          <div class="ys_item_con fl" v-text="address"></div>
         </li>
         <li class="clearfix">
           <span class="ys_tit">特色标签：</span>
@@ -61,40 +61,32 @@
           <span class="ys_tit">特色标签：</span>
           <div class="ys_item_con fl w570">
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">写字楼</label>
+              <label class="fl"><input type="checkbox" value="" name="">写字楼</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">公寓</label>
+              <label class="fl"><input type="checkbox" value="" name="">公寓</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">商务楼</label>
+              <label class="fl"><input type="checkbox" value="" name="">商务楼</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">住宅</label>
+              <label class="fl"><input type="checkbox" value="" name="">住宅</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">商业</label>
+              <label class="fl"><input type="checkbox" value="" name="">商业</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">酒店</label>
+              <label class="fl"><input type="checkbox" value="" name="">酒店</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">别墅</label>
+
+              <label class="fl"><input type="checkbox" value="" name="">别墅</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">综合</label>
+              <label class="fl"><input type="checkbox" value="" name="">综合</label>
             </div>
             <div class="check_wrap clearfix">
-              <input type="checkbox" value="" name="">
-              <label class="fl">商业综合体</label>
+              <label class="fl"><input type="checkbox" value="" name="">商业综合体</label>
             </div>
           </div>
         </li>
@@ -154,7 +146,7 @@
           </div>
         </li>
       </ul>
-      <a href="javascript:;" class="ys_default_btn mb80">保存</a>
+      <a href="javascript:;" class="ys_default_btn mb80" @click="saveBuildMsg">保存</a>
     </div>
   </div>
 </template>
@@ -167,9 +159,66 @@
     },
 
     data () {
-      return {}
+      return {
+        "lpid": "300", //楼盘id
+        "topic": "建外SOHO", //楼盘名称
+        "address": "北京市朝阳区建国门外大街4号demo", //地址
+        "tsbq": "", //特色标签
+        "kfsh": "", //开发商名称
+        "kprq": "", //开盘日期(必选)
+        "lpjb": "", //楼盘级别(必选)
+        "chqxz": "", //产权性质
+        "lppz": "", //楼盘品质 1优 2良 3差
+        "zxjnjg": "", //均价
+        "shyl": "",  //使用率
+        "hshkzbl": "", //户数空置比例
+        "zxptmx": "",  //装修设施配套明细
+        "lpsjgs": "", //楼盘设计公司
+        "lpsjs": "", //楼盘设计师
+        "lpsjfg": "" //楼盘设计风格
+
+      }
     },
-    methods: {},
+    methods: {
+      saveBuildMsg(){
+        var _this = this;
+        this.$http.post(
+          this.$api,
+          {
+            "parameters": {
+              "lpid": this.lpid, //楼盘id
+              "topic": this.topic, //楼盘名称
+              "address": this.address, //地址
+              "tsbq": this.tsbq, //特色标签
+              "kfsh": this.kfsh, //开发商名称
+              "kprq": this.kprq, //开盘日期(必选)
+              "lpjb": this.lpjb, //楼盘级别(必选)
+              "chqxz": this.chqxz, //产权性质
+              "lppz": this.lppz, //楼盘品质 1优 2良 3差
+              "zxjnjg": this.zxjnjg, //均价
+              "shyl": this.shyl,  //使用率
+              "hshkzbl": this.hshkzbl, //户数空置比例
+              "zxptmx": this.zxptmx,  //装修设施配套明细
+              "lpsjgs": this.lpsjgs, //楼盘设计公司
+              "lpsjs": this.lpsjs, //楼盘设计师
+              "lpsjfg": this.lpsjfg //楼盘设计风格
+            },
+            "foreEndType": 2,
+            "code": "300000041"
+          }
+        ).then(function (res) {
+          var result = JSON.parse(res.bodyText);
+          if (result.success) {
+
+          } else {
+            this.$Message.error(res.message);
+          }
+        }, function (res) {
+          this.$Message.error('保存失败');
+        });
+      }
+
+    },
     mounted(){
 
     },

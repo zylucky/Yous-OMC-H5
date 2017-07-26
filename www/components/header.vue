@@ -20,7 +20,7 @@
       <!--左侧登录div-->
       <div class="main-nav-wrapper sidenav">
         <div class="user-box clearfix">
-          <img class="portrait" src="../resources/images/lion_logo2.png" alt="">
+          <img class="portrait" src="../resources/images/user/por_icon.png" alt="">
           <div class="user_name tc mb20">用户名</div>
           <div class="ys_function tc">
             <router-link :to="{path:'/information_insert'}" id="first_list_link">房源列表</router-link>

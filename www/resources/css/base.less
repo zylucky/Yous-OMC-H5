@@ -11,6 +11,28 @@
 }
 
 //左侧侧边栏
+
+.sidenav{
+  background: url("../images/user/left_bar.png") no-repeat;
+  background-size: 100% 100%;
+  color: @cl_white;
+  a{
+    color: @cl_white !important;
+  }
+}
+
+.log_out_btn{
+  display: block;
+  width: 2.8rem;
+  height: .8rem;
+  line-height: .8rem;
+  text-align: center;
+  margin: 3rem auto;
+  background: url("../images/icons/user/login_inp02.png") no-repeat;
+  background-position: 0px -.4rem;
+  background-size: 2.8rem 1.6rem;
+}
+
 .portrait {
   width: 80px;
   height: 80px;
@@ -27,29 +49,6 @@
     margin: 0 .4rem;
     border-bottom: 1px solid @bdc_input;
   }
-}
-
-.log_out_btn {
-  width: 2rem;
-  height: .8rem;
-  line-height: .8rem;
-  display: block;
-  border-radius: .08rem;
-  text-align: center;
-  border: 1px solid @cl_black;
-  position: absolute;
-  left: 50%;
-  bottom: 3rem;
-  margin-left: -1rem;
-  &:hover {
-    background-color: @cl_black;
-    color: @cl_white;
-  }
-  section {
-    position: relative;
-    width: 100%;
-  }
-
 }
 
 .section {
