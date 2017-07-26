@@ -28,8 +28,6 @@ var router = new VueRouter({
       component: require('./routers/information_insert.vue')
     },
 
-
-
     {
       path: '/list',
       component: require('./routers/list.vue'),
