@@ -259,10 +259,22 @@
     }
   }
   .msg_progress_bar{
+    position: relative;
     margin-top: .5rem;
     height:.24rem;
     line-height: .24rem;
     background-color: @bg_btn_gray;
+    .finish_bar{
+      height:100%;
+      width:50%;
+      background-color: @bg_mid_blue;
+    }
+    .progress_text{
+      position: absolute;
+      right:0;
+      top:0;
+
+    }
   }
 
   .close{
