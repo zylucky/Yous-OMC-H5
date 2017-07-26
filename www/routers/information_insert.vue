@@ -1,21 +1,8 @@
 <style scoped lang="less">
-  * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  input {
-    padding: 0;
-    margin: 0;
-    border: 0;
-  }
-
-  input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-    color: #e2e2e2;
-  }
 
   @import "../resources/css/reset.css";
   @import "../resources/css/base.less";
+
   .search-out {
     background-color: #fff;
     border: 1px solid transparent;
@@ -249,7 +236,7 @@
     width: 1.2rem;
     text-align: center;
     margin: 0 auto;
-    i{
+    i {
       width: .65rem;
       height: .55rem;
       display: block;
@@ -258,28 +245,33 @@
       background-size: .65rem .55rem;
     }
   }
-  .msg_progress_bar{
+
+  .msg_progress_bar {
     position: relative;
     margin-top: .5rem;
-    height:.24rem;
+    height: .24rem;
     line-height: .24rem;
     background-color: @bg_btn_gray;
-    .finish_bar{
-      height:100%;
-      width:50%;
+    text-align: center;
+    .finish_bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 50%;
       background-color: @bg_mid_blue;
     }
-    .progress_text{
+    .progress_text {
       position: absolute;
-      right:0;
-      top:0;
+      right: .25rem;
+      top: 0;
 
     }
   }
 
-  .close{
+  .close {
     font-size: @font54;
-    width:.54rem;
+    width: .54rem;
     display: block;
     margin: .1rem auto;
   }
@@ -347,47 +339,49 @@
     <div class="shadow"></div>
     <div class="float-part" id="msg_super_wrap">
       <div class="line-one clearfix">
-        <a href="javascript:;" class="bulid_msg_item">
+        <router-link class="bulid_msg_item" :to="{path:'/build_msg'}">
           <i class="basic_01"></i>
           <span>基本信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/elevator_msg'}">
           <i class="basic_02"></i>
           <span>电梯信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/area_msg'}">
           <i class="basic_03"></i>
           <span>面积信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/households_msg'}">
           <i class="basic_04"></i>
           <span>户数信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/price_msg'}">
           <i class="basic_05"></i>
           <span>价格信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/image_msg'}">
           <i class="basic_06"></i>
           <span>图片信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/rent_msg'}">
           <i class="basic_07"></i>
           <span>租赁部信息</span>
-        </a>
-        <a href="javascript:;" class="bulid_msg_item">
+        </router-link>
+        <router-link class="bulid_msg_item" :to="{path:'/property_msg'}">
           <i class="basic_08"></i>
           <span>物业信息</span>
-        </a>
+        </router-link>
       </div>
       <div class="build_bot_msg">
-        <a href="javascript:;" class="bulid_msg_last">
+        <router-link class="bulid_msg_last" :to="{path:'/house_msg'}">
           <i></i>
           <span>房源信息</span>
-        </a>
+        </router-link>
       </div>
       <div class="msg_progress_bar">
-
+        <div class="finish_bar"></div>
+        <span class="pr">信息完成比例</span>
+        <span class="progress_text">50%</span>
       </div>
       <div class="close">&times;</div>
     </div>
