@@ -181,7 +181,7 @@
   .float-part {
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: -100%;
     width: 100%;
     height: 6.6rem;
     background-color: @cl_white;
@@ -274,6 +274,18 @@
     width: .54rem;
     display: block;
     margin: .1rem auto;
+  }
+
+  //遮罩
+  .shadow {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: @cl_000;
+    opacity: .7;
+    display: none;
   }
 
 
@@ -383,7 +395,7 @@
         <span class="pr">信息完成比例</span>
         <span class="progress_text">50%</span>
       </div>
-      <div class="close">&times;</div>
+      <div class="close" id="close_msg">&times;</div>
     </div>
   </div>
 </template>
@@ -400,6 +412,20 @@
     },
     methods: {},
     mounted(){
+      $('.ys_listcon').click(function () {
+        $('.shadow').show();
+        $('#msg_super_wrap').animate({
+          bottom: 0
+        });
+      });
+
+      $('#close_msg').click(function (e) {
+        e.stopPropagation();
+        $('#msg_super_wrap').animate({
+          bottom: '-100%'
+        });
+        $('.shadow').hide();
+      });
 
     },
   }

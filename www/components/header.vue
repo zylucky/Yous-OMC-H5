@@ -26,7 +26,6 @@
             <router-link :to="{path:'/information_insert'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>
-            <a href="javascript:;">我的关注</a>
           </div>
         </div>
         <a href="javascript:;" class="log_out_btn">退出登录</a>
