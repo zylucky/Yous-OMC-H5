@@ -23,9 +23,10 @@
           <img class="portrait" src="../resources/images/lion_logo2.png" alt="">
           <div class="user_name tc mb20">用户名</div>
           <div class="ys_function tc">
-            <a href="javascript:;">房源列表</a>
+            <router-link :to="{path:'/information_insert'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>
+            <a href="javascript:;">我的关注</a>
           </div>
         </div>
         <a href="javascript:;" class="log_out_btn">退出登录</a>
@@ -107,7 +108,9 @@
     },
     mounted: function () {
       var _this = this;
-
+      $('#first_list_link').click(function(){
+        $("#zhezhao").remove();
+      });
     }
   };
 </script>
