@@ -28,7 +28,7 @@
             </div>
             <div class="fr tr cl_999">
               <span class="db mb20">2017-07-21</span>
-              <a href="javascript:;" class="db ys_sm_btn">接单</a>
+              <a href="javascript:;" class="db ys_sm_btn">结单</a>
             </div>
           </li>
         </ul>

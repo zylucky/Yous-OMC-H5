@@ -11,3 +11,4 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+www/resources/images/icons/add_enter.png
