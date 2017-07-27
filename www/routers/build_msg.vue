@@ -11,7 +11,6 @@
   }
 
 
-
 </style>
 <template>
   <div class="all_elements">
@@ -30,9 +29,9 @@
           <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">请选择标签</a></div>
         </li>
         <li class="clearfix bg_gray">
-          <div class="ys_item_con fl">
-            <span class="ys_tag">地铁附近</span>
-            <span class="ys_tag">地铁附近</span>
+          <div class="ys_item_con fl" @click="selectTag($event)">
+            <span class="ys_tag">地铁附近1</span>
+            <span class="ys_tag">地铁附近2</span>
           </div>
         </li>
         <li class="clearfix">
@@ -48,15 +47,15 @@
                    readonly
                    placeholder="请选择日期"
                    v-model="kprq"
-                   @click="openPicker($event)">
-            <i class="calendar_icon"></i>
+                   @click="openPicker()">
+            <i class="calendar_icon" @click="openPicker()"></i>
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit">楼盘级别：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" v-model="pickerLevel" readonly placeholder="请选择" @click="openLevel">
-            <i class="right_arrow">&gt;</i>
+            <i class="right_arrow" @click="openLevel">&gt;</i>
           </div>
         </li>
         <li class="clearfix">
@@ -163,16 +162,17 @@
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
+      :startDate="startDate"
       @confirm="handleConfirm">
     </mt-datetime-picker>
 
     <!--楼盘级别-->
     <mt-popup v-model="popupVisible" position="bottom" class="mint-popup-4">
       <div class="picker-toolbar">
-        <span class="mint-datetime-action mint-datetime-cancel">取消</span>
-        <span class="mint-datetime-action mint-datetime-confirm" @click="selectaddress">确定</span>
+        <span class="mint-datetime-action mint-datetime-cancel" @click="cancelLevel">取消</span>
+        <span class="mint-datetime-action mint-datetime-confirm" @click="sureLevel">确定</span>
       </div>
-      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+      <mt-picker :slots="slots" @change="selectLevel"></mt-picker>
     </mt-popup>
 
 
@@ -215,12 +215,13 @@
 
         //日期
         pickerValue: '',
+        startDate: new Date(),
 
         //楼盘级别
         pickerLevel: '',
         slots: [
           {
-            values: ['level1','level2','level3'],
+            values: ['level1', 'level2', 'level3'],
             flex: 1
           }
         ],
@@ -247,14 +248,18 @@
         this.popupVisible = true;
       },
 
-      onValuesChange(picker, values) {
-        this.pickerLevel=values[0];
+      selectLevel(picker, values) {
+        this.pickerLevel = values[0];
       },
 
       //类型确定
-      selectaddress(picker,values){
+      sureLevel(picker, values){
         this.popupVisible = false;
-        console.log(this.pickerLevel)
+      },
+
+      //类型取消
+      cancelLevel(picker, values){
+        this.popupVisible = false;
       },
 
       //日期转换
@@ -265,7 +270,6 @@
         var day = date.getDate();
         str = year + '-' + this.addZero(month) + '-' + this.addZero(day);
         return str;
-
       },
 
       //补零
@@ -273,48 +277,61 @@
         return n = n < 10 ? '0' + n : '' + n;
       },
 
-
-      saveBuildMsg(){
-        var _this = this;
-        this.$http.post(
-          this.$api,
-          {
-            "parameters": {
-              "lpid": this.lpid, //楼盘id
-              "topic": this.topic, //楼盘名称
-              "address": this.address, //地址
-              "tsbq": this.tsbq, //特色标签
-              "kfsh": this.kfsh, //开发商名称
-              "kprq": this.kprq, //开盘日期(必选)
-              "lpjb": this.lpjb, //楼盘级别(必选)
-              "chqxz": this.chqxz, //产权性质
-              "lppz": this.lppz, //楼盘品质 1优 2良 3差
-              "zxjnjg": this.zxjnjg, //均价
-              "shyl": this.shyl,  //使用率
-              "hshkzbl": this.hshkzbl, //户数空置比例
-              "zxptmx": this.zxptmx,  //装修设施配套明细
-              "lpsjgs": this.lpsjgs, //楼盘设计公司
-              "lpsjs": this.lpsjs, //楼盘设计师
-              "lpsjfg": this.lpsjfg //楼盘设计风格
-            },
-            "foreEndType": 2,
-            "code": "300000041"
-          }
-        ).then(function (res) {
-          var result = JSON.parse(res.bodyText);
-          if (result.success) {
-
-          } else {
-            this.$Message.error(res.message);
-          }
-        }, function (res) {
-          this.$Message.error('保存失败');
-        });
-      }
+      //选择tag
+      selectTag(e){
+        if ($(e.target).hasClass('active')) {
+          $(e.target).removeClass('active');
+        } else {
+          $(e.target).addClass('active');
+        }
 
     },
-    mounted(){
 
-    },
+
+    saveBuildMsg(){
+      var _this = this;
+      this.$http.post(
+        this.$api,
+        {
+          "parameters": {
+            "lpid": this.lpid, //楼盘id
+            "topic": this.topic, //楼盘名称
+            "address": this.address, //地址
+            "tsbq": this.tsbq, //特色标签
+            "kfsh": this.kfsh, //开发商名称
+            "kprq": this.kprq, //开盘日期(必选)
+            "lpjb": this.lpjb, //楼盘级别(必选)
+            "chqxz": this.chqxz, //产权性质
+            "lppz": this.lppz, //楼盘品质 1优 2良 3差
+            "zxjnjg": this.zxjnjg, //均价
+            "shyl": this.shyl,  //使用率
+            "hshkzbl": this.hshkzbl, //户数空置比例
+            "zxptmx": this.zxptmx,  //装修设施配套明细
+            "lpsjgs": this.lpsjgs, //楼盘设计公司
+            "lpsjs": this.lpsjs, //楼盘设计师
+            "lpsjfg": this.lpsjfg //楼盘设计风格
+          },
+          "foreEndType": 2,
+          "code": "300000041"
+        }
+      ).then(function (res) {
+        var result = JSON.parse(res.bodyText);
+        if (result.success) {
+
+        } else {
+          this.$Message.error(res.message);
+        }
+      }, function (res) {
+        this.$Message.error('保存失败');
+      });
+    }
+
+  }
+  ,
+  mounted()
+  {
+
+  }
+  ,
   }
 </script>

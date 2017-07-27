@@ -94,6 +94,10 @@
   margin-right: .08rem;
   border-radius: .1rem;
 }
+.ys_tag.active {
+  background-color: #16abdc;
+  color: #fff;
+}
 .calendar_icon {
   width: .4rem;
   height: .4rem;
