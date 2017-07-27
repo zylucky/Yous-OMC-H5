@@ -21,7 +21,7 @@
         </li>
         <li class="clearfix">
           <span class="ys_tit">楼盘地址：</span>
-          <div class="ys_item_con fl" v-text="address"></div>
+          <div class="ys_item_con ellip fl" v-text="address"></div>
         </li>
         <li class="clearfix">
           <span class="ys_tit">特色标签：</span>
@@ -42,14 +42,18 @@
         <li class="clearfix pr">
           <span class="ys_tit">开盘日期：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请选择日期">
+            <input type="text" value=""
+                   readonly
+                   placeholder="请选择日期"
+                   v-model="kprq"
+                   @click="openPicker($event)">
             <i class="calendar_icon"></i>
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit">楼盘级别：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请选择">
+            <input type="text" value="" readonly placeholder="请选择">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
@@ -148,14 +152,36 @@
       </ul>
       <a href="javascript:;" class="ys_default_btn mb80" @click="saveBuildMsg">保存</a>
     </div>
+
+
+    <!--<mt-datetime-picker-->
+    <!--ref="picker"-->
+    <!--type="date"-->
+    <!--v-model="pickerValue">-->
+    <!--</mt-datetime-picker>-->
+
+    <mt-datetime-picker
+      ref="picker"
+      v-model="pickerValue"
+      type="date"
+      year-format="{value} 年"
+      month-format="{value} 月"
+      date-format="{value} 日"
+      @confirm="handleConfirm">
+    </mt-datetime-picker>
+
   </div>
 </template>
 <script>
   import {Indicator} from 'mint-ui';
   import {InfiniteScroll} from 'mint-ui';
+
+  import {DatetimePicker} from 'mint-ui';  //日期选择
+
   export default {
     components: {
-      InfiniteScroll
+      InfiniteScroll,
+      DatetimePicker
     },
 
     data () {
@@ -175,11 +201,41 @@
         "zxptmx": "",  //装修设施配套明细
         "lpsjgs": "", //楼盘设计公司
         "lpsjs": "", //楼盘设计师
-        "lpsjfg": "" //楼盘设计风格
+        "lpsjfg": "", //楼盘设计风格
+
+
+        //日期
+        pickerValue: ''
 
       }
     },
     methods: {
+
+      //日期panel展示
+      openPicker(picker, values) {
+        this.$refs.picker.open();
+      },
+
+      //日期确定
+      handleConfirm(value){
+        this.kprq = this.transformDate(value);
+      },
+
+      //日期转换
+      transformDate: function (date) {
+        var str = '';
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        str = year + '-' + this.addZero(month) + '-' + this.addZero(day);
+        return str;
+
+      },
+
+      addZero(n){
+        return n = n < 10 ? '0' + n : ''+n;
+      },
+
       saveBuildMsg(){
         var _this = this;
         this.$http.post(

@@ -81,7 +81,7 @@
 .ys_item_ul li .ys_tit {
   float: left;
   width: 1.7rem;
-  height: .72rem;
+  min-height: .72rem;
   margin-right: .1rem;
 }
 .ys_tag {
@@ -128,7 +128,7 @@
 }
 .check_wrap {
   float: left;
-  margin-right: .5rem;
+  margin-right: .2rem;
 }
 .check_wrap input[type="checkbox"] {
   float: left;
@@ -143,9 +143,10 @@
   width: 2.24rem !important;
 }
 .ys_tit_sm {
-  width: 60px;
+  width: 1.3rem;
+  display: block;
+  margin-bottom: .2rem;
   line-height: normal;
-  display: inline-block;
 }
 .ys_default_btn {
   display: block;
@@ -225,6 +226,11 @@
 }
 .ys_item_con {
   width: 4.7rem;
+}
+.ys_item_con.ellip {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ys_item_con input {
   width: 100%;
@@ -508,8 +514,17 @@ textarea::-webkit-input-placeholder {
   background-size: .76rem .76rem;
   margin: 3rem auto 0;
 }
+.calendar_icon {
+  width: .3rem;
+  height: .29rem;
+  background: url("../images/icons/calendar_icon.png") no-repeat;
+  background-size: .3rem .29rem;
+}
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {
+    width: 1.6rem !important;
+  }
+  .ys_item_ul li .ys_tit.w224 {
     width: 2.3rem !important;
   }
   .ys_item_ul li .ys_item_con {
