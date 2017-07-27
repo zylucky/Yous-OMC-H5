@@ -37,7 +37,7 @@
         <li class="clearfix">
           <span class="ys_tit">开发商：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-text="kfsh" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
@@ -98,56 +98,52 @@
         <li class="clearfix pr">
           <span class="ys_tit">楼盘品质：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请选择">
+            <input type="text" value="" v-model="lppz" placeholder="请选择" @click="openQuality">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit">楼盘均价：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-model="zxjnjg" placeholder="请输入">
             <i class="right_unit">元/m³/天</i>
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit">使用率：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请选择">
+            <input type="text" value="" v-model="shyl" placeholder="请选择" @click="openUse">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit">空置比例：</span>
-          <div class="cl_999">自动生成</div>
+          <div class="cl_999" v-text="hshkzbl">自动生成</div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit pt10">
             <i class="ys_tit_sm">装修配套设施明细</i>
           </span>
           <div class="ys_item_con fl pt10">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-model="zxptmx" placeholder="请输入">
           </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">空置比例：</span>
-          <div class="cl_999">自动生成</div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit w224">楼盘设计公司：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-model="lpsjgs" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit w224">楼盘设计师：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-model="lpsjs" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit w224">楼盘设计师风格：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-model="lpsjfg" placeholder="请输入">
           </div>
         </li>
       </ul>
@@ -169,18 +165,43 @@
     <!--楼盘级别-->
     <mt-popup v-model="popupVisible" position="bottom" class="mint-popup-4">
       <div class="picker-toolbar">
-        <span class="mint-datetime-action mint-datetime-cancel" @click="cancelLevel">取消</span>
+        <span class="mint-datetime-action mint-datetime-cancel" @click="sureLevel">取消</span>
         <span class="mint-datetime-action mint-datetime-confirm" @click="sureLevel">确定</span>
       </div>
       <mt-picker :slots="slots" @change="selectLevel"></mt-picker>
+    </mt-popup>
+
+    <!--楼盘品质-->
+    <mt-popup v-model="popQuality" position="bottom" class="mint-popup-4">
+      <div class="picker-toolbar">
+        <span class="mint-datetime-action mint-datetime-cancel" @click="sureQuality">取消</span>
+        <span class="mint-datetime-action mint-datetime-confirm" @click="sureQuality">确定</span>
+      </div>
+      <mt-picker :slots="slots_quality" @change="selectQuality"></mt-picker>
+    </mt-popup>
+
+
+    <!--使用率-->
+    <mt-popup v-model="popUse" position="bottom" class="mint-popup-4">
+      <div class="picker-toolbar">
+        <span class="mint-datetime-action mint-datetime-cancel" @click="sureUse">取消</span>
+        <span class="mint-datetime-action mint-datetime-confirm" @click="sureUse">确定</span>
+      </div>
+      <mt-picker :slots="slots_use" @change="selectUse"></mt-picker>
     </mt-popup>
 
 
   </div>
 </template>
 <script>
-  import {Indicator} from 'mint-ui';
-  import {InfiniteScroll} from 'mint-ui';
+
+  var lang = {
+    '优': 1,
+    '良': 2,
+    '差': 3,
+  };
+
+  import { Toast } from 'mint-ui';
 
   import {DatetimePicker} from 'mint-ui';  //日期选择
 
@@ -188,7 +209,6 @@
 
   export default {
     components: {
-      InfiniteScroll,
       DatetimePicker,
       Popup
     },
@@ -222,12 +242,31 @@
         slots: [
           {
             values: ['level1', 'level2', 'level3'],
-            flex: 1
           }
         ],
 
-        //弹窗显示隐藏
+        //品质
+        slots_quality: [
+          {
+            values: ["优", "良", "差"],  //1优 2良 3差
+          }
+        ],
+
+        //使用率
+        slots_use: [
+          {
+            values: ["一般", "经常", "非常"],  //1优 2良 3差
+          }
+        ],
+
+        //级别弹窗显示隐藏
         popupVisible: false,
+
+        //品质弹窗隐藏
+        popQuality: false,
+
+        //使用率隐藏
+        popUse: false
 
       }
     },
@@ -248,18 +287,46 @@
         this.popupVisible = true;
       },
 
+      //选择类型
       selectLevel(picker, values) {
         this.pickerLevel = values[0];
       },
 
       //类型确定
-      sureLevel(picker, values){
+      sureLevel(){
         this.popupVisible = false;
       },
 
-      //类型取消
-      cancelLevel(picker, values){
-        this.popupVisible = false;
+
+      //打开品质
+      openQuality(){
+        this.popQuality = true;
+      },
+
+      //选择品质
+      selectQuality(picker, values){
+        this.lppz = values[0];
+      },
+
+      //品质确定
+      sureQuality(){
+        this.popQuality = false;
+      },
+
+
+      //打开品质
+      openUse(){
+        this.popUse = true;
+      },
+
+      //选择品质
+      selectUse(picker, values){
+        this.shyl = values[0];
+      },
+
+      //品质确定
+      sureUse(){
+        this.popUse = false;
       },
 
       //日期转换
@@ -285,53 +352,59 @@
           $(e.target).addClass('active');
         }
 
+      },
+
+
+      saveBuildMsg(){
+        var _this = this;
+        Toast({
+          message: '保存成功'
+        });
+
+        setTimeout(function(){
+            _this.$router.push({path:'/information_insert'})
+        },1000)
+
+        this.$http.post(
+          this.$api,
+          {
+            "parameters": {
+              "lpid": this.lpid, //楼盘id
+              "topic": this.topic, //楼盘名称
+              "address": this.address, //地址
+              "tsbq": this.tsbq, //特色标签
+              "kfsh": this.kfsh, //开发商名称
+              "kprq": this.kprq, //开盘日期(必选)
+              "lpjb": this.pickerLevel, //楼盘级别(必选)
+              "chqxz": this.chqxz, //产权性质
+              "lppz": lang[this.lppz], //楼盘品质 1优 2良 3差
+              "zxjnjg": this.zxjnjg, //均价
+              "shyl": this.shyl,  //使用率
+              "hshkzbl": this.hshkzbl, //户数空置比例
+              "zxptmx": this.zxptmx,  //装修设施配套明细
+              "lpsjgs": this.lpsjgs, //楼盘设计公司
+              "lpsjs": this.lpsjs, //楼盘设计师
+              "lpsjfg": this.lpsjfg //楼盘设计风格
+            },
+            "foreEndType": 2,
+            "code": "300000041"
+          }
+        ).then(function (res) {
+
+          var result = JSON.parse(res.bodyText);
+          if (result.success) {
+
+          } else {
+            this.$Message.error(res.message);
+          }
+        }, function (res) {
+          this.$Message.error('保存失败');
+        });
+      }
+
     },
+    mounted(){
 
-
-    saveBuildMsg(){
-      var _this = this;
-      this.$http.post(
-        this.$api,
-        {
-          "parameters": {
-            "lpid": this.lpid, //楼盘id
-            "topic": this.topic, //楼盘名称
-            "address": this.address, //地址
-            "tsbq": this.tsbq, //特色标签
-            "kfsh": this.kfsh, //开发商名称
-            "kprq": this.kprq, //开盘日期(必选)
-            "lpjb": this.lpjb, //楼盘级别(必选)
-            "chqxz": this.chqxz, //产权性质
-            "lppz": this.lppz, //楼盘品质 1优 2良 3差
-            "zxjnjg": this.zxjnjg, //均价
-            "shyl": this.shyl,  //使用率
-            "hshkzbl": this.hshkzbl, //户数空置比例
-            "zxptmx": this.zxptmx,  //装修设施配套明细
-            "lpsjgs": this.lpsjgs, //楼盘设计公司
-            "lpsjs": this.lpsjs, //楼盘设计师
-            "lpsjfg": this.lpsjfg //楼盘设计风格
-          },
-          "foreEndType": 2,
-          "code": "300000041"
-        }
-      ).then(function (res) {
-        var result = JSON.parse(res.bodyText);
-        if (result.success) {
-
-        } else {
-          this.$Message.error(res.message);
-        }
-      }, function (res) {
-        this.$Message.error('保存失败');
-      });
-    }
-
-  }
-  ,
-  mounted()
-  {
-
-  }
-  ,
+    },
   }
 </script>

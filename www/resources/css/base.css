@@ -39,10 +39,10 @@
   background-size: 2.8rem 1.6rem;
 }
 .portrait {
-  width: 80px;
-  height: 80px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: block;
-  margin: 20px auto;
+  margin: 1.6rem auto .6rem;
   border-radius: 50%;
   background-color: #302f35;
 }
@@ -50,7 +50,6 @@
   display: block;
   padding: .3rem 0;
   margin: 0 .4rem;
-  border-bottom: 1px solid #e4e4e4;
 }
 .section {
   position: relative;
