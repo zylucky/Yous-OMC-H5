@@ -520,6 +520,9 @@ textarea::-webkit-input-placeholder {
   background: url("../images/icons/calendar_icon.png") no-repeat;
   background-size: .3rem .29rem;
 }
+.mint-popup {
+  width: 100%;
+}
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {
     width: 1.6rem !important;

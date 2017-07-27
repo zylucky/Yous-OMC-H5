@@ -10,6 +10,8 @@
     }
   }
 
+
+
 </style>
 <template>
   <div class="all_elements">
@@ -53,7 +55,7 @@
         <li class="clearfix pr">
           <span class="ys_tit">楼盘级别：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" readonly placeholder="请选择">
+            <input type="text" value="" v-model="pickerLevel" readonly placeholder="请选择" @click="openLevel">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
@@ -153,13 +155,7 @@
       <a href="javascript:;" class="ys_default_btn mb80" @click="saveBuildMsg">保存</a>
     </div>
 
-
-    <!--<mt-datetime-picker-->
-    <!--ref="picker"-->
-    <!--type="date"-->
-    <!--v-model="pickerValue">-->
-    <!--</mt-datetime-picker>-->
-
+    <!--日期选择-->
     <mt-datetime-picker
       ref="picker"
       v-model="pickerValue"
@@ -170,6 +166,16 @@
       @confirm="handleConfirm">
     </mt-datetime-picker>
 
+    <!--楼盘级别-->
+    <mt-popup v-model="popupVisible" position="bottom" class="mint-popup-4">
+      <div class="picker-toolbar">
+        <span class="mint-datetime-action mint-datetime-cancel">取消</span>
+        <span class="mint-datetime-action mint-datetime-confirm" @click="selectaddress">确定</span>
+      </div>
+      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+    </mt-popup>
+
+
   </div>
 </template>
 <script>
@@ -178,10 +184,13 @@
 
   import {DatetimePicker} from 'mint-ui';  //日期选择
 
+  import {Popup} from 'mint-ui'; //弹窗
+
   export default {
     components: {
       InfiniteScroll,
-      DatetimePicker
+      DatetimePicker,
+      Popup
     },
 
     data () {
@@ -205,20 +214,47 @@
 
 
         //日期
-        pickerValue: ''
+        pickerValue: '',
+
+        //楼盘级别
+        pickerLevel: '',
+        slots: [
+          {
+            values: ['level1','level2','level3'],
+            flex: 1
+          }
+        ],
+
+        //弹窗显示隐藏
+        popupVisible: false,
 
       }
     },
     methods: {
 
       //日期panel展示
-      openPicker(picker, values) {
+      openPicker() {
         this.$refs.picker.open();
       },
 
       //日期确定
       handleConfirm(value){
         this.kprq = this.transformDate(value);
+      },
+
+      //楼盘类型panel展示
+      openLevel() {
+        this.popupVisible = true;
+      },
+
+      onValuesChange(picker, values) {
+        this.pickerLevel=values[0];
+      },
+
+      //类型确定
+      selectaddress(picker,values){
+        this.popupVisible = false;
+        console.log(this.pickerLevel)
       },
 
       //日期转换
@@ -232,9 +268,11 @@
 
       },
 
+      //补零
       addZero(n){
-        return n = n < 10 ? '0' + n : ''+n;
+        return n = n < 10 ? '0' + n : '' + n;
       },
+
 
       saveBuildMsg(){
         var _this = this;
