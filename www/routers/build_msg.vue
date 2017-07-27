@@ -54,7 +54,7 @@
         <li class="clearfix pr">
           <span class="ys_tit">楼盘级别：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="pickerLevel" readonly placeholder="请选择" @click="openLevel">
+            <input type="text" value="" v-model="lpjb" readonly placeholder="请选择" @click="openLevel">
             <i class="right_arrow" @click="openLevel">&gt;</i>
           </div>
         </li>
@@ -201,7 +201,9 @@
     '差': 3,
   };
 
-  import { Toast } from 'mint-ui';
+  import { Toast } from 'mint-ui'; //toast
+
+  import { MessageBox } from 'mint-ui'; //弹窗
 
   import {DatetimePicker} from 'mint-ui';  //日期选择
 
@@ -238,10 +240,10 @@
         startDate: new Date(),
 
         //楼盘级别
-        pickerLevel: '',
+        lpjb: '',
         slots: [
           {
-            values: ['level1', 'level2', 'level3'],
+            values: ['','level1', 'level2', 'level3'],
           }
         ],
 
@@ -289,7 +291,7 @@
 
       //选择类型
       selectLevel(picker, values) {
-        this.pickerLevel = values[0];
+        this.lpjb = values[0];
       },
 
       //类型确定
@@ -357,13 +359,25 @@
 
       saveBuildMsg(){
         var _this = this;
+
+        if(this.kprq == ''){
+          MessageBox('提示', '请选择开盘日期');
+            return;
+        }
+
+        if(this.lpjb == ''){
+          MessageBox('提示', '请选择楼盘级别');
+          return;
+        }
+
+
         Toast({
           message: '保存成功'
         });
 
         setTimeout(function(){
             _this.$router.push({path:'/information_insert'})
-        },1000)
+        },1000);
 
         this.$http.post(
           this.$api,
@@ -375,7 +389,7 @@
               "tsbq": this.tsbq, //特色标签
               "kfsh": this.kfsh, //开发商名称
               "kprq": this.kprq, //开盘日期(必选)
-              "lpjb": this.pickerLevel, //楼盘级别(必选)
+              "lpjb": this.lpjb, //楼盘级别(必选)
               "chqxz": this.chqxz, //产权性质
               "lppz": lang[this.lppz], //楼盘品质 1优 2良 3差
               "zxjnjg": this.zxjnjg, //均价
