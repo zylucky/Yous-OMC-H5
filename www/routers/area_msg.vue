@@ -2,14 +2,6 @@
   @import "../resources/css/reset.css";
   @import "../resources/css/base.less";
 
-  .page-infinite-loading {
-    text-align: center;
-    background-color: #FFF;
-    & > span {
-      display: inline-block;
-    }
-  }
-
 </style>
 <template>
   <div class="all_elements">
@@ -51,11 +43,9 @@
   </div>
 </template>
 <script>
-  import {Indicator} from 'mint-ui';
-  import {InfiniteScroll} from 'mint-ui';
   export default {
     components: {
-      InfiniteScroll
+
     },
 
     data () {
