@@ -24,7 +24,6 @@
             <div class="inp_bg"></div>
             <i class="ys_icon user"></i>
             <input type="text" id="userName"
-                   @focus="focus"
                    class="mt5rem" value=""
                    v-model="username" placeholder="请输入用户名">
           </div>
@@ -72,7 +71,7 @@
             });
             setTimeout(function () {
               _this.$router.push({path: '/list'});
-            }, 1500);
+            }, 1000);
           }, 1000);
 
         } else if (this.username == '' || this.password == '') {
@@ -80,14 +79,6 @@
         } else {
           MessageBox('提示', '用户名或密码错误，请重新输入！');
         }
-      },
-
-      focus(){
-        var _this = this;
-        setTimeout(function () {
-          let pannel = _this.$refs.userName;
-          pannel.scrollIntoView(true);
-        }, 200);
       }
     },
     mounted(){

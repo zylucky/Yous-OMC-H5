@@ -363,7 +363,8 @@
 
 
         Toast({
-          message: '保存成功'
+          message: '保存成功',
+          position: 'bottom'
         });
 
         setTimeout(function(){
