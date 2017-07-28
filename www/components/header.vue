@@ -38,7 +38,7 @@
             <a href="javascript:;">待办任务</a>
           </div>
         </div>
-        <router-link :to="{path:'/login'}" class="log_out_btn">退出登录</router-link>
+        <a href="javascript:;" class="log_out_btn" @click="login_out">退出登录</a>
       </div>
     </mt-popup>
   </div>
@@ -54,7 +54,7 @@
     },
     methods: {
 
-      showMenu: function () {
+      showMenu() {
         this.popupVisible = true;
         var wwd = $("#section").width();
         if (!wwd) {
@@ -118,6 +118,11 @@
           left: "75%"
         }, 150);
 
+      },
+
+      login_out(){
+        $("#zhezhao").remove();
+          this.$router.push({path:'/login'});
       }
 
     },
