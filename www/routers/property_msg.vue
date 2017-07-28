@@ -54,16 +54,19 @@
         border-bottom:1px solid #dbdadf;
       }
       #wname{
-        width: 2.98rem;
+        width: 2.88rem;
       }
       #wname2, #wname3{
-      width: 2.6rem;
+      width: 2.58rem;
     }
       #waddress{
-        width: 4.01rem;
+        width: 3.9rem;
       }
       #wtel{
-        width: 3.5rem;
+        width: 3.4rem;
+      }
+      #wtel2, #wtel3{
+        width: 3.4rem;
       }
 
     }
