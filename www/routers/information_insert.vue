@@ -188,6 +188,7 @@
     width: 100%;
     height: 6.6rem;
     background-color: @cl_white;
+    z-index: 1000;
     .bulid_msg_item {
       float: left;
       width: 25%;

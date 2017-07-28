@@ -18,6 +18,7 @@
     bottom: -100%;
     width: 100%;
     height: 6.6rem;
+    z-index: 1000;
     background-color: @cl_white;
     .bulid_msg_item {
       float: left;
@@ -670,7 +671,6 @@
       },
 
       shadowShow(){
-          alert(1);
         $('.shadow').show();
         $('#msg_super_wrap').animate({
           bottom: 0
