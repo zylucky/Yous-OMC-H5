@@ -15,13 +15,16 @@
       background-color: #fff;
       .p-u {
         width: 1.06rem;
-        position: relative;
+        position: absolute;
+        left: 0rem;
+        top: .45rem;
       }
       .input-out {
         -moz-box-flex: 1;
         -webkit-box-flex: 1;
         box-flex: 1;
         margin-right: .34rem;
+        margin-left: .9rem;
         height: .60rem;
         padding-left: .62rem;
         display: -webkit-flex;
