@@ -36,6 +36,13 @@ var router = new VueRouter({
       ]
     },
     {
+      path: '/list2',
+      component: require('./routers/list2.vue'),
+      children: [
+        {path: "/list/search", component: search}
+      ]
+    },
+    {
       path: '/detail',
       component: require('./routers/detail.vue')
     },

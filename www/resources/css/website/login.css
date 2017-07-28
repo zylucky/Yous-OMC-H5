@@ -31,17 +31,17 @@
 }
 .login_wrap .inp_item {
   width: 100%;
-  height: 1.2rem;
+  height: 1.4rem;
   position: relative;
 }
 .login_wrap .inp_item .inp_bg {
   position: absolute;
   left: 0;
-  top: 0;
+  top: .15rem;
   width: 100%;
-  height: 100%;
+  height: 1.5rem;
   background: url("../../images/icons/user/login_inp01.png") no-repeat left center;
-  background-size: 5.4rem 2.4rem;
+  background-size: 5.4rem 2.2rem;
 }
 .login_wrap .inp_item.login {
   background: url("../../images/icons/user/login_inp02.png") no-repeat left center;
@@ -52,7 +52,7 @@
   height: .34rem;
   position: absolute;
   left: .9rem;
-  top: .45rem;
+  top: .75rem;
 }
 .login_wrap .inp_item .ys_icon.user {
   background: url("../../images/icons/user/user_icon.png") no-repeat;
@@ -63,10 +63,9 @@
   background-size: .3rem .3rem;
 }
 .login_wrap .inp_item input {
-  height: .9rem;
+  height: .8rem;
   line-height: .8rem;
   padding-left: 1.45rem;
-  margin-top: .1rem;
   color: #fff;
   font-size: 0.3rem;
   position: relative;

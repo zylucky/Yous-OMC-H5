@@ -89,7 +89,7 @@
         <li class="clearfix pr">
           <span class="ys_tit">楼盘品质：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lppz" placeholder="请选择" @click="openQuality">
+            <input type="text" value="" v-model="lppz" readonly placeholder="请选择" @click="openQuality">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
@@ -103,7 +103,7 @@
         <li class="clearfix pr">
           <span class="ys_tit">使用率：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="shyl" placeholder="请选择" @click="openUse">
+            <input type="text" value="" v-model="shyl" readonly placeholder="请选择" @click="openUse">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
@@ -367,7 +367,7 @@
         });
 
         setTimeout(function(){
-            _this.$router.push({path:'/information_insert'})
+            _this.$router.push({path:'/list2'});
         },1000);
 
         this.$http.post(

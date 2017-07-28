@@ -188,6 +188,7 @@
     width: 100%;
     height: 6.6rem;
     background-color: @cl_white;
+    z-index: 1000;
     .bulid_msg_item {
       float: left;
       width: 25%;
@@ -403,11 +404,8 @@
   </div>
 </template>
 <script>
-  import {Indicator} from 'mint-ui';
-  import {InfiniteScroll} from 'mint-ui';
   export default {
     components: {
-      InfiniteScroll
     },
 
     data () {

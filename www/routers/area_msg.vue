@@ -82,7 +82,7 @@
         });
 
         setTimeout(function () {
-          _this.$router.push({path: '/information_insert'})
+          _this.$router.push({path:'/list2'});
         }, 1500);
 
         this.$http.post(

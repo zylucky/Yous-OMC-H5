@@ -33,12 +33,12 @@
           <img class="portrait" src="../resources/images/user/por_icon.png" alt="">
           <div class="user_name tc mb20">用户名</div>
           <div class="ys_function tc">
-            <router-link :to="{path:'/information_insert'}" id="first_list_link">房源列表</router-link>
+            <router-link :to="{path:'/list2'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>
           </div>
         </div>
-        <router-link :to="{path:'/login'}" class="log_out_btn">退出登录</router-link>
+        <a href="javascript:;" class="log_out_btn" @click="login_out">退出登录</a>
       </div>
     </mt-popup>
   </div>
@@ -54,7 +54,7 @@
     },
     methods: {
 
-      showMenu: function () {
+      showMenu() {
         this.popupVisible = true;
         var wwd = $("#section").width();
         if (!wwd) {
@@ -118,6 +118,11 @@
           left: "75%"
         }, 150);
 
+      },
+
+      login_out(){
+        $("#zhezhao").remove();
+          this.$router.push({path:'/login'});
       }
 
     },
