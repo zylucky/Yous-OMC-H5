@@ -120,6 +120,7 @@
     height: 100%;
     background-color: @cl_000;
     opacity: .7;
+    z-index: 999;
     display: none;
   }
 
