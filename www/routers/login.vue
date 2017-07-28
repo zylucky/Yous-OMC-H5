@@ -19,15 +19,15 @@
           <div class="inp_item">
             <div class="inp_bg"></div>
             <i class="ys_icon user"></i>
-            <input type="text" value="" v-model="username" placeholder="请输入用户名">
+            <input type="text" style="margin-top: .5rem;" value="" v-model="username" placeholder="请输入用户名">
           </div>
           <div class="inp_item">
             <div class="inp_bg"></div>
             <i class="ys_icon pass"></i>
-            <input type="text" value="" v-model="password" placeholder="请输入密码">
+            <input type="text" value="" style="margin-top: .5rem;" v-model="password" placeholder="请输入密码">
           </div>
           <div class="inp_item login">
-            <a href="javascript:;" class="ys_btn" @click="login">登 录</a>
+            <a href="javascript:;" style="line-height: 1.4rem;margin-top: .14rem" class="ys_btn" @click="login">登 录</a>
           </div>
         </div>
       </div>
