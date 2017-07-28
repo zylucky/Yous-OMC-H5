@@ -26,7 +26,6 @@
       margin-right: .2rem;
     }
   }
-
 </style>
 <template>
   <div class="all_elements">
@@ -41,16 +40,17 @@
           <i class="delete_icon" @click='delete_img(index)'></i>
         </div>
       </div>
-
       <a href="javascript:;" class="ys_default_btn mb80" @click.stop.prevent="saveToserver">保存</a>
     </div>
   </div>
 </template>
 <script>
   import {Toast} from 'mint-ui';
+  import { MessageBox } from 'mint-ui'; //弹窗
   export default {
     components: {
-      Toast
+      Toast,
+      MessageBox
     },
     data:function(){
       return{
@@ -64,7 +64,10 @@
       add_img(event){
         var reader =new FileReader();
         var img1=event.target.files[0];
-
+        if (!/\/(?:jpeg|jpg|png)/i.test(img1.type)){
+          MessageBox('提示', '请选择图片文件!');
+          return
+        }
         reader.readAsDataURL(img1);
         var that=this;
         reader.onloadend=function(){
@@ -80,9 +83,9 @@
           fd.append(i,files[i]);
         }
         this.$http.post(
-          'http://XXX.com',
-          fd,
-          {
+           this.$api,
+          {images:fd},
+           {
             'headers': {
               'Content-Type': 'image/jpeg;image/x-png'
             }
@@ -101,10 +104,6 @@
         });
       }
     }
-
-
   }
-
-
 
 </script>
