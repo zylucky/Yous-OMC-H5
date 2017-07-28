@@ -2,6 +2,16 @@
   @import "../resources/css/reset.less";
   @import "../resources/css/color.less";
   @import "../resources/css/base.less";
+
+  [header]{
+    .mint-popup{
+      width:100%;
+      position: fixed;
+      left:0;
+      top:0;
+    }
+  }
+
 </style>
 <template>
   <div header>
@@ -62,6 +72,7 @@
           top: "0px",
           left: "0px"
         });
+
         $(".sidenav").css("left", "-100%");
         $(".sidenav").show();
         $("#zhezhao").animate({
@@ -70,6 +81,11 @@
         $("#zhezhao").animate({
           backgroundColor: "#000000"
         }, 150);
+
+        $(".sidenav").css({
+          height:$(window).height()
+        });
+
         $(".sidenav").animate({
           left: "0"
         }, 150, function () {

@@ -13,7 +13,7 @@
 .main-nav-wrapper {
   position: fixed;
   left: -100%;
-  width: 75%;
+  width: 78%;
   height: 100%;
   top: 0;
   display: none;
@@ -33,16 +33,16 @@
   height: .8rem;
   line-height: .8rem;
   text-align: center;
-  margin: 3rem auto;
+  margin: 1.5em auto;
   background: url("../images/icons/user/login_inp02.png") no-repeat;
   background-position: 0px -0.4rem;
   background-size: 2.8rem 1.6rem;
 }
 .portrait {
-  width: 80px;
-  height: 80px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: block;
-  margin: 20px auto;
+  margin: 1.6rem auto .6rem;
   border-radius: 50%;
   background-color: #302f35;
 }
@@ -50,7 +50,6 @@
   display: block;
   padding: .3rem 0;
   margin: 0 .4rem;
-  border-bottom: 1px solid #e4e4e4;
 }
 .section {
   position: relative;
@@ -81,7 +80,7 @@
 .ys_item_ul li .ys_tit {
   float: left;
   width: 1.7rem;
-  height: .72rem;
+  min-height: .72rem;
   margin-right: .1rem;
 }
 .ys_tag {
@@ -93,6 +92,10 @@
   font-size: 0.24rem;
   margin-right: .08rem;
   border-radius: .1rem;
+}
+.ys_tag.active {
+  background-color: #16abdc;
+  color: #fff;
 }
 .calendar_icon {
   width: .4rem;
@@ -128,7 +131,7 @@
 }
 .check_wrap {
   float: left;
-  margin-right: .5rem;
+  margin-right: .2rem;
 }
 .check_wrap input[type="checkbox"] {
   float: left;
@@ -143,9 +146,10 @@
   width: 2.24rem !important;
 }
 .ys_tit_sm {
-  width: 60px;
+  width: 1.3rem;
+  display: block;
+  margin-bottom: .2rem;
   line-height: normal;
-  display: inline-block;
 }
 .ys_default_btn {
   display: block;
@@ -225,6 +229,11 @@
 }
 .ys_item_con {
   width: 4.7rem;
+}
+.ys_item_con.ellip {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ys_item_con input {
   width: 100%;
@@ -508,8 +517,20 @@ textarea::-webkit-input-placeholder {
   background-size: .76rem .76rem;
   margin: 3rem auto 0;
 }
+.calendar_icon {
+  width: .3rem;
+  height: .29rem;
+  background: url("../images/icons/calendar_icon.png") no-repeat;
+  background-size: .3rem .29rem;
+}
+.mint-popup {
+  width: 100%;
+}
 @media screen and (max-width: 320px) {
   .ys_item_ul li .ys_tit {
+    width: 1.6rem !important;
+  }
+  .ys_item_ul li .ys_tit.w224 {
     width: 2.3rem !important;
   }
   .ys_item_ul li .ys_item_con {

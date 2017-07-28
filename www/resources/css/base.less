@@ -3,11 +3,11 @@
 .main-nav-wrapper {
   position: fixed;
   left: -100%;
-  width: 75%;
+  width: 78%;
   height: 100%;
   top: 0;
   display: none;
-  background-color: #fff;
+  background-color: @cl_white;
 }
 
 //左侧侧边栏
@@ -27,17 +27,17 @@
   height: .8rem;
   line-height: .8rem;
   text-align: center;
-  margin: 3rem auto;
+  margin: 1.5em auto;
   background: url("../images/icons/user/login_inp02.png") no-repeat;
   background-position: 0px -.4rem;
   background-size: 2.8rem 1.6rem;
 }
 
 .portrait {
-  width: 80px;
-  height: 80px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: block;
-  margin: 20px auto;
+  margin: 1.6rem auto .6rem;
   border-radius: 50%;
   background-color: @cl_black;
 }
@@ -47,7 +47,6 @@
     display: block;
     padding: .3rem 0;
     margin: 0 .4rem;
-    border-bottom: 1px solid @bdc_input;
   }
 }
 
@@ -88,7 +87,7 @@
     .ys_tit {
       float: left;
       width: 1.7rem;
-      height: .72rem;
+      min-height: .72rem;
       margin-right: .1rem;
     }
   }
@@ -103,6 +102,10 @@
   font-size: @font24;
   margin-right: .08rem;
   border-radius: .1rem;
+  &.active{
+    background-color: @cl_link;
+    color: @cl_white;
+  }
 }
 
 .calendar_icon {
@@ -145,7 +148,7 @@
 
 .check_wrap {
   float: left;
-  margin-right: .5rem;
+  margin-right: .2rem;
   input[type="checkbox"] {
     float: left;
     width: .3rem;
@@ -163,9 +166,10 @@
 }
 
 .ys_tit_sm {
-  width: 60px;
+  width: 1.3rem;
+  display: block;
+  margin-bottom: .2rem;
   line-height: normal;
-  display: inline-block;
 }
 
 .ys_default_btn {
@@ -263,6 +267,11 @@
 
 .ys_item_con {
   width: 4.7rem;
+  &.ellip{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   input {
     width: 100%;
     height: .7rem;
@@ -392,7 +401,7 @@ textarea {
   height: .42rem;
   text-align: center;
   line-height: .42rem;
-  color: #fff;
+  color: @cl_white;
   font-size: @font24;
   border-radius: .08rem;
   background-color: @cl_link;
@@ -584,13 +593,29 @@ textarea {
   margin: 3rem auto 0;
 }
 
+.calendar_icon{
+  width:.3rem;
+  height:.29rem;
+  background: url("../images/icons/calendar_icon.png") no-repeat;
+  background-size: .3rem .29rem;
+}
+
+
+//min-ui
+.mint-popup{
+  width:100%;
+}
+
 //media
 
 @media screen and (max-width: 320px) {
   .ys_item_ul {
     li {
       .ys_tit {
-        width: 2.3rem !important;
+        width: 1.6rem !important;
+        &.w224{
+          width:2.3rem !important;
+        }
       }
       .ys_item_con {
         width: 4.4rem;
