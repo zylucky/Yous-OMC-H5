@@ -40,7 +40,7 @@
           </div>
         </li>
         <li class="clearfix pr">
-          <span class="ys_tit w224">空置面积：</span>
+          <span class="ys_tit w224">自持面积：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" placeholder="请输入">
           </div>
