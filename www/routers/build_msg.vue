@@ -103,7 +103,7 @@
         <li class="clearfix pr">
           <span class="ys_tit">使用率：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="shyl" placeholder="请选择" @click="openUse">
+            <input type="text" value="" v-model="shyl" readonly placeholder="请选择" @click="openUse">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
