@@ -2,15 +2,6 @@
   @import "../resources/css/reset.css";
   @import "../resources/css/base.less";
 
-  .page-infinite-loading {
-    text-align: center;
-    background-color: #FFF;
-    & > span {
-      display: inline-block;
-    }
-  }
-
-
 </style>
 <template>
   <div class="all_elements">
