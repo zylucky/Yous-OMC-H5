@@ -63,11 +63,15 @@
   background-size: .3rem .3rem;
 }
 .login_wrap .inp_item input {
-  line-height: 1.2rem;
-  margin-left: 1.45rem;
+  height: .9rem;
+  line-height: .8rem;
+  padding-left: 1.45rem;
+  margin-top: .1rem;
   color: #fff;
   font-size: 0.3rem;
-  background-color: transparent;
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .login_wrap .inp_item input:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
