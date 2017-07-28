@@ -73,7 +73,6 @@
             setTimeout(function () {
               _this.$router.push({path: '/list'});
             }, 1500);
-            _this.$router.push({path: '/list'});
           }, 1000);
 
         } else if (this.username == '' || this.password == '') {

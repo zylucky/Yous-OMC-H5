@@ -11,6 +11,118 @@
     }
   }
 
+  //遮罩内容
+  .float-part {
+    position: fixed;
+    left: 0;
+    bottom: -100%;
+    width: 100%;
+    height: 6.6rem;
+    background-color: @cl_white;
+    .bulid_msg_item {
+      float: left;
+      width: 25%;
+      text-align: center;
+      height: 1.6rem;
+      i {
+        width: .65rem;
+        height: .55rem;
+        display: block;
+        margin: .5rem auto .2rem;
+        &.basic_01 {
+          background: url("../resources/images/icons/basic_icon/basic01.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_02 {
+          background: url("../resources/images/icons/basic_icon/basic02.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_03 {
+          background: url("../resources/images/icons/basic_icon/basic03.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_04 {
+          background: url("../resources/images/icons/basic_icon/basic04.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_05 {
+          background: url("../resources/images/icons/basic_icon/basic05.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_06 {
+          background: url("../resources/images/icons/basic_icon/basic06.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_07 {
+          background: url("../resources/images/icons/basic_icon/basic07.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_08 {
+          background: url("../resources/images/icons/basic_icon/basic08.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+      }
+    }
+  }
+
+  .bulid_msg_last {
+    display: block;
+    width: 1.2rem;
+    text-align: center;
+    margin: 0 auto;
+    i {
+      width: .65rem;
+      height: .55rem;
+      display: block;
+      margin: .5rem auto .2rem;
+      background: url("../resources/images/icons/basic_icon/basic09.png") no-repeat;
+      background-size: .65rem .55rem;
+    }
+  }
+
+  .msg_progress_bar {
+    position: relative;
+    margin-top: .5rem;
+    height: .24rem;
+    line-height: .24rem;
+    background-color: @bg_btn_gray;
+    text-align: center;
+    .finish_bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      background-color: @bg_mid_blue;
+    }
+    .progress_text {
+      position: absolute;
+      right: .25rem;
+      top: 0;
+
+    }
+  }
+
+  .close {
+    font-size: @font54;
+    width: .54rem;
+    display: block;
+    margin: .1rem auto;
+  }
+
+  //遮罩
+  .shadow {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: @cl_000;
+    opacity: .7;
+    display: none;
+  }
+
+
 </style>
 <template>
   <div>
@@ -558,6 +670,7 @@
       },
 
       shadowShow(){
+          alert(1);
         $('.shadow').show();
         $('#msg_super_wrap').animate({
           bottom: 0
