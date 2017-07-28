@@ -48,7 +48,6 @@
 </template>
 <script>
   import {Toast} from 'mint-ui';
-  import image_upload from '../components/image_upload.vue';
   export default {
     components: {
       Toast
