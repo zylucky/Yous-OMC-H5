@@ -70,7 +70,7 @@
   font-size: 0.3rem;
   position: relative;
   z-index: 1;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .login_wrap .inp_item input:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
