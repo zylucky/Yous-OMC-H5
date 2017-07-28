@@ -89,7 +89,7 @@
         <li class="clearfix pr">
           <span class="ys_tit">楼盘品质：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lppz" placeholder="请选择" @click="openQuality">
+            <input type="text" value="" v-model="lppz" readonly placeholder="请选择" @click="openQuality">
             <i class="right_arrow">&gt;</i>
           </div>
         </li>
