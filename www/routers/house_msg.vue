@@ -22,7 +22,7 @@
         <li class="clearfix">
           <span class="ys_tit">房号：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="FH" placeholder="请输入">
+            <input type="number" value="" v-model="FH" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix">
@@ -118,7 +118,7 @@
         <li class="clearfix pr border_top">
           <span class="ys_tit w224">参考租赁价格：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入" v-model="CKPrice">
+            <input type="number" value="" placeholder="请输入" v-model="CKPrice">
             <i class="right_unit">元/㎡/天</i>
           </div>
         </li>
@@ -126,7 +126,7 @@
         <li class="clearfix pr">
           <span class="ys_tit w224">业主期望租金：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入" v-model="expectPrice">
+            <input type="number" value="" placeholder="请输入" v-model="expectPrice">
             <i class="right_unit">元/㎡/天</i>
           </div>
         </li>
@@ -134,7 +134,7 @@
         <li class="clearfix pr">
           <span class="ys_tit w224">业主租金底价：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入" v-model="leastPrice">
+            <input type="number" value="" placeholder="请输入" v-model="leastPrice">
             <i class="right_unit">元/㎡/天</i>
           </div>
         </li>
@@ -196,6 +196,8 @@
   import {Popup} from 'mint-ui'; //弹窗
   export default {
     components: {
+      Toast,
+      MessageBox,
       DatetimePicker,
       Popup
     },
@@ -211,9 +213,9 @@
           CX:"", //朝向
           ZXSP:"", //装修水平
           DYZT:"", //抵押状态
-          YZSX:"", //业主属性
-          isHYHouse:"", //航远房源?
-          hasRenter:"", //是否有租户
+          YZSX:1, //业主属性
+          isHYHouse:true, //航远房源?
+          hasRenter:true, //是否有租户
           spaceTime:"", //空置时间
           CKPrice:"", //参考租赁价格
           expectPrice:"", //业主期望租金
