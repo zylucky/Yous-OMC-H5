@@ -33,7 +33,7 @@
           <img class="portrait" src="../resources/images/user/por_icon.png" alt="">
           <div class="user_name tc mb20">用户名</div>
           <div class="ys_function tc">
-            <router-link :to="{path:'/information_insert'}" id="first_list_link">房源列表</router-link>
+            <router-link :to="{path:'/list2'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>
           </div>

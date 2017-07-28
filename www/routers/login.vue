@@ -43,7 +43,7 @@
 </template>
 <script>
   import {Toast} from 'mint-ui'; //toast
-
+  import {Indicator} from 'mint-ui';
   import {MessageBox} from 'mint-ui'; //弹窗
 
   export default {
@@ -59,14 +59,22 @@
       login(){
         var _this = this;
         if (this.username == 'admin' && this.password == 'admin') {
-          Toast({
-            message: '恭喜您！登陆成功',
-            position: 'bottom',
-            duration: 3000
+          Indicator.open({
+            text: '',
+            spinnerType: 'fading-circle'
           });
           setTimeout(function () {
+            Indicator.close();
+            Toast({
+              message: '恭喜您！登陆成功',
+              position: 'bottom',
+              duration: 3000
+            });
+            setTimeout(function () {
+              _this.$router.push({path: '/list'});
+            }, 1500);
             _this.$router.push({path: '/list'});
-          }, 1500);
+          }, 1000);
 
         } else if (this.username == '' || this.password == '') {
           MessageBox('提示', '请输入用户名和密码');

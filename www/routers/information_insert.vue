@@ -403,11 +403,8 @@
   </div>
 </template>
 <script>
-  import {Indicator} from 'mint-ui';
-  import {InfiniteScroll} from 'mint-ui';
   export default {
     components: {
-      InfiniteScroll
     },
 
     data () {
