@@ -38,7 +38,7 @@
             <a href="javascript:;">待办任务</a>
           </div>
         </div>
-        <a href="javascript:;" class="log_out_btn">退出登录</a>
+        <router-link :to="{path:'/login'}" class="log_out_btn">退出登录</router-link>
       </div>
     </mt-popup>
   </div>
