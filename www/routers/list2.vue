@@ -506,7 +506,7 @@
           "foreEndType": 2,
           "code": "90000301"
         }, this_ = this;
-        axios.post('http://127.0.0.1:8080/yhcms/web/lpjbxx/getTsbq.do', paraObj)
+        axios.post('http://yhcms.tunnel.qydev.com/yhcms/web/lpjbxx/getTsbq.do', paraObj)
           .then(function (response) {
             this_.districtArray = response.data.data.districts;
             this_.pricePArray = response.data.data.range_unit_prices;
@@ -652,7 +652,7 @@
 
       gRemoteData(paraobj, successcb, errorcb){
         console.info(paraobj);
-        axios.post('http://127.0.0.1:8080/yhcms/web/lpjbxx/getZdLpjbxx.do', paraobj)
+        axios.post('http://yhcms.tunnel.qydev.com/yhcms/web/lpjbxx/getZdLpjbxx.do', paraobj)
           .then(function (response) {
             if (typeof successcb === "function") {
               successcb(response)

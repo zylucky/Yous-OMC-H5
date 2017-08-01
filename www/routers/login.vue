@@ -19,7 +19,7 @@
   <div class="all_elements" id="ys_user">
     <div class="all_wrap">
       <div class="login_wrap">
-        <div class="login_box">
+        <div class="login_box" >
           <div class="inp_item">
             <div class="inp_bg"></div>
             <i class="ys_icon user"></i>
@@ -46,8 +46,6 @@
   import {MessageBox} from 'mint-ui'; //弹窗
 
   export default {
-    components: {},
-
     data () {
       return {
         username: '',
