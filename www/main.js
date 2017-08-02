@@ -188,12 +188,6 @@ var router = new VueRouter({
       path: '/project_order', //工程管理部工单
       component: require('./routers/project_order.vue')
     },
-
-
-
-
-
-
     {
       path: '/order_following', //工單跟進中
       component: require('./routers/order_following.vue')
@@ -238,7 +232,6 @@ var router = new VueRouter({
       path: '/receive_order_detail', //接单详情
       component: require('./routers/receive_order_detail')
     },
-
     {
       path: '/work_list', //业务跟进中列表
       component: require('./routers/work_list.vue')
@@ -247,14 +240,10 @@ var router = new VueRouter({
       path: '/follow_up_record', //跟进记录
       component: require('./routers/follow_up_record')
     },
-
-
     {
       path: '*',
       component: require('./routers/login.vue')
     }
-
-
   ]
 });
 
