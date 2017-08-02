@@ -28,7 +28,7 @@
         <li class="clearfix">
           <span class="ys_tit">开发商：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-text="kfsh" placeholder="请输入">
+            <input type="text" value="" v-model="kfsh" placeholder="请输入">
           </div>
         </li>
         <li class="clearfix pr">
@@ -51,38 +51,41 @@
         </li>
         <li class="clearfix">
           <span class="ys_tit">产权性质：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">请选择标签</a></div>
+          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{tsbq_c}}</a></div>
         </li>
         <li class="clearfix">
           <span class="ys_tit">特色标签：</span>
           <div class="ys_item_con fl w570">
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">写字楼</label>
+              <label class="fl"><input type="checkbox" value="1" name="" v-model="tsbq">写字楼</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">公寓</label>
+              <label class="fl"><input type="checkbox" value="2" name="" v-model="tsbq">公寓</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">商务楼</label>
+              <label class="fl"><input type="checkbox" value="3" name="" v-model="tsbq">商务楼</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">住宅</label>
+              <label class="fl"><input type="checkbox" value="4" name="" v-model="tsbq">住宅</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">商业</label>
+              <label class="fl"><input type="checkbox" value="5" name="" v-model="tsbq">商业</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">酒店</label>
+              <label class="fl"><input type="checkbox" value="6" name="" v-model="tsbq">酒店</label>
             </div>
             <div class="check_wrap clearfix">
 
-              <label class="fl"><input type="checkbox" value="" name="">别墅</label>
+              <label class="fl"><input type="checkbox" value="7" name="" v-model="tsbq">别墅</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">综合</label>
+              <label class="fl"><input type="checkbox" value="8" name="" v-model="tsbq">综合</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="" name="">商业综合体</label>
+              <label class="fl"><input type="checkbox" value="9" name="" v-model="tsbq">商业综合体</label>
+            </div>
+            <div class="check_wrap clearfix">
+              <label class="fl"><input type="checkbox" value="10" name="" v-model="tsbq">酒店式公寓</label>
             </div>
           </div>
         </li>
@@ -193,6 +196,7 @@
   };
 
   import { Toast } from 'mint-ui'; //toast
+  import { Indicator } from 'mint-ui'; //toast
 
   import { MessageBox } from 'mint-ui'; //弹窗
 
@@ -211,7 +215,7 @@
         "lpid": "300", //楼盘id
         "topic": "建外SOHO", //楼盘名称
         "address": "北京市朝阳区建国门外大街4号demo", //地址
-        "tsbq": "", //特色标签
+        "tsbq": [], //特色标签
         "kfsh": "", //开发商名称
         "kprq": "", //开盘日期(必选)
         "lpjb": "", //楼盘级别(必选)
@@ -234,7 +238,7 @@
         lpjb: '',
         slots: [
           {
-            values: ['','level1', 'level2', 'level3'],
+            values: ['5A', '甲', '乙', '公寓', '商务', '综合'],
           }
         ],
 
@@ -263,6 +267,16 @@
 
       }
     },
+    computed:{
+        tsbq_c(){
+            if(this.tsbq.length < 1){
+                return "请选择标签";
+            }
+            const map = {"1":"写字楼", "2":"公寓","3":"商务楼","4":"住宅","5":"商业","6":"酒店","7":"综合","8":"别墅","9":"商业综合体","10":"酒店式公寓"};
+            let tip = this.tsbq.map((item,idx)=>{return map[item.toString()]});
+            return tip.join(",");
+        }
+    },
     methods: {
 
       //日期panel展示
@@ -277,6 +291,7 @@
 
       //楼盘类型panel展示
       openLevel() {
+        this.lpjb = '乙';
         this.popupVisible = true;
       },
 
@@ -293,6 +308,7 @@
 
       //打开品质
       openQuality(){
+        this.lppz = '差';
         this.popQuality = true;
       },
 
@@ -309,6 +325,7 @@
 
       //打开品质
       openUse(){
+        this.shyl = '非常';
         this.popUse = true;
       },
 
@@ -347,9 +364,32 @@
 
       },
 
+      getInitData(){
+          const lpid = this.$route.params.lpid;
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpjbxx/getLpjbxx.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "lpid":lpid},"foreEndType":2,"code":"30000008"}).then((res)=>{
+            Indicator.close()
+            const data = res.data.data;
+            console.log(" ==== ", data);
+            that.lpid = lpid;
+            that.topic = data.topic;
+            that.address = data.address;
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
 
       saveBuildMsg(){
         var _this = this;
+        if(!this.kfsh){
+            MessageBox('提示', '请填写开发商');
+            return;
+        }
 
         if(this.kprq == ''){
           MessageBox('提示', '请选择开盘日期');
@@ -361,18 +401,25 @@
           return;
         }
 
-
+        /*
         Toast({
           message: '保存成功',
           position: 'bottom'
         });
+        */
+        Indicator.open({
+            text: '保存中...',
+            spinnerType: 'fading-circle'
+        });
 
+        /*
         setTimeout(function(){
             _this.$router.push({path:'/list2'});
         },1000);
+        */
 
         this.$http.post(
-          this.$api,
+          this.$api + "/yhcms/web/lpjbxx/saveLp.do",
           {
             "parameters": {
               "lpid": this.lpid, //楼盘id
@@ -396,21 +443,36 @@
             "code": "300000041"
           }
         ).then(function (res) {
-
+          Indicator.close();
           var result = JSON.parse(res.bodyText);
           if (result.success) {
+            Toast({
+                message: '保存成功',
+                position: 'bottom'
+            });
 
+            setTimeout(function(){
+                _this.$router.push({path:'/list2'});
+            },1000);
           } else {
-            this.$Message.error(res.message);
+            //this.$Message.error(res.message);
+            Toast({
+                message: '保存失败: ' + result.message,
+                position: 'bottom'
+            });
           }
         }, function (res) {
-          this.$Message.error('保存失败');
+          //this.$Message.error('保存失败');
+          Toast({
+              message: '保存失败! 请稍候再试',
+              position: 'bottom'
+          });
         });
       }
 
     },
     mounted(){
-
+        this.getInitData();
     },
   }
 </script>

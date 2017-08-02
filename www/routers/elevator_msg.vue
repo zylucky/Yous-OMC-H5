@@ -23,8 +23,8 @@
         <li class="clearfix">
           <span class="ys_tit w224">客梯层级区分：</span>
           <div class="ys_item_con fl">
-            <label for="ele_yes" class="mr20"><input type="radio" name="ele_type" id="ele_yes">是</label>
-            <label for="ele_no" id="ele_no"><input type="radio" name="ele_type">否</label>
+            <label for="ele_yes" class="mr20"><input type="radio" v-model="ktcjqf" value="1" name="ele_type" id="ele_yes">是</label>
+            <label for="ele_no" id="ele_no"><input type="radio" v-model="ktcjqf" value="0" name="ele_type">否</label>
           </div>
         </li>
         <li class="clearfix mb20">
@@ -46,8 +46,8 @@
         <li class="clearfix">
           <span class="ys_tit w224">货梯层级区分：</span>
           <div class="ys_item_con fl">
-            <label for="ele_yes" class="mr20"><input type="radio" name="ele_type" id="frei_ele_yes">是</label>
-            <label for="ele_no" id="frei_ele_no"><input type="radio" name="ele_type">否</label>
+            <label for="ele_yes" class="mr20"><input type="radio" v-model = "htcjqf" value="1" name="ele_type_t" id="frei_ele_yes">是</label>
+            <label for="ele_no" id="frei_ele_no"><input type="radio" v-model = "htcjqf" value="0" name="ele_type_t">否</label>
           </div>
         </li>
 
@@ -67,6 +67,9 @@
 </template>
 <script>
   import { Toast } from 'mint-ui'; //toast
+  import { Indicator } from 'mint-ui';
+  import { MessageBox } from 'mint-ui'; //弹窗
+
   export default {
     components: {
     },
@@ -95,17 +98,28 @@
       saveElevatorMsg(){
         var _this = this;
 
-        Toast({
-          message: '保存成功',
-          position: 'bottom'
+        if(!this.dtpp){
+            MessageBox('提示', '请填写电梯品牌');
+            return;
+        }
+
+        if(!this.ktsl){
+            MessageBox('提示', '请填写客梯数量');
+            return;
+        }
+
+        if(!this.ktcjqf){
+            MessageBox('提示', '请选择客梯层级区分');
+            return;
+        }
+
+        Indicator.open({
+            text: '保存中...',
+            spinnerType: 'fading-circle'
         });
 
-        setTimeout(function () {
-          _this.$router.push({path:'/list2'});
-        }, 1000);
-
         this.$http.post(
-          this.$api,
+          this.$api + "/yhcms/web/lpzdxx/saveLpzdDt.do",
           {
             "parameters": {
               "id": this.zdid, //楼盘id
@@ -125,15 +139,29 @@
             "code": "300000076"
           }
         ).then(function (res) {
-
           var result = JSON.parse(res.bodyText);
+          Indicator.close();
           if (result.success) {
+            Toast({
+                message: '保存成功',
+                position: 'bottom',
+                duration: 5000
+            });
 
+            setTimeout(function(){
+                _this.$router.push({path:'/list2'});
+            },1000);
           } else {
-            this.$Message.error(res.message);
+            Toast({
+                message: '保存失败: ' + result.message,
+                position: 'bottom'
+            });
           }
         }, function (res) {
-          this.$Message.error('保存失败');
+          Toast({
+              message: '保存失败! 请稍候再试',
+              position: 'bottom'
+          });
         });
       }
     },
