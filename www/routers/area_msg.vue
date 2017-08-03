@@ -118,7 +118,8 @@
           if (result.success) {
             Toast({
                 message: '保存成功',
-                position: 'bottom'
+                position: 'bottom',
+                duration: 1000
             });
 
             setTimeout(function(){
