@@ -305,37 +305,37 @@
           <i class="basic_01"></i>
           <span>基本信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/elevator_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/elevator_msg/'+lpid}">
           <i class="basic_02"></i>
           <span>电梯信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/area_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/area_msg/'+lpid}">
           <i class="basic_03"></i>
           <span>面积信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/households_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/bal_households_msg/'+lpid}">
           <i class="basic_04"></i>
           <span>户数信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/price_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/price_msg/'+lpid}">
           <i class="basic_05"></i>
           <span>价格信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/image_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/image_msg/'+lpid}">
           <i class="basic_06"></i>
           <span>图片信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/rent_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/rent_msg/'+lpid}">
           <i class="basic_07"></i>
           <span>租赁部信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/property_msg'+lpid}">
+        <router-link class="bulid_msg_item" :to="{path:'/property_more_msg/'+lpid}">
           <i class="basic_08"></i>
           <span>物业信息</span>
         </router-link>
       </div>
       <div class="build_bot_msg">
-        <router-link class="bulid_msg_last" :to="{path:'/house_msg'+lpid}">
+        <router-link class="bulid_msg_last" :to="{path:'/house_msg/'+lpid}">
           <i></i>
           <span>房源信息</span>
         </router-link>

@@ -17,12 +17,11 @@
         </li>
         <li class="clearfix">
           <span class="ys_tit">特色标签：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">请选择标签</a></div>
+          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{tsbq_t}}</a></div>
         </li>
         <li class="clearfix bg_gray">
           <div class="ys_item_con fl" @click="selectTag($event)">
-            <span class="ys_tag">地铁附近1</span>
-            <span class="ys_tag">地铁附近2</span>
+            <span v-for="ts in tsbq_all" class="ys_tag" :value="ts.id" :topic="ts.topic">{{ts.topic}}</span>
           </div>
         </li>
         <li class="clearfix">
@@ -51,41 +50,41 @@
         </li>
         <li class="clearfix">
           <span class="ys_tit">产权性质：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{tsbq_c}}</a></div>
+          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{chqxz_c}}</a></div>
         </li>
         <li class="clearfix">
           <span class="ys_tit">特色标签：</span>
           <div class="ys_item_con fl w570">
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="1" name="" v-model="tsbq">写字楼</label>
+              <label class="fl"><input type="checkbox" value="1" name="" v-model="chqxz">写字楼</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="2" name="" v-model="tsbq">公寓</label>
+              <label class="fl"><input type="checkbox" value="2" name="" v-model="chqxz">公寓</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="3" name="" v-model="tsbq">商务楼</label>
+              <label class="fl"><input type="checkbox" value="3" name="" v-model="chqxz">商务楼</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="4" name="" v-model="tsbq">住宅</label>
+              <label class="fl"><input type="checkbox" value="4" name="" v-model="chqxz">住宅</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="5" name="" v-model="tsbq">商业</label>
+              <label class="fl"><input type="checkbox" value="5" name="" v-model="chqxz">商业</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="6" name="" v-model="tsbq">酒店</label>
+              <label class="fl"><input type="checkbox" value="6" name="" v-model="chqxz">酒店</label>
             </div>
             <div class="check_wrap clearfix">
 
-              <label class="fl"><input type="checkbox" value="7" name="" v-model="tsbq">别墅</label>
+              <label class="fl"><input type="checkbox" value="7" name="" v-model="chqxz">别墅</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="8" name="" v-model="tsbq">综合</label>
+              <label class="fl"><input type="checkbox" value="8" name="" v-model="chqxz">综合</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="9" name="" v-model="tsbq">商业综合体</label>
+              <label class="fl"><input type="checkbox" value="9" name="" v-model="chqxz">商业综合体</label>
             </div>
             <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="10" name="" v-model="tsbq">酒店式公寓</label>
+              <label class="fl"><input type="checkbox" value="10" name="" v-model="chqxz">酒店式公寓</label>
             </div>
           </div>
         </li>
@@ -189,10 +188,14 @@
 </template>
 <script>
 
-  var lang = {
+  const lang = {
     '优': 1,
     '良': 2,
     '差': 3,
+  };
+   
+  const level = {
+      "5A":"1","甲":"2","乙":"3","公寓":"4","商务":"5","综合":"6"
   };
 
   import { Toast } from 'mint-ui'; //toast
@@ -219,7 +222,7 @@
         "kfsh": "", //开发商名称
         "kprq": "", //开盘日期(必选)
         "lpjb": "", //楼盘级别(必选)
-        "chqxz": "", //产权性质
+        "chqxz": [], //产权性质
         "lppz": "", //楼盘品质 1优 2良 3差
         "zxjnjg": "", //均价
         "shyl": "",  //使用率
@@ -228,7 +231,7 @@
         "lpsjgs": "", //楼盘设计公司
         "lpsjs": "", //楼盘设计师
         "lpsjfg": "", //楼盘设计风格
-
+        "tsbq_all":[],
 
         //日期
         pickerValue: '',
@@ -268,13 +271,26 @@
       }
     },
     computed:{
-        tsbq_c(){
-            if(this.tsbq.length < 1){
+        chqxz_c(){
+            if(this.chqxz.length < 1){
                 return "请选择标签";
             }
             const map = {"1":"写字楼", "2":"公寓","3":"商务楼","4":"住宅","5":"商业","6":"酒店","7":"综合","8":"别墅","9":"商业综合体","10":"酒店式公寓"};
-            let tip = this.tsbq.map((item,idx)=>{return map[item.toString()]});
+            let tip = this.chqxz.map((item,idx)=>{return map[item.toString()]});
             return tip.join(",");
+        },
+        tsbq_t(){
+            if(this.tsbq.length < 1){
+                return "请选择标签";
+            }
+            let tags = this.tsbq.map((t)=>{
+                for(let i = 0; i < this.tsbq_all.length; ++i){
+                    if(this.tsbq_all[i].id === t.id){
+                       return this.tsbq_all[i].topic;
+                    }
+                }
+                });
+            return tags.join(",");
         }
     },
     methods: {
@@ -356,10 +372,35 @@
 
       //选择tag
       selectTag(e){
+        const target = $(e.target), val = target.attr("value"), topic = target.attr("topic");
+        if(!val){return;}
         if ($(e.target).hasClass('active')) {
+          let tags = {};
+          for(let i = 0; i < this.tsbq.length; ++i){
+              let t = this.tsbq[i];
+              if(t.id !== val){
+                  tags[t.id] = t.topic;
+              }
+          }
+          let tsbq_t = [];
+          for(let obj in tags){
+              tsbq_t.push({id:obj, topic: tags[obj]});
+          }
+          this.tsbq = tsbq_t;
           $(e.target).removeClass('active');
         } else {
           $(e.target).addClass('active');
+          let tags = {};
+          for(let i = 0; i < this.tsbq.length; ++i){
+              let t = this.tsbq[i];
+              tags[t.id] = t.topic;
+          }
+          tags[val] = topic;
+          let tsbq_t = [];
+          for(let obj in tags){
+              tsbq_t.push({id:obj, topic:tags[obj]});
+          }
+          this.tsbq = tsbq_t;
         }
 
       },
@@ -374,11 +415,40 @@
           let that = this;
           this.$http.post(url, {"parameters":{ "lpid":lpid},"foreEndType":2,"code":"30000008"}).then((res)=>{
             Indicator.close()
-            const data = res.data.data;
-            console.log(" ==== ", data);
+            const data = JSON.parse(res.bodyText).data;
             that.lpid = lpid;
             that.topic = data.topic;
             that.address = data.address;
+            that.tsbq = this.tsbq;
+            that.kfsh = data.kfsh;
+            that.kprq = data.kprq;
+            that.lpjb = data.lpjb;
+            that.chqxz = data.chqxz.split("、");
+            that.lppz = data.lppz;
+            that.zxjnjg = data.zxjnjg;
+            that.shyl = data.shyl;
+            that.hshkzbl = data.hshkzbl;
+            that.zxptmx = data.zxptmx;
+            that.lpsjgs = data.lpsjgs;
+            that.lpsjs = data.lpsjs;
+            that.lpsjfg = data.lpsjfg;
+
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
+
+      getTsbq(){
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpjbxx/getTsbq.do";
+          let that = this;
+          this.$http.post(url).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.tsbq_all = data;
           }, (res)=>{
             Indicator.close()
           });
@@ -417,7 +487,7 @@
             _this.$router.push({path:'/list2'});
         },1000);
         */
-
+        let tsbq = this.tsbq.map((t)=>{return t.id});
         this.$http.post(
           this.$api + "/yhcms/web/lpjbxx/saveLp.do",
           {
@@ -425,12 +495,12 @@
               "lpid": this.lpid, //楼盘id
               "topic": this.topic, //楼盘名称
               "address": this.address, //地址
-              "tsbq": this.tsbq, //特色标签
+              "tsbq": "、" + tsbq.join("、") + "、", //特色标签
               "kfsh": this.kfsh, //开发商名称
               "kprq": this.kprq, //开盘日期(必选)
-              "lpjb": this.lpjb, //楼盘级别(必选)
-              "chqxz": this.chqxz, //产权性质
-              "lppz": lang[this.lppz], //楼盘品质 1优 2良 3差
+              "lpjb": level[this.lpjb], //楼盘级别(必选)
+              "chqxz": this.chqxz.join("、"), //产权性质
+              "lppz": lang[this.lppz].toString(), //楼盘品质 1优 2良 3差
               "zxjnjg": this.zxjnjg, //均价
               "shyl": this.shyl,  //使用率
               "hshkzbl": this.hshkzbl, //户数空置比例
@@ -448,7 +518,8 @@
           if (result.success) {
             Toast({
                 message: '保存成功',
-                position: 'bottom'
+                position: 'bottom',
+                duration: 1000
             });
 
             setTimeout(function(){
@@ -473,6 +544,7 @@
     },
     mounted(){
         this.getInitData();
+        this.getTsbq();
     },
   }
 </script>

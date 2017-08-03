@@ -94,6 +94,36 @@
     },
     methods: {
 
+      getInitData(){
+          const lpid = this.$route.params.lpid;
+          this.zdid = lpid;
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpzdxx/getLpzdDt.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "id":lpid},"foreEndType":2,"code":"300000077"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.dtpp = data.dtpp;
+            that.ktcjqf = data.ktcjqf;
+            that.ktsl = data.ktsl;
+            that.ktd = data.ktd;
+            that.ktz = data.ktz;
+            that.ktg = data.ktg;
+            that.htcjqf = data.htcjqf;
+            that.htsl = data.htsl;
+            that.htd = data.htd;
+            that.htz = data.htz;
+            that.htg = data.htg;
+
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
+
+
       //保存电梯信息
       saveElevatorMsg(){
         var _this = this;
@@ -145,7 +175,7 @@
             Toast({
                 message: '保存成功',
                 position: 'bottom',
-                duration: 5000
+                duration: 1000
             });
 
             setTimeout(function(){
@@ -166,7 +196,7 @@
       }
     },
     mounted(){
-
+        this.getInitData();
     },
   }
 </script>

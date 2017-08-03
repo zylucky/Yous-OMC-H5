@@ -67,6 +67,28 @@
       }
     },
     methods: {
+
+      getInitData(){
+          const lpid = this.$route.params.lpid;
+          this.zdid = lpid;
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpzdxx/getLpzdMj.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "id":lpid},"foreEndType":2,"code":"300000075"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.jzmj = data.jzmj;
+            that.yzmj = data.yzmj;
+            that.kfszcmj = data.kfszcmj;
+            that.kzmj = data.kzmj;
+            that.dcmj = data.dcmj;
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
       //保存面积信息
       saveAreaMsg(){
         var _this = this;
@@ -118,7 +140,7 @@
       }
     },
     mounted(){
-
+        this.getInitData();
     },
   }
 </script>
