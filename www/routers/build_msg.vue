@@ -285,7 +285,7 @@
             }
             let tags = this.tsbq.map((t)=>{
                 for(let i = 0; i < this.tsbq_all.length; ++i){
-                    if(this.tsbq_all[i].id === t.id){
+                    if(this.tsbq_all[i].id === t){
                        return this.tsbq_all[i].topic;
                     }
                 }
@@ -374,35 +374,20 @@
       selectTag(e){
         const target = $(e.target), val = target.attr("value");
         if(!val){return;}
+
         if ($(e.target).hasClass('active')) {
-          let tags = {};
-          for(let i = 0; i < this.tsbq.length; ++i){
-              let t = this.tsbq[i];
-              if(t !== val){
-                  tags[t] = t;
-              }
-          }
-          let tsbq_t = [];
-          for(let obj in tags){
-              tsbq_t.push(obj);
-          }
-          this.tsbq = tsbq_t;
+          let tsbq_t = new Set(this.tsbq);
+          tsbq_t.delete(val);
+          this.tsbq = [...tsbq_t];
+
           $(e.target).removeClass('active');
         } else {
-          $(e.target).addClass('active');
-          let tags = {};
-          for(let i = 0; i < this.tsbq.length; ++i){
-              let t = this.tsbq[i];
-              tags[t] = t;
-          }
-          tags[val] = val;
-          let tsbq_t = [];
-          for(let obj in tags){
-              tsbq_t.push(obj);
-          }
-          this.tsbq = tsbq_t;
-        }
+          let tsbq_t = this.tsbq.slice(0);
+          tsbq_t.push(val);
+          this.tsbq = [...tsbq_t];
 
+          $(e.target).addClass('active');
+        }
       },
 
       getInitData(){
