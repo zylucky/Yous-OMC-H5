@@ -21,7 +21,7 @@
         </li>
         <li class="clearfix bg_gray">
           <div class="ys_item_con fl" @click="selectTag($event)">
-            <span v-for="ts in tsbq_all" class="ys_tag" :value="ts.id" :topic="ts.topic">{{ts.topic}}</span>
+            <span v-for="ts in tsbq_all" class="ys_tag" :class="{'active': tsbq.indexOf(ts.id) > -1}" :value="ts.id" >{{ts.topic}}</span>
           </div>
         </li>
         <li class="clearfix">
@@ -372,19 +372,19 @@
 
       //选择tag
       selectTag(e){
-        const target = $(e.target), val = target.attr("value"), topic = target.attr("topic");
+        const target = $(e.target), val = target.attr("value");
         if(!val){return;}
         if ($(e.target).hasClass('active')) {
           let tags = {};
           for(let i = 0; i < this.tsbq.length; ++i){
               let t = this.tsbq[i];
-              if(t.id !== val){
-                  tags[t.id] = t.topic;
+              if(t !== val){
+                  tags[t] = t;
               }
           }
           let tsbq_t = [];
           for(let obj in tags){
-              tsbq_t.push({id:obj, topic: tags[obj]});
+              tsbq_t.push(obj);
           }
           this.tsbq = tsbq_t;
           $(e.target).removeClass('active');
@@ -393,12 +393,12 @@
           let tags = {};
           for(let i = 0; i < this.tsbq.length; ++i){
               let t = this.tsbq[i];
-              tags[t.id] = t.topic;
+              tags[t] = t;
           }
-          tags[val] = topic;
+          tags[val] = val;
           let tsbq_t = [];
           for(let obj in tags){
-              tsbq_t.push({id:obj, topic:tags[obj]});
+              tsbq_t.push(obj);
           }
           this.tsbq = tsbq_t;
         }
@@ -419,7 +419,7 @@
             that.lpid = lpid;
             that.topic = data.topic;
             that.address = data.address;
-            that.tsbq = this.tsbq;
+            that.tsbq = data.tsbq.map((t)=>{return t.id});
             that.kfsh = data.kfsh;
             that.kprq = data.kprq;
             that.lpjb = data.lpjb;
@@ -471,6 +471,11 @@
           return;
         }
 
+        if(!this.lppz){
+          MessageBox('提示', '请选择楼盘品质');
+          return;
+        }
+
         /*
         Toast({
           message: '保存成功',
@@ -487,7 +492,6 @@
             _this.$router.push({path:'/list2'});
         },1000);
         */
-        let tsbq = this.tsbq.map((t)=>{return t.id});
         this.$http.post(
           this.$api + "/yhcms/web/lpjbxx/saveLp.do",
           {
@@ -495,7 +499,7 @@
               "lpid": this.lpid, //楼盘id
               "topic": this.topic, //楼盘名称
               "address": this.address, //地址
-              "tsbq": "、" + tsbq.join("、") + "、", //特色标签
+              "tsbq": "、" + this.tsbq.join("、") + "、", //特色标签
               "kfsh": this.kfsh, //开发商名称
               "kprq": this.kprq, //开盘日期(必选)
               "lpjb": level[this.lpjb], //楼盘级别(必选)
