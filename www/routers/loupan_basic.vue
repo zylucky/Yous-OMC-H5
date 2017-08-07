@@ -382,8 +382,8 @@
 
           $(e.target).removeClass('active');
         } else {
-          let tsbq_t = this.tsbq.slice(0);
-          tsbq_t.push(val);
+          let tsbq_t = new Set(this.tsbq);
+          tsbq_t.add(val);
           this.tsbq = [...tsbq_t];
 
           $(e.target).addClass('active');
