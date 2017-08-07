@@ -68,7 +68,7 @@
               duration: 3000
             });
             setTimeout(function () {
-              _this.$router.push({path: '/list'});
+              _this.$router.push({path: '/index'});
             }, 1000);
           }, 1000);
 
