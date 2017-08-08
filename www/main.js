@@ -11,8 +11,8 @@ import search from './routers/search.vue';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
-//Vue.prototype.$api = "http://192.168.1.168:8080" //api地址
-Vue.prototype.$api = "http://192.168.0.143:8081" //api地址
+Vue.prototype.$api = "http://192.168.1.168:8080" //api地址
+//Vue.prototype.$api = "http://192.168.0.143:8081" //api地址
 //Vue.prototype.$resouceUrl = "http://localhost:8081/"  //资源文件地址
 Vue.config.debug = true;// 开启debug模式
 
@@ -61,7 +61,7 @@ var router = new VueRouter({
       component: require('./routers/zuodong_list.vue')
     },
     {
-      path: '/fang_list',
+      path: '/fang_list/:lpid',
       component: require('./routers/fang_list.vue')
     },
     {
@@ -97,8 +97,48 @@ var router = new VueRouter({
       component: require('./routers/zuodong_property.vue')
     },
     {
-      path: '/fang_list',
+      path: '/fang_list/:zdid',
       component: require('./routers/fang_list.vue')
+    },
+    {
+      path: '/fang_basic/:lpid/:zdid',
+      component: require('./routers/fang_list.vue')
+    },
+    {
+      path: '/fang_struct/:fyid',
+      component: require('./routers/fang_struct.vue')
+    },
+    {
+      path: '/fang_owner/:fyid',
+      component: require('./routers/fang_owner.vue')
+    },
+    {
+      path: '/fang_agenter/:fyid',
+      component: require('./routers/fang_agenter.vue')
+    },
+    {
+      path: '/fang_agenter/add/:fyid',
+      component: require('./routers/fang_add_agent.vue')
+    },
+    {
+      path: '/fang_renter/:fyid',
+      component: require('./routers/fang_renter.vue')
+    },
+    {
+      path: '/fang_image/:fyid',
+      component: require('./routers/fang_image.vue')
+    },
+    {
+      path: '/fang_analyse/:fyid',
+      component: require('./routers/fang_analyse.vue')
+    },
+    {
+      path: '/fang_decor/:fyid',
+      component: require('./routers/fang_decor.vue')
+    },
+    {
+      path: '/fang_reg/:fyid',
+      component: require('./routers/fang_reg.vue')
     },
   ]
 });

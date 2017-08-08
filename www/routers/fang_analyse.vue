@@ -17,32 +17,25 @@
       <div class="analyse_wrap mb60">
 
         <div class="analy_item">
-          <span class="analy_tit db mb10">区域亮点</span>
+          <span class="analy_tit db mb10">房间优势</span>
           <div class="analy_content">
-            <textarea name="" cols="30" rows="10" v-model="qwld" placeholder="请输入"></textarea>
+            <textarea name="" cols="30" rows="10" v-model="fjys" placeholder="请输入"></textarea>
           </div>
         </div>
         <div class="analy_item">
-          <span class="analy_tit db mb10">未来发展潜力</span>
+          <span class="analy_tit db mb10">房间劣势</span>
           <div class="analy_content">
-            <textarea name="" cols="30" rows="10" v-model="wlfzql" placeholder="请输入"></textarea>
+            <textarea name="" cols="30" rows="10" v-model="fjls" placeholder="请输入"></textarea>
           </div>
         </div>
         <div class="analy_item">
-          <span class="analy_tit db mb10">优势分析结果</span>
+          <span class="analy_tit db mb10">房间硬伤</span>
           <div class="analy_content">
-            <textarea name="" cols="30" rows="10" v-model="ysjg" placeholder="请输入"></textarea>
+            <textarea name="" cols="30" rows="10" v-model="fh" placeholder="请输入"></textarea>
           </div>
         </div>
-        <div class="analy_item">
-          <span class="analy_tit db mb10">劣势分析结果</span>
-          <div class="analy_content">
-            <textarea name="" cols="30" rows="10" v-model="lsjg" placeholder="请输入"></textarea>
-          </div>
-        </div>
-
       </div>
-      <a href="javascript:;" class="ys_default_btn mb80" @click="saveAnalyse">保存</a>
+      <a href="javascript:;" class="ys_default_btn mb80" @click="saveAnalyseData">保存</a>
     </div>
   </div>
 </template>
@@ -54,39 +47,37 @@
   export default {
     data () {
       return {
-          lpid: "",
-          qwld: "",
-          wlfzql: "",
-          ysjg: "",
-          lsjg: "",
+          "id": "",
+          "fjys": "",
+          "fjls": "",
+          "fh": ""
       }
     },
     methods: {
-      zgetInitData(){
-          const lpid = this.$route.params.lpid;
-          this.lpid = lpid;
+      getInitData(){
+          const fyid = this.$route.params.fyid;
+          this.id = fyid;
           Indicator.open({
              text: '',
              spinnerType: 'fading-circle'
           });
-          const url = this.$api + "/yhcms/web/lpjbxx/getLpFx.do";
+          const url = this.$api + "/yhcms/web/zdfyxx/getZdfyfxxx.do";
           let that = this;
-          this.$http.post(url, {"parameters":{"lpid":lpid},"foreEndType":2,"code":"300000048"}).then((res)=>{
+          this.$http.post(url, {"parameters":{"id":fyid},"foreEndType":2,"code":"300000037"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
-            that.qwld = data.qwld;
-            that.wlfzql = data.wlfzql;
-            that.ysjg = data.ysjg;
-            that.lsjg = data.lsjg;
+            that.fjys = data.fjys;
+            that.fjls = data.fjls;
+            that.fh = data.fh;
           }, (res)=>{
             Indicator.close()
           });
       },
-      saveAnalyse(){
+      saveAnalyseData(){
         var _this = this;
 
-        if(!this.qwld){
-          MessageBox('提示', '请输入地上车位数量');
+        if(!this.fjys){
+          MessageBox('提示', '请输入房间优势');
           return;
         }
 
@@ -96,16 +87,16 @@
         });
 
         this.$http.post(
-          this.$api + "/yhcms/web/lpjbxx/saveLpChw.do",
+          this.$api + "/yhcms/web/zdfyxx/saveZdfx.do",
           {
             "parameters": {
-                qwld: this.qwld,
-                wlfzql: this.wlfzql,
-                ysjg: this.ysjg,
-                lsjg: this.lsjg,
+                id: this.id,
+                fjys: this.fjys,
+                fjls: this.fjls,
+                fh: this.fh
             },
             "foreEndType": 2,
-            "code": "300000049"
+            "code": "300000036"
           }
         ).then(function (res) {
           Indicator.close();
@@ -145,6 +136,7 @@
     },
     beforeDestroy(){
       document.body.style.backgroundColor = "#f0eff5";
-    }
+    },
+
   }
 </script>

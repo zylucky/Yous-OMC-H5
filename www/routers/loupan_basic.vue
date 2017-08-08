@@ -512,7 +512,7 @@
             });
 
             setTimeout(function(){
-                _this.$router.push({path:'/list2'});
+                _this.$router.push({path:'/index'});
             },1000);
           } else {
             //this.$Message.error(res.message);

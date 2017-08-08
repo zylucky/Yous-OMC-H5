@@ -29,8 +29,8 @@
           </div>
         </li>
         <li class="clearfix">
-          <span class="ys_tit">特色标签：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">请选择标签</a></div>
+          <span class="ys_tit">性格标签：</span>
+          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{xgbq_t}}</a></div>
         </li>
         <li class="clearfix bg_gray">
           <span class="ys_tit"></span>
@@ -126,11 +126,79 @@
     },
 
     data () {
-      return {}
+      return {
+          "xgbq": [],
+          "xgbq_all": [],
+      }
     },
-    methods: {},
-    mounted(){
+    methods: {
+      getInitData(){
+          const fyid = this.$route.params.fyid;
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpjbxx/getLpjbxx.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "lpid":lpid},"foreEndType":2,"code":"30000008"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.lpid = lpid;
+            that.topic = data.topic;
+            that.address = data.address;
+            that.tsbq = data.tsbq.map((t)=>{return t.id});
+            that.kfsh = data.kfsh;
+            that.kprq = data.kprq;
+            that.lpjb = data.lpjb;
+            that.chqxz = data.chqxz.split("、");
+            that.lppz = data.lppz;
+            that.zxjnjg = data.zxjnjg;
+            that.shyl = data.shyl;
+            that.hshkzbl = data.hshkzbl;
+            that.zxptmx = data.zxptmx;
+            that.lpsjgs = data.lpsjgs;
+            that.lpsjs = data.lpsjs;
+            that.lpsjfg = data.lpsjfg;
 
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
+
+      getTsbq(){
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpjbxx/getTsbq.do";
+          let that = this;
+          this.$http.post(url).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.tsbq_all = data;
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
+    },
+    computed:{
+        xgbq_t(){
+            if(this.xgbq.length < 1){
+                return "请选择标签";
+            }
+            let tags = this.xgbq.map((t)=>{
+                for(let i = 0; i < this.xgbq_all.length; ++i){
+                    if(this.xgbq_all[i].id === t){
+                       return this.xgbq_all[i].topic;
+                    }
+                }
+                });
+            return tags.join(",");
+        }
+    },
+    mounted(){
+        this.getInitData();
+        this.getXgbq();
     },
   }
 </script>
