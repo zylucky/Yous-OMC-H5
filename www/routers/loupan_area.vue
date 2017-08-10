@@ -58,7 +58,6 @@
       }
     },
     methods: {
-
       getInitData(){
           const lpid = this.$route.params.lpid;
           this.lpid = lpid;

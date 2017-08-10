@@ -1,152 +1,190 @@
 <style scoped lang="less">
   @import "../resources/css/reset.css";
   @import "../resources/css/base.less";
+  @import "../resources/css/website/elevator_msg.less";
+
+  .page-infinite-loading {
+    text-align: center;
+    background-color: #FFF;
+    & > span {
+      display: inline-block;
+    }
+  }
+  .ys_item_ul li{
+    position: relative;
+  }
+  .shyt{width:100% !important}
 
 </style>
 <template>
   <div class="all_elements">
-    <div class="build_top">
+    <div class="build_top ele_wrap">
       <ul class="ys_item_ul mb60">
         <li class="clearfix">
-          <span class="ys_tit">楼盘名称：</span>
-          <div class="ys_item_con fl" v-text="topic"></div>
+          <span class="ys_tit">房号：</span>
+          <div class="ys_item_con fl">
+            <input type="number" value="" v-model.trim="fybh" placeholder="请输入">
+          </div>
         </li>
         <li class="clearfix">
-          <span class="ys_tit">楼盘地址：</span>
-          <div class="ys_item_con ellip fl" v-text="address"></div>
+          <span class="ys_tit">房源别名：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" v-model.trim="fyname" placeholder="请输入">
+          </div>
         </li>
         <li class="clearfix">
-          <span class="ys_tit">特色标签：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{tsbq_t}}</a></div>
+          <span class="ys_tit">楼层：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value=""  v-model.trim="lc" placeholder="请输入">
+          </div>
+        </li>
+        <li class="clearfix">
+          <span class="ys_tit w170">是否为商铺：</span>
+          <div class="ys_item_con fl">
+            <label class="mr20"><input type="radio"  value="1" v-model.trim="sfshp" name="shop_type">是</label>
+            <label ><input type="radio" value="0" v-model.trim="sfshp"  name="shop_type">否</label>
+          </div>
+        </li>
+        <li class="clearfix pr">
+          <span class="ys_tit">商铺类型：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" v-model.trim="shplx" readonly="readonly" placeholder="请选择" @click="openBtype">
+            <i class="right_arrow" @click="openBtype">&gt;</i>
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">产权年限：</span>
+          <div class="ys_item_con fl">
+            <label class="mr20"><input type="radio" v-model.trim="chqnx" value="1" name="rights_year">40</label>
+            <label class="mr20"><input type="radio" v-model.trim="chqnx" value="2" name="rights_year">50</label>
+            <label ><input type="radio" v-model.trim="chqnx" value="70" name="rights_year">70</label>
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">朝向：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" v-model.trim="chx" placeholder="请输入">
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">装修水平：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" readonly="readonly" v-model.trim="zxsp" placeholder="请选择" @click="openDecorationType">
+            <i class="right_arrow" @click="openDecorationType">&gt;</i>
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">抵押状态：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" v-model.trim="dyzt" placeholder="请输入">
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">业主属性：</span>
+          <div class="ys_item_con fl">
+            <label class="mr20"><input type="radio" v-model.trim="yzsx" value="1" name="owner_type">小业主</label>
+            <label ><input type="radio" v-model.trim="yzsx" value="2" name="owner_type">开发商</label>
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">航远房源：</span>
+          <div class="ys_item_con fl">
+            <label class="mr20"><input type="radio" v-model.trim="hystate" value="1" name="hy_type">是</label>
+            <label ><input type="radio"  v-model.trim="hystate" value="0" name="hy_type">否</label>
+          </div>
+        </li>
+
+        <li class="clearfix">
+          <span class="ys_tit">是否有租户：</span>
+          <div class="ys_item_con fl">
+            <label class="mr20"><input type="radio" v-model.trim="sfzh" value="1" name="rent_num">是</label>
+            <label ><input type="radio" v-model.trim="sfzh" value="0"  name="rent_num">否</label>
+          </div>
+        </li>
+
+        <li class="clearfix pr mb20">
+          <span class="ys_tit">空置时间：</span>
+          <div class="ys_item_con fl">
+            <input type="text" value="" placeholder="请选择日期"  v-model.trim="kzsj" @click="openPicker()">
+            <i class="calendar_icon"  @click="openPicker()"></i>
+          </div>
+        </li>
+
+        <li class="clearfix pr border_top">
+          <span class="ys_tit w224">参考租赁价格：</span>
+          <div class="ys_item_con fl">
+            <input type="number" value="" placeholder="请输入" v-model.trim="ckzljg">
+            <i class="right_unit">元/㎡/天</i>
+          </div>
+        </li>
+
+        <li class="clearfix pr">
+          <span class="ys_tit w224">业主期望租金：</span>
+          <div class="ys_item_con fl">
+            <input type="number" value="" placeholder="请输入" v-model.trim="qwzj">
+            <i class="right_unit">元/㎡/天</i>
+          </div>
+        </li>
+
+        <li class="clearfix pr">
+          <span class="ys_tit w224">业主租金底价：</span>
+          <div class="ys_item_con fl">
+            <input type="number" value="" placeholder="请输入" v-model.trim="zjdj">
+            <i class="right_unit">元/㎡/天</i>
+          </div>
+        </li>
+
+        <li class="clearfix pr">
+          <span class="ys_tit w224">适合业态：</span>
+          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{yt_t}}</a></div>
         </li>
         <li class="clearfix bg_gray">
-          <div class="ys_item_con fl" @click="selectTag($event)">
-            <span v-for="ts in tsbq_all" class="ys_tag" :class="{'active': tsbq.indexOf(ts.id) > -1}" :value="ts.id" >{{ts.topic}}</span>
+          <div class="shyt ys_item_con fl" @click="selectTag($event)">
+            <span v-for="yt in yt_all" class="ys_tag" :class="{'active': shyt.indexOf(yt.id) > -1}" :value="yt.id" >{{yt.name}}</span>
           </div>
         </li>
-        <li class="clearfix">
-          <span class="ys_tit">开发商：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="kfsh" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">开盘日期：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value=""
-                   readonly
-                   placeholder="请选择日期"
-                   v-model="kprq"
-                   @click="openPicker()">
-            <i class="calendar_icon" @click="openPicker()"></i>
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">楼盘级别：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lpjb" readonly placeholder="请选择" @click="openLevel">
-            <i class="right_arrow" @click="openLevel">&gt;</i>
-          </div>
-        </li>
-        <li class="clearfix">
-          <span class="ys_tit">产权性质：</span>
-          <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{chqxz_c}}</a></div>
-        </li>
-        <li class="clearfix">
-          <span class="ys_tit">特色标签：</span>
-          <div class="ys_item_con fl w570">
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="1" name="" v-model="chqxz">写字楼</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="2" name="" v-model="chqxz">公寓</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="3" name="" v-model="chqxz">商务楼</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="4" name="" v-model="chqxz">住宅</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="5" name="" v-model="chqxz">商业</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="6" name="" v-model="chqxz">酒店</label>
-            </div>
-            <div class="check_wrap clearfix">
 
-              <label class="fl"><input type="checkbox" value="7" name="" v-model="chqxz">别墅</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="8" name="" v-model="chqxz">综合</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="9" name="" v-model="chqxz">商业综合体</label>
-            </div>
-            <div class="check_wrap clearfix">
-              <label class="fl"><input type="checkbox" value="10" name="" v-model="chqxz">酒店式公寓</label>
-            </div>
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">楼盘品质：</span>
+        <li class="clearfix">
+          <span class="ys_tit w224">车位：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lppz" readonly placeholder="请选择" @click="openQuality">
-            <i class="right_arrow">&gt;</i>
+            <label class="mr20"><input type="radio" v-model.trim="chwlx" value="1"  name="parking_type">车库</label>
+            <label class="mr20"><input type="radio" v-model.trim="chwlx" value="2" name="parking_type">地面</label>
+            <label ><input type="radio" v-model.trim="chwlx" value="3" name="parking_type">无</label>
           </div>
         </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">楼盘均价：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="zxjnjg" placeholder="请输入">
-            <i class="right_unit">元/m³/天</i>
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">使用率：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="shyl" readonly placeholder="请选择" @click="openUse">
-            <i class="right_arrow">&gt;</i>
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit">空置比例：</span>
-          <div class="cl_999" v-text="hshkzbl">自动生成</div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit pt10">
-            <i class="ys_tit_sm">装修配套设施明细</i>
-          </span>
-          <div class="ys_item_con fl pt10">
-            <input type="text" value="" v-model="zxptmx" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">楼盘设计公司：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lpsjgs" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">楼盘设计师：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lpsjs" placeholder="请输入">
-          </div>
-        </li>
-        <li class="clearfix pr">
-          <span class="ys_tit w224">楼盘设计师风格：</span>
-          <div class="ys_item_con fl">
-            <input type="text" value="" v-model="lpsjfg" placeholder="请输入">
-          </div>
-        </li>
+
       </ul>
-      <a href="javascript:;" class="ys_default_btn mb80" @click="saveBuildMsg">保存</a>
+      <a href="javascript:;" class="ys_default_btn mb80" @click="saveInfo">保存</a>
     </div>
+
+    <!--商铺类型-->
+    <mt-popup v-model.trim="popupVisible" position="bottom" class="mint-popup-4">
+      <div class="picker-toolbar">
+        <span class="mint-datetime-action mint-datetime-cancel" @click="sureBtype">取消</span>
+        <span class="mint-datetime-action mint-datetime-confirm" @click="sureBtype">确定</span>
+      </div>
+      <mt-picker :slots="slots_bType" @change="selectLevel"></mt-picker>
+    </mt-popup>
+
+    <!--装修水平-->
+    <mt-popup v-model.trim="popupVisible2" position="bottom" class="mint-popup-4">
+      <div class="picker-toolbar">
+        <span class="mint-datetime-action mint-datetime-cancel" @click="sureBtype2">取消</span>
+        <span class="mint-datetime-action mint-datetime-confirm" @click="sureBtype2">确定</span>
+      </div>
+      <mt-picker :slots="slots_bType2" @change="selectLevel2"></mt-picker>
+    </mt-popup>
 
     <!--日期选择-->
     <mt-datetime-picker
       ref="picker"
-      v-model="pickerValue"
+      v-model.trim="pickerValue"
       type="date"
       year-format="{value} 年"
       month-format="{value} 月"
@@ -154,205 +192,103 @@
       :startDate="startDate"
       @confirm="handleConfirm">
     </mt-datetime-picker>
-
-    <!--楼盘级别-->
-    <mt-popup v-model="popupVisible" position="bottom" class="mint-popup-4">
-      <div class="picker-toolbar">
-        <span class="mint-datetime-action mint-datetime-cancel" @click="sureLevel">取消</span>
-        <span class="mint-datetime-action mint-datetime-confirm" @click="sureLevel">确定</span>
-      </div>
-      <mt-picker :slots="slots" @change="selectLevel"></mt-picker>
-    </mt-popup>
-
-    <!--楼盘品质-->
-    <mt-popup v-model="popQuality" position="bottom" class="mint-popup-4">
-      <div class="picker-toolbar">
-        <span class="mint-datetime-action mint-datetime-cancel" @click="sureQuality">取消</span>
-        <span class="mint-datetime-action mint-datetime-confirm" @click="sureQuality">确定</span>
-      </div>
-      <mt-picker :slots="slots_quality" @change="selectQuality"></mt-picker>
-    </mt-popup>
-
-
-    <!--使用率-->
-    <mt-popup v-model="popUse" position="bottom" class="mint-popup-4">
-      <div class="picker-toolbar">
-        <span class="mint-datetime-action mint-datetime-cancel" @click="sureUse">取消</span>
-        <span class="mint-datetime-action mint-datetime-confirm" @click="sureUse">确定</span>
-      </div>
-      <mt-picker :slots="slots_use" @change="selectUse"></mt-picker>
-    </mt-popup>
-
-
   </div>
 </template>
 <script>
-
-  const lang = {
-    '优': 1,
-    '良': 2,
-    '差': 3,
-  };
-   
-  const level = {
-      "5A":"1","甲":"2","乙":"3","公寓":"4","商务":"5","综合":"6"
-  };
-
   import { Toast } from 'mint-ui'; //toast
-  import { Indicator } from 'mint-ui'; //toast
-
+  import { Indicator} from 'mint-ui'; //toast
   import { MessageBox } from 'mint-ui'; //弹窗
-
   import {DatetimePicker} from 'mint-ui';  //日期选择
-
   import {Popup} from 'mint-ui'; //弹窗
-
   export default {
     components: {
+      Toast,
+      MessageBox,
       DatetimePicker,
       Popup
     },
 
     data () {
       return {
-        "lpid": "300", //楼盘id
-        "topic": "建外SOHO", //楼盘名称
-        "address": "北京市朝阳区建国门外大街4号demo", //地址
-        "tsbq": [], //特色标签
-        "kfsh": "", //开发商名称
-        "kprq": "", //开盘日期(必选)
-        "lpjb": "", //楼盘级别(必选)
-        "chqxz": [], //产权性质
-        "lppz": "", //楼盘品质 1优 2良 3差
-        "zxjnjg": "", //均价
-        "shyl": "",  //使用率
-        "hshkzbl": "", //户数空置比例
-        "zxptmx": "",  //装修设施配套明细
-        "lpsjgs": "", //楼盘设计公司
-        "lpsjs": "", //楼盘设计师
-        "lpsjfg": "", //楼盘设计风格
-        "tsbq_all":[],
+        "id": "",
+        "lpid": "",
+        "zdid": "",
+        "zdh": "",
+        "gzys": "",
+        "fybh": "",
+        "fyname": "",
+        "lc": "",
+        "zglc": "",
+        "sfshp": "",
+        "shplx": "",
+        "chqnx": "",
+        "chx": "",
+        "zxsp": "",
+        "dyzt": "",
+        "yzsx": "",
+        "hystate": "",
+        "sfzh": "",
+        "kzsj": "",
+        "qzsj": "",
+        "qwzj": "",
+        "ckzljg": "",
+        "zjdj": "",
+        "shyt": [],
+        "chwlx": "", 
 
-        //日期
-        pickerValue: '',
-        startDate: new Date(),
+           //日期
+          pickerValue: '',
+          startDate: new Date(),
 
-        //楼盘级别
-        lpjb: '',
-        slots: [
+          popupVisible:false,
+          popupVisible2:false,
+          popupx:false,
+          slots_bType: [
           {
-            values: ['5A', '甲', '乙', '公寓', '商务', '综合'],
+            values: ['内铺','临街内铺', '商场内铺', '小区内铺'],
           }
         ],
-
-        //品质
-        slots_quality: [
+          slots_bType2: [
           {
-            values: ["优", "良", "差"],  //1优 2良 3差
+            values: ['全部','简单', '普通', '豪华'],
           }
         ],
-
-        //使用率
-        slots_use: [
-          {
-            values: ["一般", "经常", "非常"],  //1优 2良 3差
-          }
-        ],
-
-        //级别弹窗显示隐藏
-        popupVisible: false,
-
-        //品质弹窗隐藏
-        popQuality: false,
-
-        //使用率隐藏
-        popUse: false
-
+        yt_all: [{"name":"金融投资","id":"1"},{"name":"文化传媒","id":"2"},{"name":"教育培训","id":"3"},{"name":"休闲娱乐","id":"4"},{"name":"IT互联网","id":"5"},{"name":"机构组织","id":"6"},{"name":"专业服务","id":"7"},{"name":"贸易","id":"8"},{"name":"医药医疗","id":"9"},{"name":"多元化集团","id":"10"},{"name":"综合","id":"11"},{"name":"其它","id":"12"}]
       }
     },
-    computed:{
-        chqxz_c(){
-            if(this.chqxz.length < 1){
-                return "请选择标签";
-            }
-            const map = {"1":"写字楼", "2":"公寓","3":"商务楼","4":"住宅","5":"商业","6":"酒店","7":"综合","8":"别墅","9":"商业综合体","10":"酒店式公寓"};
-            let tip = this.chqxz.map((item,idx)=>{return map[item.toString()]});
-            return tip.join(",");
-        },
-        tsbq_t(){
-            if(this.tsbq.length < 1){
-                return "请选择标签";
-            }
-            let tags = this.tsbq.map((t)=>{
-                for(let i = 0; i < this.tsbq_all.length; ++i){
-                    if(this.tsbq_all[i].id === t){
-                       return this.tsbq_all[i].topic;
-                    }
-                }
-                });
-            return tags.join(",");
-        }
-    },
     methods: {
-
-      //日期panel展示
       openPicker() {
         this.$refs.picker.open();
       },
-
-      //日期确定
       handleConfirm(value){
-        this.kprq = this.transformDate(value);
+        this.kzsj = this.transformDate(value);
       },
 
-      //楼盘类型panel展示
-      openLevel() {
-        this.lpjb = '乙';
+      openBtype() {
+        this.shplx = "商场内铺";
         this.popupVisible = true;
       },
-
-      //选择类型
-      selectLevel(picker, values) {
-        this.lpjb = values[0];
-      },
-
-      //类型确定
-      sureLevel(){
+      //关闭底部
+      sureBtype(){
         this.popupVisible = false;
       },
-
-
-      //打开品质
-      openQuality(){
-        this.lppz = '差';
-        this.popQuality = true;
+      //选择赋值
+      selectLevel(picker, values) {
+        this.shplx = values[0];
       },
 
-      //选择品质
-      selectQuality(picker, values){
-        this.lppz = values[0];
+      //打开底部2
+      openDecorationType() {
+        this.zxsp = "普通";
+        this.popupVisible2 = true;
       },
-
-      //品质确定
-      sureQuality(){
-        this.popQuality = false;
+      //关闭底部2
+      sureBtype2(){
+        this.popupVisible2 = false;
       },
-
-
-      //打开品质
-      openUse(){
-        this.shyl = '非常';
-        this.popUse = true;
-      },
-
-      //选择品质
-      selectUse(picker, values){
-        this.shyl = values[0];
-      },
-
-      //品质确定
-      sureUse(){
-        this.popUse = false;
+      //选择赋值2
+      selectLevel2(picker, values) {
+        this.zxsp = values[0];
       },
 
       //日期转换
@@ -364,176 +300,185 @@
         str = year + '-' + this.addZero(month) + '-' + this.addZero(day);
         return str;
       },
-
       //补零
       addZero(n){
         return n = n < 10 ? '0' + n : '' + n;
       },
 
-      //选择tag
       selectTag(e){
         const target = $(e.target), val = target.attr("value");
         if(!val){return;}
 
         if ($(e.target).hasClass('active')) {
-          let tsbq_t = new Set(this.tsbq);
-          tsbq_t.delete(val);
-          this.tsbq = [...tsbq_t];
+          let shyt_t = new Set(this.shyt);
+          shyt_t.delete(val);
+          this.shyt = [...shyt_t];
 
           $(e.target).removeClass('active');
         } else {
-          let tsbq_t = this.tsbq.slice(0);
-          tsbq_t.push(val);
-          this.tsbq = [...tsbq_t];
+          let shyt_t = new Set(this.shyt);
+          shyt_t.add(val);
+          this.shyt = [...shyt_t];
 
           $(e.target).addClass('active');
         }
       },
-
       getInitData(){
-          const lpid = this.$route.params.lpid;
+          const fyid = this.$route.params.fyid, lpid = this.$route.params.lpid;
+          this.id = fyid;
+          this.lpid = lpid;
           Indicator.open({
              text: '',
              spinnerType: 'fading-circle'
           });
-          const url = this.$api + "/yhcms/web/lpjbxx/getLpjbxx.do";
+          const url = this.$api + "/yhcms/web/zdfyxx/getZdfyxx.do";
           let that = this;
-          this.$http.post(url, {"parameters":{ "lpid":lpid},"foreEndType":2,"code":"30000008"}).then((res)=>{
+          this.$http.post(url, {"parameters":{"id":fyid, "lpid": lpid},"foreEndType":2,"code":"300000064"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
-            that.lpid = lpid;
-            that.topic = data.topic;
-            that.address = data.address;
-            that.tsbq = data.tsbq.map((t)=>{return t.id});
-            that.kfsh = data.kfsh;
-            that.kprq = data.kprq;
-            that.lpjb = data.lpjb;
-            that.chqxz = data.chqxz.split("、");
-            that.lppz = data.lppz;
-            that.zxjnjg = data.zxjnjg;
-            that.shyl = data.shyl;
-            that.hshkzbl = data.hshkzbl;
-            that.zxptmx = data.zxptmx;
-            that.lpsjgs = data.lpsjgs;
-            that.lpsjs = data.lpsjs;
-            that.lpsjfg = data.lpsjfg;
-
+            that.zdid = data.zdid;
+            that.zdh = data.zdh;
+            that.gzys = data.gzys;
+            that.fybh = data.fybh;
+            that.fyname = data.fyname;
+            that.lc = data.lc;
+            that.zglc = data.zglc;
+            that.sfshp = data.sfshp;
+            that.shplx = data.shplx;
+            that.chqnx = data.chqnx;
+            that.chx = data.chx;
+            that.zxsp = data.zxsp;
+            that.dyzt = data.dyzt;
+            that.yzsx = data.yzsx;
+            that.hystate = data.hystate;
+            that.sfzh = data.sfzh;
+            that.kzsj = data.kzsj;
+            that.qzsj = data.qzsj;
+            that.qwzj = data.qwzj;
+            that.ckzljg = data.ckzljg;
+            that.zjdj = data.zjdj;
+            let shyt = data.shyt ? data.shyt.split(";"):[];
+            that.shyt = shyt;
+            that.chwlx = data.chwlx;
           }, (res)=>{
             Indicator.close()
           });
       },
 
-      getTsbq(){
-          Indicator.open({
-             text: '',
-             spinnerType: 'fading-circle'
-          });
-          const url = this.$api + "/yhcms/web/lpjbxx/getTsbq.do";
-          let that = this;
-          this.$http.post(url).then((res)=>{
-            Indicator.close()
-            const data = JSON.parse(res.bodyText).data;
-            that.tsbq_all = data;
-          }, (res)=>{
-            Indicator.close()
-          });
-      },
-
-      saveBuildMsg(){
+      saveInfo(){
         var _this = this;
-        if(!this.kfsh){
-            MessageBox('提示', '请填写开发商');
-            return;
-        }
-
-        if(this.kprq == ''){
-          MessageBox('提示', '请选择开盘日期');
-            return;
-        }
-
-        if(this.lpjb == ''){
-          MessageBox('提示', '请选择楼盘级别');
+        if(!this.fybh){
+          MessageBox('提示', '请输入房号!');
+          return;
+        }else if(!this.fyname){
+          MessageBox('提示', '房源别名!');
+          return;
+        }else if(!this.lc){
+          MessageBox('提示', '请输入楼层!');
+          return;
+        }else if(!this.chx){
+          MessageBox('提示', '请输入朝向!');
+          return;
+        }else if(!this.dyzt){
+          MessageBox('提示', '请输入抵押状态!');
+          return;
+        }else if(!this.kzsj){
+          MessageBox('提示', '请选择空置时间!');
+          return;
+        }else if(!this.ckzljg){
+          MessageBox('提示', '请输入参考租赁价格!');
+          return;
+        }else if(!this.qwzj){
+          MessageBox('提示', '请输入业主期望租金!');
+          return;
+        }else if(!this.zjdj){
+          MessageBox('提示', '请输入业主租金底价!');
+          return;
+        }else if(this.shyt.length < 1){
+          MessageBox('提示', '适合业态!');
           return;
         }
 
-        if(!this.lppz){
-          MessageBox('提示', '请选择楼盘品质');
-          return;
-        }
-
-        /*
-        Toast({
-          message: '保存成功',
-          position: 'bottom'
-        });
-        */
         Indicator.open({
             text: '保存中...',
             spinnerType: 'fading-circle'
         });
 
-        /*
-        setTimeout(function(){
-            _this.$router.push({path:'/list2'});
-        },1000);
-        */
         this.$http.post(
-          this.$api + "/yhcms/web/lpjbxx/saveLp.do",
+          this.$api + "/yhcms/web/zdfyxx/saveZdfyxx.do",
           {
             "parameters": {
-              "lpid": this.lpid, //楼盘id
-              "topic": this.topic, //楼盘名称
-              "address": this.address, //地址
-              "tsbq": "、" + this.tsbq.join("、") + "、", //特色标签
-              "kfsh": this.kfsh, //开发商名称
-              "kprq": this.kprq, //开盘日期(必选)
-              "lpjb": level[this.lpjb], //楼盘级别(必选)
-              "chqxz": this.chqxz.join("、"), //产权性质
-              "lppz": lang[this.lppz].toString(), //楼盘品质 1优 2良 3差
-              "zxjnjg": this.zxjnjg, //均价
-              "shyl": this.shyl,  //使用率
-              "hshkzbl": this.hshkzbl, //户数空置比例
-              "zxptmx": this.zxptmx,  //装修设施配套明细
-              "lpsjgs": this.lpsjgs, //楼盘设计公司
-              "lpsjs": this.lpsjs, //楼盘设计师
-              "lpsjfg": this.lpsjfg //楼盘设计风格
+                id: this.id,
+                lpid: this.lpid,
+                zdid: this.zdid,
+                zdh: this.zdh,
+                gzys: this.gzys,
+                fybh: this.fybh,
+                fyname: this.fyname,
+                lc: this.lc,
+                zglc: this.zglc,
+                sfshp: this.sfshp,
+                shplx: this.shplx,
+                chqnx: this.chqnx,
+                chx: this.chx,
+                zxsp: this.zxsp,
+                dyzt: this.dyzt,
+                yzsx: this.yzsx,
+                hystate: this.hystate,
+                sfzh: this.sfzh,
+                kzsj: this.kzsj,
+                qzsj: this.qzsj,
+                qwzj: this.qwzj,
+                ckzljg: this.ckzljg,
+                zjdj: this.zjdj,
+                shyt: this.shyt.join(";"),
+                chwlx: this.chwlx
             },
             "foreEndType": 2,
-            "code": "300000041"
+            "code": "300000061"
           }
         ).then(function (res) {
           Indicator.close();
           var result = JSON.parse(res.bodyText);
-          if (result.success) {
+          if (result.status==200) {
             Toast({
-                message: '保存成功',
-                position: 'bottom',
-                duration: 1000
+              message: '保存成功',
+              duration: 1000
             });
-
-            setTimeout(function(){
-                _this.$router.push({path:'/list2'});
-            },1000);
+            setTimeout(function () {
+              _this.$router.push({path: '/index'})
+            }, 1500);
           } else {
-            //this.$Message.error(res.message);
             Toast({
-                message: '保存失败: ' + result.message,
-                position: 'bottom'
+              message: '保存失败: ' + result.message,
+              position: 'bottom'
             });
           }
         }, function (res) {
-          //this.$Message.error('保存失败');
           Toast({
-              message: '保存失败! 请稍候再试',
-              position: 'bottom'
+            message: '保存失败',
+            position: 'bottom'
           });
         });
       }
-
+    },
+    computed:{
+        yt_t(){
+             if(this.shyt.length < 1){
+                return "请选择适合业态";
+            }
+            let tags = this.shyt.map((t)=>{
+                for(let i = 0; i < this.yt_all.length; ++i){
+                    if(this.yt_all[i].id === t){
+                       return this.yt_all[i].name;
+                    }
+                }
+                });
+            return tags.join(";");
+        }
     },
     mounted(){
         this.getInitData();
-        this.getTsbq();
     },
   }
 </script>

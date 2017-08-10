@@ -101,8 +101,8 @@ var router = new VueRouter({
       component: require('./routers/fang_list.vue')
     },
     {
-      path: '/fang_basic/:lpid/:zdid',
-      component: require('./routers/fang_list.vue')
+      path: '/fang_basic/:lpid/:fyid',
+      component: require('./routers/fang_basic.vue')
     },
     {
       path: '/fang_struct/:fyid',
@@ -113,6 +113,14 @@ var router = new VueRouter({
       component: require('./routers/fang_owner.vue')
     },
     {
+      path: '/fang_owner/add/:fyid',
+      component: require('./routers/fang_add_owner.vue')
+    },
+    {
+      path: '/fang_owner/edit/:yzid',
+      component: require('./routers/fang_edit_owner.vue')
+    },
+    {
       path: '/fang_agenter/:fyid',
       component: require('./routers/fang_agenter.vue')
     },
@@ -121,8 +129,20 @@ var router = new VueRouter({
       component: require('./routers/fang_add_agent.vue')
     },
     {
+      path: '/fang_agenter/edit/:dlid',
+      component: require('./routers/fang_edit_agent.vue')
+    },
+    {
       path: '/fang_renter/:fyid',
       component: require('./routers/fang_renter.vue')
+    },
+    {
+      path: '/fang_renter/add/:fyid',
+      component: require('./routers/fang_add_rent.vue')
+    },
+    {
+      path: '/fang_renter/edit/:zhid',
+      component: require('./routers/fang_edit_rent.vue')
     },
     {
       path: '/fang_image/:fyid',

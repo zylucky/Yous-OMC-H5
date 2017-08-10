@@ -19,10 +19,10 @@
           <span class="ys_tit">{{datum.topic}}</span>
           <span class="ys_tit">{{datum.xb == "1" ? "男":"女"}}</span>
           <span>{{datum.phone}}</span>
-          <i class="right_arrow" :agent="datum.id" @click="modifyAgent">&gt;</i>
+          <i class="right_arrow" :rent="datum.id" @click="modifyRent">&gt;</i>
         </li>
       </ul>
-      <div class="tc"><a href="javascript:;" class="cl_link f30" @click="addAgent">+添加租户</a></div>
+      <div class="tc"><a href="javascript:;" class="cl_link f30" @click="addRent">+添加租户</a></div>
     </div>
   </div>
 </template>
@@ -43,9 +43,9 @@
              text: '',
              spinnerType: 'fading-circle'
           });
-          const url = this.$api + "/yhcms/web/zdfyxx/getZdfyZhxx.do";
+          const url = this.$api + "/yhcms/web/zdfyxx/getLpZdZhxx.do";
           let that = this;
-          this.$http.post(url, {"parameters":{ "id":fyid},"foreEndType":2,"code":"300000020"}).then((res)=>{
+          this.$http.post(url, {"parameters":{ "id":fyid},"foreEndType":2,"code":"300000021"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
             that.data = data;
@@ -53,11 +53,12 @@
             Indicator.close()
           });
       },
-      addAgent(){
-          this.$router.push({path:'/fang_add_agent/'+this.id});
+      addRent(){
+          this.$router.push({path:'/fang_renter/add/'+this.id});
       },
-      modifyAgent(){
-          this.$router.push({path:'/fang_edit_agent/'+this.id});
+      modifyRent(){
+          const target = $(e.target), val = target.attr("rent");
+          this.$router.push({path:'/fang_renter/edit/'+rent});
       },
     },
     mounted(){

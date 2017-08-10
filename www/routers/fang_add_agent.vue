@@ -10,7 +10,7 @@
     }
   }
   .xgbq{width:100% !important}
-  .pos{position:relative}
+  .pos{position:relative;width:5.5rem !important}
   .right_arrow{border:1px solid black; border-radius:50%; line-height:.35rem}
 
 </style>
@@ -40,11 +40,11 @@
             <span v-for="xg in xgbq_all" class="ys_tag" :class="{'active': xgbq.indexOf(xg.id) > -1}" :value="xg.id" >{{xg.topic}}</span>
           </div>
         </li>
-        <li class="clearfix">
+        <li v-for="(ph,idx) in phone" class="clearfix">
           <span class="ys_tit">联系方式：</span>
-          <div class="ys_item_con fl pos" >
-            <input type="text" value="" v-model="phone" placeholder="请输入">
-            <i class="right_arrow plus">+</i>
+          <div class="ys_item_con fl pos pos_a">
+            <input type="text" :value="ph.phone" v-model="ph.phone" placeholder="请输入">
+            <i class="right_arrow plus" :index="idx" @click="addPhone($event)">{{idx<1 ? "+" : "-"}}</i>
           </div>
         </li>
         <li class="clearfix pr">
@@ -94,7 +94,8 @@
           "fyid": "",
           "topic": "",
           "xb": "",
-          "phone": "",
+          "phone": [{"phone":""}],
+          "bqid": "",
           "wxh": "",
           "address": "",
           "zy": "",
@@ -105,6 +106,20 @@
       }
     },
     methods: {
+      addPhone(e){
+        const target = $(e.target), action = $.trim(target.html());
+        if(!action || (action !== '+' && action !== '-')){return;}
+
+        if (action === '+') {
+            this.phone.push({"phone":""}); 
+        } else {
+            const idx = parseInt(target.attr("index"));
+            let ph = this.phone.filter((c,index)=>{
+                if(index !== idx){return c;} 
+            });
+            this.phone = ph;
+        }
+      },
       selectTag(e){
         const target = $(e.target), val = target.attr("value");
         if(!val){return;}
@@ -147,6 +162,12 @@
               MessageBox('提示', '请输入姓名');
               return;
             }
+
+            let phone = this.phone.map((p)=>{ return p.phone});
+            if(phone.length < 1){
+              MessageBox('提示', '请输入联系方式');
+              return;
+            }
     
             Indicator.open({
                 text: '保存中...',
@@ -161,7 +182,7 @@
                     topic: this.topic,
                     xb: this.xb,
                     bqid: this.bqid,
-                    phone: this.phone,
+                    phone: phone,
                     wxh: this.wxh,
                     address: this.address,
                     zy: this.zy,
@@ -169,7 +190,7 @@
                     qyq: this.qyq
                 },
                 "foreEndType": 2,
-                "code": "300000049"
+                "code": "300000026"
               }
             ).then(function (res) {
               Indicator.close();

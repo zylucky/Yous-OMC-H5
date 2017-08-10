@@ -1,6 +1,7 @@
 <style scoped lang="less">
   @import "../resources/css/reset.css";
   @import "../resources/css/base.less";
+  .tsbq{width:100% !important}
 
 </style>
 <template>
@@ -20,7 +21,7 @@
           <div class="ys_item_con fl"><a href="javascript:;" class="cl_link">{{tsbq_t}}</a></div>
         </li>
         <li class="clearfix bg_gray">
-          <div class="ys_item_con fl" @click="selectTag($event)">
+          <div class="ys_item_con fl tsbq" @click="selectTag($event)">
             <span v-for="ts in tsbq_all" class="ys_tag" :class="{'active': tsbq.indexOf(ts.id) > -1}" :value="ts.id" >{{ts.topic}}</span>
           </div>
         </li>
