@@ -46,14 +46,13 @@
 </template>
 <script>
   import {Toast} from 'mint-ui';
+  import {Indicator} from 'mint-ui';
   import { MessageBox } from 'mint-ui'; //弹窗
+
   export default {
-    components: {
-      Toast,
-      MessageBox
-    },
-    data:function(){
+    data(){
       return{
+        lpid: "",
         imgList:[],
       }
     },
@@ -68,11 +67,28 @@
           MessageBox('提示', '请选择图片文件!');
           return
         }
-        reader.readAsDataURL(img1);
         var that=this;
         reader.onloadend=function(){
           that.imgList.push(reader.result)
         }
+        reader.readAsDataURL(img1);
+      },
+      getInitData(){
+          const lpid = this.$route.params.lpid;
+          this.lpid = lpid;
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/lpjbxx/getLpTp.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "lpid":lpid},"foreEndType":2,"code":"300000059"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data.lppic;
+            //that.imgList = data;
+          }, (res)=>{
+            Indicator.close()
+          });
       },
       saveToserver:function(){
         var fd = new FormData();
@@ -103,6 +119,9 @@
           });
         });
       }
+    },
+    mounted(){
+        this.getInitData();
     }
   }
 

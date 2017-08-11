@@ -207,7 +207,6 @@
             "code": "300000074"
           }
         ).then(function (res) {
-          console.log(res)
           var result = res;
           _this.showTab=0;
           _this.showShadow=0;
@@ -252,7 +251,6 @@
             "code": "300000074"
           }
         ).then(function (res) {
-          console.log(res)
           var result = res;
           _this.showTab=0;
           _this.showShadow=0;
@@ -297,7 +295,6 @@
             "code": "300000074"
           }
         ).then(function (res) {
-          console.log(res)
           var result = res;
           _this.showTab=0;
           _this.showShadow=0;

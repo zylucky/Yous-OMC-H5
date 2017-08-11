@@ -669,7 +669,6 @@
       },
 
       gRemoteData(paraobj, successcb, errorcb){
-        console.info(paraobj);
         const url = this.$api + "/yhcms/web/lpjbxx/getZdLpjbxx.do";
         axios.post(url, paraobj)
           .then(function (response) {
