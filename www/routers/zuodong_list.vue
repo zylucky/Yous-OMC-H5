@@ -332,7 +332,7 @@
         </router-link>
       </div>
       <div class="build_bot_msg">
-        <router-link class="bulid_msg_last" :to="{path:'/fang_list/'+zdid}">
+        <router-link class="bulid_msg_last" :to="{path:'/fang_list/'+ this.lpid + '/' + zdid}">
           <i></i>
           <span>房源信息</span>
         </router-link>

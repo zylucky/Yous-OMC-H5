@@ -97,7 +97,7 @@ var router = new VueRouter({
       component: require('./routers/zuodong_property.vue')
     },
     {
-      path: '/fang_list/:zdid',
+      path: '/fang_list/:lpid/:zdid',
       component: require('./routers/fang_list.vue')
     },
     {
