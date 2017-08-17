@@ -160,6 +160,14 @@ var router = new VueRouter({
       path: '/fang_reg/:fyid',
       component: require('./routers/fang_reg.vue')
     },
+    {
+      path: '/login',
+      component: require('./routers/login.vue')
+    },
+    {
+      path: '*',
+      component: require('./routers/login.vue')
+    }
   ]
 });
 

@@ -359,7 +359,7 @@
       <div class="msg_progress_bar">
         <div class="finish_bar"></div>
         <span class="pr">信息完成比例</span>
-        <span class="progress_text">50%</span>
+        <span class="progress_text">{{progress}}</span>
       </div>
       <div class="close" id="close_msg">&times;</div>
     </div>
@@ -418,7 +418,8 @@
           "curr_page": 1,
           "items_perpage": 10,
         },
-        resultData: []
+        resultData: [],
+        progress: "0%"
       }
     },
     mounted(){
@@ -473,6 +474,22 @@
         axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
         this.resetGetData();
         this.getFilters();
+      },
+      getProgress(){
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/zdfyxx/getLpwcblxx.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "id":this.lpid},"foreEndType":2,"code":"300000086"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.progress = data.wcbl + "%";
+          }, (res)=>{
+            Indicator.close()
+            that.progress = "10%";
+          });
       },
       getQueryString: function (key) {
         var t = new RegExp("(^|&)" + key + "=([^&]*)(&|$)", "i"),
@@ -694,6 +711,7 @@
         $('.shadow').show();
         const evt = (event || window.event), target = (evt.target || evt.srcElement), href = $(target).parents("a"), lpid=$(href).attr("lpid");
         this.lpid = lpid;
+        this.getProgress();
         $('#msg_super_wrap').animate({
           bottom: 0
         });

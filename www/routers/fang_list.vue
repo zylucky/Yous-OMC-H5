@@ -336,7 +336,7 @@
       <div class="msg_progress_bar">
         <div class="finish_bar"></div>
         <span class="pr">信息完成比例</span>
-        <span class="progress_text">50%</span>
+        <span class="progress_text">{{progress}}</span>
       </div>
       <div class="close" id="close_msg">&times;</div>
     </div>
@@ -382,6 +382,7 @@
         priceTArray: [],
         sizeArray: [],
         featureArray: [],
+        progress: ""
       }
     },
     mounted(){
@@ -421,7 +422,22 @@
 
         this.getData();
       },
-
+      getProgress(){
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
+          });
+          const url = this.$api + "/yhcms/web/zdfyxx/getFywcblxx.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{ "id":this.fyid},"foreEndType":2,"code":"300000088"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.progress = data.wcbl + "%";
+          }, (res)=>{
+            Indicator.close()
+            that.progress = "10%";
+          });
+      },
       getData(){
           Indicator.open({
              text: '',
@@ -459,6 +475,7 @@
         $('.shadow').show();
         const evt = (event || window.event), target = (evt.target || evt.srcElement), href = $(target).parents("a"), fyid=$(href).attr("fyid");
         this.fyid = fyid;
+        this.getProgress();
         $('#msg_super_wrap').animate({
           bottom: 0
         });

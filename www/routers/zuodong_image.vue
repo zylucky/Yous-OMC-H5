@@ -30,14 +30,14 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <div class="common_title">楼盘照片</div>
+      <div class="common_title">座栋照片</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add"  type="file">
+            <input @change='add_img' id="file_add" type="file">
         </div>
-        <div class="img_demo fl pr" v-for='(item ,index ) in imgList'>
-          <img class="upload_demo_img" :src="item" alt="" />
-          <i class="delete_icon" @click='delete_img(index)'></i>
+        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
+          <img class="upload_demo_img" :src="item.url" alt="" />
+          <i class="delete_icon" @click='delete_img(index, item.id)'></i>
         </div>
       </div>
       <a href="javascript:;" class="ys_default_btn mb80" @click.stop.prevent="saveToserver">保存</a>
@@ -46,64 +46,145 @@
 </template>
 <script>
   import {Toast} from 'mint-ui';
+  import {Indicator} from 'mint-ui';
   import { MessageBox } from 'mint-ui'; //弹窗
+
   export default {
-    components: {
-      Toast,
-      MessageBox
-    },
-    data:function(){
+    data(){
       return{
-        lpid: "",
+        zdid: "",
         imgList:[],
       }
     },
     methods:{
-      delete_img(item){
-        this.imgList.splice(item,1);
+      delete_img(index, id){
+        if(id !== 'xxx'){
+            this.imgList[index].isdelete = "1";
+        }
+        else{
+            this.imgList.splice(index,1);
+        }
       },
       add_img(event){
         var reader = new FileReader();
+        const tag = $(event.target).attr("tag");
         var img1=event.target.files[0];
         if (!/\/(?:jpeg|jpg|png)/i.test(img1.type)){
           MessageBox('提示', '请选择图片文件!');
           return
         }
-        reader.readAsDataURL(img1);
         var that=this;
-        reader.onloadend=function(){
-          that.imgList.push(reader.result)
+        reader.onloadend = () => {
+          const img = reader.result, obj = {
+              id: "xxx",
+              lpid: that.lpid,
+              isdelete: 0,
+              type: 2,
+              suffix:img1.type,
+              url: img
+          };
+          that.imgList.push(obj)
         }
+        reader.readAsDataURL(img1);
       },
-      saveToserver:function(){
-        var fd = new FormData();
-        var files = document.querySelector('#file_add').files;
-        for(var i=0;i<files.length;i++){
-          var reader = new FileReader();
-          reader.readAsDataURL(files[i]);
-          fd.append(i,files[i]);
-        }
-        this.$http.post(
-           this.$api,
-          {images:fd},
-           {
-            'headers': {
-              'Content-Type': 'image/jpeg;image/x-png'
-            }
-          }).then(function () {
-          Toast({
-            message: '上传成功!',
-            position: 'middle',
-            duration: 2000
+      getInitData(){
+          const zdid = this.$route.params.zdid;
+          this.zdid = zdid;
+          Indicator.open({
+             text: '',
+             spinnerType: 'fading-circle'
           });
-        }, function () {
+          const url = this.$api + "/yhcms/web/zdfyxx/getLpZdTp.do";
+          let that = this;
+          this.$http.post(url, {"parameters":{"zdid":zdid},"foreEndType":2,"code":"300000016"}).then((res)=>{
+            Indicator.close()
+            const data = JSON.parse(res.bodyText).data;
+            that.imgList = data.lppic;
+          }, (res)=>{
+            Indicator.close()
+          });
+      },
+      saveToserver(){
+          //开始上传图片
+          const that = this;
+          Indicator.open({
+            text: '上传图片中...',
+            spinnerType: 'fading-circle'
+          });
+          let fp = [];
+          this.imgList.forEach((img)=>{
+             if(img.id === "xxx"){
+                 const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
+                 that.saveImages(data, t, function(path){fp.push({"id":"", "isdelete":"0", "url":path})});
+             }
+             else{
+                 fp.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
+             }
+          });
+          this.imgList = fp;
+
+          //保存信息
+          setTimeout(function(){
+              Indicator.close();
+              that.saveImageData();
+          }, 1000);
+      },
+      saveImages(pic, type, cb){
+          const that = this;
+          this.$http.post(
+              this.$api + "/yhcms/web/jcsj/uploadPic.do",
+              {"parameters":{ "smallPic":pic,"suffix": "." + type},"foreEndType":2,"code":"300000084"}
+          ).then((res)=>{
+              var result = JSON.parse(res.bodyText);
+              if (result.success) {
+                  cb && cb(result.data);
+              }
+              else{
+              }
+          }, (res)=>{});
+      },
+      saveImageData(){
+        const that = this;
+        Indicator.open({
+          text: '保存中...',
+          spinnerType: 'fading-circle'
+        });
+        let lp = this.imgList.map((item, idx)=>{
+            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
+        });
+
+        this.$http.post(
+           this.$api + "/yhcms/web/zdfyxx/saveLpZdTp.do",
+           {"parameters":{"zdid":this.zdid,"zdtp":lp},"foreEndType":2,"code":"300000081"}).then((res)=>{
+          Indicator.close();
+          var result = JSON.parse(res.bodyText);
+          if (result.success) {
+            Toast({
+                message: '保存成功',
+                position: 'bottom',
+                duration: 1000
+            });
+
+            setTimeout(function(){
+                that.$router.push({path:'/index'});
+            },1000);
+          } else {
+            Toast({
+                message: '保存失败: ' + result.message,
+                position: 'bottom'
+            });
+          }
+        },(res)=>{
+          Indicator.close();
           Toast({
-            message: '服务器错误!',
-            position: 'middle',
-            duration: 2000
+              message: '保存失败! 请稍候再试',
+              position: 'bottom'
           });
         });
-      }
+      },
+    },
+    mounted(){
+        this.getInitData();
     }
   }
 
