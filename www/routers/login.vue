@@ -25,12 +25,12 @@
             <i class="ys_icon user"></i>
             <input type="text" id="userName"
                    class="mt5rem" value=""
-                   v-model="username" placeholder="请输入用户名">
+                   v-model.trim="username" placeholder="请输入用户名">
           </div>
           <div class="inp_item">
             <div class="inp_bg"></div>
             <i class="ys_icon pass"></i>
-            <input type="text" value="" class="mt5rem" v-model="password" placeholder="请输入密码">
+            <input type="password" value="" class="mt5rem" v-model.trim="password" placeholder="请输入密码">
           </div>
           <div class="inp_item login">
             <a href="javascript:;" style="line-height: 1.4rem;margin-top: .14rem" class="ys_btn" @click="login">登 录</a>
@@ -44,6 +44,7 @@
   import {Toast} from 'mint-ui'; //toast
   import {Indicator} from 'mint-ui';
   import {MessageBox} from 'mint-ui'; //弹窗
+  import crypto from 'crypto';
 
   export default {
     data () {
@@ -54,29 +55,57 @@
     },
     methods: {
       login(){
-        var _this = this;
-        if (this.username == 'admin' && this.password == 'admin') {
-          Indicator.open({
-            text: '',
-            spinnerType: 'fading-circle'
-          });
-          setTimeout(function () {
-            Indicator.close();
-            Toast({
-              message: '恭喜您！登陆成功',
-              position: 'bottom',
-              duration: 3000
-            });
-            setTimeout(function () {
-              _this.$router.push({path: '/index'});
-            }, 1000);
-          }, 1000);
-
-        } else if (this.username == '' || this.password == '') {
+        const _this = this, un = this.username, pw = this.password;
+        if (!un || !pw) {
           MessageBox('提示', '请输入用户名和密码');
-        } else {
-          MessageBox('提示', '用户名或密码错误，请重新输入！');
+          return;
         }
+
+        const sha1 = crypto.createHash('sha1'), md5 = crypto.createHash('md5');
+        sha1.update(this.password);
+        const pwd = sha1.digest('hex');
+        md5.update(pwd);
+        const password = md5.digest("hex");
+
+        this.$http.post(
+          this.$api + "/yhcms/web/jcsj/login.do",
+          {
+            "parameters": {
+              "uaccounts": un,
+              "upass": password
+            },
+            "foreEndType": 2,
+            "code": "300000045"
+          }
+        ).then(function (res) {
+          Indicator.close();
+          var result = JSON.parse(res.bodyText);
+          if (result.success) {
+            const msg = {"user": name};
+            sessionStorage.setItem('login', JSON.stringify(msg));
+            Toast({
+                message: '登录成功',
+                position: 'bottom',
+                duration: 1000
+            });
+
+            setTimeout(function(){
+                _this.$router.push({path:'/index'});
+            },1000);
+
+          } else {
+            Toast({
+                message: '登录失败: ' + result.message,
+                position: 'bottom'
+            });
+          }
+        }, function (res) {
+          Indicator.close();
+          Toast({
+              message: '登录失败! 请稍候再试',
+              position: 'bottom'
+          });
+        });
       }
     },
     mounted(){
