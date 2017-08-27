@@ -36,7 +36,7 @@
             <input @change='add_img' id="file_add" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" @click='delete_img(index, item.id)'></i>
         </div>
       </div>
@@ -52,6 +52,7 @@
   export default {
     data(){
       return{
+        lpid: "",
         zdid: "",
         imgList:[],
       }
@@ -75,21 +76,34 @@
         }
         var that=this;
         reader.onloadend = () => {
-          const img = reader.result, obj = {
-              id: "xxx",
-              lpid: that.lpid,
-              isdelete: 0,
-              type: 2,
-              suffix:img1.type,
-              url: img
-          };
-          that.imgList.push(obj)
+          let ret;
+          const imgx = new Image();
+          imgx.src = reader.result;
+          imgx.onload = function(){
+              var canvas = document.createElement('canvas');
+              canvas.width = imgx.naturalWidth;
+              canvas.height = imgx.naturalHeight;
+              canvas.getContext("2d").drawImage(imgx, 0, 0);
+              ret = canvas.toDataURL(img1.type, .5);
+
+              const obj = {
+                  id: "xxx",
+                  lpid: that.lpid,
+                  isdelete: 0,
+                  type: 2,
+                  suffix:img1.type,
+                  url: ret 
+              };
+              that.imgList.push(obj)
+           }
         }
         reader.readAsDataURL(img1);
       },
       getInitData(){
           const zdid = this.$route.params.zdid;
           this.zdid = zdid;
+          this.lpid = sessionStorage.getItem("zd-lp");
+
           Indicator.open({
              text: '',
              spinnerType: 'fading-circle'
@@ -99,7 +113,7 @@
           this.$http.post(url, {"parameters":{"zdid":zdid},"foreEndType":2,"code":"300000016"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
-            that.imgList = data.lppic;
+            that.imgList = data;
           }, (res)=>{
             Indicator.close()
           });
@@ -121,13 +135,15 @@
                  fp.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
              }
           });
-          this.imgList = fp;
+          setTimeout(function(){
+              that.imgList = fp;
+          },1000);
 
           //保存信息
           setTimeout(function(){
               Indicator.close();
               that.saveImageData();
-          }, 1000);
+          }, 5000);
       },
       saveImages(pic, type, cb){
           const that = this;
@@ -166,7 +182,7 @@
             });
 
             setTimeout(function(){
-                that.$router.push({path:'/index'});
+                that.$router.push({path:'/zuodong_list/'+that.lpid});
             },1000);
           } else {
             Toast({

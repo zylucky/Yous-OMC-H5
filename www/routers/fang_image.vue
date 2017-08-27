@@ -30,43 +30,43 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <div class="common_title">房源图片</div>
+      <div class="common_title">房源图</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fy" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
-      <div class="common_title">户型图片</div>
+      <div class="common_title">户型图</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="hx" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="hx" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
-      <div class="common_title">格局图片</div>
+      <div class="common_title">格局图</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="gj" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in gjList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="gj" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
-      <div class="common_title">封面图片</div>
+      <div class="common_title">封面图</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fm" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
@@ -82,6 +82,8 @@
   export default {
     data(){
       return{
+        lpid: "",
+        zdid: "",
         fyid: "",
         imgList:[],
         hxList:[],
@@ -109,32 +111,50 @@
         }
         var that=this;
         reader.onloadend = () => {
-          const img = reader.result, obj = {
-              id: "xxx",
-              fyid: that.fyid,
-              isdelete: 0,
-              type: 2,
-              suffix:img1.type,
-              url: img
-          };
-          that[which].push(obj)
+          let ret;
+          const imgx = new Image();
+          imgx.src = reader.result;
+          imgx.onload = function(){
+              var canvas = document.createElement('canvas');
+              canvas.width = imgx.naturalWidth;
+              canvas.height = imgx.naturalHeight;
+              canvas.getContext("2d").drawImage(imgx, 0, 0);
+              ret = canvas.toDataURL(img1.type, .5);
+
+              const obj = {
+                  id: "xxx",
+                  lpid: that.lpid,
+                  isdelete: 0,
+                  type: 2,
+                  suffix:img1.type,
+                  url: ret 
+              };
+              that[which].push(obj)
+           }
         }
         reader.readAsDataURL(img1);
       },
       getInitData(){
           const fyid = this.$route.params.fyid;
           this.fyid = fyid;
+
+          this.lpid = sessionStorage.getItem("fy-lp");
+          const zdid = sessionStorage.getItem("fy-zd");
+          this.zdid = !zdid || zdid === "undefined" ?  "" : zdid;
+
           Indicator.open({
              text: '',
              spinnerType: 'fading-circle'
           });
-          const url = this.$api + "/yhcms/web/lpjbxx/getLpTp.do";
+          const url = this.$api + "/yhcms/web/zdfyxx/getLpZdFyTp.do";
           let that = this;
           this.$http.post(url, {"parameters":{"fyid":fyid},"foreEndType":2,"code":"300000059"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
-            that.imgList = data.lppic;
-            that.fmList = data.fmpic;
+            that.imgList = data.b3;
+            that.fmList = data.b9;
+            that.hxList = data.b4;
+            that.gjList = data.b7;
           }, (res)=>{
             Indicator.close()
           });
@@ -157,22 +177,30 @@
              }
           };
           this.imgList.forEach((img,idx)=> {cb(img, fp)});
-          this.imgList = fp;
+          setTimeout(function(){
+              that.imgList = fp;
+          }, 1000);
 
           this.hxList.forEach((img,idx)=> {cb(img, hx)});
-          this.hxList = hx;
+          setTimeout(function(){
+              that.hxList = hx;
+          }, 1000);
 
           this.gjList.forEach((img,idx)=> {cb(img, gj)});
-          this.gjList = gj;
+          setTimeout(function(){
+              that.gjList = gj;
+          }, 1000);
 
           this.fmList.forEach((img, idx)=>{cb(img,fm)});
-          this.fmList = fm;
+          setTimeout(function(){
+              that.fmList = fm;
+          });
 
           //保存信息
           setTimeout(function(){
               Indicator.close();
               that.saveImageData();
-          }, 1000);
+          }, 8000);
       },
       saveImages(pic, type, cb){
           const that = this;
@@ -220,8 +248,13 @@
                 duration: 1000
             });
 
+            let link = '/fang_list/'+this.lpid;
+            console.log(" ======= ", this.zdid);
+            if(this.zdid){
+                link += '/' + this.zdid;
+            }
             setTimeout(function(){
-                that.$router.push({path:'/index'});
+                that.$router.push({path:link});
             },1000);
           } else {
             Toast({

@@ -11,8 +11,14 @@
     }
   }
 
-  .supply_box dl dd{margin-left:.2rem}
+/*  .supply_box dl dd{margin-left:.2rem}
   .supply_box dl dd dl > dd {margin-top:.5rem;margin-bottom:.5rem}
+  */
+
+.filt-open .warpper2{height:100%;overflow-y: scroll !important}
+.cell > dd {float:left;margin-right:.2rem}
+.supply_msg_box dd.supply_house{margin-top:.1rem !important}
+dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
 
   //遮罩内容
   .float-part {
@@ -39,6 +45,10 @@
         }
         &.basic_06 {
           background: url("../resources/images/icons/basic_icon/basic06.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
+        &.basic_09 {
+          background: url("../resources/images/icons/basic_icon/basic09.png") no-repeat;
           background-size: .65rem .55rem;
         }
         &.basic_19 {
@@ -131,7 +141,6 @@
     display: none;
   }
 
-
 </style>
 <template>
   <div>
@@ -140,7 +149,7 @@
       <header1></header1>
     </section>
     <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
-      <input type="text" id="keyword" placeholder="请输入关键字搜索" maxlength="50">
+      <input type="text" id="keyword" placeholder="请输入房源编号" maxlength="50" @focus="changeRou">
     </a>
     <router-view></router-view>
     <section class="section">
@@ -151,29 +160,16 @@
             <!--筛选条件标题开始-->
             <section class="filtrate-nav">
               <ul @click="chooseFilter($event)">
+                <li data-role="filterItem" data-type="feature" :class="{'active-filter':this.currentFilterTab=='feature'}">
+                  <a href="javascript:void(0);">
+                    <h2 class="ellipsis area-h">筛选</h2>
+                    <i class="filt-arrow"></i>
+                  </a>
+                </li>
                 <li data-role="filterItem" data-type="district"
                     :class="{'active-filter':this.currentFilterTab=='district'}">
                   <a href="javascript:void(0);">
                     <h2 class="ellipsis district-h">区域</h2>
-                    <i class="filt-arrow"></i>
-                  </a>
-                </li>
-                <li data-role="filterItem" data-type="price" :class="{'active-filter':this.currentFilterTab=='price'}">
-                  <a href="javascript:void(0);">
-                    <h2 class="ellipsis price-h">价格</h2>
-                    <i class="filt-arrow"></i>
-                  </a>
-                </li>
-                <li data-role="filterItem" data-type="area" :class="{'active-filter':this.currentFilterTab=='area'}">
-                  <a href="javascript:void(0);">
-                    <h2 class="ellipsis area-h">面积</h2>
-                    <i class="filt-arrow"></i>
-                  </a>
-                </li>
-                <li data-role="filterItem" data-type="features"
-                    :class="{'active-filter':this.currentFilterTab=='features'}">
-                  <a href="javascript:void(0);">
-                    <h2 class="ellipsis feature-h">特色</h2>
                     <i class="filt-arrow"></i>
                   </a>
                 </li>
@@ -186,72 +182,46 @@
               <div class="filt-open" id="filter-district" :class="{show:this.currentFilterTab=='district'}">
                 <div class="warpper box-flex1">
                   <ul class="box-flex1 bg-white cut-height">
+                    <li data-type="district" @click="searchChoose('', '', '不限', $event)">
+                        <a href="javascript:;">不限</a></li>
+                    </li>
                     <li v-for="item in districtArray" data-type="district"
-                        @click="searchChoose(item.id, '', item.topic, $event)"><a href="javascript:;">{{item.topic}}</a>
+                        @click="searchSubDistrict(item.code,$event)"><a href="javascript:;">{{item.name}}</a>
                     </li>
                   </ul>
-                </div>
-              </div>
-              <div class="filt-open" id="filter-price" :class="{show:this.currentFilterTab=='price'}">
-                <div class="warpper box-flex1 grey-bg price-height">
-                  <ul>
-                    <li class="price-sub" :class="{act:this.priceFilterTab=='p'}" @click="priceFilterTab='p'">
-                      <a href="javascript:void(0);" style="color: #302F35;">单价</a>
-                    </li>
-                    <li class="price-sub" :class="{act:this.priceFilterTab=='t'}" @click="priceFilterTab='t'">
-                      <a href="javascript:void(0);" style="color: #302F35;">总价</a>
-                    </li>
-
-                    <div id="price_filter" class="warpper2 box-flex1 bg-white">
-                      <ul class="price-ul cut-height" :class="{show:this.priceFilterTab=='p'}">
-                        <li v-for="item in pricePArray" data-type="priceP"
-                            @click="searchChoose(item.code,item.minnum+'-'+item.maxnum, item.minnum+'-'+item.maxnum+'元', $event)">
-                          <a href="javascript:;">{{item.minnum}}-{{item.maxnum}}元</a></li>
-                      </ul>
-                      <ul class="price-ul cut-height" :class="{show:this.priceFilterTab=='t'}">
-                        <li v-for="item in priceTArray" data-type="priceT"
-                            @click="searchChoose(item.code,item.minnum+'-'+item.maxnum, item.minnum+'-'+item.maxnum+'万元', $event)">
-                          <a href="javascript:;">{{item.minnum}}-{{item.maxnum}}万元</a></li>
-                      </ul>
-                    </div>
-                  </ul>
-                  <div class="price-bottom">
-                    <div class="price-bot price-div">自定义区间
-                      <input id="startprice" type="tel" :placeholder="unitword" v-model="price1"><i>----</i>
-                      <input id="endprice" type="tel" :placeholder="unitword" v-model="price2">
-                      <button >确定</button>
-                    </div>
+                  <div id="price_filter" class="warpper2 box-flex1 bg-white">
+                    <ul class="price-ul cut-height" :class="{show:this.curTab=='d'}">
+                      <li v-for="item in subBusiness" data-type="district"
+                          @click="searchChoose(item.id,'',item.fdname, $event)">
+                        <a href="javascript:;">{{item.fdname}}</a></li>
+                    </ul>
                   </div>
                 </div>
               </div>
-              <div class="filt-open" id="filter-area" :class="{show:this.currentFilterTab=='area'}">
-                <div class="warpper box-flex1  bg-white" data-key="huxing_shi">
-                  <ul class="">
-                    <li v-for="item in sizeArray" data-type="size"
-                        @click="searchChoose(item.code, item.minnum+'-'+item.maxnum,  item.minnum+'-'+item.maxnum+'m²', $event)">
-                      <a href="javascript:;">{{item.minnum}}-{{item.maxnum}}m²</a></li>
-                  </ul>
-                  <div class="price-bottom">
-                    <div class="price-bot">自定义区间
-                      <input type="tel" id="beginArea" value="" maxlength="5" placeholder="平米"
-                             v-model="size1"><i>----</i>
-                      <input type="tel" id="endArea" value="" maxlength="5" placeholder="平米" v-model="size2">
-                      <button>确定</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="filt-open" id="filter-features" :class="{show:this.currentFilterTab=='features'}">
-                <div class="warpper box-flex1">
-                  <ul class="box-flex1 bg-white cut-height">
-                    <li v-for="item in featureArray" data-type="feature"><a href="javascript:;">{{item.name}}</a>
+              <div class="filt-open" id="filter-feature" :class="{show:this.currentFilterTab=='feature'}">
+                <div class="warpper box-flex1 bg-white">
+                    <ul class="">
+                        <li data-type="feature"
+                            @click="searchChoose('','', '不限', $event)">
+                          <a href="javascript:;">不限</a></li>
+                        <li v-for="item in featureArray" data-type="feature"
+                            @click="searchFeature(item.code,$event)"><a href="javascript:;">{{item.name}}</a>
+                        <li data-type="feature"
+                            @click="searchChoose('','1', '航远房源', $event)">
+                          <a href="javascript:;">航远房源</a></li>
                     </li>
-                  </ul>
+                    </ul>
+                  <div id="price_filter" class="warpper2 box-flex1 bg-white">
+                    <ul class="price-ul cut-height" :class="{show:this.curTab=='f'}">
+                      <li v-for="item in subFeature" data-type="feature"
+                          @click="searchChoose(item.id,'',item.name, $event)">
+                        <a href="javascript:;">{{item.name}}</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
             <!--筛选条件内容end-->
-
           </div>
         </div>
 
@@ -268,14 +238,17 @@
             <a href="javascript:;" class="supply_box" :fyid="item.id" @click="shadowShow">
               <dl class="supply">
                 <dt>
-                  <img :src="item.pic" alt="大楼图片">
-                  <span class="icon720"><img src="../resources/images/icons/y720-icon.png"></span>
+                  <img :src="$prefix + '/' + item.pic" :alt="item.topic">
                 </dt>
                 <dd class="supply_msg_box">
                   <dl>
-                    <dd class="supply_house">{{item.topic}}</dd>
-                    <dd class="supply_house">{{item.fjmj}}</dd>
-                    <dd class="supply_color ellipsis">{{item.ywqy}}</dd>
+                    <dd class="supply_house">{{item.topic}}&nbsp;&nbsp;{{item.fybh}}</dd>
+                    <dd class="supply_color ellipsis">{{item.fjmj}}㎡</dd>
+                    <dd>
+                        <dl class="cell">
+                            <dd><i style="display: block" v-show="item.ywqy">{{item.ywqy}}- {{item.fq}}</i></dd>
+                        </dl>
+                    </dd>
                   </dl>
                 </dd>
               </dl>
@@ -287,7 +260,7 @@
         </p>
       </div>
       <div class="mask" id="maskEl"
-           :class="{show:this.currentFilterTab=='district'||this.currentFilterTab=='price'||this.currentFilterTab=='area'||this.currentFilterTab=='features'}">
+           :class="{show:this.currentFilterTab=='district'||this.currentFilterTab=='feature'}">
       </div>
     </section>
     <!--context end-->
@@ -296,23 +269,23 @@
     <div class="shadow"></div>
     <div class="float-part" id="msg_super_wrap">
       <div class="line-one clearfix">
-        <router-link class="bulid_msg_item" :to="{path:'/fang_basic/'+ this.lpid + '/' + fyid}" >
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_basic/'+ this.lpid + '/' + fyid}" >
           <i class="basic_01"></i>
           <span>基本信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_struct/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_struct/'+fyid}">
           <i class="basic_19"></i>
           <span>构造信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_owner/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_owner/'+fyid}">
           <i class="basic_17"></i>
           <span>业主信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_agenter/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_agenter/'+fyid}">
           <i class="basic_16"></i>
           <span>代理人信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_renter/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_renter/'+fyid}">
           <i class="basic_04"></i>
           <span>租户信息</span>
         </router-link>
@@ -320,18 +293,22 @@
           <i class="basic_06"></i>
           <span>图片信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_analyse/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_analyse/'+fyid}">
           <i class="basic_14"></i>
           <span>房源分析</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_decor/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_decor/'+fyid}">
           <i class="basic_18"></i>
           <span>装修状况</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/fang_reg/'+fyid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_reg/'+fyid}">
           <i class="basic_13"></i>
           <span>注册信息</span>
         </router-link>
+        <a class="bulid_msg_item" href="#" @click.stop.prevent="toDetail">
+          <i class="basic_09"></i>
+          <span>房源详情</span>
+        </a>
       </div>
       <div class="msg_progress_bar">
         <div class="finish_bar"></div>
@@ -368,20 +345,25 @@
         fyid: "",
         lpid: "",
         zdid:"",
+        fybh: "",
+        hystate: "",
+        fhystate: "",
+        business: "",
+        fq: "",
         loading: false,
+        noMore: false,
         loadMore: false,
-        price1: '',
-        price2: '',
-        size1: '',
-        size2: '',
         currentFilterTab: 'nth',
         priceFilterTab: 'p',
         resultData: [],
+        curTab: "",
         districtArray: [],
-        pricePArray: [],
-        priceTArray: [],
-        sizeArray: [],
-        featureArray: [],
+        subBusiness: [],
+        featureArray: [{code:"0",name: "非航远房源"}],
+        subFeature: [],
+        para: {
+          "curr_page": 1,
+        },
         progress: ""
       }
     },
@@ -412,14 +394,19 @@
     },
     methods: {
       init(){
-
         const lpid = this.$route.params.lpid, zdid = this.$route.params.zdid;
         this.lpid = lpid;
         this.zdid = zdid;
 
+        sessionStorage.setItem("fy-lp", lpid);
+        sessionStorage.setItem("fy-zd", zdid);
+
         axios.defaults.baseURL = this.$api;
         axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
+        this.fybh = this.$route.query.keyword;
+
+        this.getFilters();
         this.getData();
       },
       getProgress(){
@@ -438,6 +425,62 @@
             that.progress = "10%";
           });
       },
+      changeRou: function () {
+        let link = '/search?rt=fang_list/'+this.lpid;
+        if(this.zdid){
+            link += '/' + this.zdid;
+        }
+        this.$router.push({path: link});
+      },
+      toDetail(){
+          const location = "http://urskongjian.com/#/order?house_id=" + this.fyid;
+          setTimeout(function(){
+              window.location = location;
+          }, 200);
+      },
+      searchChoose: function (code, val, value, e) {
+        switch ($(e.target).closest('li').attr('data-type')) {
+          case 'district':
+            $('h2.district-h').html(value);
+            if(value==='不限'){
+                this.business = code;
+                this.fq = "";
+            }
+            else{
+                this.business = "";
+                this.fq = code; 
+            }
+            break;
+          case 'feature':
+            $('h2.area-h').html(value);
+            if(code === '' && val === ''){
+                this.hystate = '';
+                this.fhystate = "";
+            }
+            else if(value === '不限'){
+                this.hystate = code;
+                this.fhystate = "";
+            }
+            else if(code === '' ){
+                this.hystate = val;
+                this.fhystate = ''; 
+            }
+            else{
+                this.hystate = '';
+                this.fhystate = code; 
+            }
+            break;
+          default:
+        }
+        this.currentFilterTab = 'nth';
+        Indicator.open({
+          text: '',
+          spinnerType: 'fading-circle'
+        });
+        this.resultData = [];
+        this.para.curr_page = 1;
+        this.getData();
+      },
       getData(){
           Indicator.open({
              text: '',
@@ -447,11 +490,14 @@
           "parameters": {
             "lpid": this.lpid,
             "zdid": this.zdid,
+            "fybh": this.fybh,
             "fyid": "",
-            "hystate": "",
-            "fhystate": "",
-            "bussiness": "",
-            "fq": ""
+            "hystate": this.hystate, 
+            "fhystate": this.fhystate,
+            "bussiness": this.business,
+            "fq": this.fq,
+            "curr_page": this.para.curr_page,
+            "items_perpage": 10
           },
           "foreEndType": 2,
           "code": "300000065"
@@ -461,15 +507,78 @@
           .then(function (response) {
             Indicator.close()
             const data = response.data.data.data2;
-            that.resultData = data;  
+            that.resultData = that.resultData.concat(data);
+          if (data.length < that.para.items_perpage) {
+            that.noMore = true;
+          }
+           if (that.resultData.length == 0) {
+              Toast({
+                message: '抱歉,暂无符合条件的房源!',
+                position: 'middle',
+                duration: 3000
+              });
+              return;
+            } else if (that.resultData.length > 0 && data.length == 0) {
+            Toast({
+              message: '已经获得当前条件的所有房源!',
+              position: 'middle',
+              duration: 3000
+            });
+          }
           }).catch(function (error) {
             Indicator.close();
             Toast({
                 message: '抱歉,暂无符合条件的房源!',
                 position: 'middle',
                 duration: 3000
-          });
+            });
         });
+      },
+      getFilters: function () {
+        const that = this;
+        const url = this.$api + "/yhcms/web/jcsj/getTj.do";
+        axios.post(url, {})
+          .then(function (response) {
+            that.districtArray = response.data.data.business;
+          }).catch(function (error) {
+        });
+      },
+      searchFeature:function(code,e){
+          this.curTab = "f";
+          if(code === '0'){
+              this.subFeature = [{id:"0",name:"不限"}, {id:"1",name:"可租房源"}, {id:"2",name:"无效房源"}, {id:"3",name:"已租房源"}];
+          }
+      },
+      searchSubDistrict:function(code,e){
+        this.curTab = "d";
+        Indicator.open({
+           text: '', 
+           spinnerType: 'fading-circle'
+        }); 
+
+        const li = $(e.target).parent("li"), txt = $(li).find("a").text();
+        li.addClass("highlight").siblings().removeClass("highlight");
+        //this.where = txt;
+
+        var paraObj = {"parameters":{"district":code},"foreEndType":2,"code":"300000012"}, this_ = this;
+        axios.post('/yhcms/web/lpjbxx/getLpYwqyFq.do', paraObj)
+          .then(function (response) {
+            Indicator.close();
+            this_.subBusiness = [{"id":code,"fdname":"不限"}].concat(response.data.data.ywfq);
+          }).catch(function (error) {
+            Indicator.close();
+        }); 
+      },
+      loadMore(){
+        if (!this.loading && !this.noMore) {
+          this.loading = true;
+          this.para.curr_page += 1;
+          this.getData();
+        }
+      },
+      chooseFilter: function (e) {
+        var e = e || window.event;
+        this.currentFilterTab = $(e.target).closest('li').attr('data-type')
       },
       shadowShow(event){
         $('.shadow').show();

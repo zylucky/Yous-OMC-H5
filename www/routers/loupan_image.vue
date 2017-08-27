@@ -30,23 +30,23 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
-      <div class="common_title">楼盘照片</div>
+      <div class="common_title">楼盘图</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="lp" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="lp" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
-      <div class="common_title">楼盘封面照片</div>
+      <div class="common_title">楼盘封面图</div>
       <div class="image_wrap clearfix mb140">
         <div class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fm" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.url" alt="" />
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
@@ -87,15 +87,26 @@
         }
         var that=this;
         reader.onloadend = () => {
-          const img = reader.result, obj = {
-              id: "xxx",
-              lpid: that.lpid,
-              isdelete: 0,
-              type: 2,
-              suffix:img1.type,
-              url: img
-          };
-          that[which].push(obj)
+          let ret;
+          const imgx = new Image();
+          imgx.src = reader.result;
+          imgx.onload = function(){
+              var canvas = document.createElement('canvas');
+              canvas.width = imgx.naturalWidth;
+              canvas.height = imgx.naturalHeight;
+              canvas.getContext("2d").drawImage(imgx, 0, 0);
+              ret = canvas.toDataURL(img1.type, .5);
+
+              const obj = {
+                  id: "xxx",
+                  lpid: that.lpid,
+                  isdelete: 0,
+                  type: 2,
+                  suffix:img1.type,
+                  url: ret 
+              };
+              that[which].push(obj)
+           }
         }
         reader.readAsDataURL(img1);
       },
@@ -136,16 +147,13 @@
           };
 
           this.imgList.forEach((img)=>{cb(img,fp)});
-          this.imgList = fp;
-
           this.fmList.forEach((img)=>{cb(img,fm)});
-          this.fmList = fm;
 
           //保存信息
           setTimeout(function(){
               Indicator.close();
-              that.saveImageData();
-          }, 1000);
+              that.saveImageData(fp, fm);
+          }, 5000);
       },
       saveImages(pic, type, cb){
           const that = this;
@@ -161,22 +169,16 @@
               }
           }, (res)=>{});
       },
-      saveImageData(){
+      saveImageData(fpImages, fmImages){
         const that = this;
         Indicator.open({
           text: '保存中...',
           spinnerType: 'fading-circle'
         });
-        let lp = this.imgList.map((item, idx)=>{
-            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
-        });
 
-        let fm = this.fmList.map((item, idx)=>{
-            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
-        });
         this.$http.post(
            this.$api + "/yhcms/web/lpjbxx/saveLpTp.do",
-           {"parameters":{"lpid":this.lpid,"lptp":lp,"fmtp":fm},"foreEndType":2,"code":"300000080"}).then((res)=>{
+           {"parameters":{"lpid":this.lpid,"lptp":fpImages,"fmtp":fmImages},"foreEndType":2,"code":"300000080"}).then((res)=>{
           Indicator.close();
           var result = JSON.parse(res.bodyText);
           if (result.success) {
