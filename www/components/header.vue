@@ -18,7 +18,7 @@
     <!--header start-->
     <header id="header" class="clearfix">
 
-      <label class="side_nav side-nav" @click.native="popupVisible= true" v-on:click="showMenu">
+      <label class="side_nav side-nav"><!-- @click.native="popupVisible= true"  v-on:click="showMenu"-->
         <img src="../resources/images/ys_more.png" width="20" alt="">
       </label>
       <!-- <a href="javascript:void(0);" class="detail-search">
@@ -26,8 +26,8 @@
       </a>
       <i class="location_icon"></i> -->
     </header>
-    <mt-popup v-model="popupVisible" position="left" class="mint-popup-3" :modal="false">
-      <!--左侧登录div-->
+    <!--<mt-popup v-model="popupVisible" position="left" class="mint-popup-3" :modal="false">
+      &lt;!&ndash;左侧登录div&ndash;&gt;
       <div class="main-nav-wrapper sidenav">
         <div class="user-box clearfix">
           <img class="portrait" src="../resources/images/user/por_icon.png" alt="">
@@ -40,7 +40,7 @@
         </div>
         <a href="javascript:;" class="log_out_btn" @click="login_out">退出登录</a>
       </div>
-    </mt-popup>
+    </mt-popup>-->
   </div>
   <!--header end-->
 </template>

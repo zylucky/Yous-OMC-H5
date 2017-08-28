@@ -277,7 +277,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           <mt-spinner type="fading-circle"></mt-spinner>
         </p>
       </div>
-      <div class="mask" id="maskEl"
+      <div class="mask" id="maskEl" @click="closeFilter"
            :class="{show:this.currentFilterTab=='district'||this.currentFilterTab=='price'||this.currentFilterTab=='area'||this.currentFilterTab=='features'}">
       </div>
     </section>
@@ -439,6 +439,9 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
 
         this.getFilters();
         this.getData();
+      },
+      closeFilter: function () {
+          this.currentFilterTab = 'nth';
       },
       getProgress(){
           Indicator.open({
