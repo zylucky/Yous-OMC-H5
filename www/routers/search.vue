@@ -38,7 +38,6 @@
          height: .62rem;
          line-height: .50rem;
          margin-left:.40rem;
-         padding-left: .70rem;
          text-align: left;
          background: rgba(255, 255, 255, 0.2);
          background-size:.40rem auto;
@@ -48,13 +47,13 @@
            position: absolute;
            width: .36rem;
            height:.36rem;
-           left: .28rem;
+           right: .28rem;
            top: .1378rem;
             background:url(../resources/images/list/ss_01.png) center center no-repeat;
             background-size: contain;
          }
          input {
-           width: 95%;
+           width: 88%;
            margin-top:.04rem;
            color: #FFF;
            background: none;
@@ -137,8 +136,8 @@
       <div id="s-header">
         <div class="pt07">
           <a href="javascript:void(0);" class="search-text">
-            <i class="sbtn" @click="doSearch"></i>
             <input type="text" id="keyword" placeholder="请输入关键字" maxlength="50" v-model.trim="search_keyword" @keyup.enter="doSearch" autofocus="autofocus">
+            <i class="sbtn" @click="doSearch"></i>
           </a>
         </div>
         <a href="javascript:void(0);" class="close-icon" @click="toList">

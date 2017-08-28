@@ -177,12 +177,7 @@ var router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.path == '/login') {
-        sessionStorage.removeItem('login');
-        next();
-    }
-
-    let user = JSON.parse(sessionStorage.getItem('login'));
+    let user = JSON.parse(localStorage.getItem('login'));
     if (!user && to.path != '/login') {
         next({ path: '/login' });
     }
