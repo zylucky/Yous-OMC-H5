@@ -48,7 +48,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           background-size: .65rem .55rem;
         }
         &.basic_09 {
-          background: url("../resources/images/icons/basic_icon/basic09.png") no-repeat;
+          background: url("../resources/images/icons/basic_icon/basic20.png") no-repeat;
           background-size: .65rem .55rem;
         }
         &.basic_19 {
@@ -205,7 +205,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
                             @click="searchChoose('','', '不限', $event)">
                           <a href="javascript:;">不限</a></li>
                         <li v-for="item in featureArray" data-type="feature"
-                            @click="searchFeature(item.code,$event)"><a href="javascript:;">{{item.name}}</a>
+                            @click="searchChoose('','0', '非航远房源', $event)"><a href="javascript:;">{{item.name}}</a>
                         <li data-type="feature"
                             @click="searchChoose('','1', '航远房源', $event)">
                           <a href="javascript:;">航远房源</a></li>
@@ -260,7 +260,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           <mt-spinner type="fading-circle"></mt-spinner>
         </p>
       </div>
-      <div class="mask" id="maskEl"
+      <div class="mask" id="maskEl" @click="closeFilter"
            :class="{show:this.currentFilterTab=='district'||this.currentFilterTab=='feature'}">
       </div>
     </section>
@@ -308,7 +308,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         </router-link>
         <a class="bulid_msg_item" href="#" @click.stop.prevent="toDetail">
           <i class="basic_09"></i>
-          <span>房源详情</span>
+          <span>房源预览</span>
         </a>
       </div>
       <div class="msg_progress_bar">
@@ -428,6 +428,9 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
 
         this.getFilters();
         this.getData();
+      },
+      closeFilter: function () {
+          this.currentFilterTab = 'nth';
       },
       getProgress(){
           Indicator.open({

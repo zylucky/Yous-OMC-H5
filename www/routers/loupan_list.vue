@@ -71,6 +71,10 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           background: url("../resources/images/icons/basic_icon/basic09.png") no-repeat;
           background-size: .65rem .55rem;
         }
+        &.basic_13 {
+          background: url("../resources/images/icons/basic_icon/basic20.png") no-repeat;
+          background-size: .65rem .55rem;
+        }
         &.basic_10 {
           background: url("../resources/images/icons/basic_icon/basic10.png") no-repeat;
           background-size: .65rem .55rem;
@@ -344,8 +348,8 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           <span>房源信息</span>
         </router-link>
         <a class="bulid_msg_item" href="#" @click.stop.prevent="toDetail">
-          <i class="basic_09"></i>
-          <span>楼盘详情</span>
+          <i class="basic_13"></i>
+          <span>楼盘预览</span>
         </a>
       </div>
 
