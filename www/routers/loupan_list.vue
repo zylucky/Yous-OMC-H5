@@ -269,7 +269,8 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
             <a href="javascript:;" class="supply_box" :lpid="item.id" @click="shadowShow">
               <dl class="supply">
                 <dt>
-                  <img :src="$prefix + '/' + item.pic" alt="大楼图片">
+                  <img v-if="item.pic" :src="$prefix + '/' + item.pic">
+                  <img v-else :src="$prefix + '/upload/2017-08-27/6404b4de960b81fc5403c870aefcea34.png'">
                 </dt>
                 <dd class="supply_msg_box">
                   <dl>
@@ -463,7 +464,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         this.getFilters();
       },
       toDetail(){
-          const location = "http://urskongjian.com/#/detail?building_id=" + this.lpid;
+          const location = "http://wx.urskongjian.com:5000/#/detail?building_id=" + this.lpid;
           setTimeout(function(){
               window.location = location;
           }, 200);
@@ -661,7 +662,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           Indicator.close();
           that.loading = false;
           that.resultData = that.resultData.concat(result.data.data);
-          if (result.data < this_.para.items_perpage) {
+          if (!result.data.data || result.data.data.length <= 0) {
             this_.noMore = true;
           }
           if (that.resultData.length == 0) {
@@ -670,7 +671,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
               position: 'middle',
               duration: 3000
             });
-          } else if (that.resultData.length > 0 && result.data.data.length == 0) {
+          } else if (that.resultData.length > 0 && that.noMore) {
             Toast({
               message: '已经获得当前条件的所有楼盘!',
               position: 'middle',

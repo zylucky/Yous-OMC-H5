@@ -11,7 +11,7 @@ import search from './routers/search.vue';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
-Vue.prototype.$api = "http://192.168.0.222:8080" //api地址
+Vue.prototype.$api = "http://116.62.68.26:8080" //api地址
 Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 //Vue.prototype.$api = "http://192.168.0.143:8081" //api地址
 //Vue.prototype.$resouceUrl = "http://localhost:8081/"  //资源文件地址

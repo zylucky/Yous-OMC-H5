@@ -254,7 +254,8 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
             <a href="javascript:;" class="supply_box" :zdid="item.id" @click="shadowShow">
               <dl class="supply">
                 <dt>
-                  <img :src="$prefix + '/' + item.pic" :alt="item.topic">
+                  <img v-if="item.pic" :src="$prefix + '/' + item.pic">
+                  <img v-else :src="$prefix + '/upload/2017-08-27/6404b4de960b81fc5403c870aefcea34.png'">
                 </dt>
                 <dd class="supply_msg_box">
                   <dl>
@@ -320,7 +321,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         </router-link>
         <router-link class="bulid_msg_item" :to="{path:'/fang_list/'+ this.lpid + '/' + zdid}">
           <i class="basic_09"></i>
-          <span>座栋信息</span>
+          <span>房源信息</span>
         </router-link>
       </div>
       <div class="msg_progress_bar">
@@ -386,6 +387,26 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
 
       this.init();
 
+      $(window).scroll(function () {
+        if ($(window).scrollTop() > 0) {
+          $('.filtate-outter').css({
+            position: 'fixed',
+            top: '.88rem',
+            left: 0
+          });
+
+          $('#pos_block').show();
+
+        } else {
+          $('.filtate-outter').css({
+            position: 'relative',
+            top: 0,
+            left: 0
+          });
+          $('#pos_block').hide();
+        }
+      });
+
       $('#close_msg,.shadow').click(function (e) {
         e.stopPropagation();
         $('#msg_super_wrap').animate({
@@ -393,7 +414,6 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         });
         $('.shadow').hide();
       });
-
     },
     created: function () {
 
@@ -487,22 +507,22 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         axios.post("/yhcms/web/lpzdxx/getLpZd.do", paraObj)
           .then(function (response) {
             Indicator.close()
+            that.loading = false;
             
             that.resultData = that.resultData.concat(response.data.data);
 
-          if (result.data < that.para.items_perpage) {
-            that.noMore = true;
-          }
+            if (!response.data.data || response.data.data.length <= 0 ) {
+                that.noMore = true;
+            }
             if (that.resultData.length == 0) {
               Toast({
                 message: '抱歉,暂无符合条件的座栋!',
                 position: 'middle',
                 duration: 3000
               });
-              return;
-            } else if (that.resultData.length > 0 && response.data.data.length == 0) {
+            } else if (that.resultData.length > 0 && that.noMore) {
             Toast({
-              message: '已经获得当前条件的所有楼盘!',
+              message: '已经获得当前条件的所有座栋!',
               position: 'middle',
               duration: 3000
             });
