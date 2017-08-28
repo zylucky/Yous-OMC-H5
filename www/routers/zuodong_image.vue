@@ -32,7 +32,7 @@
     <div class="build_top">
       <div class="common_title">座栋照片</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="il < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
@@ -55,6 +55,7 @@
         lpid: "",
         zdid: "",
         imgList:[],
+        il: 0,
       }
     },
     methods:{
@@ -65,6 +66,7 @@
         else{
             this.imgList.splice(index,1);
         }
+        this.il -= 1;
       },
       add_img(event){
         var reader = new FileReader();
@@ -98,6 +100,7 @@
            }
         }
         reader.readAsDataURL(img1);
+        this.il += 1;
       },
       getInitData(){
           const zdid = this.$route.params.zdid;
@@ -114,6 +117,7 @@
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
             that.imgList = data;
+            that.il = that.imgList.length;
           }, (res)=>{
             Indicator.close()
           });

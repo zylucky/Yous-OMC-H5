@@ -32,7 +32,7 @@
     <div class="build_top">
       <div class="common_title">房源图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="fy < 8" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fy" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
@@ -42,7 +42,7 @@
       </div>
       <div class="common_title">户型图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="hx < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="hx" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
@@ -52,7 +52,7 @@
       </div>
       <div class="common_title">格局图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="gj < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="gj" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in gjList' v-if="item.isdelete==0">
@@ -62,7 +62,7 @@
       </div>
       <div class="common_title">封面图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="fm < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fm" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
@@ -89,6 +89,10 @@
         hxList:[],
         gjList:[],
         fmList:[],
+        fy: 0,
+        hx: 0,
+        gj: 0,
+        fm: 0,
       }
     },
     methods:{
@@ -100,6 +104,7 @@
         else{
             this[which].splice(index,1);
         }
+        this[tag] -= 1;
       },
       add_img(event){
         var reader = new FileReader();
@@ -133,6 +138,7 @@
            }
         }
         reader.readAsDataURL(img1);
+        this[tag] += 1;
       },
       getInitData(){
           const fyid = this.$route.params.fyid;
@@ -155,6 +161,11 @@
             that.fmList = data.b9;
             that.hxList = data.b4;
             that.gjList = data.b7;
+
+            that.fy = that.imgList.length;
+            that.hx = that.hxList.length;
+            that.gj = that.gjList.length;
+            that.fm = that.fmList.length;
           }, (res)=>{
             Indicator.close()
           });
