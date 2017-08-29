@@ -66,7 +66,8 @@
         imgList:[],
         fmList:[],
         il: 0,
-        fl: 0
+        fl: 0,
+        upload: 0,
       }
     },
     methods:{
@@ -78,6 +79,7 @@
         }
         else{
             this[which].splice(index,1);
+            this.upload -= 1;
         }
         this[filter] -= 1;
       },
@@ -115,6 +117,7 @@
         }
         reader.readAsDataURL(img1);
         this[filter] += 1;
+        this.upload += 1;
       },
       getInitData(){
           const lpid = this.$route.params.lpid;
@@ -139,11 +142,7 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          Indicator.open({
-            text: '上传图片中...',
-            spinnerType: 'fading-circle'
-          });
-          let fp = [], fm = [];
+          let fp = [], fm = [], timeout = 5000;
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
@@ -154,6 +153,16 @@
              }
           };
 
+          if(this.upload > 0){
+              Indicator.open({
+                  text: '上传图片中...',
+                  spinnerType: 'fading-circle'
+              });
+          }
+          else{
+              timeout = 100;
+          }
+
           this.imgList.forEach((img)=>{cb(img,fp)});
           this.fmList.forEach((img)=>{cb(img,fm)});
 
@@ -161,7 +170,7 @@
           setTimeout(function(){
               Indicator.close();
               that.saveImageData(fp, fm);
-          }, 5000);
+          }, timeout);
       },
       saveImages(pic, type, cb){
           const that = this;

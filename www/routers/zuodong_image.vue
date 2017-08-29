@@ -56,6 +56,7 @@
         zdid: "",
         imgList:[],
         il: 0,
+        upload: 0
       }
     },
     methods:{
@@ -65,6 +66,7 @@
         }
         else{
             this.imgList.splice(index,1);
+            this.upload -= 1;
         }
         this.il -= 1;
       },
@@ -101,6 +103,7 @@
         }
         reader.readAsDataURL(img1);
         this.il += 1;
+        this.upload += 1;
       },
       getInitData(){
           const zdid = this.$route.params.zdid;
@@ -125,11 +128,17 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          Indicator.open({
-            text: '上传图片中...',
-            spinnerType: 'fading-circle'
-          });
-          let fp = [];
+          let fp = [], timeout = 5000;
+          if(this.upload > 0){
+              Indicator.open({
+                  text: '上传图片中...',
+                  spinnerType: 'fading-circle'
+              });
+          }
+          else{
+              timeout = 100;
+          }
+
           this.imgList.forEach((img)=>{
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
@@ -139,15 +148,13 @@
                  fp.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
              }
           });
-          setTimeout(function(){
-              that.imgList = fp;
-          },1000);
+          this.imgList = fp;
 
           //保存信息
           setTimeout(function(){
               Indicator.close();
               that.saveImageData();
-          }, 5000);
+          }, timeout);
       },
       saveImages(pic, type, cb){
           const that = this;

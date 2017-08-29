@@ -82,6 +82,7 @@
         fy: 0,
         hx: 0,
         fm: 0,
+        upload: 0,
       }
     },
     methods:{
@@ -92,6 +93,7 @@
         }
         else{
             this[which].splice(index,1);
+            this.upload -= 1;
         }
         this[tag] -= 1;
       },
@@ -128,6 +130,7 @@
         }
         reader.readAsDataURL(img1);
         this[tag] += 1;
+        this.upload += 1;
       },
       getInitData(){
           const fyid = this.$route.params.fyid;
@@ -161,11 +164,7 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          Indicator.open({
-            text: '上传图片中...',
-            spinnerType: 'fading-circle'
-          });
-          let fp = [], fm = [], hx = [];
+          let fp = [], fm = [], hx = [], timeout = 8000;
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
@@ -175,26 +174,31 @@
                  obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
              }
           };
+
+          if(this.upload > 0){
+              Indicator.open({
+                  text: '上传图片中...',
+                  spinnerType: 'fading-circle'
+              });
+          }
+          else{
+              timeout = 100;
+          }
+
           this.imgList.forEach((img,idx)=> {cb(img, fp)});
-          setTimeout(function(){
-              that.imgList = fp;
-          }, 1000);
+          this.imgList = fp;
 
           this.hxList.forEach((img,idx)=> {cb(img, hx)});
-          setTimeout(function(){
-              that.hxList = hx;
-          }, 1000);
+          this.hxList = hx;
 
           this.fmList.forEach((img, idx)=>{cb(img,fm)});
-          setTimeout(function(){
-              that.fmList = fm;
-          });
+          this.fmList = fm;
 
           //保存信息
           setTimeout(function(){
               Indicator.close();
               that.saveImageData();
-          }, 8000);
+          }, timeout);
       },
       saveImages(pic, type, cb){
           const that = this;
