@@ -30,6 +30,16 @@
 <template>
   <div class="all_elements">
     <div class="build_top">
+      <div class="common_title">楼盘封面图</div>
+      <div class="image_wrap clearfix mb140">
+        <div v-if="fl < 1" class="upload_btn mr10 fl">
+          <input @change='add_img' id="file_add" tag="fm" type="file">
+        </div>
+        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
+          <i class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
+        </div>
+      </div>
       <div class="common_title">楼盘图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="il < 5" class="upload_btn mr10 fl">
@@ -38,16 +48,6 @@
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="lp" @click='delete_img(index, item.id, $event)'></i>
-        </div>
-      </div>
-      <div class="common_title">楼盘封面图</div>
-      <div class="image_wrap clearfix mb140">
-        <div v-if="fl < 1" class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="fm" type="file">
-        </div>
-        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-          <i class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
     </div>

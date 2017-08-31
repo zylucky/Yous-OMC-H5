@@ -33,7 +33,7 @@
       <div class="common_title">房源图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="fy < 8" class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="fy" type="file">
+            <input @change='add_img' id="file_add" accept="image/*" tag="fy" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
@@ -43,7 +43,7 @@
       <div class="common_title">户型图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="hx < 1" class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="hx" type="file">
+            <input @change='add_img' id="file_add" tag="hx" accept="image/*" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
@@ -53,7 +53,7 @@
       <div class="common_title">封面图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="fm < 1" class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="fm" type="file">
+            <input @change='add_img' id="file_add" tag="fm" accept="image/*" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
@@ -83,6 +83,7 @@
         hx: 0,
         fm: 0,
         upload: 0,
+        uploaded: 0
       }
     },
     methods:{
@@ -98,6 +99,11 @@
         this[tag] -= 1;
       },
       add_img(event){
+        Indicator.open({
+            text: '加载中...',
+            spinnerType: 'fading-circle'
+        });
+
         var reader = new FileReader();
         const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
         var img1=event.target.files[0];
@@ -125,12 +131,14 @@
                   suffix:img1.type,
                   url: ret 
               };
-              that[which].push(obj)
+              that[which].push(obj);
+              Indicator.close();
            }
         }
         reader.readAsDataURL(img1);
         this[tag] += 1;
         this.upload += 1;
+
       },
       getInitData(){
           const fyid = this.$route.params.fyid;
@@ -164,11 +172,20 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          let fp = [], fm = [], hx = [], timeout = 8000;
+          let fp = [], fm = [], hx = [];
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
-                 that.saveImages(data, t, function(path){obj.push({"id":"", "isdelete":"0", "url":path})});
+                 that.saveImages(data, t, function(path){
+                     obj.push({"id":"", "isdelete":"0", "url":path});
+                     that.uploaded += 1;
+                     if(that.uploaded >= that.upload){
+                          Indicator.close();
+                          setTimeout(function(){
+                              that.saveImageData();
+                          }, 1000);
+                     }
+                 });
              }
              else{
                  obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
@@ -181,9 +198,6 @@
                   spinnerType: 'fading-circle'
               });
           }
-          else{
-              timeout = 100;
-          }
 
           this.imgList.forEach((img,idx)=> {cb(img, fp)});
           this.imgList = fp;
@@ -194,11 +208,12 @@
           this.fmList.forEach((img, idx)=>{cb(img,fm)});
           this.fmList = fm;
 
-          //保存信息
-          setTimeout(function(){
-              Indicator.close();
-              that.saveImageData();
-          }, timeout);
+          // 如果没有新图片要上传，则直接上传图片
+          if(this.upload < 1){
+              setTimeout(function(){
+                  that.saveImageData();
+              }, 1000);
+          }
       },
       saveImages(pic, type, cb){
           const that = this;
@@ -244,7 +259,6 @@
             });
 
             let link = '/fang_list/'+this.lpid;
-            console.log(" ======= ", this.zdid);
             if(this.zdid){
                 link += '/' + this.zdid;
             }

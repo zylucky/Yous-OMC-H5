@@ -18,6 +18,7 @@
 .filt-open .warpper2{height:100%;overflow-y: scroll !important}
 .cell > dd {float:left;margin-right:.2rem}
 .supply_msg_box dd.supply_house{margin-top:.1rem !important}
+  .highlight a{color: #007aff !important;}
 dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
 
   //遮罩内容
@@ -102,6 +103,8 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
     position: relative;
     margin-top: .5rem;
     height: .34rem;
+    left:0.8em;
+    width:25em;
     line-height: .34rem;
     background-color: @bg_btn_gray;
     text-align: center;
@@ -111,6 +114,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
       top: 0;
       height: 100%;
       width: 50%;
+      box-shadow: 5px 0px 0px 0px #989797;
       background-color: @bg_mid_blue;
     }
     .progress_text {
@@ -125,7 +129,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
     font-size: @font54;
     width: .54rem;
     display: block;
-    margin: .1rem auto;
+    margin: 3.1rem auto;
   }
 
   //遮罩
@@ -243,7 +247,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
                 </dt>
                 <dd class="supply_msg_box">
                   <dl>
-                    <dd class="supply_house">{{item.topic}}&nbsp;&nbsp;{{item.fybh}}</dd>
+                    <dd class="supply_house">{{item.topic}}&nbsp;&nbsp;{{item.zdh}}-{{item.fybh}}</dd>
                     <dd class="supply_color ellipsis">{{item.fjmj}}㎡</dd>
                     <dd>
                         <dl class="cell">
@@ -269,6 +273,11 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
     <!--遮罩和底部筛选-->
     <div class="shadow"></div>
     <div class="float-part" id="msg_super_wrap">
+      <div class="msg_progress_bar">
+        <div class="finish_bar"></div>
+        <span class="pr">信息完成比例</span>
+        <span class="progress_text">{{progress}}</span>
+      </div>
       <div class="line-one clearfix">
         <router-link class="bulid_msg_item" v-show="false" :to="{path:'/fang_basic/'+ this.lpid + '/' + fyid}" >
           <i class="basic_01"></i>
@@ -311,11 +320,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           <span>房源预览</span>
         </a>
       </div>
-      <div class="msg_progress_bar">
-        <div class="finish_bar"></div>
-        <span class="pr">信息完成比例</span>
-        <span class="progress_text">{{progress}}</span>
-      </div>
+
       <div class="close" id="close_msg">&times;</div>
     </div>
 
@@ -364,7 +369,8 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         para: {
           "curr_page": 1,
         },
-        progress: ""
+        progress: "",
+        where:"",
       }
     },
     mounted(){
@@ -443,6 +449,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
             that.progress = data.wcbl + "%";
+            $('.finish_bar').css('width',that.progress);
           }, (res)=>{
             Indicator.close()
             that.progress = "10%";
@@ -462,10 +469,14 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           }, 200);
       },
       searchChoose: function (code, val, value, e) {
+        const el = $(e.target).closest('li');
+        el.addClass("highlight").siblings().removeClass("highlight");
         switch ($(e.target).closest('li').attr('data-type')) {
+
           case 'district':
             $('h2.district-h').html(value);
             if(value==='不限'){
+                $('h2.district-h').html(this.where || value);
                 this.business = code;
                 this.fq = "";
             }
@@ -502,6 +513,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         });
         this.resultData = [];
         this.para.curr_page = 1;
+        this.noMore = false;
         this.getData();
       },
       getData(){
@@ -581,9 +593,9 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
            spinnerType: 'fading-circle'
         }); 
 
-        const li = $(e.target).parent("li"), txt = $(li).find("a").text();
+        const li = $(e.target).closest("li"), txt = $(li).find("a").text();
         li.addClass("highlight").siblings().removeClass("highlight");
-        //this.where = txt;
+        this.where = txt;
 
         var paraObj = {"parameters":{"district":code},"foreEndType":2,"code":"300000012"}, this_ = this;
         axios.post('/yhcms/web/lpjbxx/getLpYwqyFq.do', paraObj)

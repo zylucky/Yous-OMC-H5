@@ -107,9 +107,12 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
   }
 
   .msg_progress_bar {
+
     position: relative;
     margin-top: .5rem;
     height: .34rem;
+    left:0.8em;
+    width:25em;
     line-height: .34rem;
     background-color: @bg_btn_gray;
     text-align: center;
@@ -120,6 +123,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
       height: 100%;
       width: 50%;
       background-color: @bg_mid_blue;
+      box-shadow: 5px 0px 0px 0px #989797;
     }
     .progress_text {
       position: absolute;
@@ -133,7 +137,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
     font-size: @font54;
     width: .54rem;
     display: block;
-    margin: .1rem auto;
+    margin: 3.1rem auto;
   }
 
   //遮罩
@@ -221,14 +225,14 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
                         <li data-type="price"
                             @click="searchChoose('','', '不限', $event)">
                           <a href="javascript:;">不限</a></li>
-                        <li v-for="item in priceArray" data-type="price"
+                        <li v-for="item in priceArray" data-type="price" target="price"
                             @click="searchChoose(item.code,item.minnum+'-'+item.maxnum, item.minnum+'-'+item.maxnum+'元', $event)">
                           <a href="javascript:;">{{item.minnum}}-{{item.maxnum}}元</a></li>
                       </ul>
-                  <div class="price-bottom">
+                  <div class="price-bottom price-fix">
                     <div class="price-bot price-div">自定义区间
-                      <input id="startprice" type="number" :placeholder="unitword" v-model.trim="price1"><i>----</i>
-                      <input id="endprice" type="number" :placeholder="unitword" v-model.trim="price2">
+                      <input id="startprice" rel="price" type="number" @focus="selfinputfocu" :placeholder="unitword" v-model.trim="price1"><i>----</i>
+                      <input id="endprice" rel="price" type="number"  @focus="selfinputfocu" :placeholder="unitword" v-model.trim="price2">
                       <button @click="selfInputPrice">确定</button>
                     </div>
                   </div>
@@ -240,15 +244,15 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
                     <li data-type="size"
                             @click="searchChoose('','', '不限', $event)">
                           <a href="javascript:;">不限</a></li>
-                    <li v-for="item in sizeArray" data-type="size"
+                    <li v-for="item in sizeArray" data-type="size" target="area"
                         @click="searchChoose(item.code, item.minnum+'-'+item.maxnum,  item.minnum+'-'+item.maxnum+'m²', $event)">
                       <a href="javascript:;">{{item.minnum}}-{{item.maxnum}}m²</a></li>
                   </ul>
-                  <div class="price-bottom">
+                  <div class="price-bottom price-fix">
                     <div class="price-bot">自定义区间
-                      <input type="number" id="beginArea" value="" maxlength="5" placeholder="平米"
+                      <input type="number" rel="area" @focus="selfinputfocu" id="beginArea" value="" maxlength="5" placeholder="平米"
                              v-model.trim="size1"><i>----</i>
-                      <input type="number" id="endArea" value="" maxlength="5" placeholder="平米" v-model.trim="size2">
+                      <input type="number" rel="area" @focus="selfinputfocu" id="endArea" value="" maxlength="5" placeholder="平米" v-model.trim="size2">
                       <button @click="selfInputSize">确定</button>
                     </div>
                   </div>
@@ -283,7 +287,10 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
                     <dd>
                         <dl class="cell">
                             <dd><span v-show="item.jnjg!=='0'">{{item.jnjg}}</span> 元/㎡·天</dd>
-                            <dd><i style="display: block" v-show="item.mj1!=='0.0'">{{item.mj1}} - {{item.mj2}}㎡</i></dd>
+                            <dd>
+                              <i style="display: block" v-show="item.mj1!=='0.0'" v-if="item.mj1 !== item.mj2">{{item.mj1}} - {{item.mj2}}㎡</i>
+                              <i style="display: block" v-show="item.mj1!=='0.0'" v-else>{{item.mj1}}㎡</i>
+                            </dd>
                         </dl>
                     </dd>
                   </dl>
@@ -331,7 +338,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           <i class="basic_10"></i>
           <span>车位信息</span>
         </router-link>
-        <router-link class="bulid_msg_item" :to="{path:'/loupan_image/'+lpid}">
+        <router-link class="bulid_msg_item" v-show="false" :to="{path:'/loupan_image/'+lpid}">
           <i class="basic_06"></i>
           <span>图片信息</span>
         </router-link>
@@ -410,6 +417,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           "curr_page": 1,
           "items_perpage": 10,
         },
+          where:'',
         resultData: [],
         progress: "0%"
       }
@@ -467,6 +475,21 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         this.resetGetData();
         this.getFilters();
       },
+      selfinputfocu(e){
+       /* const li = $(e.target).closest("ul");
+        console.log(li);
+        li.siblings().removeClass("highlight");
+*/
+        const target = $(e.target), rel = target.attr("rel");
+        if(rel === "price"){
+            $.each($("li[target='price']"), (idx, item)=>{$(item).removeClass("highlight");});
+            this.para.price_dj = "";
+        }
+        else if(rel === "area"){
+            $.each($("li[target='area']"), (idx, item)=>{$(item).removeClass("highlight");});
+            this.para.area = "";
+        }
+      },
       toDetail(){
           const location = "http://wx.urskongjian.com:5000/#/detail?building_id=" + this.lpid;
           setTimeout(function(){
@@ -484,6 +507,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
             that.progress = data.wcbl + "%";
+            $('.finish_bar').css('width',that.progress);
           }, (res)=>{
             Indicator.close()
             that.progress = "10%";
@@ -496,9 +520,9 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
            spinnerType: 'fading-circle'
         }); 
 
-        const li = $(e.target).parent("li"), txt = $(li).find("a").text();
+        const li = $(e.target).closest("li"), txt = $(li).find("a").text();
         li.addClass("highlight").siblings().removeClass("highlight");
-        //this.where = txt;
+        this.where = txt;
 
         var paraObj = {"parameters":{"district":code},"foreEndType":2,"code":"300000012"}, this_ = this;
         axios.post('/yhcms/web/lpjbxx/getLpYwqyFq.do', paraObj)
@@ -516,10 +540,13 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         this.$router.push({path: '/search?rt=index'})
       },
       searchChoose: function (code, val, value, e) {
+        const el = $(e.target).closest('li');
+        el.addClass("highlight").siblings().removeClass("highlight");
         switch ($(e.target).closest('li').attr('data-type')) {
           case 'district':
             $('h2.district-h').html(value);
             if(value==='不限'){
+                $('h2.district-h').html(this.where || value);
                 this.para.district = code;
                 this.para.business = "";
             }
@@ -555,6 +582,10 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         });
         this.resultData = [];
         this.para.curr_page = 1;
+        this.size1 = null;
+        this.size2 = null;
+        this.price1 = null;
+        this.price2 = null;
         this.getData();
       },
       getFilters: function () {
@@ -623,7 +654,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
             this.para.curr_page = 1;
             this.resultData = [];
             this.getData();
-        } 
+        }
         else {
           Toast({
             message: '请输入合理价格',
@@ -722,6 +753,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
         $('#msg_super_wrap').animate({
           bottom: 0
         });
+
       }
     },
     watch: {
