@@ -185,7 +185,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
+/*fjdasjfk*/
 new Vue({
   el: '#app',
   router: router,
