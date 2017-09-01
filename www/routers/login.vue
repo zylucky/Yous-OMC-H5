@@ -82,7 +82,7 @@
           var result = JSON.parse(res.bodyText);
           if (result.success) {
             const msg = {"user": name};
-            sessionStorage.setItem('login', JSON.stringify(msg));
+            localStorage.setItem('login', JSON.stringify(msg));
             Toast({
                 message: '登录成功',
                 position: 'bottom',

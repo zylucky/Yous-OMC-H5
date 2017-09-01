@@ -32,7 +32,7 @@
     <div class="build_top">
       <div class="common_title">楼盘图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="il < 5" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="lp" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
@@ -42,7 +42,7 @@
       </div>
       <div class="common_title">楼盘封面图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="fl < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fm" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
@@ -65,21 +65,28 @@
         lpid: "",
         imgList:[],
         fmList:[],
+        il: 0,
+        fl: 0,
+        upload: 0,
       }
     },
     methods:{
       delete_img(index, id, event){
         const tag = $(event.target).attr("tag"), which = tag === "lp" ? "imgList":"fmList";
+        const filter = tag === "lp" ? "il" : "fl";
         if(id !== 'xxx'){
             this[which][index].isdelete = "1";
         }
         else{
             this[which].splice(index,1);
+            this.upload -= 1;
         }
+        this[filter] -= 1;
       },
       add_img(event){
         var reader = new FileReader();
         const tag = $(event.target).attr("tag"), which = tag === "lp" ? "imgList":"fmList";
+        const filter = tag === "lp" ? "il" : "fl";
         var img1=event.target.files[0];
         if (!/\/(?:jpeg|jpg|png)/i.test(img1.type)){
           MessageBox('提示', '请选择图片文件!');
@@ -109,6 +116,8 @@
            }
         }
         reader.readAsDataURL(img1);
+        this[filter] += 1;
+        this.upload += 1;
       },
       getInitData(){
           const lpid = this.$route.params.lpid;
@@ -123,7 +132,9 @@
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
             that.imgList = data.lppic;
+            that.il = that.imgList.length;
             that.fmList = data.fmpic;
+            that.fl = that.fmList.length;
           }, (res)=>{
             Indicator.close()
           });
@@ -131,11 +142,7 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          Indicator.open({
-            text: '上传图片中...',
-            spinnerType: 'fading-circle'
-          });
-          let fp = [], fm = [];
+          let fp = [], fm = [], timeout = 5000;
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
@@ -146,6 +153,16 @@
              }
           };
 
+          if(this.upload > 0){
+              Indicator.open({
+                  text: '上传图片中...',
+                  spinnerType: 'fading-circle'
+              });
+          }
+          else{
+              timeout = 100;
+          }
+
           this.imgList.forEach((img)=>{cb(img,fp)});
           this.fmList.forEach((img)=>{cb(img,fm)});
 
@@ -153,7 +170,7 @@
           setTimeout(function(){
               Indicator.close();
               that.saveImageData(fp, fm);
-          }, 5000);
+          }, timeout);
       },
       saveImages(pic, type, cb){
           const that = this;

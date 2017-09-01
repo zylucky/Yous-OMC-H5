@@ -32,7 +32,7 @@
     <div class="build_top">
       <div class="common_title">房源图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="fy < 8" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fy" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
@@ -42,7 +42,7 @@
       </div>
       <div class="common_title">户型图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="hx < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="hx" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
@@ -50,19 +50,9 @@
           <i class="delete_icon" tag="hx" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
-      <div class="common_title">格局图</div>
-      <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="gj" type="file">
-        </div>
-        <div class="img_demo fl pr" v-for='(item,index) in gjList' v-if="item.isdelete==0">
-          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-          <i class="delete_icon" tag="gj" @click='delete_img(index, item.id, $event)'></i>
-        </div>
-      </div>
       <div class="common_title">封面图</div>
       <div class="image_wrap clearfix mb140">
-        <div class="upload_btn mr10 fl">
+        <div v-if="fm < 1" class="upload_btn mr10 fl">
             <input @change='add_img' id="file_add" tag="fm" type="file">
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
@@ -89,21 +79,27 @@
         hxList:[],
         gjList:[],
         fmList:[],
+        fy: 0,
+        hx: 0,
+        fm: 0,
+        upload: 0,
       }
     },
     methods:{
       delete_img(index, id, event){
-        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "gj":"gjList", "fm":"fmList"}[tag];
+        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
         if(id !== 'xxx'){
             this[which][index].isdelete = "1";
         }
         else{
             this[which].splice(index,1);
+            this.upload -= 1;
         }
+        this[tag] -= 1;
       },
       add_img(event){
         var reader = new FileReader();
-        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "gj":"gjList", "fm":"fmList"}[tag];
+        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
         var img1=event.target.files[0];
         if (!/\/(?:jpeg|jpg|png)/i.test(img1.type)){
           MessageBox('提示', '请选择图片文件!');
@@ -133,6 +129,8 @@
            }
         }
         reader.readAsDataURL(img1);
+        this[tag] += 1;
+        this.upload += 1;
       },
       getInitData(){
           const fyid = this.$route.params.fyid;
@@ -155,6 +153,10 @@
             that.fmList = data.b9;
             that.hxList = data.b4;
             that.gjList = data.b7;
+
+            that.fy = that.imgList.length;
+            that.hx = that.hxList.length;
+            that.fm = that.fmList.length;
           }, (res)=>{
             Indicator.close()
           });
@@ -162,11 +164,7 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          Indicator.open({
-            text: '上传图片中...',
-            spinnerType: 'fading-circle'
-          });
-          let fp = [], fm = [], hx = [], gj = [];
+          let fp = [], fm = [], hx = [], timeout = 8000;
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
@@ -176,31 +174,31 @@
                  obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
              }
           };
+
+          if(this.upload > 0){
+              Indicator.open({
+                  text: '上传图片中...',
+                  spinnerType: 'fading-circle'
+              });
+          }
+          else{
+              timeout = 100;
+          }
+
           this.imgList.forEach((img,idx)=> {cb(img, fp)});
-          setTimeout(function(){
-              that.imgList = fp;
-          }, 1000);
+          this.imgList = fp;
 
           this.hxList.forEach((img,idx)=> {cb(img, hx)});
-          setTimeout(function(){
-              that.hxList = hx;
-          }, 1000);
-
-          this.gjList.forEach((img,idx)=> {cb(img, gj)});
-          setTimeout(function(){
-              that.gjList = gj;
-          }, 1000);
+          this.hxList = hx;
 
           this.fmList.forEach((img, idx)=>{cb(img,fm)});
-          setTimeout(function(){
-              that.fmList = fm;
-          });
+          this.fmList = fm;
 
           //保存信息
           setTimeout(function(){
               Indicator.close();
               that.saveImageData();
-          }, 8000);
+          }, timeout);
       },
       saveImages(pic, type, cb){
           const that = this;
@@ -229,14 +227,11 @@
         let hx = this.hxList.map((item, idx)=>{
             return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
         });
-        let gj = this.gjList.map((item, idx)=>{
-            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
-        });
         let fm = this.fmList.map((item, idx)=>{
             return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
         });
 
-        const data = {"parameters":{"fyid":this.fyid,"fytp":fp,"hxt":hx,"gjt":gj,"fmtp":fm},"foreEndType":2,"code":"300000082"};
+        const data = {"parameters":{"fyid":this.fyid,"fytp":fp,"hxt":hx,"gjt":this.gjList,"fmtp":fm},"foreEndType":2,"code":"300000082"};
         this.$http.post(
            this.$api + "/yhcms/web/zdfyxx/saveZdFyTp.do", data).then((res)=>{
           Indicator.close();
