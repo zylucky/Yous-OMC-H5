@@ -133,6 +133,10 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
     display: none;
   }
 
+#filter-area ul, #filter-price ul{
+    height: 200px;
+    overflow-y: scroll;
+}
 
 </style>
 <template>
