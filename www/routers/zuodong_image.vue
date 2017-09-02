@@ -56,7 +56,8 @@
         zdid: "",
         imgList:[],
         il: 0,
-        upload: 0
+        upload: 0,
+        uploaded: 0,
       }
     },
     methods:{
@@ -128,21 +129,28 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          let fp = [], timeout = 5000;
+          let fp = [];
           if(this.upload > 0){
               Indicator.open({
                   text: '上传图片中...',
                   spinnerType: 'fading-circle'
               });
           }
-          else{
-              timeout = 100;
-          }
 
           this.imgList.forEach((img)=>{
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
-                 that.saveImages(data, t, function(path){fp.push({"id":"", "isdelete":"0", "url":path})});
+                 that.saveImages(data, t, function(path){
+                     fp.push({"id":"", "isdelete":"0", "url":path})
+                     that.uploaded += 1;
+                     if(that.uploaded >= that.upload){
+                         // 新图片上传完成
+                         Indicator.close();
+                         setTimeout(function(){
+                             that.saveImageData();
+                         }, 1000);
+                     }
+                 });
              }
              else{
                  fp.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
@@ -151,10 +159,12 @@
           this.imgList = fp;
 
           //保存信息
-          setTimeout(function(){
-              Indicator.close();
-              that.saveImageData();
-          }, timeout);
+          if(this.upload < 1){
+              setTimeout(function(){
+                  Indicator.close();
+                  that.saveImageData();
+              }, 1000);
+          }
       },
       saveImages(pic, type, cb){
           const that = this;

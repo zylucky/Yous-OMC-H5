@@ -83,6 +83,7 @@
         hx: 0,
         fm: 0,
         upload: 0,
+        uploaded: 0,
       }
     },
     methods:{
@@ -98,7 +99,9 @@
         this[tag] -= 1;
       },
       add_img(event){
-        const images = event.target.files, len = images.length - this.fy;
+        const images = event.target.files;
+        let len = images.length;
+        len = Math.min(len, 8 - this.fy);
         for(let i = 0; i < len; ++i){
             this.append_img(images[i]);
         }
@@ -107,8 +110,7 @@
         var reader = new FileReader(), type = image.type;
         const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
         if (!/\/(?:jpeg|jpg|png)/i.test(type)){
-          MessageBox('提示', '请选择图片文件!');
-          return
+          return;
         }
         var that=this;
         reader.onloadend = () => {
@@ -173,7 +175,17 @@
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
-                 that.saveImages(data, t, function(path){obj.push({"id":"", "isdelete":"0", "url":path})});
+                 that.saveImages(data, t, function(path){
+                     obj.push({"id":"", "isdelete":"0", "url":path});
+                     that.uploaded += 1;
+                     if(that.uploaded >= that.upload){
+                         // 新图片上传完成
+                         Indicator.close();
+                         setTimeout(function(){
+                             that.saveImageData();
+                         }, 1000);
+                     }
+                 });
              }
              else{
                  obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
@@ -200,10 +212,12 @@
           this.fmList = fm;
 
           //保存信息
-          setTimeout(function(){
-              Indicator.close();
-              that.saveImageData();
-          }, timeout);
+          if(this.upload > 0){
+              setTimeout(function(){
+                  Indicator.close();
+                  that.saveImageData();
+              }, timeout);
+          }
       },
       saveImages(pic, type, cb){
           const that = this;

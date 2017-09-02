@@ -68,6 +68,7 @@
         il: 0,
         fl: 0,
         upload: 0,
+        uploaded: 0,
       }
     },
     methods:{
@@ -84,15 +85,17 @@
         this[filter] -= 1;
       },
       add_img(event){
-        const images = event.target.files, len = images.length = this.il;
+        const fis = event.target.files;
+        let len = fis.length;
+        len = Math.min(len, 5 - this.il);
         for(let i = 0; i < len; ++i){
-            this.append_img(images[i]);
+            this.append_img(fis[i]);
         }
       },
       append_img(image){
         const type = image.type;
         if (!/\/(?:jpeg|jpg|png)/i.test(type)){
-          return
+          return;
         }
         const tag = $(event.target).attr("tag"), which = tag === "lp" ? "imgList":"fmList";
         const filter = tag === "lp" ? "il" : "fl";
@@ -146,11 +149,21 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          let fp = [], fm = [], timeout = 5000;
+          let fp = [], fm = [];
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
-                 that.saveImages(data, t, function(path){obj.push({"id":"", "isdelete":"0", "url":path})});
+                 that.saveImages(data, t, function(path){
+                     obj.push({"id":"", "isdelete":"0", "url":path})
+                     that.uploaded += 1;
+                     if(that.uploaded >= that.upload){
+                         // 新图片上传完成
+                         Indicator.close();
+                         setTimeout(function(){
+                             that.saveImageData();
+                         }, 1000);
+                     }
+                 });
              }
              else{
                  obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
@@ -163,18 +176,20 @@
                   spinnerType: 'fading-circle'
               });
           }
-          else{
-              timeout = 100;
-          }
 
           this.imgList.forEach((img)=>{cb(img,fp)});
+          this.imgList = fp;
           this.fmList.forEach((img)=>{cb(img,fm)});
+          this.fmList = fm;
 
           //保存信息
-          setTimeout(function(){
-              Indicator.close();
-              that.saveImageData(fp, fm);
-          }, timeout);
+          if(this.upload < 1){
+              // 没有新图片要上传
+              setTimeout(function(){
+                  Indicator.close();
+                  that.saveImageData();
+              }, 1000);
+          }
       },
       saveImages(pic, type, cb){
           const that = this;
@@ -190,16 +205,23 @@
               }
           }, (res)=>{});
       },
-      saveImageData(fpImages, fmImages){
+      saveImageData(){
         const that = this;
         Indicator.open({
           text: '保存中...',
           spinnerType: 'fading-circle'
         });
 
+        let fp = this.imgList.map((item, idx)=>{
+            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
+        });
+        let fm = this.fmList.map((item, idx)=>{
+            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
+        });
+
         this.$http.post(
            this.$api + "/yhcms/web/lpjbxx/saveLpTp.do",
-           {"parameters":{"lpid":this.lpid,"lptp":fpImages,"fmtp":fmImages},"foreEndType":2,"code":"300000080"}).then((res)=>{
+           {"parameters":{"lpid":this.lpid,"lptp":fp,"fmtp":fm},"foreEndType":2,"code":"300000080"}).then((res)=>{
           Indicator.close();
           var result = JSON.parse(res.bodyText);
           if (result.success) {
