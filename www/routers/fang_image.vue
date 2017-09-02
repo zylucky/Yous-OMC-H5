@@ -33,7 +33,7 @@
       <div class="common_title">房源图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="fy < 8" class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="fy" type="file">
+            <input @change='add_img' id="file_add" tag="fy" type="file" multiple>
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
@@ -98,10 +98,15 @@
         this[tag] -= 1;
       },
       add_img(event){
-        var reader = new FileReader();
+        const images = event.target.files, len = images.length - this.fy;
+        for(let i = 0; i < len; ++i){
+            this.append_img(images[i]);
+        }
+      },
+      append_img(image){
+        var reader = new FileReader(), type = image.type;
         const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
-        var img1=event.target.files[0];
-        if (!/\/(?:jpeg|jpg|png)/i.test(img1.type)){
+        if (!/\/(?:jpeg|jpg|png)/i.test(type)){
           MessageBox('提示', '请选择图片文件!');
           return
         }
@@ -115,20 +120,20 @@
               canvas.width = imgx.naturalWidth;
               canvas.height = imgx.naturalHeight;
               canvas.getContext("2d").drawImage(imgx, 0, 0);
-              ret = canvas.toDataURL(img1.type, .5);
+              ret = canvas.toDataURL(type, .5);
 
               const obj = {
                   id: "xxx",
                   lpid: that.lpid,
                   isdelete: 0,
                   type: 2,
-                  suffix:img1.type,
+                  suffix:type,
                   url: ret 
               };
               that[which].push(obj)
            }
         }
-        reader.readAsDataURL(img1);
+        reader.readAsDataURL(image);
         this[tag] += 1;
         this.upload += 1;
       },

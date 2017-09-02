@@ -138,6 +138,15 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
     overflow-y: scroll;
 }
 
+li.ys_listcon:not(:last-child){border-bottom: 1px solid rgb(229, 229, 230) !important}
+li.ys_listcon > a{float:left;border-bottom:none}
+li.ys_listcon > a:first-child{width:80%}
+li.ys_listcon > a:last-child{width:20%}
+li.ys_listcon > a:last-child{
+    background:url(../resources/images/icons/right-arrow.jpg) no-repeat;
+    background-size: 32px 32px;
+    padding: 10% 5%;background-origin: content-box;}
+
 </style>
 <template>
   <div>
@@ -254,14 +263,14 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
           infinite-scroll-disabled="loading"
           infinite-scroll-distance="20"
           infinite-scroll-immediate-check="checked">
-          <li class="ys_listcon pv15" v-for="item in resultData">
+          <li class="ys_listcon pv15 clearfix" v-for="item in resultData">
             <a href="javascript:;" class="supply_box" :zdid="item.id" @click="shadowShow">
               <dl class="supply">
                 <dt>
                   <img v-if="item.pic" :src="$prefix + '/' + item.pic">
                   <img v-else :src="$prefix + '/upload/2017-08-27/6404b4de960b81fc5403c870aefcea34.png'">
                 </dt>
-                <dd class="supply_msg_box">
+                <dd class="supply_msg_box clearfix">
                   <dl>
                     <dd class="supply_house">{{item.topic}}&nbsp;&nbsp;{{item.zdh}}</dd>
                     <dd class="supply_color ellipsis">{{item.adddress}}</dd>
@@ -275,6 +284,7 @@ dd.supply_msg_box > dl > dd{padding-bottom:.13rem !important}
                 </dd>
               </dl>
             </a>
+            <router-link class="supply_box" :to="{path:'/fang_list/'+item.id}"></router-link>
           </li>
         </ul>
         <p v-if="loading" class="page-infinite-loading">

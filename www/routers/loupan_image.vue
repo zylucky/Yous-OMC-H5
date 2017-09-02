@@ -33,7 +33,7 @@
       <div class="common_title">楼盘图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="il < 5" class="upload_btn mr10 fl">
-            <input @change='add_img' id="file_add" tag="lp" type="file">
+            <input @change='add_img' id="file_add" tag="lp" type="file" multiple>
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
@@ -84,15 +84,19 @@
         this[filter] -= 1;
       },
       add_img(event){
-        var reader = new FileReader();
-        const tag = $(event.target).attr("tag"), which = tag === "lp" ? "imgList":"fmList";
-        const filter = tag === "lp" ? "il" : "fl";
-        var img1=event.target.files[0];
-        if (!/\/(?:jpeg|jpg|png)/i.test(img1.type)){
-          MessageBox('提示', '请选择图片文件!');
+        const images = event.target.files, len = images.length = this.il;
+        for(let i = 0; i < len; ++i){
+            this.append_img(images[i]);
+        }
+      },
+      append_img(image){
+        const type = image.type;
+        if (!/\/(?:jpeg|jpg|png)/i.test(type)){
           return
         }
-        var that=this;
+        const tag = $(event.target).attr("tag"), which = tag === "lp" ? "imgList":"fmList";
+        const filter = tag === "lp" ? "il" : "fl";
+        const that=this, reader = new FileReader();
         reader.onloadend = () => {
           let ret;
           const imgx = new Image();
@@ -102,20 +106,20 @@
               canvas.width = imgx.naturalWidth;
               canvas.height = imgx.naturalHeight;
               canvas.getContext("2d").drawImage(imgx, 0, 0);
-              ret = canvas.toDataURL(img1.type, .5);
+              ret = canvas.toDataURL(type, .5);
 
               const obj = {
                   id: "xxx",
                   lpid: that.lpid,
                   isdelete: 0,
                   type: 2,
-                  suffix:img1.type,
+                  suffix:type,
                   url: ret 
               };
               that[which].push(obj)
            }
         }
-        reader.readAsDataURL(img1);
+        reader.readAsDataURL(image);
         this[filter] += 1;
         this.upload += 1;
       },
