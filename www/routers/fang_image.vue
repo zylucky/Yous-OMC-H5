@@ -171,7 +171,7 @@
       saveToserver(){
           //开始上传图片
           const that = this;
-          let fp = [], fm = [], hx = [], timeout = 8000;
+          let fp = [], fm = [], hx = [];
           const cb = (img, obj) => {
              if(img.id === "xxx"){
                  const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
@@ -198,9 +198,6 @@
                   spinnerType: 'fading-circle'
               });
           }
-          else{
-              timeout = 100;
-          }
 
           this.imgList.forEach((img,idx)=> {cb(img, fp)});
           this.imgList = fp;
@@ -212,11 +209,11 @@
           this.fmList = fm;
 
           //保存信息
-          if(this.upload > 0){
+          if(this.upload < 1){
               setTimeout(function(){
                   Indicator.close();
                   that.saveImageData();
-              }, timeout);
+              }, 1000);
           }
       },
       saveImages(pic, type, cb){
@@ -263,7 +260,6 @@
             });
 
             let link = '/fang_list/'+this.lpid;
-            console.log(" ======= ", this.zdid);
             if(this.zdid){
                 link += '/' + this.zdid;
             }

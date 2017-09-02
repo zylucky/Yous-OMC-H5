@@ -179,7 +179,7 @@ li.ys_listcon > a:last-child{
                 </dd>
               </dl>
             </a>
-            <router-link class="supply_box" :to="{path:'/fang_list/'+item.id}"></router-link>
+            <router-link class="supply_box" :to="{path:'/fang_list/'+lpid+'/'+item.id}"></router-link>
           </li>
         </ul>
         <p v-if="loading" class="page-infinite-loading">
