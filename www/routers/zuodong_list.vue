@@ -145,7 +145,7 @@ li.ys_listcon > a:last-child{width:20%}
 li.ys_listcon > a:last-child{
     background:url(../resources/images/icons/right-arrow.jpg) no-repeat;
     background-size: 32px 32px;
-    padding: 10% 5%;background-origin: content-box;}
+    padding: 12% 5%;background-origin: content-box;}
 
 </style>
 <template>
