@@ -107,10 +107,15 @@
         const that = this;
 
         this.$http.post(
-          this.$api + "/yhcms/web/lpjbxx/saveLpMj.do",
+          this.$api + "/yhcms/web/lpzdxx/saveLpzdMj.do",
           {
             "parameters": {
-              "id": this.zdid, //楼盘id
+              "id": this.zdid, //座栋id
+              "jzmj":this.jzmj,//建筑面积
+              "yzmj":this.yzmj,//业主面积
+              "kfszcmj":this.kfszcmj,//开发商自持面积
+              "dcmj":this.dcmj,//单层面积
+              "kzmj":this.kzmj,//空置面积
             },
             "foreEndType": 2,
             "code": "300000074"
@@ -126,7 +131,7 @@
             });
 
             setTimeout(function(){
-                _this.$router.push({path:'/zuodong_list/'+that.lpid});
+                _this.$router.push({path:'/zuodong_list/'+_this.lpid});
             },1000);
 
           } else {

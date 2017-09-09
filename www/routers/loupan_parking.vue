@@ -64,6 +64,7 @@
   export default {
     data () {
       return {
+         "id":"",
          "lpid": "",
          "dshsl": "",
          "dshxs": "",
@@ -86,6 +87,8 @@
           this.$http.post(url, {"parameters":{ "lpid":lpid},"foreEndType":2,"code":"300000046"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
+            that.id=data.id;
+            that.dshsl=data.dshsl;
             that.dshxs = data.dshxs;
             that.dshyue = data.dshyue;
             that.dxasl = data.dxasl;
@@ -112,6 +115,9 @@
           this.$api + "/yhcms/web/lpjbxx/saveLpChw.do",
           {
             "parameters": {
+                "id":this.id,
+                "lpid":this.lpid,
+                "dshsl":this.dshsl,
                 "dshxs": this.dshxs,
                 "dshyue": this.dshyue,
                 "dxasl": this.dxasl,

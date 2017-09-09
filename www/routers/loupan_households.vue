@@ -18,13 +18,13 @@
         <li class="clearfix pr">
           <span class="ys_tit w224">总户数：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" v-model="zhsh" placeholder="请输入">
+            <input type="text" value="" v-model="zhsh" placeholder="自动生成" readonly="readonly">
           </div>
         </li>
         <li class="clearfix pr">
           <span class="ys_tit w224">空置总户数：</span>
           <div class="ys_item_con fl">
-            <input type="text" value="" placeholder="请输入">
+            <input type="text" value="" v-model="kzzhsh" placeholder="自动生成" readonly="readonly">
           </div>
         </li>
         <li class="clearfix pr">
@@ -66,6 +66,7 @@
         kfszhs: '',
         yzzhs: '',
         shyzhs: '',
+        kzzhsh:'',
       }
     },
     methods: {
@@ -85,6 +86,7 @@
             that.kfszhs = data.kfszhs;
             that.yzzhs = data.yzzhs;
             that.shyzhs = data.shyzhs;
+            that.kzzhsh=data.kzzhsh;
           }, (res)=>{
             Indicator.close()
           });
@@ -93,8 +95,8 @@
       saveHouse(){
         var _this = this;
 
-        if(!this.zhsh){
-          MessageBox('提示', '请输入总户数');
+        if(!this.kfszhs){
+          MessageBox('提示', '请输入开发商总数');
           return;
         }
 
@@ -111,7 +113,8 @@
               "zhsh": this.zhsh,
               "kfszhs": this.kfszhs,
               "yzzhs": this.yzzhs,
-              "shyzhs": this.shyzhs
+              "shyzhs": this.shyzhs,
+              "kzzhsh":this.kzzhsh
             },
             "foreEndType": 2,
             "code": "300000044"

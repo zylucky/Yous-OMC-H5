@@ -31,14 +31,6 @@
             <label ><input type="radio" name="register" value="0" v-model="zc" :checked="zc==0">否</label>
           </div>
         </li>
-
-        <li class="clearfix">
-          <span class="ys_tit">是否备案：</span>
-          <div class="ys_item_con fl">
-            <label class="mr20"><input type="radio" name="record" value="1" v-model="ba" :checked="ba==1">是</label>
-            <label ><input type="radio" name="record" value="0" v-model="ba" :checked="ba==0">否</label>
-          </div>
-        </li>
       </ul>
       <a href="javascript:;" class="ys_default_btn mb80" @click="saveRegData">保存</a>
     </div>
@@ -115,6 +107,7 @@
             });
 
             setTimeout(function(){
+            //保存注册信息 返回列表
                 _this.$router.push({path:'/index'});
             },1000);
 

@@ -19,7 +19,7 @@
           <span class="ys_tit w224">物业费：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" v-model="wyf" placeholder="请输入物业费">
-            <i class="right_unit">元/㎡/天</i>
+            <i class="right_unit">元/㎡/月</i>
           </div>
         </li>
         <li class="clearfix pr">
@@ -53,7 +53,7 @@
           <span class="ys_tit w224">供暖费：</span>
           <div class="ys_item_con fl">
             <input type="text" value="" v-model="gnf" placeholder="请输入供暖费">
-            <i class="right_unit">元/月</i>
+            <i class="right_unit">元/㎡/季度</i>
           </div>
         </li>
         <li class="clearfix pr">
@@ -191,7 +191,7 @@
             that.shywyf = data.shywyf;
             that.shydf = data.shydf;
             that.shysf = data.shysf;
-            that.shyrshf = data.shyrshft;
+            that.shyrshf = data.shyrshf;
             that.shyzlf = data.shyzlf;
             that.shygnf = data.shygnf;
           }, (res)=>{
@@ -207,7 +207,7 @@
         });
 
         this.$http.post(
-          this.$api + "/yhcms/web/lpzdxx/saveLpzdZlb.do",
+          this.$api + "/yhcms/web/lpzdxx/saveLpzdWyf.do",
           {
             "parameters": {
                 "id": this.id,
@@ -225,7 +225,7 @@
                 "shywyf": this.shywyf,
                 "shydf": this.shydf,
                 "shysf": this.shysf,
-                "shyrshf": this.shyrshft,
+                "shyrshf": this.shyrshf,
                 "shyzlf": this.shyzlf,
                 "shygnf": this.shygnf,
             },

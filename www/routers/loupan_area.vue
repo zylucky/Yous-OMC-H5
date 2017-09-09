@@ -87,11 +87,6 @@
           return;
         }
 
-        if(!this.kfszmj){
-          MessageBox('提示', '请输入开发商总面积');
-          return;
-        }
-
         Indicator.open({
             text: '保存中...',
             spinnerType: 'fading-circle'

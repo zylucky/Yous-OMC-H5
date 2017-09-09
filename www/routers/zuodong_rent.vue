@@ -14,6 +14,16 @@
   <div class="all_elements">
     <div class="build_top">
       <ul class="ys_item_ul mb60">
+      
+      <li class="clearfix">
+          <span class="ys_tit w224">是否有租赁部：</span>
+          <div class="ys_item_con fl">
+            <label for="ele_yes" class="mr20 " @click="sfzlbclass"><input type="radio"   v-model="sfzlb" value="1" name="ele_type" id="ele_yes">是</label>
+            <label for="ele_no" id="ele_no" @click="sfzlbclass"><input type="radio"    v-model="sfzlb" value="0" name="ele_type">否</label>
+          </div>
+        </li>
+        <div class="div_class" style="display:none">
+
         <li class="clearfix pr">
           <span class="ys_tit w224">租赁部合作方式：</span>
           <div class="ys_item_con fl">
@@ -44,6 +54,7 @@
             <input type="text" value="" v-model="zlbphone" placeholder="请输入">
           </div>
         </li>
+        </div>
       </ul>
       <a href="javascript:;" class="ys_default_btn mb80" @click="saveRentMsg">保存</a>
     </div>
@@ -87,17 +98,29 @@
             that.zdgzid = data.zdgzid;
             that.lpid = data.lpid;
             that.sfzlb = data.sfzlb;
+            if(data.sfzlb==0||data.sfzlb==''){
+            $(".div_class").css("display","none");
+            that.zlbhzfs = "";
+            that.zlfybl = "";
+            that.zlbaddress ="";
+            that.zlbphone = "";
+            that.zlfyzq = "";
+            }else if(data.sfzlb==1){
+           $(".div_class").css("display","block");
             that.zlbhzfs = data.zlbhzfs;
             that.zlfybl = data.zlfybl;
             that.zlbaddress = data.zlbaddress;
             that.zlbphone = data.zlbphone;
             that.zlfyzq = data.zlfyzq;
+            }
+           
           }, (res)=>{
             Indicator.close()
           });
       },
       saveRentMsg(){
         var _this = this;
+        if(_this.sfzlb == 1){
         if(!this.zlbhzfs){
           MessageBox('提示', '请输入租赁部合作方式!');
           return;
@@ -114,6 +137,7 @@
           MessageBox('提示', '请输入租赁部电话!');
           return;
         }
+        }
 
         Indicator.open({
             text: '保存中...',
@@ -124,7 +148,7 @@
           this.$api + "/yhcms/web/lpzdxx/saveLpzdZlb.do",
           {
             "parameters": {
-              "id": this.lpid,
+              "id": this.zdid,//座栋ID
               "sfzlb": this.sfzlb,
               "zlbhzfs": this.zlbhzfs,
               "zlfybl": this.zlfybl,
@@ -160,10 +184,61 @@
               position: 'bottom'
           });
         });
+      },
+      sfzlbclass(){
+      let that = this;
+      console.log(that.sfzlb );
+      setTimeout(function (){
+              if(that.sfzlb == 1){
+                
+                $(".div_class").css("display","block");
+                that.zlbhzfs = "";
+                that.zlfybl = "";
+                that.zlbaddress ="";
+                that.zlbphone = "";
+                that.zlfyzq = "";
+              }else if(that.sfzlb == 0){
+                          
+                $(".div_class").css("display","none");
+                      that.zlbhzfs = "";
+                      that.zlfybl = "";
+                      that.zlbaddress ="";
+                      that.zlbphone = "";
+                      that.zlfyzq = "";
+
+                }
+            
+      }, 1);
+      
+
       }
+     
     },
     mounted(){
         this.getInitData();
     },
+
   }
-</script>
+  $(".sfzlb_class").click(function(){
+      var zlbd=$(this).val();
+      if(zlbd==1){
+       that.sfzlb = 1;
+      $(".div_class").css("display","block");
+            that.zlbhzfs = "";
+            that.zlfybl = "";
+            that.zlbaddress ="";
+            that.zlbphone = "";
+            that.zlfyzq = "";
+
+      }else if(zlbd==0){
+       that.sfzlb = 0;
+      $(".div_class").css("display","none");
+            that.zlbhzfs = "";
+            that.zlfybl = "";
+            that.zlbaddress ="";
+            that.zlbphone = "";
+            that.zlfyzq = "";
+
+      }
+      })
+

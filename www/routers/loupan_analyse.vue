@@ -62,7 +62,7 @@
       }
     },
     methods: {
-      zgetInitData(){
+      getInitData(){
           const lpid = this.$route.params.lpid;
           this.lpid = lpid;
           Indicator.open({
@@ -85,10 +85,6 @@
       saveAnalyse(){
         var _this = this;
 
-        if(!this.qwld){
-          MessageBox('提示', '请输入地上车位数量');
-          return;
-        }
 
         Indicator.open({
             text: '保存中...',
@@ -96,13 +92,14 @@
         });
 
         this.$http.post(
-          this.$api + "/yhcms/web/lpjbxx/saveLpChw.do",
+          this.$api + "/yhcms/web/lpjbxx/saveLpFx.do",
           {
             "parameters": {
-                qwld: this.qwld,
-                wlfzql: this.wlfzql,
-                ysjg: this.ysjg,
-                lsjg: this.lsjg,
+                "lpid":this.lpid,
+                "qwld": this.qwld,
+                "wlfzql": this.wlfzql,
+                "ysjg": this.ysjg,
+                "lsjg": this.lsjg
             },
             "foreEndType": 2,
             "code": "300000049"

@@ -63,9 +63,11 @@
   export default {
     data () {
       return {
+          "fyid1":"",
           "fyid": "",
+          "lpid":"",
+          "zdid":"",
           "fjmj": "",
-          "krgw": "",
           "fjjg": "",
           "fjcg": "",
           "fjmk": "",
@@ -76,6 +78,11 @@
         getInitData(){
           const fyid = this.$route.params.fyid;
           this.fyid = fyid;
+          const lpid = this.$route.params.lpid;
+          this.lpid = lpid;
+          const zdid = this.$route.params.zdid;
+          this.zdid= zdid;
+           
           Indicator.open({
              text: '',
              spinnerType: 'fading-circle'
@@ -85,8 +92,8 @@
           this.$http.post(url, {"parameters":{ "id":fyid},"foreEndType":2,"code":"300000035"}).then((res)=>{
             Indicator.close()
             const data = JSON.parse(res.bodyText).data;
+            that.lpid=data.lpid;
             that.fjmj = data.fjmj;
-            that.krgw = data.krgw;
             that.fjjg = data.fjjg;
             that.fjcg = data.fjcg;
             that.fjmk = data.fjmk;
@@ -111,13 +118,12 @@
           this.$http.post(
             this.$api + "/yhcms/web/zdfyxx/saveZdgzxx.do", {
                 "parameters": {
-                  id: this.fyid,
-                  fjmj: this.fjmj,
-                  krgw: this.krgw,
-                  fjjg: this.fjjg,
-                  fjcg: this.fjcg,
-                  fjmk: this.fjmk,
-                  fjzs: this.fjzs
+                  "id": this.fyid,
+                  "fjmj": this.fjmj,
+                  "fjjg": this.fjjg,
+                  "fjcg": this.fjcg,
+                  "fjmk": this.fjmk,
+                  "fjzs": this.fjzs
                 },
                "foreEndType": 2,
                "code": "300000034"
@@ -133,6 +139,7 @@
               });
 
               setTimeout(function(){
+              //保存时返回列表页
                 that.$router.push({path:'/index'});
               },1000);
 
