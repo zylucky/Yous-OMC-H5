@@ -257,6 +257,8 @@
       }
     },
     mounted(){
+      $("body").removeAttr("style");
+      $("html").removeAttr("style");
       this.init();
 
       //下滑时，条件tab固定

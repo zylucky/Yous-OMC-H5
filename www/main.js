@@ -18,7 +18,9 @@ Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 //Vue.prototype.$api = "http://192.168.0.222:8080" //api地址
 
 // 生产环境
-Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+//Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
+//Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 
 Vue.config.debug = true;// 开启debug模式
 
@@ -196,14 +198,45 @@ var router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    let user = JSON.parse(localStorage.getItem('login'));
+    let user = JSON.parse(localStorage.getItem('loginxs'));
+
     if (!user && to.path != '/login') {
         next({ path: '/login' });
     }
-    else{
-        next();
+    else {
+        if (user != null) {
+            const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
+            if (delta > 86400 * 3) {
+                next({path: '/login'});
+            } else {
+                let user22 = JSON.parse(localStorage.getItem('cookxs'));
+                $.post("http://yhcms.tunnel.qydev.com/yhcms/web/wxqx/getXsLogin.do", {
+                        "foreEndType": 2,
+                        "code": "300000045",
+                        "cookie": user22.sjs,
+                    },
+                    function (data) {
+                        if (data.success) {
+                            next();
+                        } else {
+                            if (data.userzt == 2) {
+                                Toast({
+                                    message: '此用户已被删除或被禁用，请联系管理员！',
+                                    position: 'bottom'
+                                });
+                            } else {
+                                next({path: '/login'});
+                            }
+                        }
+                        //alert(data); // John
+                    }, "json");
+            }
+        }else{
+          next();
+        }
     }
 });
+
 
 new Vue({
   el: '#app',
