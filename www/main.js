@@ -19,8 +19,8 @@ Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 
 // 生产环境
 //Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
-Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
-//Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+//Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
+Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 
 Vue.config.debug = true;// 开启debug模式
 
@@ -197,8 +197,8 @@ var router = new VueRouter({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-    let user = JSON.parse(localStorage.getItem('loginxs'));
+router.beforeEach(function(to, from, next) {
+    const user = JSON.parse(localStorage.getItem('loginxs'));
 
     if (!user && to.path != '/login') {
         next({ path: '/login' });
@@ -209,8 +209,8 @@ router.beforeEach((to, from, next) => {
             if (delta > 86400 * 3) {
                 next({path: '/login'});
             } else {
-                let user22 = JSON.parse(localStorage.getItem('cookxs'));
-                $.post("http://yhcms.tunnel.qydev.com/yhcms/web/wxqx/getXsLogin.do", {
+                const user22 = JSON.parse(localStorage.getItem('cookxs'));
+                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
                         "foreEndType": 2,
                         "code": "300000045",
                         "cookie": user22.sjs,
