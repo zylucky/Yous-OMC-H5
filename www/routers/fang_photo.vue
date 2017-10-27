@@ -57,10 +57,10 @@
     <section id="header">
       <header1></header1>
     </section>
-    <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
+    <!--<a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
       <input type="text" id="keyword" placeholder="请输入楼盘关键字搜索" v-model.trim="para.search_keywork" maxlength="50"
              @focus="changeRou">
-    </a>
+    </a>-->
     <section class="section"
              :class="{'in-filter':this.currentFilterTab=='district'||this.currentFilterTab=='price'||this.currentFilterTab=='area'||this.currentFilterTab=='features'}">
       <div class="option">
@@ -94,9 +94,9 @@
                     <li class="price-sub" :class="{act:this.positionType=='a'}" @click="positionType='a';curTab=''">
                       <a href="javascript:void(0);" style="color: #302F35;">行政区域</a>
                     </li>
-                    <!--<li class="price-sub" :class="{act:this.positionType=='y'}" @click="positionType='y';curTab=''">
+                    <li class="price-sub" :class="{act:this.positionType=='y'}" @click="positionType='y';curTab=''">
                       <a href="javascript:void(0);" style="color: #302F35;">业务区域</a>
-                    </li>-->
+                    </li>
                     <li class="price-sub" :class="{act:this.positionType=='l'}" @click="positionType='l';curTab=''">
                       <a href="javascript:void(0);" style="color: #302F35;">地铁</a>
                     </li>

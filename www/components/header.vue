@@ -2,7 +2,7 @@
   @import "../resources/css/reset.less";
   @import "../resources/css/color.less";
   @import "../resources/css/base.less";
-
+  @import "../resources/css/website/list.less";
   [header]{
     .mint-popup{
       width:100%;
@@ -17,42 +17,58 @@
   <div header>
     <!--header start-->
     <header id="header" class="clearfix">
-
-      <!--<label class="side_nav side-nav"> @click.native="popupVisible= true"  v-on:click="showMenu"
+      <label class="side_nav side-nav" @click.native="popupVisible= true"  v-on:click="showMenu">
         <img src="../resources/images/ys_more.png" width="20" alt="">
-      </label>-->
-      <!-- <a href="javascript:void(0);" class="detail-search">
+      </label>
+       <!--<a href="javascript:void(0);" class="detail-search">
           <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50">
+      </a>-->
+      <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
+        <input type="text" id="keyword" placeholder="请输入楼盘关键字搜索" v-model.trim="para.search_keywork" maxlength="50"
+               @focus="changeRou">
       </a>
-      <i class="location_icon"></i> -->
+      <i class="location_icon"></i>
     </header>
-    <!--<mt-popup v-model="popupVisible" position="left" class="mint-popup-3" :modal="false">
-      &lt;!&ndash;左侧登录div&ndash;&gt;
+    <mt-popup v-model="popupVisible" position="left" class="mint-popup-3" :modal="false">
+      <!--左侧登录div-->
       <div class="main-nav-wrapper sidenav">
         <div class="user-box clearfix">
           <img class="portrait" src="../resources/images/user/por_icon.png" alt="">
-          <div class="user_name tc mb20">用户名</div>
+          <div class="user_name tc mb20">{{username}}</div>
           <div class="ys_function tc">
-            <router-link :to="{path:'/list2'}" id="first_list_link">房源列表</router-link>
+            <!--<router-link :to="{path:'/list2'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
-            <a href="javascript:;">待办任务</a>
+            <a href="javascript:;">待办任务</a>-->
+            <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
         </div>
         <a href="javascript:;" class="log_out_btn" @click="login_out">退出登录</a>
       </div>
-    </mt-popup>-->
+    </mt-popup>
   </div>
   <!--header end-->
 </template>
 <script type="text/babel">
-  import $ from 'jquery'
+    import $ from 'jquery';
+    import {Toast} from 'mint-ui';
+    import {Indicator} from 'mint-ui';
   export default {
     data() {
       return {
-        popupVisible: false
+        popupVisible: false,
+          username:"",
+          para: {
+              "search_keywork": "",
+          },
       };
     },
     methods: {
+      init(){
+          this.para.search_keywork = this.$route.query.keyword;
+      },
+      changeRou: function () {
+          this.$router.push({path: '/filter'})
+      },
       showMenu() {
         this.popupVisible = true;
         var wwd = $("#section").width();
@@ -107,6 +123,9 @@
               $("#zhezhao").remove();
               $('html').css({'height': 'auto', 'overflow': 'auto'});
               $('body').css({'height': 'auto', 'overflow': 'auto'});
+              $('html').removeAttr("style");
+              $("body").removeAttr("style");
+
             }
           )
         });
@@ -118,14 +137,43 @@
         }, 150);
 
       },
-
+      modify_pwd(){
+          $("#zhezhao").remove();
+          $('html').removeAttr("style");
+          $("body").removeAttr("style");
+          this.$router.push({path:'/modify_pwd'});
+      },
       login_out(){
         $("#zhezhao").remove();
-          this.$router.push({path:'/login'});
+          const url = this.$api + "/yhcms/web/wxqx/getXsUser.do";
+          const user22 = JSON.parse(localStorage.getItem('cookxs')).sjs;
+          //console.log(user22);
+          let that = this;
+          this.$http.post(url,{ "cookie":user22,"foreEndType":2,"code":"300000086"}).then((res)=>{
+              Indicator.close()
+              const data = JSON.parse(res.bodyText).success;
+              if(data){
+                  $('html').removeAttr("style");
+                  $("body").removeAttr("style");
+                  localStorage.removeItem('cookxs');
+                  localStorage.removeItem('loginxs');
+                  this.$router.push({path:'/login'});
+              }else{
+                  Toast({
+                      message: '系统异常，请稍后再试!',
+                      position: 'middle',
+                      duration: 3000
+                  });
+              }
+          }, (res)=>{
+              Indicator.close()
+          });
       }
-
     },
     mounted: function () {
+      this.init();
+      let username = JSON.parse(localStorage.getItem('userxs'));
+      this.username = username;
       var _this = this;
       $('#first_list_link').click(function(){
         $("#zhezhao").remove();

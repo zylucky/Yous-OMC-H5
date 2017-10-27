@@ -63,13 +63,13 @@
         const sha1 = crypto.createHash('sha1'), md5 = crypto.createHash('md5');
         sha1.update(this.password);
         const pwd = sha1.digest('hex');
-        const sjsd = {"sjs":(new Date)};
-        localStorage.setItem('cookxs', JSON.stringify(sjsd));
-        let user22 = JSON.parse(localStorage.getItem('cookxs'));
-        console.log(user22.sjs);
+
         md5.update(pwd);
         const password = md5.digest("hex");
-
+          const sjs = {"sjs":(new Date)};
+          localStorage.setItem('cookxs', JSON.stringify(sjs));
+          let user22 = JSON.parse(localStorage.getItem('cookxs'));
+          console.log(user22.sjs);
         this.$http.post(
           this.$api + "/yhcms/web/jcsj/loginxs.do",
           {
@@ -87,6 +87,8 @@
           if (result.success) {
             const msg = {".": name,"time":(new Date).getMilliseconds()};
             localStorage.setItem('loginxs', JSON.stringify(msg));
+            localStorage.setItem('userxs', JSON.stringify(result.uname));
+            //let user33 = JSON.parse(localStorage.getItem('userxs'));
             Toast({
                 message: '登录成功',
                 position: 'bottom',
@@ -113,7 +115,7 @@
       }
     },
     mounted(){
-
+        $('title').html("幼狮科技");
     },
   }
 </script>
