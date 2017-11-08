@@ -39,6 +39,8 @@
             <!--<router-link :to="{path:'/list2'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>-->
+
+            <a href="javascript:;" @click="daikan">带看</a>
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
         </div>
@@ -142,6 +144,12 @@
           $('html').removeAttr("style");
           $("body").removeAttr("style");
           this.$router.push({path:'/modify_pwd'});
+      },
+      daikan(){
+          $("#zhezhao").remove();
+          $('html').removeAttr("style");
+          $("body").removeAttr("style");
+          this.$router.push({path:'/daikan'});
       },
       login_out(){
         $("#zhezhao").remove();

@@ -282,7 +282,7 @@ var router = new VueRouter({
     {
       path: '*',
       component: require('./routers/login.vue')
-    }
+    },
   ]
 });
 
