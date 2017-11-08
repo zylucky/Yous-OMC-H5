@@ -197,7 +197,12 @@ var router = new VueRouter({
     {
       path: '*',
       component: require('./routers/login.vue')
+    },
+    {
+      path: '/daikan',
+      component: require('./routers/daikan_add.vue')
     }
+
   ]
 });
 
