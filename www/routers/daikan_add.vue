@@ -48,14 +48,14 @@
 import wx from 'weixin-js-sdk'
 export default{
     created(){
-        this.$http.post('http://omc.urskongjian.com/yhcms/web/weixin/share.do', {url: document.URL}).then((response) => {
+        this.$http.get('http://omc.urskongjian.com/yhcms/web/weixin/share.do?url='+document.URL, {url: document.URL}).then((response) => {
             let res = response.data
             if (res.code === '04') {
                 return
             }
             let wxjssdk = JSON.parse(res);
             wx.config({
-                debug: true,
+                debug: false,
                 appId: wxjssdk.appId,
                 timestamp: wxjssdk.timestamp,
                 nonceStr: wxjssdk.nonceStr,
@@ -72,7 +72,6 @@ export default{
                         var speed = res.speed; // 速度，以米/每秒计
                         var accuracy = res.accuracy; // 位置精度
                         this.dk_address = latitude;
-                        alert(longitude)
                     }
                 });
                 wx.checkJsApi({
@@ -80,7 +79,7 @@ export default{
                     success: function(res) {
                         // 以键值对的形式返回，可用的api值true，不可用为false
                         // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-                        alert(res)
+                        //console.log(res)
                     }
                 });
             })
