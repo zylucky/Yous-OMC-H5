@@ -5,6 +5,7 @@
                 v-show="companyShow"
                 v-for="item in companyList"
                 :title="item.gsname"
+                :key="item.id"
                 @click.native="fuzhi0(item)">
         </mt-cell>
         <mt-field label="渠道人员"  placeholder="" v-model="person"></mt-field>
@@ -12,6 +13,7 @@
                 v-for="item in personList"
                 :title="item.title"
                 :value="item.value"
+                :key="item.id"
                 @click.native="fuzhi1(item)">
         </mt-cell>
         <mt-field label="渠道联系电话" placeholder=""  v-model="tel"></mt-field>
@@ -20,6 +22,7 @@
                 v-for="item in loupanList"
                 :title="item.title"
                 :value="item.value"
+                :key="item.id"
                 @click.native="fuzhi2(item)">
         </mt-cell>
         <mt-field label=""  placeholder="楼栋"  v-model="loudong"></mt-field>
@@ -27,6 +30,7 @@
                 v-for="item in loudongList"
                 :title="item.title"
                 :value="item.value"
+                :key="item.id"
                 @click.native="fuzhi3(item)">
         </mt-cell>
         <mt-field label=""  placeholder="房号"  v-model="fanghao"></mt-field>
@@ -34,6 +38,7 @@
                 v-for="item in fanghaoList"
                 :title="item.title"
                 :value="item.value"
+                :key="item.id"
                 @click.native="fuzhi4(item)">
         </mt-cell>
         <mt-field label="房源地址" placeholder=""  v-model="fy_address"></mt-field>
