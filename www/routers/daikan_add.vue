@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div style="background-color:lightgrey;height: 23px;width: 100%;">渠道</div>
         <mt-field label="渠道公司"  placeholder="" v-model="company"></mt-field>
         <mt-cell
                 v-show="companyShow"
@@ -10,95 +11,75 @@
         </mt-cell>
         <mt-field label="渠道人员"  placeholder="" v-model="person"></mt-field>
         <mt-cell
+                v-show="personShow"
                 v-for="item in personList"
-                :title="item.title"
+                :title="item.qD_PerName"
                 :value="item.value"
-                :key="item.id"
+                :key="item.t_QD_Person_ID"
                 @click.native="fuzhi1(item)">
         </mt-cell>
-        <mt-field label="渠道联系电话" placeholder=""  v-model="tel"></mt-field>
-        <mt-field label="带看房源"  placeholder="楼盘"  v-model="loupan"></mt-field>
-        <mt-cell
-                v-for="item in loupanList"
-                :title="item.title"
-                :value="item.value"
-                :key="item.id"
-                @click.native="fuzhi2(item)">
-        </mt-cell>
-        <mt-field label=""  placeholder="楼栋"  v-model="loudong"></mt-field>
-        <mt-cell
-                v-for="item in loudongList"
-                :title="item.title"
-                :value="item.value"
-                :key="item.id"
-                @click.native="fuzhi3(item)">
-        </mt-cell>
-        <mt-field label=""  placeholder="房号"  v-model="fanghao"></mt-field>
-        <mt-cell
-                v-for="item in fanghaoList"
-                :title="item.title"
-                :value="item.value"
-                :key="item.id"
-                @click.native="fuzhi4(item)">
-        </mt-cell>
-        <mt-field label="房源地址" placeholder=""  v-model="fy_address"></mt-field>
-        <mt-field label="打卡地址" placeholder=""  v-model="dk_address"></mt-field>
+        <mt-field label="联系电话" placeholder=""  v-model="tel"></mt-field>
+        <div v-for="(cell,index) in property">
+            <div style="background-color:lightgrey;height: 23px;width: 100%;">房源{{index+1}} <span @click="delProperty(index)" v-if="index>0" style="float: right;color:blue;">删除</span></div>
+
+            <mt-field label="楼盘"  placeholder="楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
+            <mt-cell
+                    v-show="cell.loupanShow"
+                    v-for="item in cell.loupanList"
+                    :title="item.topic"
+                    :value="item.value"
+                    :key="item.id"
+                    @click.native="fuzhi2(index,item)">
+            </mt-cell>
+            <mt-field label="楼栋"  placeholder="楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
+            <mt-cell
+                    v-show="cell.loudongShow"
+                    v-for="item in cell.loudongList"
+                    :title="item.zdh"
+                    :value="item.value"
+                    :key="item.id"
+                    @click.native="fuzhi3(index,item)">
+            </mt-cell>
+            <mt-field label="房号"  placeholder="房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
+            <mt-cell
+                    v-show="cell.fangjianShow"
+                    v-for="item in cell.fangjianList"
+                    :title="item.fybh"
+                    :value="item.value"
+                    :key="item.id"
+                    @click.native="fuzhi4(index,item)">
+            </mt-cell>
+            <mt-radio
+                    title="是否二看"
+                    v-model="cell.shifouerkan"
+                    :options="[{label:'是',value:'true'}, {label:'否',value:'false'}]">
+            </mt-radio>
+            <mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>
+        </div>
+        <div @click="addProperty()" style="text-align: center;color:blue;"><p><span style="font-size: 15px;">+</span>添加房源</p></div>
+        <div style="background-color:lightgrey;height: 23px;width: 100%;">打卡</div>
+        <mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>
         <mt-field label="说明" placeholder="" rows="4" type="textarea" v-model="info"></mt-field>
+        <div style="width: 100%;text-align: center;">
+            <mt-button  style="width: 80%;height: 30px;background-color:lightskyblue;color: white;font-size: 10px;" @click="submit()" >提交</mt-button>
+        </div>
     </div>
 </template>
-<style>
-
+<style scoped lang="less">
+    @import "../resources/css/reset.css";
 </style>
 <script>
 import wx from 'weixin-js-sdk'
+import { Toast } from 'mint-ui'
+import { MessageBox } from 'mint-ui';
 export default{
-    created(){
-        this.$http.get('http://omc.urskongjian.com/yhcms/web/weixin/share.do?url='+document.URL, {url: document.URL}).then((response) => {
-            let res = response.data
-            if (res.code === '04') {
-                return
-            }
-            let wxjssdk = JSON.parse(res);
-            wx.config({
-                debug: false,
-                appId: wxjssdk.appId,
-                timestamp: wxjssdk.timestamp,
-                nonceStr: wxjssdk.nonceStr,
-                signature: wxjssdk.signature,
-                jsApiList: ['getLocation','openLocation']
-            })
-            wx.ready(function () {
-                // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-                wx.getLocation({
-                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                    success: function (res) {
-                        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                        var speed = res.speed; // 速度，以米/每秒计
-                        var accuracy = res.accuracy; // 位置精度
-                        this.dk_address = latitude;
-                    }
-                });
-                wx.checkJsApi({
-                    jsApiList: ['getLocation'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-                    success: function(res) {
-                        // 以键值对的形式返回，可用的api值true，不可用为false
-                        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-                        //console.log(res)
-                    }
-                });
-            })
-            wx.error(p => {
-                console.log(p)
-            })
-        }, (response) => {})
-    },
     data(){
         return{
             company:'',
             companyId:'',
             companyList:[],
             companyShow:false,
+            mark:false,
 
             person:'',
             personId:'',
@@ -107,60 +88,371 @@ export default{
 
             tel:'',
 
-            loupan:'',
-            loupanId:'',
-            loupanList:[],
-            loupanShow:false,
+            property:[
+                {
+                    loupan:'',
+                    loupanId:'',
+                    loupanList:[],
+                    loupanShow:false,
 
-            loudong:'',
-            loudongId:'',
-            loudongShow:false,
-            loudongList:[],
+                    loudong:'',
+                    loudongId:'',
+                    loudongShow:false,
+                    loudongList:[],
 
-            fanghao:'',
-            fanghaoId:'',
-            fanghaoList:[],
-            fanghaoShow:false,
-            fy_address:'',
+                    fangjian:'',
+                    fangjianId:'',
+                    fangjianList:[],
+                    fangjianShow:false,
+                    shifouerkan:'false',
+                    fangyuandizhi:'',
+
+
+                }
+            ],
             dk_address:'',
             info:'',
             search:'',
             result:[],
+            latitude:0,
+            longitude:0,
+            validate:true,
         }
     },
     watch:{
         company(){
-            if(this.company!=""&&!this.companyId){
-                this.$http.post('http://116.62.68.26:8080/yhcms/web/qduser/getQdCompany.do',{
+            if(this.company!=""&&!this.mark){
+                this.$http.post(this.$api+'/yhcms/web/qduser/getQdCompany.do',{
                     companyName:this.company
                 }).then((res)=>{
                     this.companyList = JSON.parse(res.data).data;
                     this.companyShow = true;
                 });
+            }else{
+                this.mark = false;
+            }
+        },
+        person(){
+            if(this.person!=""&&!this.mark){
+                this.$http.post(this.$api+'/yhcms/web/qddaka/getPersons.do',{
+                    gsid:this.companyId,
+                    name:this.person,
+                }).then((res)=>{
+                    this.personList = JSON.parse(res.data).data;
+                    this.personShow = true;
+                });
+            }else{
+                this.mark = false;
             }
         },
     },
     methods:{
+        getPositionByGps(){
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationError,{
+                    // 指示浏览器获取高精度的位置，默认为false
+                    enableHighAcuracy: true,
+                    // 指定获取地理位置的超时时间，默认不限时，单位为毫秒
+                    //timeout: 5000,
+                    // 最长有效期，在重复获取地理位置时，此参数指定多久再次获取位置。
+                    maximumAge: 3000
+                });
+            }else{
+                alert("Your browser does not support Geolocation!");
+            }
+        },
+        getPositionByBmap(){
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                    var mk = new BMap.Marker(r.point);
+                    var currentLat = r.point.lat;
+                    var currentLon = r.point.lng;
+                    console.log(currentLat)
+                    console.log(currentLon)
+                    var pt = new BMap.Point(currentLon, currentLat);
+                    var geoc = new BMap.Geocoder();
+                    geoc.getLocation(pt, function (rs) {
+                        var addComp = rs.addressComponents;
+                        var city = addComp.city;
+                        var addComp = rs.addressComponents;
+                        var texts = addComp.district + "-" + addComp.street + "-" + addComp.streetNumber;
+                        //获取地理位置成功，跳转
+                    })
+                }
+            })
+        },
+        getPositionByWx(){
+            this.$http.get(
+                'http://omc.urskongjian.com/yhcms/web/weixin/share.do?url='+document.URL,
+                {url: document.URL}
+                ).then((response) => {
+                let res = response.data
+                if (res.code === '04') {
+                    return
+                }
+                let wxjssdk = JSON.parse(res);
+                wx.config({
+                    debug: false,
+                    appId: wxjssdk.appId,
+                    timestamp: wxjssdk.timestamp,
+                    nonceStr: wxjssdk.nonceStr,
+                    signature: wxjssdk.signature,
+                    jsApiList: ['getLocation','openLocation']
+                })
+                wx.ready(function () {
+                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                    wx.getLocation({
+                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                        success: function (res) {
+                            this.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                            this.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                            //var speed = res.speed; // 速度，以米/每秒计
+                            //var accuracy = res.accuracy; // 位置精度
+                            if(this.latitude&&this.longitude){
+                                this.getAddress();
+                            }
+                        },
+                        cancel: function (res) {
+                            alert('用户拒绝授权获取地理位置');
+                        }
+                    });
+                    wx.checkJsApi({
+                        jsApiList: ['getLocation'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                        success: function(res) {
+                            // 以键值对的形式返回，可用的api值true，不可用为false
+                            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                            //console.log(res)
+                        }
+                    });
+                })
+                wx.error(p => {
+                    console.log(p)
+                })
+            }, (response) => {})
+        },
+        locationSuccess(position){
+            console.log(position.coords.latitude)
+            console.log(position.coords.longitude)
+            this.latitude =position.coords.latitude;
+            this.longitude = position.coords.longitude;
+            if(this.latitude&&this.longitude){
+                this.getAddress();
+            }
+        },
+        locationError: function(error){
+            switch(error.code) {
+                case error.TIMEOUT:
+                    alert("A timeout occured! Please try again!");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert('We can\'t detect your location. Sorry!');
+                    break;
+                case error.PERMISSION_DENIED:
+                    alert('Please allow geolocation access for this to work.');
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert('An unknown error occured!');
+                    break;
+            }
+        },
+        getAddress(){
+            this.$http.post(this.$tpi+'/yhcms/web/qddaka/getDakaAddress.do',{x:this.latitude,y:this.longitude,}).then((res)=>{
+               var response = JSON.parse(res.data);
+                if(response.success==true){
+                    this.dk_address = response.data;
+                }
+            });
+        },
+        addProperty(){
+            var property =
+                    {
+                        loupan:'',
+                        loupanId:'',
+                        loupanList:[],
+                        loupanShow:false,
+
+                        loudong:'',
+                        loudongId:'',
+                        loudongShow:false,
+                        loudongList:[],
+
+                        fangjian:'',
+                        fangjianId:'',
+                        fangjianList:[],
+                        fangjianShow:false,
+                        fangyuandizhi:'',
+                        shifouerkan:'false',
+
+                    }
+            this.property.push(property);
+        },
+        delProperty(index){
+            this.property.splice(index,1)
+        },
+        getLoupan(index){
+            if(this.loupan!=""&&!this.mark){
+                this.$http.post(this.$api+'/yhcms/web/jcsj/getLp.do',{
+                    lpname:this.property[index].loupan,
+                }).then((res)=>{
+                    this.property[index].loupanList = JSON.parse(res.data).data;
+                    this.property[index].loupanShow = true;
+                });
+            }else{
+                this.mark = false;
+            }
+
+        },
+        getLoudong(index){
+            if(this.loudong!=""&&!this.mark){
+                this.$http.post(this.$api+'/yhcms/web/jcsj/getLpZd.do',{
+                    lpid:this.property[index].loupanId,
+                    zdh:this.property[index].loudong,
+                }).then((res)=>{
+                    this.property[index].loudongList = JSON.parse(res.data).data;
+                    this.property[index].loudongShow = true;
+                });
+            }else{
+                this.mark = false;
+            }
+
+        },
+        getFanghao(index){
+            if(this.fangjian!=""&&!this.mark){
+                this.$http.post(this.$api+'/yhcms/web/jcsj/getLpZdFy.do',{
+                    zdid:this.property[index].loudongId,
+                    fybh:this.property[index].fangjian,
+                }).then((res)=>{
+                    this.property[index].fangjianList = JSON.parse(res.data).data;
+                    this.property[index].fangjianShow = true;
+                });
+            }else{
+                this.mark = false;
+            }
+
+        },
         fuzhi0(item){
             this.companyShow = false;
             this.companyId = item.id;
             this.company=item.gsname;
+            this.mark =true;
         },
         fuzhi1(item){
+            this.personShow = false;
+            this.personId   = item.t_QD_Person_ID;
+            this.person     = item.qD_PerName;
+            this.mark =true;
 
         },
-        fuzhi2(item){
-
+        fuzhi2(index,item){
+            this.property[index].loupanShow = false;
+            this.property[index].loupanId   = item.id;
+            this.property[index].loupan     = item.topic;
+            this.mark =true;
         },
-        fuzhi3(item){
-
+        fuzhi3(index,item){
+            this.property[index].loudongShow = false;
+            this.property[index].loudongId   = item.id;
+            this.property[index].loudong     = item.zdh;
+            this.mark =true;
         },
-        fuzhi4(item){
-
+        fuzhi4(index,item){
+            this.property[index].fangjianShow = false;
+            this.property[index].fangjianId   = item.id;
+            this.property[index].fangjian     = item.fybh;
+            this.mark =true;
         },
+        submit(){
+            if(!this.company){
+                MessageBox('提示', '请输入公司');
+                return;
+            }
+            if(!this.person){
+                MessageBox('提示', '请输入人员');
+                return;
+            }
+            if(!this.tel||!(/^1(3|4|5|7|8)\d{9}$/.test(this.tel))){
+                MessageBox('提示', '请正确输入手机号');
+                return;
+            }
+
+            this.property.forEach((item,index)=>{
+                if(!item.loupan){
+                    this.validate = false;
+                    MessageBox('提示', '请输入楼盘');
+                    return;
+                }else{
+                    this.validate = true;
+                }
+                if(!item.loudong){
+                    this.validate = false;
+                    MessageBox('提示', '请输入楼栋');
+                    return;
+                }else{
+                    this.validate = true;
+                }
+                if(!item.fangjian){
+                    this.validate = false;
+                    MessageBox('提示', '请输入房间号');
+                    return;
+                }else{
+                    this.validate = true;
+                }
+            })
+            if(this.validate ==false){
+                return;
+            }
+            this.property.forEach((item,index)=>{
+                if(item.shifouerkan=='true'){
+                    this.property[index].shifouerkan = true;
+                }else{
+                    this.property[index].shifouerkan = false;
+                }
+            })
+            let para ={
+                "dakadizhi":this.dk_address,
+                "dianhua":this.tel,
+                "dzX":this.latitude,
+                "dzY":this.longitude,
+                "fangZis":this.property,
+                "gongsi":this.company,
+                "gongsiid":this.companyId,
+                "personid":this.personId,
+                "personname":this.person,
+                "gongsi":this.company,
+                "gongsiid":this.companyId,
+                "renyuan":this.person, //渠道人员名称
+                "renyuanid":this.personId,    //渠道人员ID
+                "cookie":JSON.parse(localStorage.getItem('cookxs'))
+            }
+            this.$http.post(this.$tpi+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
+                var response = JSON.parse(res.data);
+                if(response.success==true){
+                    Toast({
+                        message: 'operation success',
+                        iconClass: 'icon icon-success'
+                    });
+                    this.$router.push('/daikan_logs');
+                }
+
+            });
+        }
     },
     mounted(){
-
+//        var u = navigator.userAgent;
+//        //android
+//        if(u.indexOf('Android') > -1 || u.indexOf('Adr') > -1){
+//            this.getPositionByGps();
+//        }
+//        //IOS
+//        if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+//            this.getPositionByWx();
+//        }
+        this.getPositionByWx();
     }
 }
+
 </script>
+<style>
+
+</style>

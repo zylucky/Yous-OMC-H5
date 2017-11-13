@@ -20,7 +20,8 @@ Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 // 生产环境
 //Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
-Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
+Vue.prototype.$tpi = "http://192.168.23.144:8080";
 
 Vue.config.debug = true;// 开启debug模式
 
@@ -201,6 +202,22 @@ var router = new VueRouter({
     {
       path: '/daikan',
       component: require('./routers/daikan_add.vue')
+    },
+    {
+      path: '/daikan_logs',
+      component: require('./routers/daikan_logs.vue')
+    },
+    {
+      path: '/daikan_comment/:id',
+      component: require('./routers/daikan_comment.vue')
+    },
+    {
+      path: '/daikan_comment_add/:id',
+      component: require('./routers/daikan_comment_add.vue')
+    },
+    {
+      path: '/daikan_detail/:id',
+      component: require('./routers/daikan_detail.vue')
     }
 
   ]
