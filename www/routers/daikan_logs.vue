@@ -41,8 +41,7 @@ export default{
         let para ={
             cookie:JSON.parse(localStorage.getItem('cookxs')),
         }
-        console.log(this.$tpi)
-        this.$http.post(this.$tpi+'/yhcms/web/qddaka/getQdDakaForPerson.do',para).then((res)=>{
+        this.$http.post(this.$api+'/yhcms/web/qddaka/getQdDakaForPerson.do',para).then((res)=>{
             var response = JSON.parse(res.data);
             if(response.success==true){
                 this.list = response.data;

@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div style="background-color:lightgrey;height: 23px;width: 100%;">渠道</div>
-        <mt-field label="渠道公司"  placeholder="" v-model="company"></mt-field>
+    <div class="container">
+        <div class="title">渠道信息</div>
+        <mt-field label="渠道公司" style="color: #333;"  placeholder="" v-model="company"></mt-field>
         <mt-cell
                 v-show="companyShow"
                 v-for="item in companyList"
@@ -9,7 +9,7 @@
                 :key="item.id"
                 @click.native="fuzhi0(item)">
         </mt-cell>
-        <mt-field label="渠道人员"  placeholder="" v-model="person"></mt-field>
+        <mt-field label="渠道人员" style="color: #333;" placeholder="" v-model="person"></mt-field>
         <mt-cell
                 v-show="personShow"
                 v-for="item in personList"
@@ -18,11 +18,12 @@
                 :key="item.t_QD_Person_ID"
                 @click.native="fuzhi1(item)">
         </mt-cell>
-        <mt-field label="联系电话" placeholder=""  v-model="tel"></mt-field>
+        <mt-field label="联系电话" style="color: #333;" placeholder=""  v-model="tel"></mt-field>
+        <div class="title" >房源信息</div>
         <div v-for="(cell,index) in property">
-            <div style="background-color:lightgrey;height: 23px;width: 100%;">房源{{index+1}} <span @click="delProperty(index)" v-if="index>0" style="float: right;color:blue;">删除</span></div>
+            <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);">删除</span></div>
 
-            <mt-field label="楼盘"  placeholder="楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
+            <mt-field label="楼盘" style="color: #333;"  placeholder="楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
             <mt-cell
                     v-show="cell.loupanShow"
                     v-for="item in cell.loupanList"
@@ -31,7 +32,7 @@
                     :key="item.id"
                     @click.native="fuzhi2(index,item)">
             </mt-cell>
-            <mt-field label="楼栋"  placeholder="楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
+            <mt-field label="楼栋" style="color: #333;" placeholder="楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
             <mt-cell
                     v-show="cell.loudongShow"
                     v-for="item in cell.loudongList"
@@ -40,7 +41,7 @@
                     :key="item.id"
                     @click.native="fuzhi3(index,item)">
             </mt-cell>
-            <mt-field label="房号"  placeholder="房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
+            <mt-field label="房号" style="color: #333;" placeholder="房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
             <mt-cell
                     v-show="cell.fangjianShow"
                     v-for="item in cell.fangjianList"
@@ -49,24 +50,46 @@
                     :key="item.id"
                     @click.native="fuzhi4(index,item)">
             </mt-cell>
+            <div class="title">是否二看</div>
             <mt-radio
-                    title="是否二看"
+                    title=""
                     v-model="cell.shifouerkan"
                     :options="[{label:'是',value:'true'}, {label:'否',value:'false'}]">
             </mt-radio>
-            <mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>
+            <!--<mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>-->
         </div>
-        <div @click="addProperty()" style="text-align: center;color:blue;"><p><span style="font-size: 15px;">+</span>添加房源</p></div>
-        <div style="background-color:lightgrey;height: 23px;width: 100%;">打卡</div>
+        <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;">
+            <span style="font-size: 20px;">+</span>添加房源</p></div>
+        <div class="title">打卡</div>
         <mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>
-        <mt-field label="说明" placeholder="" rows="4" type="textarea" v-model="info"></mt-field>
-        <div style="width: 100%;text-align: center;">
-            <mt-button  style="width: 80%;height: 30px;background-color:lightskyblue;color: white;font-size: 10px;" @click="submit()" >提交</mt-button>
+        <mt-field label="说明" placeholder="请输入打卡说明" style="background-color: white;" rows="4" type="textarea" v-model="info"></mt-field>
+        <div style="width: 100%;text-align: center;margin-top: 1rem;margin-bottom: 2rem;">
+            <mt-button
+                    class="btnimg"
+                    style="
+            width: 80%;height: 30px;
+            color: white;font-size: 10px;
+            " @click="submit()" >提交</mt-button>
         </div>
     </div>
 </template>
 <style scoped lang="less">
     @import "../resources/css/reset.css";
+    .title{
+        height:0.6rem;width: 100%;
+        background-color:rgb(235,235,235);
+        padding-left: 0.2rem;
+        padding-top: 0.1rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    .container{
+        font-family: "Microsoft YaHei";
+    }
+    .btnimg{
+        background-image: url(../resources/images/submit.png);
+    }
 </style>
 <script>
 import wx from 'weixin-js-sdk'
@@ -183,6 +206,7 @@ export default{
             })
         },
         getPositionByWx(){
+            var _this =this;
             this.$http.get(
                 'http://omc.urskongjian.com/yhcms/web/weixin/share.do?url='+document.URL,
                 {url: document.URL}
@@ -209,9 +233,8 @@ export default{
                             this.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                             //var speed = res.speed; // 速度，以米/每秒计
                             //var accuracy = res.accuracy; // 位置精度
-                            if(this.latitude&&this.longitude){
-                                this.getAddress();
-                            }
+                            console.log(this.longitude)
+                            _this.getAddress(res.latitude,res.longitude);
                         },
                         cancel: function (res) {
                             alert('用户拒绝授权获取地理位置');
@@ -236,9 +259,7 @@ export default{
             console.log(position.coords.longitude)
             this.latitude =position.coords.latitude;
             this.longitude = position.coords.longitude;
-            if(this.latitude&&this.longitude){
-                this.getAddress();
-            }
+            this.getAddress(position.coords.latitude,position.coords.longitude);
         },
         locationError: function(error){
             switch(error.code) {
@@ -256,9 +277,11 @@ export default{
                     break;
             }
         },
-        getAddress(){
-            this.$http.post(this.$tpi+'/yhcms/web/qddaka/getDakaAddress.do',{x:this.latitude,y:this.longitude,}).then((res)=>{
+        getAddress(latitude,longitude){
+            console.log('qingqiudizhi')
+            this.$http.post(this.$api+'/yhcms/web/qddaka/getDakaAddress.do',{x:latitude,y:longitude,}).then((res)=>{
                var response = JSON.parse(res.data);
+               console.log(response.data)
                 if(response.success==true){
                     this.dk_address = response.data;
                 }
@@ -425,7 +448,7 @@ export default{
                 "renyuanid":this.personId,    //渠道人员ID
                 "cookie":JSON.parse(localStorage.getItem('cookxs'))
             }
-            this.$http.post(this.$tpi+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
+            this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
                 var response = JSON.parse(res.data);
                 if(response.success==true){
                     Toast({

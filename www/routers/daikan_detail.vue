@@ -25,7 +25,7 @@
         },
         methods:{
             getDetail(){
-                this.$http.post(this.$tpi+'/yhcms/web/qddaka/getQdDaka.do',{id:this.$route.params.id}).then((res)=>{
+                this.$http.post(this.$api+'/yhcms/web/qddaka/getQdDaka.do',{id:this.$route.params.id}).then((res)=>{
                     var response = JSON.parse(res.data);
                     if(response.success==true){
                         this.response = response.data;

@@ -40,7 +40,9 @@
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>-->
 
-            <a href="javascript:;" @click="daikan">带看</a>
+            <a href="javascript:;" @click="daikan_daka">带看打卡</a>
+            <a href="javascript:;" @click="daikan_logs">带看记录</a>
+            <a href="javascript:;" @click="daikan_total">带看统计</a>
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
         </div>
@@ -145,11 +147,23 @@
           $("body").removeAttr("style");
           this.$router.push({path:'/modify_pwd'});
       },
-      daikan(){
+      daikan_daka(){
           $("#zhezhao").remove();
           $('html').removeAttr("style");
           $("body").removeAttr("style");
           this.$router.push({path:'/daikan'});
+      },
+      daikan_logs(){
+          $("#zhezhao").remove();
+          $('html').removeAttr("style");
+          $("body").removeAttr("style");
+          this.$router.push({path:'/daikan_logs'});
+      },
+      daikan_total(){
+          $("#zhezhao").remove();
+          $('html').removeAttr("style");
+          $("body").removeAttr("style");
+          this.$router.push({path:'/daikan_total'});
       },
       login_out(){
         $("#zhezhao").remove();
