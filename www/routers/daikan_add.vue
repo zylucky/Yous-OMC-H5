@@ -52,29 +52,38 @@
             </mt-cell>
             <div class="title">是否二看</div>
             <mt-radio
+                    style="margin-top: 0px;"
                     title=""
                     v-model="cell.shifouerkan"
                     :options="[{label:'是',value:'true'}, {label:'否',value:'false'}]">
             </mt-radio>
+            <!--<input name="Fruit" type="radio" class="radio_class" id="radio_a">-->
+            <!--<label for="radio_a">yes</label>-->
+            <!--<input name="Fruit" type="radio" class="radio_class" id="radio_b">-->
+            <!--<label for="radio_b">no</label>-->
             <!--<mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>-->
         </div>
         <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;">
             <span style="font-size: 20px;">+</span>添加房源</p></div>
         <div class="title">打卡</div>
-        <mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>
-        <mt-field label="说明" placeholder="请输入打卡说明" style="background-color: white;" rows="4" type="textarea" v-model="info"></mt-field>
-        <div style="width: 100%;text-align: center;margin-top: 1rem;margin-bottom: 2rem;">
+        <!--<mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>-->
+        <mt-field label="说明" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
+        <div style="width: 100%;text-align: center;margin-top: 1rem;">
             <mt-button
                     class="btnimg"
                     style="
-            width: 80%;height: 30px;
-            color: white;font-size: 10px;
+            width: 80%;height: 0.7rem;
+            color: white;font-size: 0.3rem;
             " @click="submit()" >提交</mt-button>
         </div>
+        <div style="height: 2rem;"></div>
     </div>
 </template>
 <style scoped lang="less">
     @import "../resources/css/reset.css";
+    .radio_class{
+        background-image: url(../resources/images/icons/circle.png);
+    }
     .title{
         height:0.6rem;width: 100%;
         background-color:rgb(235,235,235);
@@ -89,6 +98,9 @@
     }
     .btnimg{
         background-image: url(../resources/images/submit.png);
+    }
+    body{
+        background-color: white!important;
     }
 </style>
 <script>
@@ -386,11 +398,11 @@ export default{
             this.mark =true;
         },
         submit(){
-            if(!this.company){
+            if(!this.company||!this.companyId){
                 MessageBox('提示', '请输入公司');
                 return;
             }
-            if(!this.person){
+            if(!this.person||!this.personId){
                 MessageBox('提示', '请输入人员');
                 return;
             }
@@ -400,21 +412,21 @@ export default{
             }
 
             this.property.forEach((item,index)=>{
-                if(!item.loupan){
+                if(!item.loupan||!item.loupanId){
                     this.validate = false;
                     MessageBox('提示', '请输入楼盘');
                     return;
                 }else{
                     this.validate = true;
                 }
-                if(!item.loudong){
+                if(!item.loudong||!item.loudongId){
                     this.validate = false;
                     MessageBox('提示', '请输入楼栋');
                     return;
                 }else{
                     this.validate = true;
                 }
-                if(!item.fangjian){
+                if(!item.fangjian||!item.fangjianId){
                     this.validate = false;
                     MessageBox('提示', '请输入房间号');
                     return;
@@ -446,13 +458,14 @@ export default{
                 "gongsiid":this.companyId,
                 "renyuan":this.person, //渠道人员名称
                 "renyuanid":this.personId,    //渠道人员ID
-                "cookie":JSON.parse(localStorage.getItem('cookxs'))
+                "cookie":JSON.parse(localStorage.getItem('cookxs')),
+                "shuoming":this.info,
             }
             this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
                 var response = JSON.parse(res.data);
                 if(response.success==true){
                     Toast({
-                        message: 'operation success',
+                        message: '提交成功',
                         iconClass: 'icon icon-success'
                     });
                     this.$router.push('/daikan_logs');
@@ -471,7 +484,8 @@ export default{
 //        if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
 //            this.getPositionByWx();
 //        }
-        this.getPositionByWx();
+        //this.getPositionByWx();
+        document.title = '打卡';
     }
 }
 

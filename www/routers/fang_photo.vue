@@ -177,7 +177,7 @@
                 <dd class="supply_msg_box clearfix">
                   <dl>
                     <dd v-if="item.zdh.indexOf('独栋') > -1" class="supply_house">{{item.topic}}&nbsp;&nbsp;{{item.fybh}}</dd>
-                    <dd v-else>{{item.topic}}&nbsp;&nbsp;{{item.zdh}} - {{item.fybh}}</dd>
+                    <dd v-else class="supply_house">{{item.topic}}&nbsp;&nbsp;{{item.zdh}} - {{item.fybh}}</dd>
                     <dd v-if="item.district == ''" class="supply_color ellipsis">暂无数据</dd>
                     <dd v-else class="supply_color ellipsis">{{item.district}}</dd>
                     <dd>

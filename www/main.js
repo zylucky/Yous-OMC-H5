@@ -21,6 +21,7 @@ Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 //Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+//Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
 Vue.config.debug = true;// 开启debug模式
 
 var router = new VueRouter({

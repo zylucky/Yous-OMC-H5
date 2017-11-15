@@ -1,36 +1,42 @@
+<style scoped lang="less">
+    @import "../resources/css/reset.css";
+    .comment_btn{
+        border-radius:5px;width: 70px;height: 26px;border-size:0.5px ;
+    }
+    .line_a{
+        line-height: 3;border-top:1px solid;border-color: #d9d9d9;
+    }
+    .line_b{
+        line-height: 3;border-top:1px solid;border-color: #d9d9d9;
+    }
+</style>
 <template>
     <div>
         <mt-field label="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-field>
         <mt-field label="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-field>
         <mt-field label="联系电话:" placeholder="" disabled  v-model="response.dianhua"></mt-field>
-        <div style="background-color:lightgrey;height: 15px;width: 100%;"></div>
+        <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in response.fangZis"
              :key="index1"
         >
             <mt-cell :title="response.fangZis[index1].loupan+'-'+response.fangZis[index1].loudong+'-'+response.fangZis[index1].fangjian"></mt-cell>
-            <mt-cell>
-                <mt-button   type="default" class="comment_btn"  :style="ustyle1" plain>{{cell.manyido1}}</mt-button>
-            </mt-cell>
-            <mt-cell>
-                <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  :style="cell.manyido2.indexOf(item)>-1?sstyle2:ustyle2" plain class="comment_btn">
+            <div class="line_a">
+            <mt-button   type="default" class="comment_btn"  :style="ustyle2" plain>{{cell.manyido1}}</mt-button>
+            </div>
+            <div class="line_b">
+                <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  :style="ustyle2" plain class="comment_btn">
                     {{item}}
                 </mt-button>
-            </mt-cell>
-            <mt-cell v-if="index>=4">
-                <mt-button v-if="index>=4" v-for="(item,index) in cell.manyido2" :key="index"  :style="cell.manyido2.indexOf(item)>-1?sstyle2:ustyle2" plain class="comment_btn">
+            </div>
+            <div class="line_b" v-if="index>=4">
+                <mt-button v-if="index>=4" v-for="(item,index) in cell.manyido2" :key="index"  :style="ustyle2" plain class="comment_btn">
                     {{item}}
                 </mt-button>
-            </mt-cell>
+            </div>
             <mt-field type="textarea" rows="4" disabled v-model="cell.kehuyijian" placeholder="请填写客户的反馈意见"></mt-field>
         </div>
     </div>
 </template>
-<style scoped lang="less">
-    @import "../resources/css/reset.css";
-    .comment_btn{
-        border-radius:16px;width: 70px;height: 26px;
-    }
-</style>
 <script>
     export default{
         data(){
@@ -38,10 +44,7 @@
                 response:{},
                 enum1:[],
                 enum2:[],
-                sstyle1:'margin-left:3rem;margin-right: 3rem;background-color:lightskyblue;color:dodgerblue;border-color:lightskyblue;',
-                ustyle1:'margin-left:3rem;margin-right: 3rem;',
-                sstyle2:'margin-left:0.5rem;margin-right: 0.5rem;background-color:lightskyblue;color:dodgerblue;border-color:lightskyblue;',
-                ustyle2:'margin-left:0.5rem;margin-right: 0.5rem;',
+                ustyle2:'width:1.5rem;font-size:0.23rem;margin-left:0.1rem;margin-right: 0.1rem;',
                 property:[],
             }
         },
@@ -59,16 +62,6 @@
                         this.enum2 = response.data;
                     }
                 });
-            },
-            setEnum2(item,index){
-                this.property[index].manyido1 = item.enumValue;
-            },
-            setEnum(item,index){
-                if(this.property[index].manyido2.indexOf(item.enumValue)==-1){
-                    this.property[index].manyido2.push(item.enumValue);
-                }else{
-                    this.property[index].manyido2 = this.property[index].manyido2.filter(t => t != item.enumValue)
-                }
             },
             getDetail(){
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getQdDaka.do',{id:this.$route.params.id}).then((res)=>{
