@@ -11,15 +11,22 @@
         height: 0.7rem;background-color:rgb(235,235,235);
         padding-top: 0.1rem;
     }
+    .unique
+        .mint-cell-wrapper{
+            border: none;
+            padding-top: 0.5rem;
+        }
+
+
 </style>
 <template>
     <div class="container">
-        <div v-if="list.length>0" v-for="(item,index) in list">
+        <div class="unique" v-if="list.length>0" v-for="(item,index) in list">
             <mt-cell style="clear: both;height: 80px;"
                      is-link
                      :to="'daikan_detail/'+item.id"
                      :title="item.gongsi" :label="formDate(item.dakatime)" >
-                <span style="float: right;margin-right: 80px;">
+                <span style="float: right;margin-right: 1rem;margin-top: -0.3rem;">
                     {{item.renyuan}}
                 </span>
             </mt-cell>
@@ -73,8 +80,7 @@ export default{
             }
 
         });
-
-
+        document.title = '打卡记录';
     }
 }
 </script>

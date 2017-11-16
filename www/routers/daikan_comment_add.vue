@@ -12,9 +12,17 @@
     .btnimg{
         background-image: url(../resources/images/submit.png);
     }
+    .title2{
+        height:0.2rem;width: 100%;
+        background-color:rgb(235,235,235);
+        padding-left: 0.2rem;
+        padding-top: 0.1rem;
+        color: #333;
+    }
 </style>
 <template>
     <div class="container">
+        <div class="title2"></div>
         <mt-field label="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-field>
         <mt-field label="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-field>
         <mt-field label="联系电话:" placeholder="" disabled  v-model="response.dianhua"></mt-field>
@@ -40,6 +48,7 @@
                 </mt-button>
             </div>
             <mt-field type="textarea" rows="4" v-model="property[index1].kehuyijian" placeholder="请填写客户的反馈意见"></mt-field>
+            <div class="title2"></div>
         </div>
         <div style="width: 100%;text-align: center;margin-top: 1rem;margin-bottom: 2rem;">
             <mt-button
@@ -87,6 +96,7 @@
             },
             setEnum2(item,index){
                 this.property[index].manyido1 = item.enumValue;
+                this.property[index].manyido2 = [];
             },
             setEnum(item,index){
                 if(this.property[index].manyido2.indexOf(item.enumValue)==-1){
@@ -124,7 +134,7 @@
                     }
                     if(item.manyido2.length==0){
                         this.validate = false;
-                        MessageBox('提示', '满意度必填');
+                        MessageBox('提示', '满意度类型必填');
                         return;
                     }else{
                         this.validate = true;
@@ -148,7 +158,7 @@
         mounted(){
             this.getEnum();
             this.getDetail();
-
+            document.title = '评价';
         }
     }
 </script>

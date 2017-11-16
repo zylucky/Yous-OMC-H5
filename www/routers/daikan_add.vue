@@ -62,12 +62,13 @@
             <!--<input name="Fruit" type="radio" class="radio_class" id="radio_b">-->
             <!--<label for="radio_b">no</label>-->
             <!--<mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>-->
+            <div class="title2"></div>
         </div>
         <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;">
             <span style="font-size: 20px;">+</span>添加房源</p></div>
-        <div class="title">打卡</div>
+        <div class="title">打卡信息</div>
         <!--<mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>-->
-        <mt-field label="说明" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
+        <mt-field label="说明" style="box-shadow:0 0 1px 0.3px #d7d7d7;" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
         <div style="width: 100%;text-align: center;margin-top: 1rem;">
             <mt-button
                     class="btnimg"
@@ -92,6 +93,13 @@
         color: #333;
         font-weight: 500;
         font-size: 16px;
+    }
+    .title2{
+        height:0.2rem;width: 100%;
+        background-color:rgb(235,235,235);
+        padding-left: 0.2rem;
+        padding-top: 0.1rem;
+        color: #333;
     }
     .container{
         font-family: "Microsoft YaHei";
