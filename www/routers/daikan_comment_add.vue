@@ -2,12 +2,14 @@
     @import "../resources/css/reset.css";
     .comment_btn{
         border-radius:5px;width: 70px;height: 26px;
+        width:1.6rem;font-size:0.25rem;
     }
     .container{
         font-family: "Microsoft YaHei";
+        background-color: white;
     }
     .line_a{
-        line-height: 3;border-top:0.5px solid;border-color: #d9d9d9;
+        line-height: 3;border-top:0.5px solid;border-color: #d9d9d9;font-size: 16px;
     }
     .btnimg{
         background-image: url(../resources/images/submit.png);
@@ -19,33 +21,43 @@
         padding-top: 0.1rem;
         color: #333;
     }
+    .mint-cell-title{
+        flex: inherit;
+    }
+    .mint-cell-value{
+        margin-left: 0.2rem;
+    }
+    textarea{
+        background-color: white;
+    }
 </style>
 <template>
     <div class="container">
         <div class="title2"></div>
-        <mt-field label="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-field>
-        <mt-field label="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-field>
-        <mt-field label="联系电话:" placeholder="" disabled  v-model="response.dianhua"></mt-field>
+        <mt-cell title="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-cell>
+        <mt-cell title="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-cell>
+        <mt-cell title="联系电话:" placeholder="" disabled  v-model="response.dianhua"></mt-cell>
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in property"
         :key="index1"
         >
             <mt-cell :title="response.fangZis[index1].loupan+'-'+response.fangZis[index1].loudong+'-'+response.fangZis[index1].fangjian"></mt-cell>
             <div class="line_a">
-                <span style="margin-left: 0.2rem">房间是否满意</span>
+                <span style="margin-left: 0.2rem;">房间是否满意</span>
                 <mt-button v-for="(item,index) in enum1" :key="index" type="default" class="comment_btn" @click="setEnum2(item,index1)" :style="property[index1].manyido1==item.enumValue?sstyle1:ustyle1" plain>{{item.enumValue}}</mt-button>
             </div>
             <div class="line_a" v-if="cell.manyido1">
                 <span style="margin-left: 0.2rem">选择您{{cell.manyido1}}的地方</span>
                 <br>
-                <mt-button v-if="index<4" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
-                    {{item.enumValue}}
-                </mt-button>
-            </div>
-            <div class="line_a" v-if="cell.manyido1">
-                <mt-button v-if="index>=4" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
-                    {{item.enumValue}}
-                </mt-button>
+                <div style="padding-left: 0.3rem;">
+                    <mt-button v-if="index<4" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
+                        {{item.enumValue}}
+                    </mt-button>
+                    <mt-button v-if="index>=4" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
+                        {{item.enumValue}}
+                    </mt-button>
+                </div>
+
             </div>
             <mt-field type="textarea" rows="4" v-model="property[index1].kehuyijian" placeholder="请填写客户的反馈意见"></mt-field>
             <div class="title2"></div>
@@ -71,10 +83,10 @@
                 response:{},
                 enum1:[],
                 enum2:[],
-                sstyle1:'width:1.5rem;font-size:0.23rem;margin-right:0.6rem;margin-left:0.4rem;background-color:rgb(215,235,255);color:rgb(28,119,212);border-color:lightskyblue;',
-                ustyle1:'width:1.5rem;font-size:0.23rem;margin-right:0.6rem;margin-left:0.4rem;background-color:white;',
-                sstyle2:'width:1.5rem;font-size:0.23rem;margin-left:0.2rem;margin-right: 0.1rem;background-color:rgb(215,235,255);color:rgb(28,119,212);border-color:lightskyblue;',
-                ustyle2:'width:1.5rem;font-size:0.23rem;margin-left:0.2rem;margin-right: 0.1rem;',
+                sstyle1:'margin-left:0.4rem;background-color:rgb(215,235,255);color:rgb(28,119,212);border-color:lightskyblue;',
+                ustyle1:'margin-left:0.4rem;background-color:white;',
+                sstyle2:'margin-left:0.1rem;background-color:rgb(215,235,255);color:rgb(28,119,212);border-color:lightskyblue;',
+                ustyle2:'margin-left:0.1rem;',
                 property:[],
                 validate:true,
             }

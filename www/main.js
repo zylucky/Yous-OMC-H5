@@ -25,7 +25,7 @@ Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 Vue.config.debug = true;// 开启debug模式
 
 var router = new VueRouter({
-  mode: "hash",
+  mode: "history",
   hashbang: false,
   routes: [
     {
@@ -179,7 +179,7 @@ var router = new VueRouter({
       component: require('./routers/fang_photo.vue')
     },*/
     {
-      path: '/fang_detail/',
+      path: '/fang_detail',
       component: require('./routers/fang_detail.vue')
     },
     {

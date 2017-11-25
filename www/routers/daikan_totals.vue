@@ -36,7 +36,7 @@
             <!--筛选条件内容start-->
             <div style="height: 6rem;width: 100%;background-color: white;display: block;">
                 <mt-cell>
-                    <mt-button v-for="x in 3" class="comment_btn">hello</mt-button>
+                    <mt-button  class="comment_btn">hello</mt-button>
                 </mt-cell>
             </div>
             <!--筛选条件内容end-->

@@ -1,11 +1,13 @@
-<style scoped lang="less">
+<style>
     @import "../resources/css/reset.css";
     .comment_btn{
         border-radius:5px;width: 70px;height: 26px;border-size:0.5px ;
-        width:1.5rem;font-size:0.23rem;
-        margin-left:0.2rem;margin-right: 0.1rem;
-        background-color:rgb(215,235,255);
-        color:rgb(28,119,212);border-color:lightskyblue;
+        width:1.6rem;font-size:0.25rem;margin-left:0.1rem;
+    }
+    .btn_active{
+        background-color:rgb(215,235,255)!important;
+        color:rgb(28,119,212)!important;
+        border-color:lightskyblue!important;
     }
     .line_a{
         line-height: 3;border-top:1px solid;border-color: #d9d9d9;
@@ -20,13 +22,26 @@
         padding-top: 0.1rem;
         color: #333;
     }
+    .mint-cell-title{
+        flex: inherit;
+    }
+    .mint-cell-value{
+        margin-left: 0.2rem;
+    }
+
+    textarea{
+        background-color: white;
+    }
+    .container{
+        background-color: white;
+    }
 </style>
 <template>
-    <div>
+    <div class="container">
         <div class="title2"></div>
-        <mt-field label="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-field>
-        <mt-field label="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-field>
-        <mt-field label="联系电话:" placeholder="" disabled  v-model="response.dianhua"></mt-field>
+        <mt-cell title="渠道公司:"   v-model="response.gongsi"></mt-cell>
+        <mt-cell title="渠道人员:"  v-model="response.renyuan"></mt-cell>
+        <mt-cell title="联系电话:"  v-model="response.dianhua"></mt-cell>
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in response.fangZis"
              :key="index1"
@@ -35,16 +50,18 @@
             <div class="line_b">
                 <span style="margin-left: 0.2rem">客户对房间{{cell.manyido1}}的地方</span>
                 <br>
-                <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  :style="ustyle2" plain class="comment_btn">
-                    {{item}}
-                </mt-button>
+                <div style="padding-left: 0.3rem;">
+                    <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">
+                        {{item}}
+                    </mt-button>
+                    <mt-button v-if="index>=4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">
+                        {{item}}
+                    </mt-button>
+                </div>
+
             </div>
-            <div class="line_b" v-if="index>=4">
-                <mt-button v-if="index>=4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn">
-                    {{item}}
-                </mt-button>
-            </div>
-            <mt-field type="textarea" rows="4" disabled v-model="cell.kehuyijian" placeholder="请填写客户的反馈意见"></mt-field>
+            <mt-field type="textarea" rows="4" disabled v-model="cell.kehuyijian" placeholder=""></mt-field>
+            <div class="title2"></div>
         </div>
     </div>
 </template>

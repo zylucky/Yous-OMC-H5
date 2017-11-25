@@ -23,7 +23,7 @@
         <div v-for="(cell,index) in property">
             <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);">删除</span></div>
 
-            <mt-field label="楼盘" style="color: #333;"  placeholder="楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
+            <mt-field label="楼盘" style="color: #333;"  placeholder="请输入楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
             <mt-cell
                     v-show="cell.loupanShow"
                     v-for="item in cell.loupanList"
@@ -32,7 +32,7 @@
                     :key="item.id"
                     @click.native="fuzhi2(index,item)">
             </mt-cell>
-            <mt-field label="楼栋" style="color: #333;" placeholder="楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
+            <mt-field label="楼栋" style="color: #333;" placeholder="请输入楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
             <mt-cell
                     v-show="cell.loudongShow"
                     v-for="item in cell.loudongList"
@@ -41,7 +41,7 @@
                     :key="item.id"
                     @click.native="fuzhi3(index,item)">
             </mt-cell>
-            <mt-field label="房号" style="color: #333;" placeholder="房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
+            <mt-field label="房号" style="color: #333;" placeholder="请输入房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
             <mt-cell
                     v-show="cell.fangjianShow"
                     v-for="item in cell.fangjianList"
@@ -68,7 +68,7 @@
             <span style="font-size: 20px;">+</span>添加房源</p></div>
         <div class="title">打卡信息</div>
         <!--<mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>-->
-        <mt-field label="说明" style="box-shadow:0 0 1px 0.3px #d7d7d7;" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
+        <mt-field label="说明" style="box-shadow:0 0 1px 0.3px #d7d7d7;background-color: white;" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
         <div style="width: 100%;text-align: center;margin-top: 1rem;">
             <mt-button
                     class="btnimg"
@@ -80,7 +80,7 @@
         <div style="height: 2rem;"></div>
     </div>
 </template>
-<style scoped lang="less">
+<style>
     @import "../resources/css/reset.css";
     .radio_class{
         background-image: url(../resources/images/icons/circle.png);
@@ -103,12 +103,16 @@
     }
     .container{
         font-family: "Microsoft YaHei";
+        background-color: white;
     }
     .btnimg{
         background-image: url(../resources/images/submit.png);
     }
-    body{
+    textarea{
         background-color: white!important;
+    }
+    .mint-cell-text{
+
     }
 </style>
 <script>
@@ -160,6 +164,9 @@ export default{
             latitude:0,
             longitude:0,
             validate:true,
+            cnt1:0,
+            cnt2:0,
+            cnt3:0,
         }
     },
     watch:{
@@ -340,6 +347,8 @@ export default{
                 }).then((res)=>{
                     this.property[index].loupanList = JSON.parse(res.data).data;
                     this.property[index].loupanShow = true;
+                    this.property[this.cnt1].loupanShow =false;
+                    this.cnt1=this.cnt1+1;
                 });
             }else{
                 this.mark = false;
@@ -354,6 +363,8 @@ export default{
                 }).then((res)=>{
                     this.property[index].loudongList = JSON.parse(res.data).data;
                     this.property[index].loudongShow = true;
+                    this.property[this.cnt2].loudongShow =false;
+                    this.cnt2=this.cnt2+1;
                 });
             }else{
                 this.mark = false;
@@ -368,11 +379,25 @@ export default{
                 }).then((res)=>{
                     this.property[index].fangjianList = JSON.parse(res.data).data;
                     this.property[index].fangjianShow = true;
+                    this.property[this.cnt3].fangjianShow =false;
+                    this.cnt3=this.cnt3+1;
                 });
             }else{
                 this.mark = false;
             }
 
+        },
+        getFangyuan(){
+            this.$http.post(this.$api+'/yhcms/web/qddaka/getHouseForId.do',{id:this.$route.query.house_id}).then((res)=>{
+                this.property[0].loupan = JSON.parse(res.data).data.loupan;
+                this.property[0].loupanId = JSON.parse(res.data).data.loupanid;
+                this.property[0].loudong = JSON.parse(res.data).data.loudong;
+                this.property[0].loudongId = JSON.parse(res.data).data.loudongid;
+                //this.property[0].loudongShow = false;
+                this.property[0].fangjian = JSON.parse(res.data).data.houseno;
+                this.property[0].fangjianId = JSON.parse(res.data).data.houseid;
+                //this.property[0].fangjianShow = false;
+            })
         },
         fuzhi0(item){
             this.companyShow = false;
@@ -494,6 +519,9 @@ export default{
 //        }
         //this.getPositionByWx();
         document.title = '打卡';
+        if(this.$route.query.house_id){
+            this.getFangyuan();
+        }
     }
 }
 

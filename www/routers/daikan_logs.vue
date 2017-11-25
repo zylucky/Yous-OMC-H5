@@ -16,17 +16,28 @@
             border: none;
             padding-top: 0.5rem;
         }
-
+    .unique
+        .mint-cell-title{
+            width: 70%;
+            flex: inherit;
+        }
+    .unique
+        .mint-cell-value{
+            width: 30%;
+        }
+    textarea{
+        background-color: white;
+    }
 
 </style>
 <template>
     <div class="container">
-        <div class="unique" v-if="list.length>0" v-for="(item,index) in list">
+        <div class="unique" v-if="logShow1" v-for="(item,index) in list">
             <mt-cell style="clear: both;height: 80px;"
                      is-link
                      :to="'daikan_detail/'+item.id"
                      :title="item.gongsi" :label="formDate(item.dakatime)" >
-                <span style="float: right;margin-right: 1rem;margin-top: -0.3rem;">
+                <span style="margin-top: -0.3rem;">
                     {{item.renyuan}}
                 </span>
             </mt-cell>
@@ -35,7 +46,7 @@
                 <img src="../resources/images/daikan/pingjia.png" v-if="!item.ispingjia" class="btn"  @click="pingjia(item.id)" size="small">
             </div>
         </div>
-            <div v-if="list.length==0" style="width: 100%;text-align: center;padding-top: 10%;">
+        <div v-if="logShow2" style="width: 100%;text-align: center;padding-top: 10%;">
             <img src="../resources/images/daikan/empty_logs.png" width="130" alt="">
             <br>
             <span style="color: rgb(131,131,131)">您还没有任何带看记录，赶快记录一下吧！</span>
@@ -51,6 +62,8 @@ export default{
     data(){
         return{
             list:[],
+            logShow1:false,
+            logShow2:false,
         }
     },
     methods:{
@@ -77,6 +90,11 @@ export default{
             var response = JSON.parse(res.data);
             if(response.success==true){
                 this.list = response.data;
+                if(this.list.length>0){
+                    this.logShow1 = true;
+                }else{
+                    this.logShow2 = true;
+                }
             }
 
         });

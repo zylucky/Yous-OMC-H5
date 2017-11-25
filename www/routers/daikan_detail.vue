@@ -12,22 +12,30 @@
     .container{
         font-family: "Microsoft YaHei";
     }
+    .mint-cell-title{
+        flex: inherit;
+    }
+    .mint-cell-value{
+        margin-left: 0.2rem;
+    }
 </style>
 <template>
     <div class="container">
         <div class="title">渠道信息</div>
-        <mt-field label="渠道公司" style="color: #333;" disabled  placeholder="" v-model="response.gongsi"></mt-field>
-        <mt-field label="渠道人员" style="color: #333;" disabled  placeholder="" v-model="response.renyuan"></mt-field>
-        <mt-field label="联系电话" style="color: #333;" disabled placeholder=""  v-model="response.dianhua"></mt-field>
+        <mt-cell title="渠道公司" style="color: #333;" disabled  placeholder="" v-model="response.gongsi"></mt-cell>
+        <mt-cell title="渠道人员" style="color: #333;" disabled  placeholder="" v-model="response.renyuan"></mt-cell>
+        <mt-cell title="联系电话" style="color: #333;" disabled placeholder=""  v-model="response.dianhua"></mt-cell>
         <div class="title">房间信息</div>
         <div v-for="(item,index) in response.fangZis" :key="index">
-            <mt-field label="带看房源" disabled placeholder="" v-model="item.loupan+'-'+item.loudong+'-'+item.fangjian" ></mt-field>
+            <mt-cell title="带看房源" disabled placeholder="" v-model="item.loupan+'-'+item.loudong+'-'+item.fangjian" ></mt-cell>
+            <mt-cell title="二次带看" disabled placeholder="">{{item.shifouerkan?'是':'否'}}</mt-cell>
             <!--<mt-field label="房源地址" disabled placeholder="" v-model="item.fangyuandizhi" ></mt-field>-->
         </div>
 
         <!--<mt-field label="打卡地址" disabled placeholder=""  v-model="response.dakadizhi"></mt-field>-->
-        <mt-field label="打卡时间" disabled placeholder=""  v-model="dktime"></mt-field>
-
+        <mt-cell title="打卡时间" disabled placeholder=""  v-model="dktime"></mt-cell>
+        <div class="title">带看说明</div>
+        <mt-field type="textarea" rows="6" disabled v-model="response.shuoming" placeholder=""></mt-field>
     </div>
 </template>
 <script>
