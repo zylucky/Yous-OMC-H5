@@ -93,7 +93,9 @@
         </div>
       </div>
       <div class="tel-order clearfix">
-        <a id="semwaploupanxiangqingdibu400" @click="daikan_daka" class="phone--tel-order">打卡</a>
+        <a id="semwaploupanxiangqingdibu400" :href="'tel:' + phone" class="phone--tel-order">		        
+          <img src="../resources/images/icons/phone-icon.png" class="mr05 mt-3">一键拨号</a>
+        <!--<a id="semwaploupanxiangqingdibu400" @click="daikan_daka" class="phone&#45;&#45;tel-order">带看打卡</a>-->
       </div>
 
     </section>
