@@ -21,7 +21,7 @@
         <mt-field label="联系电话" style="color: #333;" placeholder=""  v-model="tel"></mt-field>
         <div class="title" >房源信息</div>
         <div v-for="(cell,index) in property">
-            <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);">删除</span></div>
+            <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);padding-right: 0.2rem;">删除</span></div>
 
             <mt-field label="楼盘" style="color: #333;"  placeholder="请输入楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
             <mt-cell
@@ -111,8 +111,8 @@
     textarea{
         background-color: white!important;
     }
-    .mint-cell-text{
-
+    .mint-field .mint-cell-title{
+        width:1.5rem;
     }
 </style>
 <script>

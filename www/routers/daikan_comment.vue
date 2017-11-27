@@ -48,7 +48,7 @@
         >
             <mt-cell :title="response.fangZis[index1].loupan+'-'+response.fangZis[index1].loudong+'-'+response.fangZis[index1].fangjian"></mt-cell>
             <div class="line_b">
-                <span style="margin-left: 0.2rem">客户对房间{{cell.manyido1}}的地方</span>
+                <span style="margin-left: 0.2rem;">客户对房间 <a href="javascript:;" style="color:rgb(28,119,212);"> {{cell.manyido1}}</a>的地方</span>
                 <br>
                 <div style="padding-left: 0.3rem;">
                     <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">
