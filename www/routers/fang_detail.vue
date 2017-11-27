@@ -11,7 +11,7 @@
   .section{padding-bottom:1.2rem;padding-top:0 !important}
   .gift{padding-top:.3rem;width:100% !important}
   .weixin_bot .weixin_bot_box span{font-size:.27rem !important}
-  .photoedit{position:absolute;width:1.4rem;bottom:.18rem;right:.2rem;border: none;background-color: white;color: #0c0c0c;z-index: 999;border-radius: .2rem;}
+  .photoedit{position:absolute;bottom:.18rem;right:.2rem;border: none;background-color: white;z-index: 999;border-radius: .2rem;width:1rem;height:1rem;font-size: 0.2rem;color: white;background: url("../resources/images/icons/upload.png") no-repeat;background-size: 100% 100%;}
 </style>
 <template>
   <div>
@@ -93,8 +93,7 @@
         </div>
       </div>
       <div class="tel-order clearfix">
-        <a id="semwaploupanxiangqingdibu400" :href="'tel:' + phone" class="phone--tel-order">
-          <img src="../resources/images/icons/phone-icon.png" class="mr05 mt-3">一键拨号</a>
+        <a id="semwaploupanxiangqingdibu400" @click="daikan_daka" class="phone--tel-order">打卡</a>
       </div>
 
     </section>
@@ -149,6 +148,13 @@
       }
     },
     methods: {
+
+        daikan_daka(){
+            $("#zhezhao").remove();
+            $('html').removeAttr("style");
+            $("body").removeAttr("style");
+            this.$router.push({path:'/daikan?house_id='+this.hourse_id});
+        },
       //获取某一办公楼详情
       getPerDetail(){
         var _this = this;
