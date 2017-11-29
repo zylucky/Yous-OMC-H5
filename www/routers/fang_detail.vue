@@ -7,7 +7,7 @@
   .weixin_head span:not(.row){width:47% !important}
   .weixin_head{padding-bottom:.3rem;border-bottom:2px solid #e5e5e6}
   .pageState:before{margin-right: 4px;border-top: 6px solid transparent;border-bottom: 6px solid transparent;border-right: 6px solid #FFF}
-  .pageState{position: absolute;right: 15px;bottom: 4px;padding: 2px 8px;line-height: 20px;font-size: 12px;color: #FFF; z-index: 3}
+  .pageState{position: absolute;right: 330px;bottom: 10px;padding: 2px 8px;line-height: 20px;font-size: 12px;color: #FFF; z-index: 3}
   .section{padding-bottom:1.2rem;padding-top:0 !important}
   .gift{padding-top:.3rem;width:100% !important}
   .weixin_bot .weixin_bot_box span{font-size:.27rem !important}
