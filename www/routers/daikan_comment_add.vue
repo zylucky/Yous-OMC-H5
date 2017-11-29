@@ -21,9 +21,11 @@
         padding-top: 0.1rem;
         color: #333;
     }
+    .unique-comment-add
     .mint-cell-title{
         flex: inherit;
     }
+    .unique-comment-add
     .mint-cell-value{
         margin-left: 0.2rem;
     }
@@ -32,7 +34,7 @@
     }
 </style>
 <template>
-    <div class="container">
+    <div class="container unique-comment-add">
         <div class="title2"></div>
         <mt-cell title="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-cell>
         <mt-cell title="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-cell>
