@@ -507,9 +507,10 @@ export default{
                 return;
             }
             this.property.forEach((item,index)=>{
+                console.log(item.shifouerkan)
                 if(item.shifouerkan=='true'){
                     this.property[index].shifouerkan = true;
-                }else{
+                }else if(item.shifouerkan=='false'){
                     this.property[index].shifouerkan = false;
                 }
             })
@@ -520,13 +521,13 @@ export default{
                 "dzY":this.longitude,
                 "fangZis":this.property,
                 "gongsi":this.company,
-                "gongsiid":this.companyId,
+                "gongsiid":this.companyId?this.companyId:-1,
                 "personid":this.personId,
                 "personname":this.person,
                 "gongsi":this.company,
                 "gongsiid":this.companyId,
                 "renyuan":this.person, //渠道人员名称
-                "renyuanid":this.personId,    //渠道人员ID
+                "renyuanid":this.personId?this.personId:-1,    //渠道人员ID
                 "cookie":JSON.parse(localStorage.getItem('cookxs')),
                 "shuoming":this.info,
                 "kehuyetai":this.yt=='请选择'?'':this.yt,
@@ -539,6 +540,10 @@ export default{
                         iconClass: 'icon icon-success'
                     });
                     this.$router.push('/daikan_logs');
+                }else{
+                    Toast({
+                        message: response.msg,
+                    });
                 }
             }).catch(function (error) {
                 Toast({
