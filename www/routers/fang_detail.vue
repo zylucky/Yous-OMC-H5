@@ -190,11 +190,16 @@
                   _this.wyf = !result.data.wyf ? '暂无数据' : result.data.wyf + '元/㎡/月'; //物业费
               }
                 _this.zdh = data.zdh || '暂无数据';
-              _this.fybh = data.fybh || '暂无数据';
+
               _this.wygs = data.wygs || '暂无数据';
               /*_this.fjcg = data.fjcg + "m" || '暂无数据';*/
               _this.fjcg = !data.fjcg ? '暂无数据' : data.fjcg + "m";
               _this.fjzt = data.fjzt || '暂无数据';
+              if(_this.fjzt == "预租房"){
+                  _this.fybh = "****";
+              }else{
+                  _this.fybh = data.fybh || '暂无数据';
+              }
               _this.name = data.name || '暂无数据';
               _this.phone = data.phone || '暂无数据';
               _this.house_image = data.housing_icon.split(";");
