@@ -93,9 +93,7 @@
         </div>
       </div>
       <div class="tel-order clearfix">
-        <a id="semwaploupanxiangqingdibu400" :href="'tel:' + phone" class="phone--tel-order">		        
-          <img src="../resources/images/icons/phone-icon.png" class="mr05 mt-3">一键拨号</a>
-        <!--<a id="semwaploupanxiangqingdibu400" @click="daikan_daka" class="phone&#45;&#45;tel-order">带看打卡</a>-->
+        <a id="semwaploupanxiangqingdibu400" @click="daikan_daka" class="phone--tel-order">带看打卡</a>
       </div>
 
     </section>
@@ -177,6 +175,7 @@
           if (result.success) {
             if (result.data) {
               const data = result.data[0];
+              document.title = data.topic;
               $('title').html(result.data.name);
               _this.daily_price = !data.dj ? '暂无数据' : data.dj;
               _this.monthly_price = !data.yzj ? '暂无数据' : data.yzj;

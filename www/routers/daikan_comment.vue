@@ -22,10 +22,12 @@
         padding-top: 0.1rem;
         color: #333;
     }
-    .mint-cell-title{
+    .unique-comment
+        .mint-cell-title{
         flex: inherit;
     }
-    .mint-cell-value{
+    .unique-comment
+        .mint-cell-value{
         margin-left: 0.2rem;
     }
 
@@ -37,7 +39,7 @@
     }
 </style>
 <template>
-    <div class="container">
+    <div class="container unique-comment">
         <div class="title2"></div>
         <mt-cell title="渠道公司:"   v-model="response.gongsi"></mt-cell>
         <mt-cell title="渠道人员:"  v-model="response.renyuan"></mt-cell>
@@ -48,7 +50,9 @@
         >
             <mt-cell :title="response.fangZis[index1].loupan+'-'+response.fangZis[index1].loudong+'-'+response.fangZis[index1].fangjian"></mt-cell>
             <div class="line_b">
-                <span style="margin-left: 0.2rem;">客户对房间 <a href="javascript:;" style="color:rgb(28,119,212);"> {{cell.manyido1}}</a>的地方</span>
+                <span style="margin-left: 0.4rem;">
+                    <a href="javascript:;" :style="cell.manyido1=='满意'?'color:#fba62d':'color:#f74747'">{{cell.manyido1}}</a>
+                </span>
                 <br>
                 <div style="padding-left: 0.3rem;">
                     <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">

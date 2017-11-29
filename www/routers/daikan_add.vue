@@ -1,7 +1,19 @@
+<style>
+    @import "../resources/css/reset.css";
+    .radio_class{  background-image: url(../resources/images/icons/circle.png);  }
+    .title{  height:0.6rem;width: 100%;  background-color:rgb(235,235,235);  padding-left: 0.2rem;  padding-top: 0.1rem;  color: #333;  font-weight: 500;  font-size: 16px;  }
+    .title2{  height:0.2rem;width: 100%;  background-color:rgb(235,235,235);  padding-left: 0.2rem;  padding-top: 0.1rem;  color: #333;  }
+    .container{  font-family: "Microsoft YaHei";  background-color: white;  }
+    .btnimg{  background-image: url(../resources/images/submit.png);  }
+    textarea{  background-color: white!important;  }
+    .mint-field .mint-cell-title{width:1.5rem;}
+    .pop-right{float: right;color:rgb(28,119,212);font-size: .3rem;padding-right: .2rem;padding-top: .2rem;}
+    .pop-left{float: left;color:rgb(28,119,212);font-size: .3rem;padding-left: .2rem;padding-top: .2rem;}
+</style>
 <template>
     <div class="container">
         <div class="title">渠道信息</div>
-        <mt-field label="渠道公司" style="color: #333;"  placeholder="" v-model="company"></mt-field>
+        <mt-field label="渠道公司" style="color: #333;"  placeholder="请输入渠道公司" v-model="company"></mt-field>
         <mt-cell
                 v-show="companyShow"
                 v-for="item in companyList"
@@ -9,7 +21,7 @@
                 :key="item.id"
                 @click.native="fuzhi0(item)">
         </mt-cell>
-        <mt-field label="渠道人员" style="color: #333;" placeholder="" v-model="person"></mt-field>
+        <mt-field label="渠道人员" style="color: #333;" placeholder="请输入渠道人员" v-model="person"></mt-field>
         <mt-cell
                 v-show="personShow"
                 v-for="item in personList"
@@ -18,7 +30,22 @@
                 :key="item.t_QD_Person_ID"
                 @click.native="fuzhi1(item)">
         </mt-cell>
-        <mt-field label="联系电话" style="color: #333;" placeholder=""  v-model="tel"></mt-field>
+        <mt-field label="联系电话" style="color: #333;" placeholder="请输入联系电话"  v-model="tel"></mt-field>
+        <div class="title" >客户业态</div>
+        <mt-cell title="客户业态" is-link :value="yt" @click.native="yetai()">
+        </mt-cell>
+        <mt-popup
+                style="width:100%;"
+                v-model="popupVisible"
+                position="bottom"
+                popup-transition="popup-fade"
+        >
+            <div style="margin-bottom: 1rem;">
+                <span class="pop-right" @click="confirm">完成</span>
+                <span class="pop-left" @click="popupVisible=false;">取消</span>
+            </div>
+            <mt-picker  :slots="slots" @change="onValuesChange"></mt-picker>
+        </mt-popup>
         <div class="title" >房源信息</div>
         <div v-for="(cell,index) in property">
             <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);padding-right: 0.2rem;">删除</span></div>
@@ -80,41 +107,7 @@
         <div style="height: 2rem;"></div>
     </div>
 </template>
-<style>
-    @import "../resources/css/reset.css";
-    .radio_class{
-        background-image: url(../resources/images/icons/circle.png);
-    }
-    .title{
-        height:0.6rem;width: 100%;
-        background-color:rgb(235,235,235);
-        padding-left: 0.2rem;
-        padding-top: 0.1rem;
-        color: #333;
-        font-weight: 500;
-        font-size: 16px;
-    }
-    .title2{
-        height:0.2rem;width: 100%;
-        background-color:rgb(235,235,235);
-        padding-left: 0.2rem;
-        padding-top: 0.1rem;
-        color: #333;
-    }
-    .container{
-        font-family: "Microsoft YaHei";
-        background-color: white;
-    }
-    .btnimg{
-        background-image: url(../resources/images/submit.png);
-    }
-    textarea{
-        background-color: white!important;
-    }
-    .mint-field .mint-cell-title{
-        width:1.5rem;
-    }
-</style>
+
 <script>
 import wx from 'weixin-js-sdk'
 import { Toast } from 'mint-ui'
@@ -122,6 +115,18 @@ import { MessageBox } from 'mint-ui';
 export default{
     data(){
         return{
+            enum1:[],
+            yt:'请选择',
+            yttmp:'',
+            popupVisible:false,
+            slots:
+                [{
+                    flex: 1,
+                    values: [],
+                    className: 'slot3',
+                    textAlign: 'center'
+                }]
+            ,
             company:'',
             companyId:'',
             companyList:[],
@@ -197,6 +202,28 @@ export default{
         },
     },
     methods:{
+        confirm(){
+            this.yt = this.yttmp;
+            this.popupVisible = false;
+        },
+        yetai(){
+            this.popupVisible = true;
+        },
+        onValuesChange(picker, values) {
+            this.yttmp = values[0];
+        },
+        //获取客户业态的选项
+        getEnum(){
+            this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"kehuyetai"}).then((res)=>{
+                var response = JSON.parse(res.data);
+                if(response.success==true){
+                    this.enum1 = response.data;
+                    this.enum1.forEach((item,index)=>{
+                        this.slots[0].values.push(item.enumValue)
+                    })
+                }
+            });
+        },
         getPositionByGps(){
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationError,{
@@ -347,8 +374,11 @@ export default{
                 }).then((res)=>{
                     this.property[index].loupanList = JSON.parse(res.data).data;
                     this.property[index].loupanShow = true;
-                    this.property[this.cnt1].loupanShow =false;
-                    this.cnt1=this.cnt1+1;
+                    if(this.$route.query.house_id){
+                        this.property[this.cnt1].loupanShow =false;
+                        this.cnt1=this.cnt1+1;
+                    }
+
                 });
             }else{
                 this.mark = false;
@@ -363,8 +393,11 @@ export default{
                 }).then((res)=>{
                     this.property[index].loudongList = JSON.parse(res.data).data;
                     this.property[index].loudongShow = true;
-                    this.property[this.cnt2].loudongShow =false;
-                    this.cnt2=this.cnt2+1;
+                    if(this.$route.query.house_id){
+                        this.property[this.cnt2].loudongShow =false;
+                        this.cnt2=this.cnt2+1;
+                    }
+
                 });
             }else{
                 this.mark = false;
@@ -379,8 +412,11 @@ export default{
                 }).then((res)=>{
                     this.property[index].fangjianList = JSON.parse(res.data).data;
                     this.property[index].fangjianShow = true;
-                    this.property[this.cnt3].fangjianShow =false;
-                    this.cnt3=this.cnt3+1;
+                    if(this.$route.query.house_id){
+                        this.property[this.cnt3].fangjianShow =false;
+                        this.cnt3=this.cnt3+1;
+                    }
+
                 });
             }else{
                 this.mark = false;
@@ -493,6 +529,7 @@ export default{
                 "renyuanid":this.personId,    //渠道人员ID
                 "cookie":JSON.parse(localStorage.getItem('cookxs')),
                 "shuoming":this.info,
+                "kehuyetai":this.yt=='请选择'?'':this.yt,
             }
             this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
                 var response = JSON.parse(res.data);
@@ -503,7 +540,11 @@ export default{
                     });
                     this.$router.push('/daikan_logs');
                 }
-
+            }).catch(function (error) {
+                Toast({
+                    message: error,
+                    iconClass: ''
+                });
             });
         }
     },
@@ -522,6 +563,7 @@ export default{
         if(this.$route.query.house_id){
             this.getFangyuan();
         }
+        this.getEnum();
     }
 }
 

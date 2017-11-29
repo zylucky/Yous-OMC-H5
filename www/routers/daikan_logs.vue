@@ -3,6 +3,8 @@
     .container{
         font-family: "Microsoft YaHei";
         font-size: 16px;
+        background-color: white;
+        height: 100%;
     }
     .btn{
         float: right;margin-right: 20px;height:0.5rem;
@@ -47,7 +49,7 @@
             </div>
         </div>
         <div v-if="logShow2" style="width: 100%;text-align: center;padding-top: 10%;">
-            <img src="../resources/images/daikan/empty_logs.png" width="130" alt="">
+            <img src="../resources/images/daikan/empty.png" width="130" alt="">
             <br>
             <span style="color: rgb(131,131,131)">您还没有任何带看记录，赶快记录一下吧！</span>
             <br>

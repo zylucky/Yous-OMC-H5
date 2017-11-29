@@ -12,6 +12,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
 
+
 Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 //Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 
@@ -231,7 +232,6 @@ var router = new VueRouter({
 
 router.beforeEach(function(to, from, next){
     const user = JSON.parse(localStorage.getItem('loginxs'));
-    console.log(user)
     if (!user && to.path != '/login') {
         next({ path: '/login' });
     }else  if (!user && to.path == '/login') {
