@@ -467,18 +467,18 @@ export default{
             this.mark =true;
         },
         submit(){
-            if(!this.company||!this.companyId){
-                MessageBox('提示', '请输入公司');
-                return;
-            }
-            if(!this.person||!this.personId){
-                MessageBox('提示', '请输入人员');
-                return;
-            }
-            if(!this.tel||!(/^1(3|4|5|7|8)\d{9}$/.test(this.tel))){
-                MessageBox('提示', '请正确输入手机号');
-                return;
-            }
+//            if(!this.company||!this.companyId){
+//                MessageBox('提示', '请输入公司');
+//                return;
+//            }
+//            if(!this.person||!this.personId){
+//                MessageBox('提示', '请输入人员');
+//                return;
+//            }
+//            if(!this.tel||!(/^1(3|4|5|7|8)\d{9}$/.test(this.tel))){
+//                MessageBox('提示', '请正确输入手机号');
+//                return;
+//            }
 
             this.property.forEach((item,index)=>{
                 if(!item.loupan||!item.loupanId){
