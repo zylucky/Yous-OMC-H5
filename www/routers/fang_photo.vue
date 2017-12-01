@@ -176,14 +176,15 @@
                 </dt>
                 <dd class="supply_msg_box clearfix">
                   <dl>
-                    <dd v-if="item.zdh.indexOf('独栋') > -1" class="supply_house">{{item.topic}}&nbsp;&nbsp;<label v-if="item.decoration_level == '预租房'">****</label><label v-else>{{item.fybh}}</label></dd>
-                    <dd v-else>{{item.topic}}&nbsp;&nbsp;{{item.zdh}} - <label v-if="item.decoration_level == '预租房'">****</label><label v-else>{{item.fybh}}</label></dd>
+                    <dd v-if="item.zdh.indexOf('独栋') > -1" class="supply_house">{{item.topic}}&nbsp;&nbsp;<label v-if="item.decoration_level == '预租房'">即将上线</label><label v-else>{{item.fybh}}</label></dd>
+                    <dd v-else>{{item.topic}}&nbsp;&nbsp;<label v-if="item.decoration_level == '预租房'">即将上线</label><label v-else>{{item.zdh}} - {{item.fybh}}</label></dd>
                     <dd v-if="item.district == ''" class="supply_color ellipsis">暂无数据</dd>
                     <dd v-else class="supply_color ellipsis">{{item.district}}</dd>
                     <dd>
                       <dl class="supply_tag clearfix">
                         <dd class="tagClass">{{item.housing_area}}㎡</dd>
-                        <dd class="tagClass">{{item.lc}}层</dd>
+                        <!--<dd class="tagClass">{{item.lc}}层</dd>-->
+                        <dd v-if="item.decoration_level == '预租房'" class="tagClass"></dd><dd v-else-if="item.lc" class="tagClass">{{item.lc}}层</dd>
                         <dd class="tagClass zc" style="margin-top: 0.2em !important;padding-left: .5em !important;padding-right: .5em !important;margin-left: .5em !important;font-size: 0.22rem !important;">{{item.decoration_level}}</dd>
                       </dl>
                     </dd>
