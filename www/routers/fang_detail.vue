@@ -55,6 +55,7 @@
       <div class="build_price_wrap clearfix">
        <!-- <span><i v-text="zdh" style="color:black"></i> - <i v-text="fybh" style="color:black"></i></span>-->
         <span v-if="zdh.indexOf('独栋') > -1"><i v-text="fybh" style="color:black"></i></span>
+        <span v-else-if="zdh == ''"><i v-text="fybh" style="color:black"></i></span>
         <span v-else><i v-text="zdh" style="color:black"></i> - <i v-text="fybh" style="color:black"></i></span>
         <span><i v-text="monthly_price" style="color:#e01222"></i><i v-if="monthly_price != null" style="color:black">元/月</i></span>
         <span v-text="daily_price" style="color:#e01222"></span><i v-if="daily_price != null">元/㎡/天</i>
@@ -182,23 +183,27 @@
               _this.room_area = !data.fjmj ? '暂无数据' : data.fjmj + '㎡';
               _this.workstation = data.krgw || '暂无数据';
               _this.floors = data.zglc || '暂无数据';
-              _this.locat_floor = data.lc || '暂无数据';
+
              /* _this.wyf = !data.wyf ? '暂无数据' : data.wyf + '元/㎡/月';*/
               if(result.data.wyf == 0){
                   _this.wyf = '已包含';
               }else{
                   _this.wyf = !result.data.wyf ? '暂无数据' : result.data.wyf + '元/㎡/月'; //物业费
               }
-                _this.zdh = data.zdh || '暂无数据';
+
 
               _this.wygs = data.wygs || '暂无数据';
               /*_this.fjcg = data.fjcg + "m" || '暂无数据';*/
               _this.fjcg = !data.fjcg ? '暂无数据' : data.fjcg + "m";
               _this.fjzt = data.fjzt || '暂无数据';
               if(_this.fjzt == "预租房"){
-                  _this.fybh = "****";
+                  _this.fybh = "即将上线";
+                  _this.zdh = '';
+                  _this.locat_floor = '暂无数据';
               }else{
                   _this.fybh = data.fybh || '暂无数据';
+                  _this.zdh = data.zdh || '暂无数据';
+                  _this.locat_floor = data.lc || '暂无数据';
               }
               _this.name = data.name || '暂无数据';
               _this.phone = data.phone || '暂无数据';
