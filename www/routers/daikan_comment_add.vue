@@ -1,37 +1,16 @@
 <style>
     @import "../resources/css/reset.css";
-    .comment_btn{
-        border-radius:5px;width: 70px;height: 26px;
-        width:1.6rem;font-size:0.25rem;
-    }
-    .container{
-        font-family: "Microsoft YaHei";
-        background-color: white;
-    }
-    .line_a{
-        line-height: 3;border-top:0.5px solid;border-color: #d9d9d9;font-size: 16px;
-    }
-    .btnimg{
-        background-image: url(../resources/images/submit.png);
-    }
-    .title2{
-        height:0.2rem;width: 100%;
-        background-color:rgb(235,235,235);
-        padding-left: 0.2rem;
-        padding-top: 0.1rem;
-        color: #333;
-    }
-    .unique-comment-add
-    .mint-cell-title{
-        flex: inherit;
-    }
-    .unique-comment-add
-    .mint-cell-value{
-        margin-left: 0.2rem;
-    }
-    textarea{
-        background-color: white;
-    }
+    .comment_btn{  border-radius:5px;width: 70px;height: 26px;  width:1.6rem;font-size:0.25rem;  }
+    .container{  font-family: "Microsoft YaHei";  background-color: white;  }
+    .line_a{  line-height: 3;border-top:0.5px solid;border-color: #d9d9d9;font-size: 16px;  }
+    .btnimg{  background-image: url(../resources/images/submit.png);  }
+    .title2{  height:0.2rem;width: 100%;  background-color:rgb(235,235,235);  padding-left: 0.2rem;  padding-top: 0.1rem;  color: #333;  }
+    .unique-comment-add .mint-cell-title{  flex: inherit;  }
+    .unique-kehu .mint-cell-title{  flex: 1;  }
+    .unique-comment-add .mint-cell-value{  margin-left: 0.2rem;  }
+    textarea{  background-color: white;  }
+    .pop-right{float: right;color:rgb(28,119,212);font-size: .3rem;padding-right: .2rem;padding-top: .2rem;}
+    .pop-left{float: left;color:rgb(28,119,212);font-size: .3rem;padding-left: .2rem;padding-top: .2rem;}
 </style>
 <template>
     <div class="container unique-comment-add">
@@ -39,6 +18,23 @@
         <mt-cell title="渠道公司:" placeholder="" disabled v-model="response.gongsi"></mt-cell>
         <mt-cell title="渠道人员:" placeholder="" disabled v-model="response.renyuan"></mt-cell>
         <mt-cell title="联系电话:" placeholder="" disabled  v-model="response.dianhua"></mt-cell>
+        <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
+        <mt-cell class="unique-kehu" title="客户业态" is-link :value="yt" @click.native="yetai()">
+        </mt-cell>
+        <mt-field label="客户预算" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehuyusuan"></mt-field>
+        <mt-field label="需求面积" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehumianji"></mt-field>
+        <mt-popup
+                style="width:100%;"
+                v-model="popupVisible"
+                position="bottom"
+                popup-transition="popup-fade"
+        >
+            <div style="margin-bottom: 1rem;">
+                <span class="pop-right" @click="confirm">完成</span>
+                <span class="pop-left" @click="popupVisible=false;">取消</span>
+            </div>
+            <mt-picker  :slots="slots" @change="onValuesChange"></mt-picker>
+        </mt-popup>
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in property"
         :key="index1"
@@ -82,9 +78,23 @@
     export default{
         data(){
             return {
+                yt:'请选择',
+                yttmp:'',
+                kehuyusuan:null,
+                kehumianji:null,
+                popupVisible:false,
+                slots:
+                    [{
+                        flex: 1,
+                        values: [],
+                        className: 'slot3',
+                        textAlign: 'center'
+                    }]
+                ,
                 response:{},
                 enum1:[],
                 enum2:[],
+                enum3:[],
                 sstyle1:'margin-left:0.4rem;background-color:rgb(215,235,255);color:rgb(28,119,212);border-color:lightskyblue;',
                 ustyle1:'margin-left:0.4rem;background-color:white;',
                 sstyle2:'margin-left:0.1rem;background-color:rgb(215,235,255);color:rgb(28,119,212);border-color:lightskyblue;',
@@ -94,6 +104,16 @@
             }
         },
         methods:{
+            confirm(){
+                this.yt = this.yttmp;
+                this.popupVisible = false;
+            },
+            yetai(){
+                this.popupVisible = true;
+            },
+            onValuesChange(picker, values) {
+                this.yttmp = values[0];
+            },
             getEnum(){
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"manyido1"}).then((res)=>{
                     var response = JSON.parse(res.data);
@@ -105,6 +125,15 @@
                     var response = JSON.parse(res.data);
                     if(response.success==true){
                         this.enum2 = response.data;
+                    }
+                });
+                this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"kehuyetai"}).then((res)=>{
+                    var response = JSON.parse(res.data);
+                    if(response.success==true){
+                        this.enum3 = response.data;
+                        this.enum3.forEach((item,index)=>{
+                            this.slots[0].values.push(item.enumValue)
+                        })
                     }
                 });
             },
@@ -157,7 +186,11 @@
                 if(this.validate == false){
                     return;
                 }
-                this.$http.post(this.$api+'/yhcms/web/qddaka/savePingJia.do', this.property).then((res)=>{
+                let params = {
+                    "kehu":{"dakaid":this.$route.params.id,"kehuyetai":this.yt,"kehuyusuan":this.kehuyusuan,"kehumianji":this.kehumianji},
+                    "fangzis":this.property,
+                }
+                this.$http.post(this.$api+'/yhcms/web/qddaka/savePingJia.do',params ).then((res)=>{
                     var response = JSON.parse(res.data);
                     if(response.success==true){
                         Toast({

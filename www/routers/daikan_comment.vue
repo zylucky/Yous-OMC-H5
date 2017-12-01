@@ -45,6 +45,10 @@
         <mt-cell title="渠道人员:"  v-model="response.renyuan"></mt-cell>
         <mt-cell title="联系电话:"  v-model="response.dianhua"></mt-cell>
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
+        <mt-cell title="客户业态" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyetai==''?'无':response.kehu.kehuyetai"></mt-cell>
+        <mt-cell title="客户预算" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyusuan==''?'无':response.kehu.kehuyusuan"></mt-cell>
+        <mt-cell title="需求面积" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehumianji==''?'无':response.kehu.kehuyusuan"></mt-cell>
+        <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in response.fangZis"
              :key="index1"
         >

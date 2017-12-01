@@ -7,8 +7,6 @@
     .btnimg{  background-image: url(../resources/images/submit.png);  }
     textarea{  background-color: white!important;  }
     .mint-field .mint-cell-title{width:1.5rem;}
-    .pop-right{float: right;color:rgb(28,119,212);font-size: .3rem;padding-right: .2rem;padding-top: .2rem;}
-    .pop-left{float: left;color:rgb(28,119,212);font-size: .3rem;padding-left: .2rem;padding-top: .2rem;}
 </style>
 <template>
     <div class="container">
@@ -31,21 +29,6 @@
                 @click.native="fuzhi1(item)">
         </mt-cell>
         <mt-field label="联系电话" style="color: #333;" placeholder="请输入联系电话"  v-model="tel"></mt-field>
-        <div class="title" >客户业态</div>
-        <mt-cell title="客户业态" is-link :value="yt" @click.native="yetai()">
-        </mt-cell>
-        <mt-popup
-                style="width:100%;"
-                v-model="popupVisible"
-                position="bottom"
-                popup-transition="popup-fade"
-        >
-            <div style="margin-bottom: 1rem;">
-                <span class="pop-right" @click="confirm">完成</span>
-                <span class="pop-left" @click="popupVisible=false;">取消</span>
-            </div>
-            <mt-picker  :slots="slots" @change="onValuesChange"></mt-picker>
-        </mt-popup>
         <div class="title" >房源信息</div>
         <div v-for="(cell,index) in property">
             <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);padding-right: 0.2rem;">删除</span></div>
@@ -115,18 +98,6 @@ import { MessageBox } from 'mint-ui';
 export default{
     data(){
         return{
-            enum1:[],
-            yt:'请选择',
-            yttmp:'',
-            popupVisible:false,
-            slots:
-                [{
-                    flex: 1,
-                    values: [],
-                    className: 'slot3',
-                    textAlign: 'center'
-                }]
-            ,
             company:'',
             companyId:'',
             companyList:[],
@@ -202,28 +173,6 @@ export default{
         },
     },
     methods:{
-        confirm(){
-            this.yt = this.yttmp;
-            this.popupVisible = false;
-        },
-        yetai(){
-            this.popupVisible = true;
-        },
-        onValuesChange(picker, values) {
-            this.yttmp = values[0];
-        },
-        //获取客户业态的选项
-        getEnum(){
-            this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"kehuyetai"}).then((res)=>{
-                var response = JSON.parse(res.data);
-                if(response.success==true){
-                    this.enum1 = response.data;
-                    this.enum1.forEach((item,index)=>{
-                        this.slots[0].values.push(item.enumValue)
-                    })
-                }
-            });
-        },
         getPositionByGps(){
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationError,{
@@ -530,7 +479,6 @@ export default{
                 "renyuanid":this.personId?this.personId:-1,    //渠道人员ID
                 "cookie":JSON.parse(localStorage.getItem('cookxs')),
                 "shuoming":this.info,
-                "kehuyetai":this.yt=='请选择'?'':this.yt,
             }
             this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
                 var response = JSON.parse(res.data);
