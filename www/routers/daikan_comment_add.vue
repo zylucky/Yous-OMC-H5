@@ -1,6 +1,7 @@
 <style>
     @import "../resources/css/reset.css";
-    .comment_btn{  border-radius:5px;width: 70px;height: 26px;  width:1.6rem;font-size:0.25rem;  }
+    .comment_btn1{  border-radius:5px;height: 26px;  width:2.16rem;font-size:0.25rem;  }
+    .comment_btn{  border-radius:5px;height: 26px;  width:1.6rem;font-size:0.25rem;  }
     .container{  font-family: "Microsoft YaHei";  background-color: white;  }
     .line_a{  line-height: 3;border-top:0.5px solid;border-color: #d9d9d9;font-size: 16px;  }
     .btnimg{  background-image: url(../resources/images/submit.png);  }
@@ -47,11 +48,11 @@
             <div class="line_a" v-if="cell.manyido1">
                 <span style="margin-left: 0.2rem">选择您{{cell.manyido1}}的地方</span>
                 <br>
-                <div style="padding-left: 0.3rem;">
-                    <mt-button v-if="index<4" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
+                <div style="padding-left: 0.3rem;line-height: .7rem;margin-bottom: .1rem;">
+                    <mt-button v-if="index<3" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn1">
                         {{item.enumValue}}
                     </mt-button>
-                    <mt-button v-if="index>=4" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
+                    <mt-button v-if="index>=3" v-for="(item,index) in enum2" :key="index" @click="setEnum(item,index1)" :style="property[index1].manyido2.indexOf(item.enumValue)>-1?sstyle2:ustyle2" plain class="comment_btn">
                         {{item.enumValue}}
                     </mt-button>
                 </div>
@@ -187,7 +188,11 @@
                     return;
                 }
                 let params = {
-                    "kehu":{"dakaid":this.$route.params.id,"kehuyetai":this.yt,"kehuyusuan":this.kehuyusuan,"kehumianji":this.kehumianji},
+                    "kehu":{
+                        "dakaid":this.$route.params.id,
+                        "kehuyetai":this.yt=='请选择'?'':this.yt,
+                        "kehuyusuan":this.kehuyusuan,
+                        "kehumianji":this.kehumianji},
                     "fangzis":this.property,
                 }
                 this.$http.post(this.$api+'/yhcms/web/qddaka/savePingJia.do',params ).then((res)=>{

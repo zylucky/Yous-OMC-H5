@@ -1,8 +1,12 @@
 <style>
     @import "../resources/css/reset.css";
     .comment_btn{
-        border-radius:5px;width: 70px;height: 26px;border-size:0.5px ;
+        border-radius:5px;height: 26px;border-size:0.5px ;
         width:1.6rem;font-size:0.25rem;margin-left:0.1rem;
+    }
+    .comment_btn1{
+        border-radius:5px;height: 26px;border-size:0.5px ;
+        width:2.16rem;font-size:0.25rem;margin-left:0.1rem;
     }
     .btn_active{
         background-color:rgb(215,235,255)!important;
@@ -47,7 +51,7 @@
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <mt-cell title="客户业态" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyetai==''?'无':response.kehu.kehuyetai"></mt-cell>
         <mt-cell title="客户预算" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyusuan==''?'无':response.kehu.kehuyusuan"></mt-cell>
-        <mt-cell title="需求面积" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehumianji==''?'无':response.kehu.kehuyusuan"></mt-cell>
+        <mt-cell title="需求面积" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehumianji==''?'无':response.kehu.kehumianji"></mt-cell>
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in response.fangZis"
              :key="index1"
@@ -58,11 +62,11 @@
                     <a href="javascript:;" :style="cell.manyido1=='满意'?'color:#fba62d':'color:#f74747'">{{cell.manyido1}}</a>
                 </span>
                 <br>
-                <div style="padding-left: 0.3rem;">
-                    <mt-button v-if="index<4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">
+                <div style="padding-left: 0.3rem;line-height: .7rem;margin-bottom: .1rem;">
+                    <mt-button v-if="index<3" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn1 btn_active">
                         {{item}}
                     </mt-button>
-                    <mt-button v-if="index>=4" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">
+                    <mt-button v-if="index>=3" v-for="(item,index) in cell.manyido2" :key="index"  plain class="comment_btn btn_active">
                         {{item}}
                     </mt-button>
                 </div>

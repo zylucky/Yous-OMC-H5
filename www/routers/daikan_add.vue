@@ -516,7 +516,6 @@ export default{
         if(this.$route.query.house_id){
             this.getFangyuan();
         }
-        this.getEnum();
     }
 }
 
