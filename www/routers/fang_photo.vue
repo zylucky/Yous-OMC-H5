@@ -232,7 +232,7 @@
         subBuesiness:[],
         otherBusiness:[],
         stationArray:[],
-        stateArray:[{val:"", name:"全部"},{val:"1", name:"未到期可看"},{val:"2", name:"未到期不可看"},{val:"3", name:"空房装修中"},{val:"4", name:"精装交付"}],
+        stateArray:[{val:"", name:"全部"},{val:"2", name:"未到期可看"},{val:"4", name:"未到期不可看"},{val:"3", name:"空房装修中"},{val:"1", name:"精装交付"},{val:"5", name:"预租房"}],
         curTab:'',
         thirdpart:'',
         currentFilterTab: 'nth',
@@ -547,6 +547,7 @@
           Indicator.close();
           this_.loading = false;
           this_.resultData = this_.resultData.concat(result.data.data);
+          console.log(this_.resultData);
           if (result.data.data.buildings < this_.para.items_perpage) {
             this_.noMore = true;
           }

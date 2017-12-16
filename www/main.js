@@ -120,7 +120,7 @@ var router = new VueRouter({
       path: '/fang_struct/:fyid',
       component: require('./routers/fang_struct.vue')
     },
-    {
+    /*{
       path: '/fang_owner/:fyid',
       component: require('./routers/fang_owner.vue')
     },
@@ -131,16 +131,16 @@ var router = new VueRouter({
     {
       path: '/fang_owner/edit/:yzid',
       component: require('./routers/fang_edit_owner.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/:fyid',
       component: require('./routers/fang_agenter.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/add/:fyid',
       component: require('./routers/fang_add_agent.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/edit/:dlid',
       component: require('./routers/fang_edit_agent.vue')
     },
@@ -155,7 +155,7 @@ var router = new VueRouter({
     {
       path: '/fang_renter/edit/:zhid',
       component: require('./routers/fang_edit_rent.vue')
-    },
+    },*/
     {
       path: '/fang_image/:fyid',
       component: require('./routers/fang_image.vue')
@@ -273,7 +273,9 @@ router.beforeEach(function(to, from, next){
                             }
                         }
                         //alert(data); // John
-                    }, "json");
+                    }, "json").catch(function (error) {
+                        window.location.href = "http://omc.urskongjian.com/error/uphtm.html";
+                    });
             }
         }else{
             next({path: '/login'});
