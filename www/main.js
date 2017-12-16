@@ -272,7 +272,7 @@ router.beforeEach(function(to, from, next){
                                 next({path: '/login'});
                             }
                         }
-                        //alert(data); // John
+                        //alert(data); // John11111
                     }, "json").catch(function (error) {
                         window.location.href = "http://omc.urskongjian.com/error/uphtm.html";
                     });
