@@ -28,8 +28,6 @@
         <mt-cell title="渠道人员" style="color: #333;" disabled  placeholder="" v-model="response.renyuan"></mt-cell>
         <mt-cell title="联系电话" style="color: #333;" disabled placeholder=""  v-model="response.dianhua"></mt-cell>
 
-        <div class="title">客户业态</div>
-        <mt-cell title="客户业态" style="color: #333;" disabled placeholder=""  v-model="response.kehuyetai==''?'无':response.kehuyetai"></mt-cell>
         <div class="title">房间信息</div>
         <div v-for="(item,index) in response.fangZis" :key="index">
             <mt-cell title="带看房源" disabled placeholder="" v-model="item.loupan+'-'+item.loudong+'-'+item.fangjian" ></mt-cell>
