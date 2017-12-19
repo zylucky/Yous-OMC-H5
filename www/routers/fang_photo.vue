@@ -1,3 +1,7 @@
+<style type="text/css">
+  /*解决加载中图标被遮挡问题*/
+  .mint-indicator{position: relative;z-index: 99;}
+</style>
 <style scoped lang="less">
   @import "../resources/css/website/listx.less";
   .page-infinite-loading {
@@ -47,7 +51,7 @@
 #filter-features .warpper:last-child{margin-bottom:0.5rem}
 .zc{background-color:#ef104e !important;color:#FFF !important;font-size: 0.5em !important;}
 .highlight a{color:#476CBA !important}
-.tagClass{font-size: 0.26rem !important;padding-left:.12rem;padding-right:.12rem}
+.tagClass{font-size: 0.26rem !important;padding-left:.12rem;padding-right:.12rem;}
 #filter-state ul li{padding-left:0 !important;margin-bottom:.1rem}
 #filter-state ul li a{width:100%;text-align:center}
 </style>
@@ -313,6 +317,7 @@
 
         Indicator.close();
 
+        // 标题需要改动，在微信下标题不会变动
         $('title').html('图片上传');
       },
       searchSubArea:function(code,e){

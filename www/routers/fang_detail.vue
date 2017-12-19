@@ -1,6 +1,6 @@
 <style scoped lang="less">
   @import "../resources/css/website/order.less";
-  @import "../resources/plugin/swiper/css/swiper.css"; /*swiper 轮播*/
+  @import "../resources/plugin/swiper/css/swiper.css";
   .weixin_wrap{padding-bottom:.2rem}
   .weixin_head span{width:47% !important;margin-right: 0.2rem !important}
   .weixin_head span.row{width:100% !important}

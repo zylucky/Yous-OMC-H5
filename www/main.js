@@ -26,6 +26,27 @@ Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 //Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
 Vue.config.debug = true;// 开启debug模式
 
+// 过滤器
+Vue.filter('splitK', function(num) {//千位分隔符 过滤器
+  var decimal = String(num).split('.')[1] || '';//小数部分
+  var tempArr = [];
+  var revNumArr = String(num).split('.')[0].split("").reverse();//倒序
+  for (var i in revNumArr){
+    tempArr.push(revNumArr[i]);
+    if((i+1)%3 === 0 && i != revNumArr.length-1){
+      tempArr.push(',');
+    }
+  }
+  var zs = tempArr.reverse().join('');//整数部分
+  return decimal?zs+'.'+decimal:zs+'.00';
+})
+Vue.filter('delkg', function(num){//银行卡四位空格分割
+  var str=String(num).replace(/(\d{4})/g,'$1 ').replace(/\s*$/,'');
+  return str;
+})
+
+
+
 var router = new VueRouter({
   mode: "hash",
   hashbang: false,
@@ -223,14 +244,60 @@ var router = new VueRouter({
     {
       path: '/daikan_total',
       component: require('./routers/daikan_totals.vue')
+    },
+    {
+      path: '/commission',
+      name: 'commission',
+      component: resolve => require(['./pages/commission/commission.vue'], resolve),//路由懒加载写法
+      meta: {
+        title: '佣金信息'
+      }
+    },
+    {
+      path: '/commission_list',
+      name: 'commission_list',
+      component: resolve => require(['./pages/commission/commission_list.vue'], resolve),
+      meta: {
+        title: '佣金管理'
+      }
+    },
+    {
+      path: '/commission_rule',
+      name: 'commission_rule',
+      component: resolve => require(['./pages/commission/commission_rule.vue'], resolve),
+      meta: {
+        title: '佣金管理'
+      }
+    },
+    {
+      path: '/commission_un',
+      name: 'commission_un',
+      component: resolve => require(['./pages/commission/commission_un.vue'], resolve),
+      meta: {
+        title: '佣金管理'
+      }
+    },
+    {
+      path: '/commission_turn',
+      name: 'commission_turn',
+      component: resolve => require(['./pages/commission/commission_turn.vue'], resolve),
+      meta: {
+        title: '佣金管理'
+      }
     }
+
 
   ]
 });
 
-
-
 router.beforeEach(function(to, from, next){
+  // 根据路由变化去改变页面的title
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    }else{
+      next();
+    }
+
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
         next({ path: '/login' });
