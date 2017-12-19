@@ -199,7 +199,7 @@
 				<input id="invoice" type="text" placeholder="请选择发票类型" v-model="invoice" @click='selinvoice' />
 				<label for="invoice">></label>
 			</p>
-			<ul class="invoice_list" v-if='thefp'>
+			<ul class="invoice_list" v-if='this.theinvoice.companyName'>
 				<li>
 					<i>名<s style="visibility: hidden;">我我我我</s>称:</i>
 					<span>{{theinvoice.companyName}}</span>
@@ -220,7 +220,7 @@
 		</div>
 		<button class="btn" disabled @click='bas()'>提交</button>
 		<!--发票选择弹框-->
-		<div class="shade" v-if="shade" @click='shade=false'>
+		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
 				<p>
 					<span @click="elect(false)">取消</span>
@@ -300,7 +300,6 @@
 					address: '',
 					bankplace: ''
 				},
-				thefp: false, //生成发票显示状态
 
 			}
 		},
@@ -323,20 +322,18 @@
 			},
 			clk() {}, //阻止默认
 			elect(state) { //确认、取消
-				console.log(state)
+				// console.log(state)
 				if(state == true && this.theinvoice.id == '0') {
 					Toast({
 						message: '发票类型不能为空',
 						position: 'center',
 						duration: 3000
 					});
-					this.thefp = false;
 					console.log(this.invoicetype.id)
 				} else {
 					this.invoice = this.invoicetype;
 					this.shade = false;
 					this.pickshow = false;
-					this.thefp = true;
 					if(this.money != '' && this.channelname !='' && this.tel != ''){
 						$(".btn").addClass('btn btnactive');
 						$(".btn").removeAttr("disabled");
@@ -358,6 +355,9 @@
 			},
 			inputFunc() {
 				this.money = this.splitk(this.money);
+				if(this.money == '.00'){
+					this.money == "";
+				}
 			},
 			bas(){
 				console.log(123)
