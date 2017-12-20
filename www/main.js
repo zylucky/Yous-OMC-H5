@@ -245,7 +245,7 @@ var router = new VueRouter({
       path: '/daikan_total',
       component: require('./routers/daikan_totals.vue')
     },
-    {
+    {//信息填写
       path: '/commission',
       name: 'commission',
       component: resolve => require(['./pages/commission/commission.vue'], resolve),//路由懒加载写法
@@ -253,7 +253,7 @@ var router = new VueRouter({
         title: '佣金信息'
       }
     },
-    {
+    {//列表
       path: '/commission_list',
       name: 'commission_list',
       component: resolve => require(['./pages/commission/commission_list.vue'], resolve),
@@ -261,7 +261,7 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
-    {
+    {//已确认
       path: '/commission_rule',
       name: 'commission_rule',
       component: resolve => require(['./pages/commission/commission_rule.vue'], resolve),
@@ -269,7 +269,7 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
-    {
+    {//未确认
       path: '/commission_un',
       name: 'commission_un',
       component: resolve => require(['./pages/commission/commission_un.vue'], resolve),
@@ -277,12 +277,44 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
-    {
+    {//审批驳回
       path: '/commission_turn',
       name: 'commission_turn',
       component: resolve => require(['./pages/commission/commission_turn.vue'], resolve),
       meta: {
         title: '佣金管理'
+      }
+    },
+    {//佣金审批
+      path: '/commission_ask',
+      name: 'commission_ask',
+      component: resolve => require(['./pages/commission/commission_ask.vue'], resolve),
+      meta: {
+        title: '佣金审批'
+      }
+    },
+    {//审批
+      path: '/approval',
+      name: 'approval',
+      component: resolve => require(['./pages/commission/approval.vue'], resolve),
+      meta: {
+        title: '审批'
+      }
+    },
+    {//审批意见
+      path: '/approval_opinion',
+      name: 'approval_opinion',
+      component: resolve => require(['./pages/commission/approval_opinion.vue'], resolve),
+      meta: {
+        title: '审批意见'
+      }
+    },
+    {//驳回意见
+      path: '/turn_opinion',
+      name: 'turn_opinion',
+      component: resolve => require(['./pages/commission/turn_opinion.vue'], resolve),
+      meta: {
+        title: '驳回理由'
       }
     }
 

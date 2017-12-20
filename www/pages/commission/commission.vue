@@ -218,7 +218,7 @@
 				</li>
 			</ul>
 		</div>
-		<button class="btn" disabled @click='bas()'>提交</button>
+		<button :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -334,10 +334,6 @@
 					this.invoice = this.invoicetype;
 					this.shade = false;
 					this.pickshow = false;
-					if(this.money != '' && this.channelname !='' && this.tel != ''){
-						$(".btn").addClass('btn btnactive');
-						$(".btn").removeAttr("disabled");
-					}
 				}
 			},
 			splitk(num) { //千位分隔符 
@@ -351,13 +347,10 @@
 					}
 				}
 				var zs = tempArr.reverse().join(''); //整数部分
-				return decimal ? zs + '.' + decimal : zs + '.00';
+				return decimal ? zs + '.' + decimal : zs;
 			},
 			inputFunc() {
 				this.money = this.splitk(this.money);
-				if(this.money == '.00'){
-					this.money == "";
-				}
 			},
 			bas(){
 				console.log(123)
