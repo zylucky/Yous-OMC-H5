@@ -179,7 +179,7 @@
 			<h3>佣金金额</h3>
 			<p>
 				<span>佣金信息</span>
-				<input type="text" placeholder="请输入佣金金额" v-model="money" v-on:blur="inputFunc"/>
+				<input type="text" placeholder="请输入佣金金额" v-model="money" v-on:input="inputFunc"/>
 				<i>元</i>
 			</p>
 			<p>
@@ -337,23 +337,18 @@
 				}
 			},
 			splitk(num) { //千位分隔符 
-				var decimal = String(num).split('.')[1] || ''; //小数部分
-				var tempArr = [];
-				var revNumArr = String(num).split('.')[0].split("").reverse(); //倒序
-				for(var i in revNumArr) {
-					tempArr.push(revNumArr[i]);
-					if((i + 1) % 3 === 0 && i != revNumArr.length - 1) {
-						tempArr.push(',');
-					}
+				if(num != ''){
+					var number = parseInt(num.replace(/,/g,'')).toLocaleString();
+					return number;				
+				}else{
+					return '';
 				}
-				var zs = tempArr.reverse().join(''); //整数部分
-				return decimal ? zs + '.' + decimal : zs;
 			},
 			inputFunc() {
 				this.money = this.splitk(this.money);
 			},
 			bas(){
-				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == ''){
+				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == ''){
 					Toast({
 						message: '请将信息填写完整',
 						position: 'center',
@@ -361,7 +356,8 @@
 					});
 					return;
 				}
-				console.log(123)
+				console.log(this.invoice)
+				
 			}
 
 		},

@@ -111,18 +111,10 @@
 					path: '/approval'
 				});
 			},
-			highLight(ele,keys) 
-			{ 
-			var reg = new RegExp("(" + keys.replace(/ /,"|") + ")","g"); 
-			
-			ele.innerHTML = ele.innerHTML.replace(reg,"<font color=\"red\">$1</font>"); 
-			} 
 
 		},
 		mounted() {
-			var list = document.getElementById('list');
-			this.highLight(list,'销售')
-			console.log(list);
+			
 		},
 		computed: {
 			searchData: function() {
@@ -141,7 +133,6 @@
 			search(newV,oldV){
 				console.log(newV);
 				console.log(oldV);
-//				this.keyLight('list',newV,'red')
 			}
 		}
 	}
