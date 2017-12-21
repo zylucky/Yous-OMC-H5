@@ -179,7 +179,7 @@
 			<h3>佣金金额</h3>
 			<p>
 				<span>佣金信息</span>
-				<input type="text" placeholder="请输入佣金金额" v-model="money" v-on:blur="inputFunc" />
+				<input type="text" placeholder="请输入佣金金额" v-model="money" v-on:blur="inputFunc"/>
 				<i>元</i>
 			</p>
 			<p>
@@ -353,6 +353,14 @@
 				this.money = this.splitk(this.money);
 			},
 			bas(){
+				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == ''){
+					Toast({
+						message: '请将信息填写完整',
+						position: 'center',
+						duration: 2000
+					});
+					return;
+				}
 				console.log(123)
 			}
 

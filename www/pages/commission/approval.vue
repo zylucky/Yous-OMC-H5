@@ -61,7 +61,9 @@
   			}
   		}
   		.img_box{
-  			height: 1.85rem;
+  			position: relative;
+  			min-height: 1.85rem;
+  			height: auto;
   			font-size: 0.3rem;
   			color: #313131;
   			background: #fff;
@@ -69,7 +71,9 @@
   			padding: 0.25rem 0 0.25rem 1.08rem;
   			-webkit-box-shadow:0px 2px 4px #dfdee4; 
   			box-shadow:0px 2px 4px #dfdee4;
+  			.pic{margin-bottom: 0.15rem;}
   			.pic i{color: #fd7172;}
+			.img_demo{margin: 0 0.3rem 0.2rem 0;}
   		}
   		.plan{
   			background: #fff;
@@ -122,11 +126,51 @@
   		}
   		/*抄送人*/
   		.copyto{
-  			height: 2.6rem;
+  			/*height: 2.6rem;*/
   			margin-top: 0.2rem;
   			background: #fff;
   			-webkit-box-shadow:0px 2px 4px #dfdee4; 
   			box-shadow:0px 2px 4px #dfdee4;
+  			font-size: @font30;
+  			color: #646464;
+  			padding: 0.3rem 0.3rem 0.3rem 0.4rem;
+  			.tip span:first-child{color: #323232;margin-right: 0.40rem;}
+  			.copy_add{
+  				width: 0.7rem;
+  				height: 0.7rem;
+  				border-radius: 50%;
+  				font-size: @font54;
+  				text-align: center;
+  				background: #f0eff5 url(../../resources/images/plus1.png) no-repeat center;
+  				background-size: 50% auto;
+  			}
+  			.copy_list{
+  				display: flex;
+  				display: -webkit-box;
+  				overflow: auto;
+  				li{
+  					position: relative;
+  					height: 1.5rem;
+  					margin-right: 0.45rem;
+  					p{margin-top: 0.15rem;text-align: center;}
+  					span{
+  						position: absolute;
+  						top: 0.15rem;
+  						right: -0.15rem;
+  						display: inline-block;
+  						width: 0.3rem;
+  						height: 0.3rem;
+  						border-radius: 50%;
+  						background: #010101 url(../../resources/images/close1.png) no-repeat center;
+  						background-size: 50%;
+  					}
+  				}
+  				.picimg{
+  					width: 0.7rem;
+  					height: 0.7rem;
+  					img{width: 100%;}
+  				}
+  			}
   		}
   	}
   	/*合同摘要弹框*/
@@ -207,6 +251,16 @@
   			}
   		}
   	}
+	.upload_btn{
+    	position: relative;
+    	background-color: #f0eff5;
+	    input{
+	      width: 100%;
+	      height: 100%;
+	      z-index: 99999;
+	      opacity: 0;
+	    }
+  	}
 </style>
 
 <template>
@@ -275,6 +329,17 @@
 			<!--上传图片-->
 			<div class="img_box">
 				<p class="pic"><i>*</i>图片</p>
+				<!--图片上传-->
+				<div class="pic_load clearfix" >
+					<div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
+			          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
+			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
+			        </div>
+			        <div v-if="fy < 8" class="upload_btn mr10 fl">
+			            <input @change='add_img1' id="file_add" tag="fy" type="file" multiple>
+			        </div>
+				</div>
+		        
 			</div>
 			<!--申请进度-->
 			<div class="plan">
@@ -292,7 +357,22 @@
 			</div>
 			<!--抄送人-->
 			<div class="copyto">
-				
+				<p class="tip">
+					<span>抄送人</span>
+					<span>审批通过后，通知抄送人</span>
+				</p>
+				<ul class="copy_list">
+					<li v-for="(item,index) in copyData">
+						<p class="picimg"><img src="../../resources/images/commission/head_img.png" title="" alt=""/></p>
+						<p class="copy_name">{{item.name}}</p>
+						<span v-if='item.qx != 0' @click='delcopy(index)'></span>
+					</li>
+					<!--添加抄送人按钮-->
+					<li @click="addcopy">
+						<p class="copy_add"></p>
+						<p></p>
+					</li>
+				</ul>
 			</div>
 		</div>
 		<!--合同摘要弹框-->
@@ -337,8 +417,8 @@
 		<!--按钮-->
 		<div class="btn_box">
 			<ul>
-				<li>同意<span></span></li>
-				<li>驳回</li>
+				<li @click="consent">同意<span></span></li>
+				<li @click="turnto">驳回</li>
 			</ul>
 		</div>
 	</div>
@@ -348,14 +428,106 @@
 	export default{
 		data(){
 			return{
+				copyData:[],//抄送人
 				popshow:false,//合同摘要弹框
-				
+				imgList:[],
+		        hxList:[],
+		        gjList:[],
+		        fmList:[],
+		        fy: 0,
+		        hx: 0,
+		        fm: 0,
+		        upload: 0,
+		        uploaded: 0,
 			}
 		},
+		created(){
+			this.copy();
+		},
 		methods:{
+			delcopy(index){
+				console.log(index);
+				this.copyData.splice(index,1);
+				localStorage.setItem('addCopy',JSON.stringify(this.copyData));
+			},
+			copy(){
+				this.copyData = JSON.parse(localStorage.getItem('addCopy'));
+				console.log(this.copyData)
+			},
 			pops(state){//合同摘要
 				this.popshow = state;
-			}
+			},
+			delete_img(index, id, event){//删除
+		        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
+		        if(id !== 'xxx'){
+		            this[which][index].isdelete = "1";
+		        }
+		        else{
+		            this[which].splice(index,1);
+		            this.upload -= 1;
+		        }
+		        this[tag] -= 1;
+	      },
+	      /*图片上传压缩*/
+	      add_img1(event){
+	        const images = event.target.files;
+	        let len = images.length;
+	        len = Math.min(len, 8 - this.fy);
+	        for(let i = 0; i < len; ++i){
+	            this.append_img(images[i]);
+	        }
+	      },
+	      append_img(image){//显示
+	        var reader = new FileReader(), type = image.type;
+	        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
+	        if (!/\/(?:jpeg|jpg|png)/i.test(type)){
+	          return;
+	        }
+	        var that=this;
+	        reader.onloadend = () => {
+	          let ret;
+	          const imgx = new Image();
+	          imgx.src = reader.result;
+	          imgx.onload = function(){
+	              var canvas = document.createElement('canvas');
+	              canvas.width = imgx.naturalWidth;
+	              canvas.height = imgx.naturalHeight;
+	              canvas.getContext("2d").drawImage(imgx, 0, 0);
+	              ret = canvas.toDataURL(type, .2);
+	
+	              const obj = {
+	                  id: "xxx",
+	                  lpid: that.lpid,
+	                  isdelete: 0,
+	                  type: 2,
+	                  suffix:type,
+	                  url: ret 
+	              };
+	              that[which].push(obj)
+	           }
+	        }
+	        reader.readAsDataURL(image);
+	        this[tag] += 1;
+	        this.upload += 1;
+	      },
+	      addcopy(){
+	      	this.$router.push({
+				path:'/copy_p',//跳转页面
+				query:{}
+			})
+	      },
+	      consent(){
+	      	this.$router.push({
+				path:'/approval_opinion',//跳转页面
+				query:{}
+			})
+	      },
+	      turnto(){
+	      	this.$router.push({
+				path:'/turn_opinion',//跳转页面
+				query:{}
+			})
+	      }
 		}
 	}
 </script>

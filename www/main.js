@@ -12,6 +12,10 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
 
+import { Search } from 'mint-ui';
+
+Vue.component(Search.name, Search);
+
 
 Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 //Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
@@ -315,6 +319,14 @@ var router = new VueRouter({
       component: resolve => require(['./pages/commission/turn_opinion.vue'], resolve),
       meta: {
         title: '驳回理由'
+      }
+    },
+    {//添加抄送人
+      path: '/copy_p',
+      name: 'copy_p',
+      component: resolve => require(['./pages/commission/copy_p.vue'], resolve),
+      meta: {
+        title: '添加抄送人'
       }
     }
 
