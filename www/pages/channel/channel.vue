@@ -102,7 +102,7 @@
 		height: 0.75rem;
 		line-height: 0.75rem;
 		text-align: center;
-		margin: 0.8rem auto 0;
+		margin: 0.2rem auto 0;
 		border: none;
 		background: #aaaaaa;
 		border-radius: 0.08rem;
@@ -126,13 +126,15 @@
 /*文字yanse*/
 .mint-checkbox-label{
 	font-size: 0.3rem;
+	color: #A9ACB1;
 }
 .mint-checkbox-core{
 	width: 0.3rem;
 	height: 0.3rem;
 }
 .mint-checkbox-core::after{
-	left: 0.06rem;
+	top: 0.02rem;
+	left: 0.08rem;
 }
 </style>
 
@@ -182,7 +184,7 @@
 		<div class="truebox">
 			<mt-checklist
 			  v-model="value"
-			  :options="options">
+			  :options="options" @change='selvalue'>
 			</mt-checklist>
 		</div>
 		<button class="btn btnactive">提交</button>
@@ -205,7 +207,13 @@ export default{
 		}
 	},
 	methods:{
-
+		selvalue(a){
+			if(a.length != 0){
+				$('.mint-checkbox-label').css('color','#323232');
+			}else{
+				$('.mint-checkbox-label').css('color','#A9ACB1');
+			}
+		}
 	}
 }
 </script>
