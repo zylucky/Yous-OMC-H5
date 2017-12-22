@@ -328,7 +328,18 @@ var router = new VueRouter({
       meta: {
         title: '添加抄送人'
       }
-    }
+    },
+    {//抄送详情查看
+      path: '/commission_details',
+      name: 'commission_details',
+      component: resolve => require(['./pages/commission/commission_details.vue'], resolve),
+    },
+    {//渠道未确认
+      path: '/channel',
+      name: 'channel',
+      component: resolve => require(['./pages/channel/channel.vue'], resolve),
+    },
+    
 
 
   ]

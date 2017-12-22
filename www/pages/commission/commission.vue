@@ -73,6 +73,7 @@
 			margin-left: 0.3rem;
 			border-bottom: 1px solid #e4e4e4;
 			input {
+				width: 3.8rem;
 				font-size: @font32;
 				margin-left: 0.75rem;
 			}
@@ -80,9 +81,14 @@
 				color: #3586f2;
 				font-weight: bold;
 			}
+			i{color: #fd7172;}
 		}
 		p:last-child {
 			border-bottom: none;
+		}
+		#invoice{
+			width: 3.8rem;
+			margin-left: 0.75rem;
 		}
 	}
 	
@@ -164,6 +170,27 @@
 		font-size: @font30;
 	}
 </style>
+<style>
+.mint-radiolist{
+	display: flex;
+}
+/*按钮背景*/
+.mint-radio-input:checked + .mint-radio-core{
+	border-color: rgba(255,255,255,0);
+	background: url(../../resources/images/commission/btn1.png) no-repeat center;
+	background-size: cover;
+}
+.mint-cell-wrapper,.mint-cell:last-child,.mint-cell{
+	background: none;
+}
+.mint-radio-input:checked + .mint-radio-core::after{
+	background: none;
+}
+.mint-radio-core{
+	background: url(../../resources/images/commission/btn.png) no-repeat center;
+	background-size: cover;
+}
+</style>
 
 <template>
 	<div class="box">
@@ -176,18 +203,26 @@
 		</div>
 		<!--佣金信息-->
 		<div class="new_box">
-			<h3>佣金金额</h3>
+			<h3>佣金信息</h3>
 			<p>
-				<span>佣金信息</span>
+				<span><i>*</i>佣金金额</span>
 				<input type="text" placeholder="请输入佣金金额" v-model="money" v-on:input="inputFunc"/>
 				<i>元</i>
 			</p>
 			<p>
-				<span>渠道姓名</span>
+				<span><i>*</i>佣金信息</span>
+				<mt-radio align="left" v-model="value" :options="options" @change="check"></mt-radio>
+			</p>
+			<p>
+				<span><i>*</i>计算公式</span>
+				<input type="text" placeholder="请输入佣金计算公式" v-model="formula" />
+			</p>
+			<p>
+				<span><i>*</i>渠道姓名</span>
 				<input type="text" placeholder="请输入渠道人员姓名" v-model="channelname" />
 			</p>
 			<p>
-				<span>联系方式</span>
+				<span><i>*</i>联系方式</span>
 				<input type="number" placeholder="请输入渠道登陆账号" v-model="tel" />
 			</p>
 		</div>
@@ -195,9 +230,11 @@
 		<div class="new_box">
 			<h3>发票信息</h3>
 			<p style="border: none;">
-				<span>发票类型</span>
-				<input id="invoice" type="text" placeholder="请选择发票类型" v-model="invoice" @click='selinvoice' />
-				<label for="invoice">></label>
+				<span><i>*</i>发票类型</span>
+				<!--<input id="invoice" type="text" placeholder="请选择发票类型" v-model="invoice" @click='selinvoice'/>-->
+				
+				<span id='invoice' @click='selinvoice'>{{invoice}}</span>
+				<label for="invoice" style="float: right;">></label>
 			</p>
 			<ul class="invoice_list" v-if='this.theinvoice.companyName'>
 				<li>
@@ -218,7 +255,7 @@
 				</li>
 			</ul>
 		</div>
-		<button :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<button :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != '' && formula != '' && value != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -237,13 +274,15 @@
 	import { Field } from 'mint-ui';
 	import { Picker } from 'mint-ui'
 	import { Toast } from 'mint-ui';
+	import { Radio } from 'mint-ui';
 	export default {
 		data() {
 			return {
 				money: '', //佣金信息
+				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
 				tel: '', //联系方式
-				invoice: '', //发票类型
+				invoice: '请选择发票类型', //发票类型
 				slots: [{
 					flex: 1,
 					values: [{
@@ -300,6 +339,17 @@
 					address: '',
 					bankplace: ''
 				},
+				value:'A',//佣金信息按钮
+				options:[
+				  {
+				    label: '正常',
+				    value: 'A',
+				  },
+				  {
+				    label: '不正常',
+				    value: 'B'
+				  }
+				],
 
 			}
 		},
@@ -307,6 +357,9 @@
 
 		},
 		methods: {
+			check(){
+				console.log(this.value)
+			},
 			selinvoice() { //发票类型选择
 				this.shade = true;
 				this.pickshow = true;
@@ -348,7 +401,7 @@
 				this.money = this.splitk(this.money);
 			},
 			bas(){
-				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == ''){
+				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == '' || this.formula == ''){
 					Toast({
 						message: '请将信息填写完整',
 						position: 'center',

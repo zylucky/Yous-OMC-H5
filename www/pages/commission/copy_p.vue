@@ -74,7 +74,8 @@
 		data() {
 			return {
 				search: '',
-				products: [{
+				products: [
+					{
 						name: '李三',
 						qx: '0',
 						id: '1',
@@ -114,7 +115,7 @@
 
 		},
 		mounted() {
-			
+
 		},
 		computed: {
 			searchData: function() {
@@ -131,9 +132,9 @@
 		},
 		watch: {
 			search(newV,oldV){
-				console.log(newV);
-				console.log(oldV);
+
 			}
-		}
+		},
+
 	}
 </script>

@@ -316,8 +316,7 @@
         this.getFilters();
 
         Indicator.close();
-
-        // 标题需要改动，在微信下标题不会变动
+        
         $('title').html('图片上传');
       },
       searchSubArea:function(code,e){

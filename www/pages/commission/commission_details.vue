@@ -14,7 +14,7 @@
   		left: 0;
   		top: 0;
   		right: 0;
-  		bottom: 1rem;
+  		bottom: 0;
   		overflow: auto;
   		padding-bottom: 1rem;
   		.header{
@@ -23,11 +23,11 @@
   			flex-direction: column;
   			justify-content: center;
   			-webkit-justify-content: center;
-  			height: 1.5rem;
+  			min-height: 1.5rem;
+  			height: auto;
   			background: #fff;
-  			-webkit-box-shadow:0px 2px 4px #E2E1E7; 
-  			box-shadow:0px 2px 4px #E2E1E7;
-  			padding: 0 0.33rem 0 0.48rem;
+  			padding: 0 0 0 0.48rem;
+  			p{padding: 0.25rem 0.33rem 0 0;}
   			p:first-child{
   				font-size: @font30;
   				color: #313131;
@@ -36,18 +36,44 @@
   			p:last-child{
   				font-size: @font24;
   				color: #979797;
+  				padding-bottom:0.3rem;
+  				border-bottom: 1px solid #e4e4e4;
   				i{float: right;color: #3785f2;}
+  			}
+  			ul{
+  				border-bottom: 1px solid #e4e4e4;
+  				padding: 0.3rem 0;
+  				display: flex;
+  				li{position: relative;}
+  				li:first-child{
+  					width: 0.75rem;
+  					height: 0.75rem;
+  					margin-right: 0.25rem;
+  					img{width: 100%;height: auto;}
+  				}
+				.name{font-size: @font30;color: #323232;}
+				.state{font-size: @font26;color: #c9c9c9;}
+				.state_pic{
+					position: absolute;
+					left: 3.5rem;
+					top: 0.25rem;
+					display: inline-block;
+					width: 1.45rem;
+					height: 1.45rem;
+					background: url(../../resources/images/commission/icon1.png) no-repeat center;
+					background-size: cover;
+					animation: change 1s linear;
+				}
   			}
   		}
   		.list{
+  			padding-left: 0.48rem;
+  			background: #fff;
   			li{
   				font-size: @font30;
   				color: #323232;
-  				padding: 0.2rem 0.33rem 0.2rem 0.48rem;
-  				margin-top: 0.2rem;
-  				background: #fff;
-  				-webkit-box-shadow:0px 2px 4px #dfdee4; 
-  				box-shadow:0px 2px 4px #dfdee4;
+  				padding: 0.2rem 0.33rem 0.2rem 0;
+  				border-bottom: 1px solid #e4e4e4;
   				p{
   					margin-bottom: 0.2rem;
   					span:first-child{
@@ -61,19 +87,26 @@
   			}
   		}
   		.img_box{
+  			display: flex;
   			position: relative;
-  			min-height: 1.85rem;
   			height: auto;
   			font-size: 0.3rem;
   			color: #313131;
   			background: #fff;
-  			margin-top: 0.2rem;
-  			padding: 0.25rem 0 0.25rem 1.08rem;
+  			padding: 0.25rem 0 0.25rem 0.48rem;
   			-webkit-box-shadow:0px 2px 4px #dfdee4; 
   			box-shadow:0px 2px 4px #dfdee4;
-  			.pic{margin-bottom: 0.15rem;}
-  			.pic i{color: #fd7172;}
-			.img_demo{margin: 0 0.3rem 0.2rem 0;}
+  			.pic{width: 1.2rem;color: #969696;text-align: right;}
+  			.pic_img{
+  				span{
+  					display: inline-block;
+  					width: 0.9rem;
+  					height: 0.9rem;
+  					margin: 0 0 0.15rem 0.2rem;
+  					img{width: 100%; height: auto;}
+  				}
+  				
+  			}
   		}
   		.plan{
   			background: #fff;
@@ -220,56 +253,40 @@
 			}
 		}
   	}
-  	.btn_box{
-  		position: absolute;
-  		bottom: 0;
-  		width: 100%;
-  		background: #fff;
-  		-webkit-box-shadow:0px -2px 6px #E2E1E7; 
-  		box-shadow:0px -2px 6px #E2E1E7;
-  		ul{
-  			display:flex;
-  			display: -webkit-flex;
-  			li{
-  				position: relative;
-  				height: 1rem;
-  				width: 50%;
-  				line-height: 1rem;
-  				font-size: @font30;
-  				color: #3586f2;
-  				text-align: center;			
-  				span{
-  					position: absolute;
-	  				top: 50%;
-	  				right: 0;
-	  				margin-top: -0.25rem;
-	  				display: inline-block;
-	  				width: 1px;
-	  				height: 0.5rem;
-	  				background: #dcdcdc;
-  				}
-  			}
-  		}
-  	}
-	.upload_btn{
-    	position: relative;
-    	background-color: #f0eff5;
-	    input{
-	      width: 100%;
-	      height: 100%;
-	      z-index: 99999;
-	      opacity: 0;
-	    }
-  	}
+  	@keyframes change{
+		from {
+			width: 3.45rem;
+			height: 3.45rem;
+			top: 50%;
+			left: 50%;
+			margin-left: -0.725rem;
+		}
+		to {
+			width: 1.45rem;
+			height: 1.45rem;
+			top: 0.25rem;
+			left: 3.5rem;
+		}
+	}
 </style>
 
 <template>
 	<div class="box">
 		<div class="content">
 			<div class="header">
+				<ul>
+					<li>
+						<img src="../../resources/images/commission/head_img.png" alt="" />
+					</li>
+					<li>
+						<div class="name">李三</div>
+						<div class="state">审批通过</div>
+						<span class="state_pic"></span>
+					</li>
+				</ul>
 				<p>
-					<span>建外SOHO</span>
-					<span>A-2907</span>
+					<span>项目房间号：</span>
+					<span>建外SOHO A-2907</span>
 				</p>
 				<p>
 					<span>合同编号：</span>
@@ -325,21 +342,14 @@
 						<span>请尽快审批</span>
 					</p>
 				</li>
+				
 			</ul>
 			<!--上传图片-->
 			<div class="img_box">
-				<p class="pic"><i>*</i>图片</p>
-				<!--图片上传-->
-				<div class="pic_load clearfix" >
-					<div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
-			          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
-			        </div>
-			        <div v-if="fy < 8" class="upload_btn mr10 fl">
-			            <input @change='add_img1' id="file_add" tag="fy" type="file" multiple>
-			        </div>
-				</div>
-		        
+				<p class="pic">图片</p>
+				<p style="margin-bottom: 0;" class="pic_img">
+					<span v-for="i in 3"><img src="../../resources/images/banner/banner01.png" alt="" /></span>
+				</p>
 			</div>
 			<!--申请进度-->
 			<div class="plan">
@@ -365,12 +375,6 @@
 					<li v-for="(item,index) in copyData">
 						<p class="picimg"><img src="../../resources/images/commission/head_img.png" title="" alt=""/></p>
 						<p class="copy_name">{{item.name}}</p>
-						<span v-if='item.qx != 0' @click='delcopy(index)'></span>
-					</li>
-					<!--添加抄送人按钮-->
-					<li @click="addcopy">
-						<p class="copy_add"></p>
-						<p></p>
 					</li>
 				</ul>
 			</div>
@@ -414,13 +418,6 @@
 				</ul>
 			</div>
 		</div>
-		<!--按钮-->
-		<div class="btn_box">
-			<ul>
-				<li @click="consent">同意<span></span></li>
-				<li @click="turnto">驳回</li>
-			</ul>
-		</div>
 	</div>
 </template>
 
@@ -450,112 +447,16 @@ import { Toast } from 'mint-ui';
 					}
 				],//抄送人
 				popshow:false,//合同摘要弹框
-				imgList:[],
-		        hxList:[],
-		        gjList:[],
-		        fmList:[],
-		        fy: 0,
-		        hx: 0,
-		        fm: 0,
-		        upload: 0,
-		        uploaded: 0,
+
 			}
 		},
 		created(){
-			this.copy();
+
 		},
 		methods:{
-			delcopy(index){
-				console.log(index);
-				this.copyData.splice(index,1);
-				localStorage.setItem('addCopy',JSON.stringify(this.copyData));
-			},
-			copy(){
-				var copyData1 = JSON.parse(localStorage.getItem('addCopy'));
-				for(var i=0; i<this.copyData.length; i++){
-					if(copyData1[0].id == this.copyData[i].id){
-						Toast({
-							message: '已存在该抄送人',
-							position: 'center',
-							duration: 2000
-						});
-						return;
-					}
-				}
-				this.copyData = this.copyData.concat(copyData1);
-				console.log(this.copyData)
-			},
 			pops(state){//合同摘要
 				this.popshow = state;
 			},
-			delete_img(index, id, event){//删除
-		        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
-		        if(id !== 'xxx'){
-		            this[which][index].isdelete = "1";
-		        }
-		        else{
-		            this[which].splice(index,1);
-		            this.upload -= 1;
-		        }
-		        this[tag] -= 1;
-	      },
-	      /*图片上传压缩*/
-	      add_img1(event){
-	        const images = event.target.files;
-	        let len = images.length;
-	        len = Math.min(len, 8 - this.fy);
-	        for(let i = 0; i < len; ++i){
-	            this.append_img(images[i]);
-	        }
-	      },
-	      append_img(image){//显示
-	        var reader = new FileReader(), type = image.type;
-	        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
-	        if (!/\/(?:jpeg|jpg|png)/i.test(type)){
-	          return;
-	        }
-	        var that=this;
-	        reader.onloadend = () => {
-	          let ret;
-	          const imgx = new Image();
-	          imgx.src = reader.result;
-	          imgx.onload = function(){
-	              var canvas = document.createElement('canvas');
-	              canvas.width = imgx.naturalWidth;
-	              canvas.height = imgx.naturalHeight;
-	              canvas.getContext("2d").drawImage(imgx, 0, 0);
-	              ret = canvas.toDataURL(type, .2);
-	
-	              const obj = {
-	                  id: "xxx",
-	                  lpid: that.lpid,
-	                  isdelete: 0,
-	                  type: 2,
-	                  suffix:type,
-	                  url: ret 
-	              };
-	              that[which].push(obj)
-	           }
-	        }
-	        reader.readAsDataURL(image);
-	        this[tag] += 1;
-	        this.upload += 1;
-	      },
-	      addcopy(){
-	      	this.$router.push({
-				path:'/copy_p',//跳转抄送人页面
-			})
-	      },
-	      consent(){
-	      	this.$router.push({
-				path:'/approval_opinion',//跳转审批意见页面
-			})
-	      },
-	      turnto(){
-	      	this.$router.push({
-				path:'/turn_opinion',//跳转驳回意见页面
-			})
-	      }
 		}
 	}
 </script>

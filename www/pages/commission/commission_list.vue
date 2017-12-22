@@ -132,13 +132,30 @@
 <script>
 import { TabContainer, TabContainerItem } from 'mint-ui';
 import { Indicator } from 'mint-ui';
+import axios from 'axios';
 	export default{
 		data(){
 			return{
 				tabq:'0',
 			}
 		},
+		created(){
+			// this.init();
+		},
 		methods:{
+//			init(){//接口
+//				const url = this.$api + "/web/qdyongjin/getQdYjForQvdao.do";
+//				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+//				console.log(cookxs);
+//	            axios.post(url, { "cookie":cookxs}).then((res)=>{
+//	                Indicator.close();
+//	            }, (res)=>{
+//	               Indicator.close();
+//	            });
+//			},
+		
+		
+		
 			clk(cut){
 				Indicator.open({
 				  text: 'Loading...',
@@ -146,7 +163,7 @@ import { Indicator } from 'mint-ui';
 				});
 				this.tabq = cut;
 				setTimeout(function(){//数据请求成功关闭
-					Indicator.close();					
+					Indicator.close();
 				},1000)
 			}
 		}
