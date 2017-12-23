@@ -132,7 +132,6 @@
 		font-size: @font32;
 	}
 	/*按钮背景*/
-	
 	.btnactive {
 		background: url(../../resources/images/commission/btn_bg.png) no-repeat center;
 		background-size: cover;
@@ -195,10 +194,10 @@
 <template>
 	<div class="box">
 		<div class="site_card">
-			<p>DRC北京工艺设计创意产业基地</p>
+			<p>{{xsData.loupan}}</p>
 			<p>
-				<span>南塔2-</span>
-				<span>2908/2908/2908/2908/2908/2908/2908/2908/2908/2908</span>
+				<span>{{xsData.loudong}}-</span>
+				<span>{{xsData.fanghao}}</span>
 			</p>
 		</div>
 		<!--佣金信息-->
@@ -255,7 +254,7 @@
 				</li>
 			</ul>
 		</div>
-		<button :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != '' && formula != '' && value != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<button :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -275,6 +274,7 @@
 	import { Picker } from 'mint-ui'
 	import { Toast } from 'mint-ui';
 	import { Radio } from 'mint-ui';
+	import axios from 'axios';
 	export default {
 		data() {
 			return {
@@ -282,6 +282,7 @@
 				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
 				tel: '', //联系方式
+				yjxx:'',//佣金信息状态
 				invoice: '请选择发票类型', //发票类型
 				slots: [{
 					flex: 1,
@@ -298,8 +299,8 @@
 							name: '幼狮增值税专用发票',
 							companyName: '北京幼师科技有限公司',
 							number: '9111 0105 3064 0709 X3',
-							address: '北京市朝阳区东三环中路39号院24号楼22层2902 010-5643922',
-							bankplace: '招商银行北京分行建国门支行11092166740910'
+							address: '北京市朝阳区东三环中路39号院24号楼22层2602 010-56143922',
+							bankplace: '招商银行北京分行建国门支行110921667410910'
 						},
 						{
 							id: 2,
@@ -339,26 +340,77 @@
 					address: '',
 					bankplace: ''
 				},
-				value:'A',//佣金信息按钮
+				value:'',//佣金信息按钮
 				options:[
 				  {
 				    label: '正常',
-				    value: 'A',
+				    value: 'true',
 				  },
 				  {
 				    label: '不正常',
-				    value: 'B'
+				    value: 'false'
 				  }
 				],
-
+				xsid:'',//路由传过来的销售人员id
+				xsData:{},//销售人员数据
 			}
 		},
 		created() {
-
+			this.xsid = this.$route.query.xsid;
+			this.takexs();//获取销售人员信息
 		},
 		methods: {
-			check(){
-				console.log(this.value)
+			takexs(){//获取销售人员信息
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForid.do";
+				axios.post(url,{ 
+            		"id":this.xsid,
+	            }).then((res)=>{
+	            	this.xsData = res.data.data;
+					console.log(res.data.data);
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+		
+			init(){//销售数据提交
+//				const url = this.$api + "/yhcms/web/qdyongjin/xiaoshouSubmit.do";
+				const url = "http://192.168.1.44:8080/yhcms/web/qdyongjin/xiaoshouSubmit.do";
+				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+	            axios.post(url,{ 
+            		"cookie":cookxs,
+            		'fanghao':this.xsData.fanghao,
+            		'fanghaoid':this.xsData.fanghaoid,
+					'hetongid':this.xsData.hetongid,
+					'htbianhao':this.xsData.htbianhao,
+					'id':this.xsData.id,
+					'loudong':this.xsData.loudong,
+					'loudongid':this.xsData.loudongid,
+					'loupan':this.xsData.loupan,
+					'loupanid':this.xsData.loupanid,
+					'qdbeizhu':'',
+					'taskZt':this.xsData.taskZt,
+	            	'xiaoshou':this.xsData.xiaoshou,
+					'xiaoshouid':this.xsData.xiaoshouid,
+					'xsfpdanwei':this.theinvoice.companyName,
+					'xsfpdizhidianhua':this.theinvoice.address,
+					'xsfpkaihuhang':this.theinvoice.bankplace,
+					'xsfpleixing':this.invoice,
+					'xsfpnashuiren':this.theinvoice.number,
+					'xsjisuangongshi':this.formula,
+					'xsqvdao':this.channelname,
+					'xsqvdaoid':'',
+					'xsqvdaotel':this.tel,
+					'xsyongjin':this.qxsplitk(this.money),
+					'xsyongjinxinxi':this.yjxx
+	            }).then((res)=>{
+					console.log(res);
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+			//佣金信息状态
+			check(a){
+				this.yjxx = a;
 			},
 			selinvoice() { //发票类型选择
 				this.shade = true;
@@ -366,7 +418,7 @@
 			},
 			onValuesChange(picker, values) {
 				this.invoicetype = values[0].name;
-				console.log(values[0]);
+//				console.log(values[0]);
 				this.theinvoice.companyName = values[0].companyName;
 				this.theinvoice.number = values[0].number;
 				this.theinvoice.address = values[0].address;
@@ -397,6 +449,9 @@
 					return '';
 				}
 			},
+			qxsplitk(num){
+				return String(num).split(',').join('');
+			},
 			inputFunc() {
 				this.money = this.splitk(this.money);
 			},
@@ -408,9 +463,15 @@
 						duration: 2000
 					});
 					return;
+				}else{
+					this.init();
 				}
-				console.log(this.invoice)
 				
+			},
+			getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) return unescape(r[2]); return null;
 			}
 
 		},

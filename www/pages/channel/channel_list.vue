@@ -97,20 +97,20 @@
 	<div class="box">
 		<div class="header">
 			<ul class="nav">
-				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待处理({{pendData.length}})<span></span></li>
-				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{passData.length}})</li>
+				<li :class="tabq=='0'?'active':''" @click='clk(0)'>未确认({{pendData.length}})<span></span></li>
+				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已确认({{passData.length}})</li>
 			</ul>
 		</div>
 		<!--列表-->
 		<div class="list_box">
-			<!--待处理-->
+			<!--未确认-->
 			<ul class="list" v-if="tabq=='0'">
-				<li v-for="item in pendData" @click="detail(item.id)">
-					<p><span>{{item.loupan}}</span><i>2017-12-16</i></p>
+				<li v-for="item in 2">
+					<p><span>12313</span><i>2017-12-16</i></p>
 					<p>
-						<span>{{item.loudong}}-{{item.fanghao}}</span>
+						<span>123123123123</span>
 					</p>
-					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
+					<p style="color:#959595;">合同编号：123123213</p>
 					<p>
 						<i v-if="item.taskZt=='1'">已提交</i>
 						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">审核中</i>
@@ -120,7 +120,7 @@
 					</p>
 				</li>
 			</ul>
-			<!--已处理-->
+			<!--已确认-->
 			<ul class="list" v-if="tabq=='1'">
 				<li v-for="item in passData">
 					<p>{{item.loupan}}<i>2017-12-16</i></p>
@@ -149,16 +149,16 @@ import axios from 'axios';
 		data(){
 			return{
 				tabq:'0',
-				pendData:[],//待处理数据
-				passData:[],//已处理数据
+				pendData:[],//未确认数据
+				passData:[],//已确认数据
 			}
 		},
 		created(){
-			 this.init();
+//			 this.init();
 		},
 		methods:{
 			init(){//待处理接口
-				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForQvdao.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
 	            axios.post(url,{ 
 	            		"cookie":cookxs,
@@ -166,12 +166,13 @@ import axios from 'axios';
 	            }).then((res)=>{
 	            	this.pendData = res.data.data;
 					Indicator.close();
+					console.log(res);
 	            }, (err)=>{
 	            	Indicator.close();
 	            });
 			},
 			init1(){//已处理接口
-				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForQvdao.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
 				console.log(cookxs);
 	            axios.post(url,{ 
@@ -186,29 +187,20 @@ import axios from 'axios';
 	               console.log(err);
 	            });
 			},
+
 			clk(cut){
-				Indicator.open({
-				  text: 'Loading...',
-				  spinnerType: 'fading-circle'
-				});
+//				Indicator.open({
+//				  text: 'Loading...',
+//				  spinnerType: 'fading-circle'
+//				});
 				this.tabq = cut;
 				if(cut=='0'){
-					this.init();//待处理数据
+//					this.init();//待处理数据
 				}
 				if(cut=='1'){
-					this.init1();//已处理数据
+//					this.init1();//已处理数据
 				}
-			},
-			//跳转数据
-			detail(id){
-				this.$router.push({
-					path:'/commission',//跳转佣金信息
-					query:{
-						"xsid":id//所传参数
-					}
-				})
 			}
-			
 		}
 	}
 </script>

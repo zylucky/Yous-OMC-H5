@@ -133,7 +133,7 @@
 	height: 0.3rem;
 }
 .mint-checkbox-core::after{
-	top: 0.02rem;
+	top: 0rem;
 	left: 0.08rem;
 }
 </style>
@@ -162,16 +162,34 @@
 				<li>
 					<span>发票类型：</span>
 					<span>北京增值税专用发票</span>
+					<i style="color: #3385f3; float: right;">发票抬头</i>
 				</li>
 			</ul>
 		</div>
 		<div class="new_box">
 			<h3>收款方信息</h3>
 			<div class="choose">
-				<p class="sel">
+				<p class="sel" v-if='false'>
 					<span></span>
 					<span>选择收款账号</span>
 				</p>
+				<!--选择好收款账号显示的样式-->
+				<ul>
+					<li>
+						<span>户名：</span>
+						<span>李明</span>
+					</li>
+					<li>
+						<span>开户行：</span>
+						<span>中国人民银行建国路支行</span>
+						<i style="color: #3385f3; float: right;">></i>
+					</li>
+					<li>
+						<span>银行账号：</span>
+						<span>15101258698</span>
+					</li>
+				</ul>
+				
 			</div>
 		</div>
 		<div class="new_box">
@@ -208,11 +226,12 @@ export default{
 	},
 	methods:{
 		selvalue(a){
-			if(a.length != 0){
-				$('.mint-checkbox-label').css('color','#323232');
+			if(a[0] == 'valueA'){
+				$('.mint-checkbox-label').css('color','#3385f3');
 			}else{
 				$('.mint-checkbox-label').css('color','#A9ACB1');
 			}
+			console.log(a[0]);
 		}
 	}
 }

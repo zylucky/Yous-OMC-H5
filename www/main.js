@@ -20,13 +20,16 @@ Vue.component(Search.name, Search);
 Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 //Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 
+
 // 测试环境
 //Vue.prototype.$api = "http://192.168.0.222:8080" //api地址
 
 // 生产环境
 //Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
+
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+
 //Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
 Vue.config.debug = true;// 开启debug模式
 
@@ -333,11 +336,41 @@ var router = new VueRouter({
       path: '/commission_details',
       name: 'commission_details',
       component: resolve => require(['./pages/commission/commission_details.vue'], resolve),
+      meta: {
+        title: '佣金信息'
+      }
     },
     {//渠道未确认
       path: '/channel',
       name: 'channel',
       component: resolve => require(['./pages/channel/channel.vue'], resolve),
+      meta: {
+        title: '佣金信息'
+      }
+    },
+    {//渠道佣金记录列表
+      path: '/channel_list',
+      name: 'channel_list',
+      component: resolve => require(['./pages/channel/channel_list.vue'], resolve),
+      meta: {
+        title: '佣金管理'
+      }
+    },
+    {//新建收款账号
+      path: '/adduser',
+      name: 'adduser',
+      component: resolve => require(['./pages/channel/adduser.vue'], resolve),
+      meta: {
+        title: '新建收款账号'
+      }
+    },
+    {//收款账号管理
+      path: '/income_number',
+      name: 'income_number',
+      component: resolve => require(['./pages/channel/income_number.vue'], resolve),
+      meta: {
+        title: '收款账号管理'
+      }
     },
     
 
