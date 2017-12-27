@@ -61,8 +61,8 @@
 					<img src="../../resources/images/commission/head_img.png" />
 				</div>
 				<div class="name">
-					<p>{{item.name}}</p>
-					<p>{{item.value}}</p>
+					<p v-html='item.name.replace(search,"<span style=\"color:red;\">"+search+"</span>")'>{{item.name}}</p>
+					<p v-html='item.value.replace(search,"<span style=\"color:red;\">"+search+"</span>")'>{{item.value}}</p>
 				</div>
 			</li>
 		</ul>

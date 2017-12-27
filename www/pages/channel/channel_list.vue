@@ -105,12 +105,12 @@
 		<div class="list_box">
 			<!--未确认-->
 			<ul class="list" v-if="tabq=='0'">
-				<li v-for="item in 2">
-					<p><span>12313</span><i>2017-12-16</i></p>
+				<li v-for="item in pendData">
+					<p><span>{{item.loupan}}</span><i>2017-12-16</i></p>
 					<p>
-						<span>123123123123</span>
+						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
-					<p style="color:#959595;">合同编号：123123213</p>
+					<p style="color:#959595;">销售联系人：{{item.xiaoshou}}</p>
 					<p>
 						<i v-if="item.taskZt=='1'">已提交</i>
 						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">审核中</i>
@@ -154,7 +154,8 @@ import axios from 'axios';
 			}
 		},
 		created(){
-//			 this.init();
+			 this.init();
+			 this.init1();
 		},
 		methods:{
 			init(){//待处理接口
@@ -189,16 +190,17 @@ import axios from 'axios';
 			},
 
 			clk(cut){
-//				Indicator.open({
-//				  text: 'Loading...',
-//				  spinnerType: 'fading-circle'
-//				});
+			console.log(cut)
+				Indicator.open({
+				  text: 'Loading...',
+				  spinnerType: 'fading-circle'
+				});
 				this.tabq = cut;
 				if(cut=='0'){
-//					this.init();//待处理数据
+					this.init();//待处理数据
 				}
 				if(cut=='1'){
-//					this.init1();//已处理数据
+					this.init1();//已处理数据
 				}
 			}
 		}

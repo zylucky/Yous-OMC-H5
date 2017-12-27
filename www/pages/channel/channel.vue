@@ -4,6 +4,50 @@
   	.box{
   		padding-bottom: 0.6rem;
   	}
+  	.flow{
+  		width: 100%;
+  		height: 2.35rem;
+  		background: #fff;
+  		padding: 0.2rem 0;
+  		font-size: @font24;
+  		-webkit-box-shadow:0px 2px 4px #D8D7DC; 
+  		box-shadow:0px 2px 4px #D8D7DC;
+  		ul{
+  			display: flex;
+  			justify-content: space-around;
+  		}
+  		li{
+  			display: flex;
+			flex-direction: column;
+  			align-items: center;
+  			p{margin-bottom: 0.1rem;position: relative;}
+  			.flow_l,.flow_r{
+  				position: absolute;
+  				top: 50%;
+  				margin-top: -0.015rem;
+  				display:inline-block;
+  				width: 1.60rem;
+  				height: 0.03rem;
+  				background: #000;
+  			}
+  			.flow_l{
+  				left: -1.62rem;
+  			}
+  			.flow_r{
+  				right: -1.62rem;
+  			}
+  		}
+  		li p:first-child{
+  			width: 1rem;
+  			height: 1rem;
+  			line-height: 0.9rem;
+  			border: 3px solid #3586f2;
+  			border-radius: 50%;
+  			box-sizing: border-box;
+  			text-align: center;
+  		}
+  		.flow_tip{padding-left: 0.5rem;color: #3785f4;}
+  	}
   	.site_card {
 		width: 7.06rem;
 		height: 2.05rem;
@@ -140,6 +184,24 @@
 
 <template>
 	<div class="box">
+		<div class="flow">
+			<ul>
+				<li>
+					<p>已确认</p>
+					<p>12/19 15:31</p>
+				</li>
+				<li>
+					<p><span class="flow_l"></span>审批中<span class="flow_r"></span></p>
+					<p>12/19 15:31</p>
+					
+				</li>
+				<li>
+					<p>已完成</p>
+					<p>12/19 15:31</p>
+				</li>
+			</ul>
+			<div class="flow_tip">我们正在为您提交佣金审批，请耐心等待！</div>
+		</div>
 		<div class="site_card">
 			<p>建外SOHO</p>
 			<p>A-2905</p>

@@ -11,6 +11,7 @@
   	.list li{
   		/*border: 1px solid #000;*/
   		display: flex;
+  		align-items: center;
   		width: 135%;
   		padding:0 0 0 0.45rem;
   		background: #ffffff;
@@ -18,7 +19,6 @@
   		-webkit-transition:all 0.3s linear;
   		transition:all 0.3s linear;
   		p{margin-bottom: 0.2rem;}
-  		p:nth-child(1){margin-top: 0.3rem;}
   		p span:nth-child(1){color: #969696;}
   		p span:nth-child(2){color: #323232;}
   	}
@@ -29,6 +29,7 @@
   	.userleft{
   		width: 5.8rem;
   		p:last-child{margin-bottom: 0.3rem;}
+  		p:first-child{margin-top: 0.3rem;}
   	}
   	.userright{
   		display: flex;
@@ -44,10 +45,19 @@
   			margin-bottom: 0!important;
   		}
   		.bj{
-  			background: url(../../resources/images/commission/bj.png) no-repeat 0.3rem 0.65rem;
+  			width: 1.25rem;
+  			height: 2.1rem;
+  			background: url(../../resources/images/commission/bj.png) no-repeat center;
   			background-size: 0.45rem 0.45rem;
   		}
-  		.mr{color: #969698;background: #f0eff5;}
+  		.mr{
+  			box-sizing: border-box;
+	  		color: #969698;
+	  		background: #EBEBEB;
+	  		border-left: 1px solid #dcdcdc;
+	  		-webkit-box-shadow:-1px 0px 10px #F4F4F4; 
+	  		box-shadow:-1px 0px 10px #F4F4F4;
+  		}
   		.del{color: #fff;background: #f32f30;}
   	}
   	/*右侧边线*/
@@ -63,6 +73,16 @@
   		border-left: 1px solid #e4e4e4;
   	}
  	.swipeleft{transform:translateX(-2.5rem);-webkit-transform:translateX(-2.5rem);}
+ 	.check{
+ 		display: block;
+ 		width: 0.4rem;
+ 		height: 0.2rem;
+ 		border-left: 1px solid #fd3331;
+ 		border-bottom: 1px solid #fd3331;
+ 		transform: rotate(-45deg);
+ 		margin-right: 0.2rem;
+ 	}
+
 </style>
 
 <template>
@@ -70,6 +90,7 @@
 		<div class="list">
 			<ul>
 				<li v-for="i in 3">
+					<i class="check" v-if="false"></i>
 					<div class="userleft">
 						<p>
 							<span>户名：</span>
@@ -96,15 +117,30 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default{
 	data(){
 		return{
 		
 		}
 	},
+	created(){
+		this.init();
+	},
 	methods:{
 		bjclick(){
 			alert(123)
+		},
+		init(){//渠道银行账号
+			const url = "http://127.0.0.1:8080/yhcms/web/qdyinhangzhanghao/getQdYHZHForQvdao.do";
+//			const url = this.$api + "/yhcms/web/qdyongjin/getLikeQd.do";
+			axios.post(url,{
+			
+            }).then((res)=>{
+				console.log(res);
+            }, (err)=>{
+				console.log(err);
+            });
 		}
 	},
 	mounted(){
@@ -130,8 +166,6 @@ export default{
 		 container[i].addEventListener('touchstart', function(event) {
 		  x = event.changedTouches[0].pageX;
 		  y = event.changedTouches[0].pageY;
-		  console.log(x + 'x的值');
-		  console.log(y + 'y的值');
 		  swipeX = true;
 		  swipeY = true ;
 		  if(expansion){ //判断是否展开，如果展开则收起
@@ -141,8 +175,6 @@ export default{
 		 container[i].addEventListener('touchmove', function(event){
 		  X = event.changedTouches[0].pageX;
 		  Y = event.changedTouches[0].pageY;
-		  console.log(X + 'X手指滑动');  
-		  console.log(Y + 'Y手指滑动');  
 		  // 左右滑动
 		  if(swipeX && Math.abs(X - x) - Math.abs(Y - y) > 0){
 		   // 阻止事件冒泡

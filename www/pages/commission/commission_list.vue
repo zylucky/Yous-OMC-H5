@@ -122,7 +122,7 @@
 			</ul>
 			<!--已处理-->
 			<ul class="list" v-if="tabq=='1'">
-				<li v-for="item in passData">
+				<li v-for="item in passData"  @click="detail(item.id)">
 					<p>{{item.loupan}}<i>2017-12-16</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>
@@ -154,7 +154,12 @@ import axios from 'axios';
 			}
 		},
 		created(){
-			 this.init();
+			Indicator.open({
+			  text: 'Loading...',
+			  spinnerType: 'fading-circle'
+			});
+			this.init();//未处理
+			this.init1();//已处理
 		},
 		methods:{
 			init(){//待处理接口

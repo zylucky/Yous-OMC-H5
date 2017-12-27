@@ -65,6 +65,7 @@
 			box-shadow: 0px 0px 8px #D9D9D9;
 		}
 		p {
+			position: relative;
 			display: flex;
 			display: -webkit-flex;
 			align-items: center;
@@ -76,12 +77,35 @@
 				width: 3.8rem;
 				font-size: @font32;
 				margin-left: 0.75rem;
+				background: #fff;
 			}
 			label {
 				color: #3586f2;
 				font-weight: bold;
 			}
 			i{color: #fd7172;}
+			/*模糊搜索列表*/
+			.inp{
+				border-bottom: 1px solid #e4e4e4;
+				display: block;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				padding-right: 0.3rem;
+				i{color: #000;}
+				i:last-child{float: right;}
+			}
+			.inp_box{
+				position: absolute;
+				z-index: 9;
+				bottom: -4.5rem;
+				left: 0;
+				display: inline-block;
+				width: 100%;
+				height: 4.5rem;
+				border: 1px solid #000;
+				background: #fff;
+				overflow: auto;
+			}
 		}
 		p:last-child {
 			border-bottom: none;
@@ -192,7 +216,7 @@
 </style>
 
 <template>
-	<div class="box">
+	<div class="box" @click="qdinp=false;qdinp1=false">
 		<div class="site_card">
 			<p>{{xsData.loupan}}</p>
 			<p>
@@ -218,11 +242,23 @@
 			</p>
 			<p>
 				<span><i>*</i>渠道姓名</span>
-				<input type="text" placeholder="请输入渠道人员姓名" v-model="channelname" />
+				<input type="text" placeholder="请输入渠道人员姓名" v-model="channelname" v-on:input="channeluser"/>
+				<span class="inp_box" v-if="qdfind.length != 0 && channelname != '' && qdinp1">
+					<span class="inp" v-for="item in qdfind" @click="qdxz(item.name,item.phone)">
+						<i class="inp_name">{{item.name}}</i>
+						<i class="inp_tel">{{item.phone}}</i>
+					</span>
+				</span>
 			</p>
 			<p>
 				<span><i>*</i>联系方式</span>
-				<input type="number" placeholder="请输入渠道登陆账号" v-model="tel" />
+				<input type="number" placeholder="请输入渠道登陆账号" v-model="tel" v-on:input="channeltel"/>
+				<span class="inp_box" v-if="qdfind.length != 0 && tel != '' && qdinp">
+					<span class="inp" v-for="item in qdfind" @click="qdxz(item.name,item.phone)">
+						<i class="inp_name">{{item.name}}</i>
+						<i class="inp_tel">{{item.phone}}</i>
+					</span>
+				</span>
 			</p>
 		</div>
 		<!--发票信息-->
@@ -235,7 +271,7 @@
 				<span id='invoice' @click='selinvoice'>{{invoice}}</span>
 				<label for="invoice" style="float: right;">></label>
 			</p>
-			<ul class="invoice_list" v-if='this.theinvoice.companyName'>
+			<ul class="invoice_list" v-if='this.theinvoice.companyName || xsData.taskZt==4 || xsData.taskZt==0'>
 				<li>
 					<i>名<s style="visibility: hidden;">我我我我</s>称:</i>
 					<span>{{theinvoice.companyName}}</span>
@@ -254,7 +290,7 @@
 				</li>
 			</ul>
 		</div>
-		<button :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -353,6 +389,10 @@
 				],
 				xsid:'',//路由传过来的销售人员id
 				xsData:{},//销售人员数据
+				qdfind:[],//渠道人员模糊查找
+				qdinp:false,//渠道人员列表
+				qdinp1:false,
+				btnshow:true,
 			}
 		},
 		created() {
@@ -365,7 +405,25 @@
 				axios.post(url,{ 
             		"id":this.xsid,
 	            }).then((res)=>{
+//	            	console.log(res)
 	            	this.xsData = res.data.data;
+            		this.money = this.xsData.xsyongjin;
+            		this.value = String(this.xsData.xsyongjinxinxi);
+            		this.formula = this.xsData.xsjisuangongshi;
+            		this.channelname = this.xsData.xsqvdao;
+            		this.tel = this.xsData.xsqvdaotel;
+            		
+            		
+            		this.theinvoice.companyName = this.xsData.xsfpdanwei;
+					this.theinvoice.number = this.xsData.xsfpnashuiren;
+					this.theinvoice.address = this.xsData.xsfpdizhidianhua;
+					this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
+	            	if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+	            		$('.new_box input').attr('disabled','disabled');//只读
+	            		this.btnshow = false;
+	            	}
+	            	
+	            	console.log('=============================')
 					console.log(res.data.data);
 	            }, (err)=>{
 					console.log(err);
@@ -373,10 +431,11 @@
 			},
 		
 			init(){//销售数据提交
-//				const url = this.$api + "/yhcms/web/qdyongjin/xiaoshouSubmit.do";
-				const url = "http://192.168.1.44:8080/yhcms/web/qdyongjin/xiaoshouSubmit.do";
+				const url = this.$api + "/yhcms/web/qdyongjin/xiaoshouSubmit.do";
+//				const url = "http://192.168.1.44:8080/yhcms/web/qdyongjin/xiaoshouSubmit.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
-	            axios.post(url,{ 
+	            axios.post(url,{
+	            	"ccode":this.xsData.ccode,
             		"cookie":cookxs,
             		'fanghao':this.xsData.fanghao,
             		'fanghaoid':this.xsData.fanghaoid,
@@ -407,6 +466,38 @@
 	            }, (err)=>{
 					console.log(err);
 	            });
+			},
+			channeltel(){//模糊查询渠道人员信息查找通过电话
+				if(this.tel != ''){
+					this.qdinp = true;
+					this.qdinp1 = false;
+					this.channel();
+				}
+			},
+			channeluser(){//模糊查询渠道人员信息查找通过姓名
+				if(this.channelname != ''){
+					this.qdinp1 = true;
+					this.qdinp = false;
+					this.channel();
+				}
+			},
+			channel(){//模糊查询渠道人员信息
+//				const url = "http://192.168.1.44:8080/yhcms/web/qdyongjin/xiaoshouSubmit.do";
+				const url = this.$api + "/yhcms/web/qdyongjin/getLikeQd.do";
+				axios.post(url,{
+            		"name":this.channelname,
+					"phone":this.tel
+	            }).then((res)=>{
+	            	this.qdfind = res.data.data;
+					console.log(this.qdfind);
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+			qdxz(name,tel){//选择信息
+				this.channelname = name;
+				this.tel = tel;
+				this.qdinp = false;
 			},
 			//佣金信息状态
 			check(a){
