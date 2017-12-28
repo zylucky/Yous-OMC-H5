@@ -52,6 +52,22 @@ Vue.filter('delkg', function(num){//银行卡四位空格分割
   var str=String(num).replace(/(\d{4})/g,'$1 ').replace(/\s*$/,'');
   return str;
 })
+Vue.filter('times', function(s){//毫秒数转化日期
+ var myDate = new Date(s);
+  var year = myDate.getFullYear();
+  var month = myDate.getMonth()+1;
+  var day = myDate.getDate();
+  var hour = myDate.getHours();
+  var minute = myDate.getMinutes();
+  var second = myDate.getSeconds();
+  if(month<10){month = '0' + month;}
+  if(day<10){day = '0' + day;}
+  if(hour<10){hour = '0' + hour;}
+  if(minute<10){minute = '0' + minute;}
+  if(second<10){second = '0' + second;}
+  return year+'-'+month+'-'+day;
+})
+
 
 
 

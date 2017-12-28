@@ -268,61 +268,61 @@
 		<div class="content">
 			<div class="header">
 				<p>
-					<span>建外SOHO</span>
-					<span>A-2907</span>
+					<span>{{allData.loupan}}</span>
+					<span>{{allData.loudong}}-{{allData.fanghao}}</span>
 				</p>
 				<p>
 					<span>合同编号：</span>
-					<span>URS-SG-KJ-16090055<i @click="pops(true)">合同摘要</i></span>
+					<span>{{allData.htbianhao}}<i @click="pops(true)">合同摘要</i></span>
 				</p>
 			</div>
 			<ul class="list">
 				<li>
 					<p>
 						<span>渠道账号</span>
-						<span>15101622569</span>
+						<span>{{allData.xsqvdaotel}}</span>
 					</p>
 					<p>
 						<span>渠道门店</span>
-						<span>远行地产（建外SHHO店）</span>
+						<span>{{}}</span>
 					</p>
 					<p>
 						<span>渠道人员</span>
-						<span>张三</span>
+						<span>{{allData.xsqvdao}}</span>
 					</p>
 				</li>
 				<li>
 					<p>
 						<span>申领金额</span>
-						<span>￥10,000.00</span>
+						<span>￥{{allData.xsyongjin | splitK}}</span>
 					</p>
 					<p>
 						<span>佣金信息</span>
-						<span>正常</span>
+						<span>{{allData.xsyongjinxinxi==true?"正常":"不正常"}}</span>
 					</p>
 					<p>
 						<span>计算公式</span>
-						<span>月租金x12/0.4</span>
+						<span>{{allData.xsjisuangongshi}}</span>
 					</p>
 				</li>
 				<li>
 					<p>
 						<span>收款方</span>
-						<span>远行地产（建外SHHO店）</span>
+						<span>{{allData.qdhuming}}</span>
 					</p>
 					<p>
 						<span>开户行</span>
-						<span>招商银行建外大街支行</span>
+						<span>{{allData.qdkaihuhang}}</span>
 					</p>
 					<p>
 						<span>银行账号</span>
-						<span>6210 2212 2512 3300</span>
+						<span>{{allData.qdzhanghao | delkg}}</span>
 					</p>
 				</li>
 				<li>
 					<p style="margin-bottom: 0;">
 						<span>渠道备注</span>
-						<span>请尽快审批</span>
+						<span>{{allData.qdbeizhu}}</span>
 					</p>
 				</li>
 			</ul>
@@ -425,10 +425,12 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { Toast } from 'mint-ui';
 	export default{
 		data(){
 			return{
+				allData:{},//页面数据详情
 				copyData:[
 					{
 						name: '李三',
@@ -462,10 +464,24 @@ import { Toast } from 'mint-ui';
 			}
 		},
 		created(){
-			this.copy();
+//			this.copy();
+			this.takexs();
 		},
 		methods:{
-			delcopy(index){
+			takexs(){//获取销售人员信息
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForid.do";
+				axios.post(url,{ 
+            		"id":this.$route.query.id,
+	            }).then((res)=>{
+	            	this.allData = res.data.data;
+					console.log(this.allData);
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+		
+		
+			delcopy(index){//删除抄送人页面级
 				console.log(index);
 				this.copyData.splice(index,1);
 				localStorage.setItem('addCopy',JSON.stringify(this.copyData));

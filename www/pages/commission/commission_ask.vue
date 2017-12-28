@@ -110,39 +110,51 @@
 	<div class="box">
 		<div class="header">
 			<ul class="nav">
-				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待我审批(0)<span></span></li>
-				<li :class="tabq=='1'?'active':''" @click='clk(1)'>我已审批(1)<span></span></li>
-				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的(1)</li>
+				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待我审批({{pendData.length}})<span></span></li>
+				<li :class="tabq=='1'?'active':''" @click='clk(1)'>我已审批({{passData.length}})<span></span></li>
+				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的(0)</li>
 			</ul>
 		</div>
 		<!--列表-->
 		<div class="list_box">
 			<!--待我审批-->
 			<ul class="list" v-if="tabq=='0'">
-				<li v-for="(i,index) in 3" @click="waitme(index,$event)">
-					<p><span>DRC北京工艺设计创意产业基地</span><i>2017-12-16</i></p>
+				<li v-for="(item,index) in pendData" @click="waitme(item.id)">
+					<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
 					<p>
-						<span>南塔2-2908/2908/2908/2908/2908/2908/2908/2908</span>
+						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
-					<p style="color:#959595;">合同编号：URS-SG-KJ-16090055</p>
-					<p>审批驳回</p>
+					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
+					<p>
+						<i v-if="item.taskZt=='1'">已提交</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
+						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
+						<i else></i>
+					</p>
 				</li>
 			</ul>
 			<!--我已审批-->
-			<ul class="list" v-if="tabq=='1'">
-				<li v-for="i in 2">
-					<p>DRC北京工艺设计创意产业基地<i>2017-12-16</i></p>
+			<ul class="list" v-if="tabq=='1'" @click="done(item.id)">
+				<li v-for="item in passData">
+					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
-						<span>南塔2-2908/2908/2908/2908/2908/2908/2908/2908</span>
+						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
-					<p style="color:#959595;">合同编号：URS-SG-KJ-16090055</p>
-					<p>审批完成</p>
+					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
+					<p>
+						<i v-if="item.taskZt=='1'">已提交</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
+						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
+						<i else></i>
+					</p>
 				</li>
 			</ul>
 			<!--抄送我的-->
 			<ul class="list" v-if="tabq=='2'">
 				<li v-for="i in 2">
-					<p>DRC北京工艺设计创意产业基地<i>2017-12-16</i></p>
+					<p>DRC北京工艺设计创意产业基地<i>{{12343534546 | times}}</i></p>
 					<p>
 						<span>南塔2-2908/2908/2908/2908/2908/2908/2908/2908</span>
 					</p>
@@ -156,13 +168,24 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { TabContainer, TabContainerItem } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
 				tabq:'0',
+				pendData:[],//未审核数据
+				passData:[],//已审核数据
 			}
+		},
+		created(){
+			Indicator.open({
+			  text: 'Loading...',
+			  spinnerType: 'fading-circle'
+			});
+			this.init();
+			this.init1();
 		},
 		methods:{
 			clk(cut){
@@ -171,16 +194,63 @@ import { Indicator } from 'mint-ui';
 				  spinnerType: 'fading-circle'
 				});
 				this.tabq = cut;
-				setTimeout(function(){//数据请求成功关闭
-					Indicator.close();					
-				},1000)
+				if(cut == '0'){
+					this.init();
+				}
+				if(cut == '1'){
+					this.init1();
+				}
 			},
-			waitme(index,e){
-				console.log(index);	
+			init(){//未审核数据接口
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
+				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+	            axios.post(url,{ 
+	            		"cookie":cookxs,
+	            		"zt":2
+	            }).then((res)=>{
+	            	this.pendData = res.data.data;
+	            	console.log(this.pendData);
+					Indicator.close();
+	            }, (err)=>{
+	            	Indicator.close();
+	            });
+			},
+			init1(){//已审核数据接口
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
+				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+	            axios.post(url,{ 
+	            		"cookie":cookxs,
+	            		"zt":3
+	            }).then((res)=>{
+	            	this.passData = res.data.data;
+	            	console.log(this.passData);
+					Indicator.close();
+	            }, (err)=>{
+	            	Indicator.close();
+	            });
+			},
+			
+			
+			
+			waitme(id){
+				this.$router.push({
+					path:'/approval',//跳转到审批页面
+					query:{
+						"id":id//所传参数
+					}
+				})
+			},
+			done(id){//审批通过跳转点击
+				this.$router.push({
+					path:'/approval',//跳转到审批页面
+					query:{
+						"id":id//所传参数
+					}
+				})
 			}
 		},
 		mounted(){
 			
-		}
+		},
 	}
 </script>
