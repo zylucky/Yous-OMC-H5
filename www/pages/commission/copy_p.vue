@@ -106,8 +106,8 @@
 		},
 		methods: {
 			addcopy(index, item) { //选择抄送人
-				this.addCopy.push(item);
-				localStorage.setItem('addCopy', JSON.stringify(this.addCopy));
+//				this.addCopy.push(item);
+//				localStorage.setItem('addCopy', JSON.stringify(this.addCopy));
 				this.$router.push({
 					path: '/approval'
 				});

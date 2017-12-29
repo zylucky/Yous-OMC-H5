@@ -112,6 +112,7 @@
   				span:last-child{color: #0dae60;}
   			}
   			.plan_b{
+  				height: 0.2rem;
   				margin-left: 1rem;
   				color: #313131;
   			}
@@ -146,16 +147,22 @@
   			}
   			.copy_list{
   				display: flex;
-  				display: -webkit-box;
-  				overflow: auto;
+  				display: -webkit-flex;
+  				flex-wrap: wrap;
+  				overflow: hidden;
+  				padding-bottom: 0.1rem;
   				li{
-  					position: relative;
-  					height: 1.5rem;
-  					margin-right: 0.45rem;
-  					p{margin-top: 0.15rem;text-align: center;}
+	  				display: flex;
+	  				flex-direction: column;
+	  				align-items:center;
+	  				width: 0.8rem;
+  					height: 1.55rem;
+  					margin-right: 0.3rem;
+  					margin-bottom: 0.2rem;
+  					p{margin-top: 0.15rem;text-align: center;position: relative;}
   					span{
   						position: absolute;
-  						top: 0.15rem;
+  						top: 0rem;
   						right: -0.15rem;
   						display: inline-block;
   						width: 0.3rem;
@@ -261,6 +268,45 @@
 	      opacity: 0;
 	    }
   	}
+  	.boxs{
+  		position: fixed;
+  		z-index: 999;
+  		left: 0;
+  		right: 0;
+  		bottom: 0;
+  		top: 0;
+  		background: #fff;
+  	}
+  	.idea_box{
+  		width: 7.05rem;
+  		height: 4.5rem;
+  		margin: 0.2rem auto 0;
+  		border-radius: 0.08rem;
+  		background: #fff;
+  		padding: 0.35rem 0.25rem;
+  		-webkit-box-shadow:0px 0px 5px #c5c4c9; 
+  		box-shadow:0px 0px 5px #c5c4c9;
+  		textarea{
+  			font-size: @font36;
+  			border: none;
+  			height: 100%;
+  			padding: 0;
+  			background: #fff;
+  		}
+  	}
+  	.spbtn{
+  		display: block;
+  		border: none;
+  		border-radius: 0.06rem;
+  		width: 5.5rem;
+  		height: 0.75rem;
+  		background: url(../../resources/images/commission/btn_bg.png) no-repeat center;
+  		background-size: cover;
+  		margin: 5.6rem auto 0.95rem;
+  		font-size: @font34;
+  		color: #fff;
+  		text-align: center;
+  	}
 </style>
 
 <template>
@@ -284,7 +330,7 @@
 					</p>
 					<p>
 						<span>渠道门店</span>
-						<span>{{}}</span>
+						<span>暂无此字段需要核对</span>
 					</p>
 					<p>
 						<span>渠道人员</span>
@@ -344,14 +390,14 @@
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="i in 5">
+					<li v-for="item in spData">
 						<p class="plan_t">
 							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
-							<span>张三</span>
-							<span>发起申请</span>							
+							<span>{{item.person}}</span>
+							<span>{{item.shenpi==1?"同意":"不同意"}}</span>							
 						</p>
-						<p class="plan_b">的说服力的思考</p>
-						<p class="date">12/11 10:10</p>
+						<p class="plan_b">{{item.shuoming}}</p>
+						<p class="date">{{item.shenpitime | time}}</p>
 					</li>
 				</ul>
 			</div>
@@ -362,10 +408,10 @@
 					<span>审批通过后，通知抄送人</span>
 				</p>
 				<ul class="copy_list">
-					<li v-for="(item,index) in copyData">
-						<p class="picimg"><img src="../../resources/images/commission/head_img.png" title="" alt=""/></p>
-						<p class="copy_name">{{item.name}}</p>
-						<span v-if='item.qx != 0' @click='delcopy(index)'></span>
+					<li v-for="(item,index) in csData">
+						<p class="picimg"><img src="../../resources/images/commission/head_img.png" title="" alt=""/><span v-if='item.isshezhi == false' @click='delcopy(item.id)'></span></p>
+						<p class="copy_name">{{item.personname}}</p>
+						
 					</li>
 					<!--添加抄送人按钮-->
 					<li @click="addcopy">
@@ -421,36 +467,29 @@
 				<li @click="turnto">驳回</li>
 			</ul>
 		</div>
+		<!--审批意见-->
+		<div class="boxs" v-if="ideashow">
+			<!--填写区域-->
+			<div class="idea_box">
+				<textarea name="" :placeholder="tiptext" v-model="idea"></textarea>
+			</div>
+			<button class="spbtn" @click="betrue">{{btntext}}</button>
+		</div>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
 import { Toast } from 'mint-ui';
+import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
+				btntext:'',//按钮内容
+				tiptext:'',//意见框提示内容
 				allData:{},//页面数据详情
-				copyData:[
-					{
-						name: '李三',
-						qx: '0',
-						id: '1',
-						value: '东北一区-销售主管'
-					},
-					{
-						name: '张明',
-						qx: '0',
-						id: '2',
-						value: '东北一区-助理销售主管'
-					},
-					{
-						name: '李四',
-						qx: '0',
-						id: '3',
-						value: '东北二区-销售主管'
-					}
-				],//抄送人
+				spData:[],//审批任务流数据
+				csData:[],//抄送任务流数据
 				popshow:false,//合同摘要弹框
 				imgList:[],
 		        hxList:[],
@@ -461,10 +500,11 @@ import { Toast } from 'mint-ui';
 		        fm: 0,
 		        upload: 0,
 		        uploaded: 0,
+		        idea:'',
+		        ideashow:false,
 			}
 		},
 		created(){
-//			this.copy();
 			this.takexs();
 		},
 		methods:{
@@ -475,16 +515,37 @@ import { Toast } from 'mint-ui';
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
 					console.log(this.allData);
+					this.obtaintask();//获取任务流
 	            }, (err)=>{
 					console.log(err);
 	            });
 			},
+			obtaintask(){//获取任务流
+				const url = this.$api + "/yhcms/web/qdyongjin/getSpStream.do";
+				axios.post(url,{ 
+            		"id":this.allData.id,
+	            }).then((res)=>{
+	            	console.log('=====================')
+	            	console.log(res);
+	            	this.spData = res.data.data.shenpi;
+	            	this.csData = res.data.data.chaosong;
+					console.log(this.spData);
+					console.log(this.csData);
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+			
 		
-		
-			delcopy(index){//删除抄送人页面级
-				console.log(index);
-				this.copyData.splice(index,1);
-				localStorage.setItem('addCopy',JSON.stringify(this.copyData));
+			delcopy(id){//删除抄送人
+				const url = this.$api + "/yhcms/web/qdyongjin/delCsr.do";
+				axios.post(url,{
+            		"id":id,
+	            }).then((res)=>{
+					console.log(res);
+	            }, (err)=>{
+					console.log(err);
+	            });
 			},
 			copy(){
 				var copyData1 = JSON.parse(localStorage.getItem('addCopy'));
@@ -557,21 +618,147 @@ import { Toast } from 'mint-ui';
 	        this[tag] += 1;
 	        this.upload += 1;
 	      },
+	      saveToserver(){
+	          //开始上传图片
+	          const that = this;
+	          let fp = [];
+	          const cb = (img, obj) => {
+	             if(img.id === "xxx"){
+	                 const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
+	                 that.saveImages(data, t, function(path){
+	                     obj.push({"id":"", "isdelete":"0", "url":path});
+	                     that.uploaded += 1;
+	                     if(that.uploaded >= that.upload){
+	                         // 新图片上传完成
+	                         Indicator.close();
+	                         setTimeout(function(){
+	                             that.saveImageData();
+	                         }, 1000);
+	                     }
+	                 });
+	             }
+	             else{
+	                 obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
+	             }
+	          };
+	
+	          if(this.upload > 0){
+	              Indicator.open({
+	                  text: '上传图片中...',
+	                  spinnerType: 'fading-circle'
+	              });
+	          }
+	
+	          this.imgList.forEach((img,idx)=> {cb(img, fp)});
+	          this.imgList = fp;
+	
+	          //保存信息
+	          if(this.upload < 1){
+	              setTimeout(function(){
+	                  Indicator.close();
+	                  that.saveImageData();
+	              }, 1000);
+	          }
+	      },
+	      saveImages(pic, type, cb){//上传到图片服务器
+	          const that = this;
+	          this.$http.post(
+	              this.$api + "/yhcms/web/jcsj/uploadPic.do",
+	              {"parameters":{ "smallPic":pic,"suffix": "." + type},"foreEndType":2,"code":"300000084"}
+	          ).then((res)=>{
+	          		console.log(res)
+	              var result = JSON.parse(res.bodyText);
+	              if (result.success) {
+	                  cb && cb(result.data);
+	              }
+	              else{
+	              }
+	          }, (res)=>{});
+	      },
+	      saveImageData(){//传送给后台
+	        const that = this;
+	        Indicator.open({
+	          text: '保存中...',
+	          spinnerType: 'fading-circle'
+	        });
+	
+	        let fp = this.imgList.map((item, idx)=>{//图片数据保存数组
+	            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
+	        });
+	        console.log(fp);
+	        const data = {"parameters":{'imgFapiao':fp[0].url,'yongjinid':1,'yongjintype':1}};
+	        this.$http.post(
+	           this.$api + "/yhcms/web/qdyongjin/imgadd.do", data).then((res)=>{
+	          Indicator.close();
+	          var result = JSON.parse(res.bodyText);
+	          if (result.success) {
+	            Toast({
+	                message: '保存成功',
+	                position: 'bottom',
+	                duration: 1000
+	            });
+	          } else {
+	            Toast({
+	                message: '保存失败: ' + result.message,
+	                position: 'bottom'
+	            });
+	          }
+	        },(res)=>{
+	          Indicator.close();
+	          Toast({
+	              message: '保存失败! 请稍候再试',
+	              position: 'bottom'
+	          });
+	        });
+	      },
+	      
+	      
+	      
+	      
+	      
 	      addcopy(){
 	      	this.$router.push({
 				path:'/copy_p',//跳转抄送人页面
 			})
 	      },
 	      consent(){
-	      	this.$router.push({
-				path:'/approval_opinion',//跳转审批意见页面
-			})
+	      	this.btntext = '确认同意';
+	      	this.tiptext = '请输入您的审批意见（非必填）';
+	      	this.ideashow = true;
 	      },
 	      turnto(){
-	      	this.$router.push({
-				path:'/turn_opinion',//跳转驳回意见页面
-			})
-	      }
+	      	this.btntext = '确认驳回';
+	      	this.tiptext = '请输入您的驳回理由（非必填）';
+	      	this.ideashow = true;
+	      },
+	      betrue(){//确认意见
+	      	this.ideashow = false;
+	      	this.saveToserver();//上传图片
+	      	console.log(this.imgList);
+	      },
+	      approve(){//审批
+	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
+			axios.post(url,{
+        		'id':'',
+				'sourcetype':'OMC_t_qd_xs_yongjin',
+				'sourcemid':'2',
+				'itemid':'',
+				'shenpi':'',
+				'personid':'',
+				'person':'',
+				'shuoming':this.idea,
+				'banben':'',
+				'sptype':'',
+				'persontype':'',
+				'isfock':'',
+				'pici':''
+            }).then((res)=>{
+				console.log(res);
+            }, (err)=>{
+				console.log(err);
+            });
+	      },
+	      
 		}
 	}
 </script>

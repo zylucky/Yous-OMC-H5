@@ -106,7 +106,7 @@
 			<!--待处理-->
 			<ul class="list" v-if="tabq=='0'">
 				<li v-for="item in pendData" @click="detail(item.id)">
-					<p><span>{{item.loupan}}</span><i>2017-12-16</i></p>
+					<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
@@ -123,7 +123,7 @@
 			<!--已处理-->
 			<ul class="list" v-if="tabq=='1'">
 				<li v-for="item in passData"  @click="detail(item.id)">
-					<p>{{item.loupan}}<i>2017-12-16</i></p>
+					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>

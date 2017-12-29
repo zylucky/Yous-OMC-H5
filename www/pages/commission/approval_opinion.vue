@@ -21,7 +21,7 @@
   			background: #fff;
   		}
   	}
-  	.btn{
+  	.spbtn{
   		display: block;
   		border: none;
   		border-radius: 0.06rem;
@@ -37,12 +37,12 @@
 </style>
 
 <template>
-	<div class="box">
+	<div class="boxs">
 		<!--填写区域-->
 		<div class="idea_box">
 			<textarea name="" placeholder="请输入您的审批意见（非必填）" v-model="idea"></textarea>
 		</div>
-		<button class="btn">确认同意</button>
+		<button class="spbtn">确认同意</button>
 	</div>
 </template>
 

@@ -18,7 +18,7 @@ Vue.component(Search.name, Search);
 
 
 Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
-//Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
+// Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 
 
 // 测试环境
@@ -53,6 +53,9 @@ Vue.filter('delkg', function(num){//银行卡四位空格分割
   return str;
 })
 Vue.filter('times', function(s){//毫秒数转化日期
+  if(s==null || s==''){
+    return
+  }
  var myDate = new Date(s);
   var year = myDate.getFullYear();
   var month = myDate.getMonth()+1;
@@ -66,6 +69,24 @@ Vue.filter('times', function(s){//毫秒数转化日期
   if(minute<10){minute = '0' + minute;}
   if(second<10){second = '0' + second;}
   return year+'-'+month+'-'+day;
+})
+Vue.filter('time', function(s){//毫秒数转化日期
+  if(s==null || s==''){
+    return
+  }
+ var myDate = new Date(s);
+  var year = myDate.getFullYear();
+  var month = myDate.getMonth()+1;
+  var day = myDate.getDate();
+  var hour = myDate.getHours();
+  var minute = myDate.getMinutes();
+  var second = myDate.getSeconds();
+  if(month<10){month = '0' + month;}
+  if(day<10){day = '0' + day;}
+  if(hour<10){hour = '0' + hour;}
+  if(minute<10){minute = '0' + minute;}
+  if(second<10){second = '0' + second;}
+  return year+'-'+month+'-'+day + ' ' + hour + ':' + minute;
 })
 
 
@@ -285,7 +306,7 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
-    {//已确认
+    {//已确认页面
       path: '/commission_rule',
       name: 'commission_rule',
       component: resolve => require(['./pages/commission/commission_rule.vue'], resolve),
@@ -293,7 +314,7 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
-    {//未确认
+    {//未确认页面
       path: '/commission_un',
       name: 'commission_un',
       component: resolve => require(['./pages/commission/commission_un.vue'], resolve),
@@ -301,7 +322,7 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
-    {//审批驳回
+    {//审批驳回页面
       path: '/commission_turn',
       name: 'commission_turn',
       component: resolve => require(['./pages/commission/commission_turn.vue'], resolve),

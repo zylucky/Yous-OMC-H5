@@ -384,7 +384,7 @@
 				  },
 				  {
 				    label: '不正常',
-				    value: 'false'
+				    value: 'false',
 				  }
 				],
 				xsid:'',//路由传过来的销售人员id
@@ -412,17 +412,17 @@
             		this.formula = this.xsData.xsjisuangongshi;
             		this.channelname = this.xsData.xsqvdao;
             		this.tel = this.xsData.xsqvdaotel;
-            		
-            		
+
             		this.theinvoice.companyName = this.xsData.xsfpdanwei;
 					this.theinvoice.number = this.xsData.xsfpnashuiren;
 					this.theinvoice.address = this.xsData.xsfpdizhidianhua;
 					this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
 	            	if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
-	            		$('.new_box input').attr('disabled','disabled');//只读
+	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
+	            		this.options[0].disabled = true//禁用单选
+	            		this.options[1].disabled = true//禁用单选
 	            		this.btnshow = false;
 	            	}
-	            	
 	            	console.log('=============================')
 					console.log(res.data.data);
 	            }, (err)=>{
@@ -504,6 +504,9 @@
 				this.yjxx = a;
 			},
 			selinvoice() { //发票类型选择
+				if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+					return;
+				}
 				this.shade = true;
 				this.pickshow = true;
 			},
