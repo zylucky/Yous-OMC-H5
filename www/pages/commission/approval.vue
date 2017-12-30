@@ -382,7 +382,7 @@
 			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
 			        </div>
 			        <div v-if="fy < 8" class="upload_btn mr10 fl">
-			            <input @change='add_img1' id="file_add" tag="fy" type="file" multiple>
+			            <input @change='add_img1($event)' id="file_add" tag="fy" type="file" multiple>
 			        </div>
 				</div>
 		        
@@ -490,14 +490,10 @@ import { Indicator } from 'mint-ui';
 				allData:{},//页面数据详情
 				spData:[],//审批任务流数据
 				csData:[],//抄送任务流数据
+				nowData:{},//当前审核结点数据
 				popshow:false,//合同摘要弹框
 				imgList:[],
-		        hxList:[],
-		        gjList:[],
-		        fmList:[],
 		        fy: 0,
-		        hx: 0,
-		        fm: 0,
 		        upload: 0,
 		        uploaded: 0,
 		        idea:'',
@@ -524,13 +520,19 @@ import { Indicator } from 'mint-ui';
 				const url = this.$api + "/yhcms/web/qdyongjin/getSpStream.do";
 				axios.post(url,{ 
             		"id":this.allData.id,
-	            }).then((res)=>{
-	            	console.log('=====================')
-	            	console.log(res);
+	           }).then((res)=>{
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
-					console.log(this.spData);
-					console.log(this.csData);
+//					console.log(this.spData);
+//					console.log(this.csData);
+					for(var i in this.spData){
+						for(var j in this.spData[i]){
+							if(j == 'isfock' && this.spData[i][j] == true){
+								this.nowData = this.spData[i];
+								console.log(this.nowData);
+							}
+						}
+					}
 	            }, (err)=>{
 					console.log(err);
 	            });
@@ -566,7 +568,7 @@ import { Indicator } from 'mint-ui';
 				this.popshow = state;
 			},
 			delete_img(index, id, event){//删除
-		        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
+		        const tag = $(event.target).attr("tag"), which = {"fy":"imgList"}[tag];
 		        if(id !== 'xxx'){
 		            this[which][index].isdelete = "1";
 		        }
@@ -602,7 +604,6 @@ import { Indicator } from 'mint-ui';
 	              canvas.height = imgx.naturalHeight;
 	              canvas.getContext("2d").drawImage(imgx, 0, 0);
 	              ret = canvas.toDataURL(type, .2);
-	
 	              const obj = {
 	                  id: "xxx",
 	                  lpid: that.lpid,
@@ -660,13 +661,12 @@ import { Indicator } from 'mint-ui';
 	              }, 1000);
 	          }
 	      },
-	      saveImages(pic, type, cb){//上传到图片服务器
+	      saveImages(pic, type, cb){
 	          const that = this;
 	          this.$http.post(
 	              this.$api + "/yhcms/web/jcsj/uploadPic.do",
 	              {"parameters":{ "smallPic":pic,"suffix": "." + type},"foreEndType":2,"code":"300000084"}
 	          ).then((res)=>{
-	          		console.log(res)
 	              var result = JSON.parse(res.bodyText);
 	              if (result.success) {
 	                  cb && cb(result.data);
@@ -675,18 +675,16 @@ import { Indicator } from 'mint-ui';
 	              }
 	          }, (res)=>{});
 	      },
-	      saveImageData(){//传送给后台
+	      saveImageData(){
 	        const that = this;
 	        Indicator.open({
 	          text: '保存中...',
 	          spinnerType: 'fading-circle'
 	        });
-	
-	        let fp = this.imgList.map((item, idx)=>{//图片数据保存数组
+	        let fp = this.imgList.map((item, idx)=>{
 	            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
 	        });
-	        console.log(fp);
-	        const data = {"parameters":{'imgFapiao':fp[0].url,'yongjinid':1,'yongjintype':1}};
+	        const data = {"parameters":{"imgFapiao":fp[0].url},"yongjinid":1,"yongjintype":"1"};
 	        this.$http.post(
 	           this.$api + "/yhcms/web/qdyongjin/imgadd.do", data).then((res)=>{
 	          Indicator.close();
@@ -712,10 +710,7 @@ import { Indicator } from 'mint-ui';
 	        });
 	      },
 	      
-	      
-	      
-	      
-	      
+
 	      addcopy(){
 	      	this.$router.push({
 				path:'/copy_p',//跳转抄送人页面
@@ -733,25 +728,32 @@ import { Indicator } from 'mint-ui';
 	      },
 	      betrue(){//确认意见
 	      	this.ideashow = false;
-	      	this.saveToserver();//上传图片
-	      	console.log(this.imgList);
+	      	if(this.imgList.length>0){
+	      		this.saveToserver();//上传图片
+	      		this.approve();		
+	      	}else{
+	      		Toast({
+	                message: '请添加发票图片',
+	                position: 'center'
+	            });
+	      	}
 	      },
 	      approve(){//审批
 	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
 			axios.post(url,{
-        		'id':'',
-				'sourcetype':'OMC_t_qd_xs_yongjin',
-				'sourcemid':'2',
-				'itemid':'',
-				'shenpi':'',
-				'personid':'',
-				'person':'',
+        		'id':this.nowData.id,
+				'sourcetype':this.nowData.sourcetype,
+				'sourcemid':this.nowData.sourcemid,
+				'itemid':this.nowData.itemid,
+				'shenpi':this.nowData.shenpi,
+//				'personid':this.nowData.personid,
+//				'person':this.nowData.person,
 				'shuoming':this.idea,
-				'banben':'',
-				'sptype':'',
-				'persontype':'',
-				'isfock':'',
-				'pici':''
+				'banben':this.nowData.banben,
+				'sptype':this.nowData.sptype,
+				'persontype':this.nowData.persontype,
+				'isfock':this.nowData.isfock,
+				'pici':this.nowData.pici
             }).then((res)=>{
 				console.log(res);
             }, (err)=>{
