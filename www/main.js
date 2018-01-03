@@ -29,7 +29,8 @@ Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
 
 // Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
-Vue.prototype.$api = "http://192.168.1.40:8080"
+// Vue.prototype.$api = "http://192.168.1.40:8080"//test ip address
+Vue.prototype.$api = "http://192.168.1.45:8080"//Mr.Cheng IP Address
 
 //Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
 Vue.config.debug = true;// 开启debug模式
@@ -60,15 +61,21 @@ Vue.filter('times', function(s){//毫秒数转化日期
   var year = myDate.getFullYear();
   var month = myDate.getMonth()+1;
   var day = myDate.getDate();
-  var hour = myDate.getHours();
-  var minute = myDate.getMinutes();
-  var second = myDate.getSeconds();
   if(month<10){month = '0' + month;}
   if(day<10){day = '0' + day;}
-  if(hour<10){hour = '0' + hour;}
-  if(minute<10){minute = '0' + minute;}
-  if(second<10){second = '0' + second;}
   return year+'-'+month+'-'+day;
+})
+Vue.filter('timed', function(s){//毫秒数转化日期
+  if(s==null || s==''){
+    return
+  }
+ var myDate = new Date(s);
+  var year = myDate.getFullYear();
+  var month = myDate.getMonth()+1;
+  var day = myDate.getDate();
+  if(month<10){month = '0' + month;}
+  if(day<10){day = '0' + day;}
+  return year+'/'+month+'/'+day;
 })
 Vue.filter('time', function(s){//毫秒数转化日期
   if(s==null || s==''){
@@ -338,10 +345,26 @@ var router = new VueRouter({
         title: '佣金审批'
       }
     },
+    {//佣金审批=========1
+      path: '/commission_ask1',
+      name: 'commission_ask1',
+      component: resolve => require(['./pages/commission/commission_ask1.vue'], resolve),
+      meta: {
+        title: '佣金审批'
+      }
+    },
     {//审批
       path: '/approval',
       name: 'approval',
       component: resolve => require(['./pages/commission/approval.vue'], resolve),
+      meta: {
+        title: '审批'
+      }
+    },
+    {//审批=========1
+      path: '/approval1',
+      name: 'approval1',
+      component: resolve => require(['./pages/commission/approval1.vue'], resolve),
       meta: {
         title: '审批'
       }

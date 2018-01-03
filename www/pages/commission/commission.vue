@@ -417,7 +417,7 @@
 					this.theinvoice.number = this.xsData.xsfpnashuiren;
 					this.theinvoice.address = this.xsData.xsfpdizhidianhua;
 					this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
-	            	if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
 	            		this.options[0].disabled = true//禁用单选
 	            		this.options[1].disabled = true//禁用单选
@@ -446,7 +446,7 @@
 					'loudongid':this.xsData.loudongid,
 					'loupan':this.xsData.loupan,
 					'loupanid':this.xsData.loupanid,
-					'qdbeizhu':'',
+					'qdbeizhu':this.xsData.qdbeizhu,
 					'taskZt':this.xsData.taskZt,
 	            	'xiaoshou':this.xsData.xiaoshou,
 					'xiaoshouid':this.xsData.xiaoshouid,
@@ -457,11 +457,18 @@
 					'xsfpnashuiren':this.theinvoice.number,
 					'xsjisuangongshi':this.formula,
 					'xsqvdao':this.channelname,
-					'xsqvdaoid':'',
+					'xsqvdaoid':this.xsData.xsqvdaoid,
 					'xsqvdaotel':this.tel,
 					'xsyongjin':this.qxsplitk(this.money),
 					'xsyongjinxinxi':this.yjxx
 	            }).then((res)=>{
+	            	if(res.data.success){
+	            		Toast({
+							message: '提交成功',
+							position: 'center',
+							duration: 2000
+						});	
+	            	}
 					console.log(res);
 	            }, (err)=>{
 					console.log(err);
@@ -504,7 +511,8 @@
 				this.yjxx = a;
 			},
 			selinvoice() { //发票类型选择
-				if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+//				if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+				if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 					return;
 				}
 				this.shade = true;

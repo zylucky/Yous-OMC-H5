@@ -135,8 +135,8 @@
 				</li>
 			</ul>
 			<!--我已审批-->
-			<ul class="list" v-if="tabq=='1'" @click="done(item.id)">
-				<li v-for="item in passData">
+			<ul class="list" v-if="tabq=='1'">
+				<li v-for="item in passData"  @click="done(item.id)">
 					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>

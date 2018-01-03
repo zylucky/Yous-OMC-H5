@@ -7,7 +7,7 @@
 		top: 0;
 		right: 0;
 		bottom: 0;
-		overflow: hidden;
+		overflow: auto;
 		background: #fff;
 		.list {
 			padding-left: 0.25rem
@@ -49,20 +49,25 @@
 	}
 	.keyword{color: red;}
 </style>
+<style>
+	.mint-search-list{
+		height: 0!important;
+	}	
+</style>
 
 <template>
 	<div class="box">
 		<div class="header">
-			<mt-search v-model="search" cancel-text="取消" placeholder="搜索名字/岗位/部门"></mt-search>
+			<mt-search v-model="search" cancel-text="取消" placeholder="搜索名字"></mt-search>
 		</div>
 		<ul class="list" id="list">
-			<li v-for='(item,index) in searchData' @click="addcopy(index,item)">
+			<li v-for='(item,index) in products' @click="addcopy(index,item)" v-if="index<8">
 				<div class="pic">
 					<img src="../../resources/images/commission/head_img.png" />
 				</div>
 				<div class="name">
-					<p v-html='item.name.replace(search,"<span style=\"color:red;\">"+search+"</span>")'>{{item.name}}</p>
-					<p v-html='item.value.replace(search,"<span style=\"color:red;\">"+search+"</span>")'>{{item.value}}</p>
+					<p v-html='item.name.replace(search,"<span style=\"color:#3486f2;\">"+search+"</span>")'>{{item.name}}</p>
+					<p >{{item.sondeptname}}-{{item.jobname}}</p>
 				</div>
 			</li>
 		</ul>
@@ -70,71 +75,77 @@
 </template>
 
 <script>
+import axios from 'axios';
 	export default {
 		data() {
 			return {
 				search: '',
-				products: [
-					{
-						name: '李三',
-						qx: '0',
-						id: '1',
-						value: '东北一区-销售主管'
-					},
-					{
-						name: '张明',
-						qx: '0',
-						id: '2',
-						value: '东北一区-助理销售主管'
-					},
-					{
-						name: '李四',
-						qx: '0',
-						id: '3',
-						value: '东北二区-销售主管'
-					},
-					{
-						name: '赵三',
-						qx: '1',
-						id: '4',
-						value: '东北二区-销售员'
-					},
-
-				],
+				products: [],
 				addCopy: [],
 			}
 		},
 		methods: {
-			addcopy(index, item) { //选择抄送人
+			addcopy(index,item) { //选择抄送人
 //				this.addCopy.push(item);
 //				localStorage.setItem('addCopy', JSON.stringify(this.addCopy));
-				this.$router.push({
-					path: '/approval'
-				});
+				const url = this.$api + "/yhcms/web/qdyongjin/addCsr.do";
+				axios.post(url,{ //添加抄送人接口
+            		"taskid":'',
+					"sourcetype":'',
+					"sourcemid":this.$route.query.id,
+					"personid":item.id,
+					"personname":item.name,
+					"pertype":item.pertype
+	           	}).then((res)=>{
+	            	console.log(res);
+	            	this.$router.push({
+	            		path: '/approval',//跳转回审批抄送人页面
+	            		query:{
+	            			"id":this.$route.query.id//所传参数
+	            		}
+	            	});
+	            }, (err)=>{
+					console.log(err);
+	            });
+
 			},
+			copylist(){//抄送人数据接口暂无
+				const url = this.$api + "/yhcms/web/qdyongjin/getLikeCsr.do";//抄送人搜索接口地址
+				axios.post(url,{ //添加抄送人接口
+            		"name":this.search
+	           	}).then((res)=>{
+	           		this.products = (res.data.data);
+	            	console.log(this.products);
+	            }, (err)=>{
+					console.log(err);
+	            });
+			}
 
 		},
 		mounted() {
 
 		},
 		computed: {
-			searchData: function() {
-				var search = this.search;
-				if(search) {
-					return this.products.filter(function(product) {
-						return Object.keys(product).some(function(key) {
-							return String(product[key]).toLowerCase().indexOf(search) > -1
-						})
-					})
-				}
-				return this.products;
-			}
+//			searchData: function() {//模糊查询前端实现方式
+//				var search = this.search;
+//				if(search) {
+//					return this.products.filter(function(product) {
+//						return Object.keys(product).some(function(key) {
+//							return String(product[key]).toLowerCase().indexOf(search) > -1
+//						})
+//					})
+//				}
+//				return this.products; 
+//			}
 		},
 		watch: {
 			search(newV,oldV){
-
+				this.copylist();
 			}
 		},
+		filters:{
+
+		}
 
 	}
 </script>
