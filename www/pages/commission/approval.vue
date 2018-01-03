@@ -478,7 +478,7 @@
 			</ul>
 		</div>
 		<!--审批意见-->
-		<div class="boxs" v-if="ideashow && false">
+		<div class="boxs" v-if="ideashow">
 			<!--填写区域-->
 			<div class="idea_box">
 				<textarea name="" :placeholder="tiptext" v-model="idea"></textarea>

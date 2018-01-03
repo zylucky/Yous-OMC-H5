@@ -387,17 +387,17 @@
 				<p class="pic"><i v-show='allData.imgList && allData.imgList.length == 0'>*</i>图片</p>
 				<!--图片上传-->
 				<div class="pic_load clearfix" >
-					<div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
+					<!--<div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
 			          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
 			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
-			        </div>
+			        </div>-->
 			        <!--已提交后的图片显示状态-->
 			        <div class="img_demo fl pr" v-for="item in allData.imgList" v-if='allData.imgList && allData.imgList.length != 0'>
 			        	<img class="upload_demo_img" :src="item.imgFapiao" alt="" />
 			        </div>
-			        <div v-if="fy < 8" class="upload_btn mr10 fl" v-show='allData.imgList && allData.imgList.length == 0'>
+			        <!--<div v-if="fy < 8" class="upload_btn mr10 fl" v-show='allData.imgList && allData.imgList.length == 0'>
 			            <input @change='add_img1($event)' id="file_add" tag="fy" type="file" multiple>
-			        </div>
+			        </div>-->
 				</div>
 		        
 			</div>
@@ -429,7 +429,6 @@
 							<i class="admin" v-if='item.isshezhi == true'></i>
 						</p>
 						<p class="copy_name">{{item.personname}}</p>
-						
 					</li>
 					<!--添加抄送人按钮-->
 					<li @click="addcopy" v-show='allData.imgList && allData.imgList.length == 0'>
@@ -478,7 +477,7 @@
 			</ul>
 		</div>
 		<!--审批意见-->
-		<div class="boxs" v-if="ideashow && false">
+		<div class="boxs" v-if="ideashow">
 			<!--填写区域-->
 			<div class="idea_box">
 				<textarea name="" :placeholder="tiptext" v-model="idea"></textarea>
@@ -596,154 +595,7 @@ import { Indicator } from 'mint-ui';
 		            });
 				}
 			},
-			delete_img(index, id, event){//删除
-		        const tag = $(event.target).attr("tag"), which = {"fy":"imgList"}[tag];
-		        if(id !== 'xxx'){
-		            this[which][index].isdelete = "1";
-		        }
-		        else{
-		            this[which].splice(index,1);
-		            this.upload -= 1;
-		        }
-		        this[tag] -= 1;
-	      },
-	      /*图片上传压缩*/
-	      add_img1(event){
-	        const images = event.target.files;
-	        let len = images.length;
-	        len = Math.min(len, 8 - this.fy);
-	        for(let i = 0; i < len; ++i){
-	            this.append_img(images[i]);
-	        }
-	      },
-	      append_img(image){//显示
-	        var reader = new FileReader(), type = image.type;
-	        const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
-	        if (!/\/(?:jpeg|jpg|png)/i.test(type)){
-	          return;
-	        }
-	        var that=this;
-	        reader.onloadend = () => {
-	          let ret;
-	          const imgx = new Image();
-	          imgx.src = reader.result;
-	          imgx.onload = function(){
-	              var canvas = document.createElement('canvas');
-	              canvas.width = imgx.naturalWidth;
-	              canvas.height = imgx.naturalHeight;
-	              canvas.getContext("2d").drawImage(imgx, 0, 0);
-	              ret = canvas.toDataURL(type, .2);
-	              const obj = {
-	                  id: "xxx",
-	                  lpid: that.lpid,
-	                  isdelete: 0,
-	                  type: 2,
-	                  suffix:type,
-	                  url: ret 
-	              };
-	              that[which].push(obj)
-	           }
-	        }
-	        reader.readAsDataURL(image);
-	        this[tag] += 1;
-	        this.upload += 1;
-	      },
-	      saveToserver(){
-	          //开始上传图片
-	          const that = this;
-	          let fp = [];
-	          const cb = (img, obj) => {
-	             if(img.id === "xxx"){
-	                 const [_, data] = img.url.split(","), [prefix, t] = img.suffix.split('/');
-	                 that.saveImages(data, t, function(path){
-	                     obj.push({"id":"", "isdelete":"0", "url":path});
-	                     that.uploaded += 1;
-	                     if(that.uploaded >= that.upload){
-	                         // 新图片上传完成
-	                         Indicator.close();
-	                         setTimeout(function(){
-	                             that.saveImageData();
-	                         }, 1000);
-	                     }
-	                 });
-	             }
-	             else{
-	                 obj.push({"id": img.id, "isdelete": img.isdelete, "url": img.url});
-	             }
-	          };
-	
-	          if(this.upload > 0){
-	              Indicator.open({
-	                  text: '上传图片中...',
-	                  spinnerType: 'fading-circle'
-	              });
-	          }
-	
-	          this.imgList.forEach((img,idx)=> {cb(img, fp)});
-	          this.imgList = fp;
-	
-	          //保存信息
-	          if(this.upload < 1){
-	              setTimeout(function(){
-	                  Indicator.close();
-	                  that.saveImageData();
-	              }, 1000);
-	          }
-	      },
-	      saveImages(pic, type, cb){
-	          const that = this;
-//	          this.$api + "/yhcms/web/jcsj/uploadPic.do",
-//	          http://192.168.1.40:8080
-	          this.$http.post(
-	              "http://192.168.1.40:8080/yhcms/web/jcsj/uploadPic.do",
-	              {"parameters":{ "smallPic":pic,"suffix": "." + type},"foreEndType":2,"code":"300000084"}
-	          ).then((res)=>{
-	              var result = JSON.parse(res.bodyText);
-	              if (result.success) {
-	                  cb && cb(result.data);
-	              }
-	              else{
-	              }
-	          }, (res)=>{});
-	      },
-	      saveImageData(){
-	        const that = this;
-	        Indicator.open({
-	          text: '保存中...',
-	          spinnerType: 'fading-circle'
-	        });
-	        let fp = this.imgList.map((item, idx)=>{
-	            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
-	        });
-//	        console.log(fp);
-	        for(var i = 0; i<fp.length; i++){
-	        	const data = {"imgFapiao":this.$prefix + "/" + fp[i].url,"yongjinid":this.$route.query.id,"yongjintype":"1"};
-	        	this.$http.post(
-	        	   this.$api + "/yhcms/web/qdyongjin/imgadd.do", data).then((res)=>{
-	        	  Indicator.close();
-	        	  var result = JSON.parse(res.bodyText);
-	        	  if (result.success) {
-	        	    Toast({
-	        	        message: '保存成功',
-	        	        position: 'bottom',
-	        	        duration: 1000
-	        	    });
-	        	  } else {
-	        	    Toast({
-	        	        message: '保存失败: ' + result.message,
-	        	        position: 'bottom'
-	        	    });
-	        	  }
-	        	},(res)=>{
-	        	  Indicator.close();
-	        	  Toast({
-	        	      message: '保存失败! 请稍候再试',
-	        	      position: 'bottom'
-	        	  });
-	        	});
-	        	
-	        }
-	      },
+			
 	      
 
 	      addcopy(){
@@ -755,7 +607,7 @@ import { Indicator } from 'mint-ui';
 			})
 	      },
 	      consent(){
-	      	this.saveToserver();//上传图片
+//	      	this.saveToserver();//上传图片
 	      	this.shenpi = '1';
 	      	this.btntext = '确认同意';
 	      	this.tiptext = '请输入您的审批意见（非必填）';
@@ -769,14 +621,14 @@ import { Indicator } from 'mint-ui';
 	      },
 	      betrue(){//确认意见
 	      	this.ideashow = false;
-	      	if(this.imgList.length>0){
+//	      	if(this.imgList.length>0){
 	      		this.approve();
-	      	}else{
-	      		Toast({
-	                message: '请添加发票图片',
-	                position: 'center'
-	            });
-	      	}
+//	      	}else{
+//	      		Toast({
+//	                message: '请添加发票图片',
+//	                position: 'center'
+//	            });
+//	      	}
 	      },
 	      approve(){//审批
 	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
@@ -797,6 +649,14 @@ import { Indicator } from 'mint-ui';
 				'isfock':this.nowData.isfock,
 				'pici':this.nowData.pici
             }).then((res)=>{
+				if(res.data.success){
+	            	Toast({
+						message: '提交成功',
+						position: 'center',
+						duration: 2000
+					});	
+					location.reload();
+				}
 				console.log(res);
             }, (err)=>{
 				console.log(err);
