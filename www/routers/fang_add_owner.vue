@@ -46,7 +46,7 @@
         <li v-for="(ph,idx) in phone" class="clearfix">
           <span class="ys_tit">联系方式：</span>
           <div class="ys_item_con fl pos pos_a">
-            <input type="text" :value="ph.phone" v-model="ph.phone" placeholder="请输入">
+            <input type="text"  v-model="ph.phone" placeholder="请输入">
             <i class="right_arrow plus" :index="idx" @click="addPhone($event)">{{idx<1 ? "+" : "-"}}</i>
           </div>
         </li>
@@ -78,9 +78,9 @@
           <span>家庭主要成员</span>
         </li>
         <li v-for="(cy, index) in jtcy" class="clearfix">
-          <input type="text" :value="cy.name" v-model="cy.name"  placeholder="姓名" class="ys_tit border_right mr10">
+          <input type="text"  v-model="cy.name"  placeholder="姓名" class="ys_tit border_right mr10">
           <div class="ys_item_con fl pos pos_b">
-            <input type="text" :value="cy.rel" v-model="cy.rel" placeholder="关系">
+            <input type="text" v-model="cy.rel" placeholder="关系">
             <i class="right_arrow plus" :index="index" @click="addCy($event)">{{ index < 1 ? "+" : "-"}}</i>
           </div>
         </li>
@@ -112,7 +112,7 @@
         <li v-for="(gs,idx) in yzqygs" class="clearfix pr">
           <span class="ys_tit w224">亲友公司：</span>
           <div class="ys_item_con fl pos pos_c">
-            <input type="text" :value="gs.name" v-model="gs.name" placeholder="请输入">
+            <input type="text" v-model="gs.name" placeholder="请输入">
             <i class="right_arrow plus" :index="idx" @click="addGs($event)">{{idx< 1 ? "+" : "-"}}</i>
           </div>
         </li>

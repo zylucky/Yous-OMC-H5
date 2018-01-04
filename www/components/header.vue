@@ -42,6 +42,9 @@
 
             <a href="javascript:;" @click="daikan_daka">带看打卡</a>
             <a href="javascript:;" @click="daikan_logs">带看记录</a>
+            <a href="javascript:;" @click="yjgl">佣金管理</a>
+            <a href="javascript:;" @click="yjsp">佣金审批</a>
+            <a href="javascript:;" @click="yjsp1">佣金审批1</a>
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
@@ -147,13 +150,13 @@
           $("body").removeAttr("style");
           this.$router.push({path:'/modify_pwd'});
       },
-      daikan_daka(){
+      daikan_daka(){//带看打卡
           $("#zhezhao").remove();
           $('html').removeAttr("style");
           $("body").removeAttr("style");
           this.$router.push({path:'/daikan'});
       },
-      daikan_logs(){
+      daikan_logs(){//带看记录
           $("#zhezhao").remove();
           $('html').removeAttr("style");
           $("body").removeAttr("style");
@@ -164,6 +167,24 @@
           $('html').removeAttr("style");
           $("body").removeAttr("style");
           this.$router.push({path:'/daikan_total'});
+      },
+      yjgl(){//佣金管理
+        $("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+        this.$router.push({path:'/commission_list'});
+      },
+      yjsp(){//佣金审批
+        $("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+        this.$router.push({path:'/commission_ask'});
+      },
+      yjsp1(){//佣金审批1
+        $("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+        this.$router.push({path:'/commission_ask1'});
       },
       login_out(){
         $("#zhezhao").remove();
