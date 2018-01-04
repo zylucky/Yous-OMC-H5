@@ -404,7 +404,7 @@
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="item in spData">
+					<li v-for="item in this.splist.shenpi">
 						<p class="plan_t">
 							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
 							<span>{{item.person}}</span>
@@ -422,7 +422,7 @@
 					<span>审批通过后，通知抄送人</span>
 				</p>
 				<ul class="copy_list">
-					<li v-for="(item,index) in csData">
+					<li v-for="(item,index) in this.splist.chaosong">
 						<p class="picimg">
 							<img src="../../resources/images/commission/head_img.png" title="" alt=""/>
 							<span v-if='item.isshezhi == false && allData.imgList && allData.imgList.length == 0' @click='delcopy(item.id,index)'></span>
@@ -471,7 +471,7 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box">
+		<div class="btn_box" v-show='allData.imgList && allData.imgList.length == 0'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
@@ -510,6 +510,7 @@ import { Indicator } from 'mint-ui';
 		        ideashow:false,
 		        compact:{},//合同摘要数据
 		        shenpi:'',
+		        splist:[],
 			}
 		},
 		created(){
@@ -533,10 +534,11 @@ import { Indicator } from 'mint-ui';
 				axios.post(url,{ 
             		"id":this.allData.id,
 	           }).then((res)=>{
+	           		this.splist = res.data.data;
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
 //					console.log(this.spData);
-//					console.log(this.csData);
+//					console.log(this.splist);
 					for(var i in this.spData){
 						for(var j in this.spData[i]){
 							if(j == 'isfock' && this.spData[i][j] == true){
@@ -559,7 +561,11 @@ import { Indicator } from 'mint-ui';
 	            }).then((res)=>{
 	            	if(res.data.success){
 //						location.reload();
-//						console.log(res);
+						Toast({
+							message: '已删除',
+							position: 'center',
+							duration: 2000
+						});
 	            	}
 	            }, (err)=>{
 					console.log(err);
@@ -695,7 +701,7 @@ import { Indicator } from 'mint-ui';
 //	          this.$api + "/yhcms/web/jcsj/uploadPic.do",
 //	          http://192.168.1.40:8080
 	          this.$http.post(
-	              "http://192.168.1.40:8080/yhcms/web/jcsj/uploadPic.do",
+	              this.$api + "/yhcms/web/jcsj/uploadPic.do",
 	              {"parameters":{ "smallPic":pic,"suffix": "." + type},"foreEndType":2,"code":"300000084"}
 	          ).then((res)=>{
 	              var result = JSON.parse(res.bodyText);

@@ -551,7 +551,7 @@
 					return '';
 				}
 			},
-			qxsplitk(num){
+			qxsplitk(num){//取消千位分隔符
 				return String(num).split(',').join('');
 			},
 			inputFunc() {
