@@ -110,7 +110,7 @@
 		p:last-child {
 			border-bottom: none;
 		}
-		#invoice{
+		#invoices{
 			width: 3.8rem;
 			margin-left: 0.75rem;
 		}
@@ -268,7 +268,7 @@
 				<span><i>*</i>发票类型</span>
 				<!--<input id="invoice" type="text" placeholder="请选择发票类型" v-model="invoice" @click='selinvoice'/>-->
 				
-				<span id='invoice' @click='selinvoice'>{{invoice}}</span>
+				<span id='invoices' @click='selinvoice'>{{invoice}}</span>
 				<label for="invoice" style="float: right;">></label>
 			</p>
 			<ul class="invoice_list" v-if='this.theinvoice.companyName || xsData.taskZt==4 || xsData.taskZt==0'>
@@ -290,7 +290,7 @@
 				</li>
 			</ul>
 		</div>
-		<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && invoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -412,7 +412,9 @@
             		this.formula = this.xsData.xsjisuangongshi;
             		this.channelname = this.xsData.xsqvdao;
             		this.tel = this.xsData.xsqvdaotel;
-
+					
+					this.invoice = this.xsData.xsfpdanwei;
+					
             		this.theinvoice.companyName = this.xsData.xsfpdanwei;
 					this.theinvoice.number = this.xsData.xsfpnashuiren;
 					this.theinvoice.address = this.xsData.xsfpdizhidianhua;
@@ -468,6 +470,9 @@
 							position: 'center',
 							duration: 2000
 						});	
+						this.$router.push({
+							path:'/commission_list',//跳转佣金信息
+						})
 	            	}
 					console.log(res);
 	            }, (err)=>{
@@ -558,7 +563,7 @@
 				this.money = this.splitk(this.money);
 			},
 			bas(){
-				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == '' || this.formula == ''){
+				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == '' || this.formula == '' || this.yjxx == ''){
 					Toast({
 						message: '请将信息填写完整',
 						position: 'center',
