@@ -297,155 +297,171 @@ var router = new VueRouter({
       path: '/daikan_total',
       component: require('./routers/daikan_totals.vue')
     },
-    {//信息填写
-      path: '/commission',
-      name: 'commission',
-      component: resolve => require(['./pages/commission/commission.vue'], resolve),//路由懒加载写法
-      meta: {
-        title: '佣金信息'
-      }
-    },
-    {//列表
-      path: '/commission_list',
-      name: 'commission_list',
-      component: resolve => require(['./pages/commission/commission_list.vue'], resolve),
-      meta: {
-        title: '佣金管理'
-      }
-    },
-    {//已确认页面
-      path: '/commission_rule',
-      name: 'commission_rule',
-      component: resolve => require(['./pages/commission/commission_rule.vue'], resolve),
-      meta: {
-        title: '佣金管理'
-      }
-    },
-    {//未确认页面
-      path: '/commission_un',
-      name: 'commission_un',
-      component: resolve => require(['./pages/commission/commission_un.vue'], resolve),
-      meta: {
-        title: '佣金管理'
-      }
-    },
-    {//审批驳回页面
-      path: '/commission_turn',
-      name: 'commission_turn',
-      component: resolve => require(['./pages/commission/commission_turn.vue'], resolve),
-      meta: {
-        title: '佣金管理'
-      }
-    },
-    {//佣金审批
-      path: '/commission_ask',
-      name: 'commission_ask',
-      component: resolve => require(['./pages/commission/commission_ask.vue'], resolve),
-      meta: {
-        title: '佣金审批'
-      }
-    },
-    {//佣金审批=========1
-      path: '/commission_ask1',
-      name: 'commission_ask1',
-      component: resolve => require(['./pages/commission/commission_ask1.vue'], resolve),
-      meta: {
-        title: '佣金审批'
-      }
-    },
-    {//审批
-      path: '/approval',
-      name: 'approval',
-      component: resolve => require(['./pages/commission/approval.vue'], resolve),
-      meta: {
-        title: '审批'
-      }
-    },
-    {//审批=========1
-      path: '/approval1',
-      name: 'approval1',
-      component: resolve => require(['./pages/commission/approval1.vue'], resolve),
-      meta: {
-        title: '审批'
-      }
-    },
-    {//审批意见
-      path: '/approval_opinion',
-      name: 'approval_opinion',
-      component: resolve => require(['./pages/commission/approval_opinion.vue'], resolve),
-      meta: {
-        title: '审批意见'
-      }
-    },
-    {//驳回意见
-      path: '/turn_opinion',
-      name: 'turn_opinion',
-      component: resolve => require(['./pages/commission/turn_opinion.vue'], resolve),
-      meta: {
-        title: '驳回理由'
-      }
-    },
-    {//添加抄送人
-      path: '/copy_p',
-      name: 'copy_p',
-      component: resolve => require(['./pages/commission/copy_p.vue'], resolve),
-      meta: {
-        title: '添加抄送人'
-      }
-    },
-    {//抄送详情查看
-      path: '/commission_details',
-      name: 'commission_details',
-      component: resolve => require(['./pages/commission/commission_details.vue'], resolve),
-      meta: {
-        title: '佣金信息'
-      }
-    },
-    // {//渠道未确认
-    //   path: '/channel',
-    //   name: 'channel',
-    //   component: resolve => require(['./pages/channel/channel.vue'], resolve),
+    // {//信息填写
+    //   path: '/commission',
+    //   name: 'commission',
+    //   component: resolve => require(['./pages/commission/commission.vue'], resolve),//路由懒加载写法
     //   meta: {
     //     title: '佣金信息'
     //   }
     // },
-    // {//渠道佣金记录列表
-    //   path: '/channel_list',
-    //   name: 'channel_list',
-    //   component: resolve => require(['./pages/channel/channel_list.vue'], resolve),
+    {//信息填写
+      path: '/commission',
+      component: require('./pages/commission/commission.vue')
+    },
+    // {//列表
+    //   path: '/commission_list',
+    //   name: 'commission_list',
+    //   component: resolve => require(['./pages/commission/commission_list.vue'], resolve),
     //   meta: {
     //     title: '佣金管理'
     //   }
     // },
-    // {//新建收款账号
-    //   path: '/adduser',
-    //   name: 'adduser',
-    //   component: resolve => require(['./pages/channel/adduser.vue'], resolve),
+    {//列表
+      path: '/commission_list',
+      component: require('./pages/commission/commission_list.vue')
+    },
+    // {//已确认页面
+    //   path: '/commission_rule',
+    //   name: 'commission_rule',
+    //   component: resolve => require(['./pages/commission/commission_rule.vue'], resolve),
     //   meta: {
-    //     title: '新建收款账号'
+    //     title: '佣金管理'
     //   }
     // },
-    // {//收款账号管理
-    //   path: '/income_number',
-    //   name: 'income_number',
-    //   component: resolve => require(['./pages/channel/income_number.vue'], resolve),
+    {//已确认页面
+      path: '/commission_rule',
+      component: require('./pages/commission/commission_rule.vue')
+    },
+    // {//未确认页面
+    //   path: '/commission_un',
+    //   name: 'commission_un',
+    //   component: resolve => require(['./pages/commission/commission_un.vue'], resolve),
     //   meta: {
-    //     title: '收款账号管理'
+    //     title: '佣金管理'
     //   }
     // },
-    
-
+    {//未确认页面
+      path: '/commission_un',
+      component: require('./pages/commission/commission_un.vue')
+    },
+    // {//审批驳回页面
+    //   path: '/commission_turn',
+    //   name: 'commission_turn',
+    //   component: resolve => require(['./pages/commission/commission_turn.vue'], resolve),
+    //   meta: {
+    //     title: '佣金管理'
+    //   }
+    // },
+    {//审批驳回页面
+      path: '/commission_turn',
+      component: require('./pages/commission/commission_turn.vue')
+    },
+    // {//佣金审批
+    //   path: '/commission_ask',
+    //   name: 'commission_ask',
+    //   component: resolve => require(['./pages/commission/commission_ask.vue'], resolve),
+    //   meta: {
+    //     title: '佣金审批'
+    //   }
+    // },
+    {//佣金审批
+      path: '/commission_ask',
+      component: require('./pages/commission/commission_ask.vue')
+    },
+    // {//佣金审批=========1
+    //   path: '/commission_ask1',
+    //   name: 'commission_ask1',
+    //   component: resolve => require(['./pages/commission/commission_ask1.vue'], resolve),
+    //   meta: {
+    //     title: '佣金审批'
+    //   }
+    // },
+    {//佣金审批1
+      path: '/commission_ask1',
+      component: require('./pages/commission/commission_ask1.vue')
+    },
+    // {//审批
+    //   path: '/approval',
+    //   name: 'approval',
+    //   component: resolve => require(['./pages/commission/approval.vue'], resolve),
+    //   meta: {
+    //     title: '审批'
+    //   }
+    // },
+    {//审批
+      path: '/approval',
+      component: require('./pages/commission/approval.vue')
+    },
+    // {//审批=========1
+    //   path: '/approval1',
+    //   name: 'approval1',
+    //   component: resolve => require(['./pages/commission/approval1.vue'], resolve),
+    //   meta: {
+    //     title: '审批'
+    //   }
+    // },
+    {//审批1
+      path: '/approval1',
+      component: require('./pages/commission/approval1.vue')
+    },
+    // {//审批意见
+    //   path: '/approval_opinion',
+    //   name: 'approval_opinion',
+    //   component: resolve => require(['./pages/commission/approval_opinion.vue'], resolve),
+    //   meta: {
+    //     title: '审批意见'
+    //   }
+    // },
+    {//审批意见
+      path: '/approval_opinion',
+      component: require('./pages/commission/approval_opinion.vue')
+    },
+    // {//驳回意见
+    //   path: '/turn_opinion',
+    //   name: 'turn_opinion',
+    //   component: resolve => require(['./pages/commission/turn_opinion.vue'], resolve),
+    //   meta: {
+    //     title: '驳回理由'
+    //   }
+    // },
+    {//驳回意见
+      path: '/turn_opinion',
+      component: require('./pages/commission/turn_opinion.vue')
+    },
+    // {//添加抄送人
+    //   path: '/copy_p',
+    //   name: 'copy_p',
+    //   component: resolve => require(['./pages/commission/copy_p.vue'], resolve),
+    //   meta: {
+    //     title: '添加抄送人'
+    //   }
+    // },
+    {//添加抄送人
+      path: '/copy_p',
+      component: require('./pages/commission/copy_p.vue')
+    },
+    // {//抄送详情查看
+    //   path: '/commission_details',
+    //   name: 'commission_details',
+    //   component: resolve => require(['./pages/commission/commission_details.vue'], resolve),
+    //   meta: {
+    //     title: '佣金信息'
+    //   }
+    // },
+    {//抄送详情查看
+      path: '/commission_details',
+      component: require('./pages/commission/commission_details.vue')
+    },
+    {//销售消息通知
+        path: '/news',
+        component: require('./pages/channel/news.vue')
+    },
 
   ]
 });
 
 router.beforeEach(function(to, from, next){
-  // 根据路由变化去改变页面的title
-    if (to.meta.title) {
-      document.title = to.meta.title;
-    }else{
-      next();
-    }
 
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
