@@ -7,12 +7,15 @@
   		top: 0;
   		bottom: 0;
   		right: 0;
+  		background: #ffffff;
   	}
   	.header{
   		position: absolute;
   		top: 0;
   		width: 100%;
   		background: #fff;
+  		-webkit-box-shadow:0px 2px 3px #D6D6D6; 
+  		box-shadow:0px 2px 3px #D6D6D6;
   		.nav{
   			display: flex;
   			li{
@@ -91,6 +94,24 @@
 		}
 		p:last-child{margin-bottom: 0;}
   	}
+  	.kong{
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		align-items: center;
+  		margin-top: 1.62rem;
+  		.k_ion{
+  			width: 2.12rem;
+  			height: 1.55rem;
+  			img{width: 100%;}
+  		}
+  		.k_text{
+  			font-size: @font30;
+  			color: #999;
+  			text-align: center;
+  			margin-top: 0.46rem;
+  		}
+  	}
 </style>
 
 <template>
@@ -104,11 +125,19 @@
 		<!--列表-->
 		<div class="list_box">
 			<!--待处理-->
+			<div class="kong" v-if="pendData.length==0 && kshow">
+				<p class="k_ion">
+					<img src="../../resources/images/commission/k_icon.png" alt="" />
+				</p>
+				<p class="k_text">暂无待处理内容</p>
+			</div>
+			
+			<!--待处理-->
 			<ul class="list" v-if="tabq=='0'">
 				<li v-for="item in pendData" @click="detail(item.id)">
 					<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
 					<p>
-						<span>{{item.loudong}}-{{item.fanghao}}</span>
+						<span>{{item.loudong}}-{{item.fanghao}}</span> 
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
@@ -120,6 +149,13 @@
 					</p>
 				</li>
 			</ul>
+			<!--已处理-->
+			<div class="kong" v-if="passData.length==0 && kshow1">
+				<p class="k_ion">
+					<img src="../../resources/images/commission/k_icon.png" alt="" />
+				</p>
+				<p class="k_text">暂无已处理内容</p>
+			</div>
 			<!--已处理-->
 			<ul class="list" v-if="tabq=='1'">
 				<li v-for="item in passData"  @click="detail(item.id)">
@@ -151,6 +187,8 @@ import axios from 'axios';
 				tabq:'0',
 				pendData:[],//待处理数据
 				passData:[],//已处理数据
+				kshow:false,//未处理无数据下的状态
+				kshow1:false,//已处理无数据下的状态
 			}
 		},
 		created(){
@@ -169,8 +207,13 @@ import axios from 'axios';
 	            		"cookie":cookxs,
 	            		"zt":0
 	            }).then((res)=>{
-	            	this.pendData = res.data.data;
-	            	console.log(this.pendData)
+	            	if(res.data.success && res.data.data){
+	            		this.pendData = res.data.data;	            		
+	            	}else{
+	            		this.pendData = [];
+	            	}
+//	            	this.pendData = res.data.data;
+//	            	console.log(this.pendData)
 					Indicator.close();
 	            }, (err)=>{
 	            	Indicator.close();
@@ -179,14 +222,19 @@ import axios from 'axios';
 			init1(){//已处理接口
 				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
-				console.log(cookxs);
+//				console.log(cookxs);
 	            axios.post(url,{ 
 	            		"cookie":cookxs,
 	            		"zt":1
 	            }).then((res)=>{
-	            	this.passData = res.data.data;
+	            	if(res.data.success && res.data.data){
+	            		this.passData = res.data.data;	            		
+	            	}else{
+	            		this.passData = [];
+	            	}
+//	            	this.passData = res.data.data;
 					Indicator.close();
-	                console.log(this.passData);
+//	                console.log(this.passData);
 	            }, (err)=>{
 	            	Indicator.close();
 	               console.log(err);
@@ -200,9 +248,13 @@ import axios from 'axios';
 				this.tabq = cut;
 				if(cut=='0'){
 					this.init();//待处理数据
+					this.kshow = true;
+					this.kshow1 = false;
 				}
 				if(cut=='1'){
 					this.init1();//已处理数据
+					this.kshow1 = true;
+					this.kshow = false;
 				}
 			},
 			//跳转数据

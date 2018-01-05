@@ -210,7 +210,7 @@ import { Indicator } from 'mint-ui';
 	            	if(res.data.success && res.data.data){
 	            		this.pendData = res.data.data;	            		
 	            	}else{
-	            		this.passData = [];
+	            		this.pendData = [];
 	            	}
 	            	console.log(this.pendData);
 					Indicator.close();
