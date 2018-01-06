@@ -803,6 +803,14 @@ import { Indicator } from 'mint-ui';
 				'isfock':this.nowData.isfock,
 				'pici':this.nowData.pici
             }).then((res)=>{
+				if(res.data.success){
+					Toast({
+						message: '审批成功',
+						position: 'center',
+						duration: 2000
+					});
+					location.reload();
+				}
 				console.log(res);
             }, (err)=>{
 				console.log(err);
