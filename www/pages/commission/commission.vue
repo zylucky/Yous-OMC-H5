@@ -112,6 +112,8 @@
 		}
 		#invoices{
 			width: 3.8rem;
+			height: 100%;
+			line-height: 1.15rem;
 			margin-left: 0.75rem;
 		}
 	}
@@ -271,7 +273,7 @@
 				<span id='invoices' @click='selinvoice'>{{invoice}}</span>
 				<label for="invoice" style="float: right;">></label>
 			</p>
-			<ul class="invoice_list" v-if='this.theinvoice.companyName || xsData.taskZt==4 || xsData.taskZt==0'>
+			<ul class="invoice_list" v-if='this.theinvoice.companyName || xsData.taskZt==4'>
 				<li>
 					<i>名<s style="visibility: hidden;">我我我我</s>称:</i>
 					<span>{{theinvoice.companyName}}</span>
@@ -413,12 +415,13 @@
             		this.channelname = this.xsData.xsqvdao;
             		this.tel = this.xsData.xsqvdaotel;
 					
-					this.invoice = this.xsData.xsfpdanwei;
-					
-            		this.theinvoice.companyName = this.xsData.xsfpdanwei;
-					this.theinvoice.number = this.xsData.xsfpnashuiren;
-					this.theinvoice.address = this.xsData.xsfpdizhidianhua;
-					this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
+					if(this.xsData.xsfpdanwei != '' && this.xsData.xsfpnashuiren != ''){
+	            		this.theinvoice.companyName = this.xsData.xsfpdanwei;
+						this.theinvoice.number = this.xsData.xsfpnashuiren;
+						this.theinvoice.address = this.xsData.xsfpdizhidianhua;
+						this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
+//						this.invoice = this.xsData.xsfpdanwei;
+					}
 	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
 	            		this.options[0].disabled = true//禁用单选
@@ -517,6 +520,10 @@
 			},
 			selinvoice() { //发票类型选择
 //				if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+				if(this.xsData.taskZt==0){
+					this.shade = true;
+					this.pickshow = true;
+				}
 				if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 					return;
 				}
