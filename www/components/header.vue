@@ -13,7 +13,6 @@
   }
 .news{
   	position: relative;
-  	top: 50%;
   	margin-top: 0.2rem;
     display:block;
     width:0.43rem;
@@ -180,12 +179,12 @@
             }
           )
         });
-        $("#section").animate({
-          left: "75%"
-        }, 150);
-        $(".section").animate({
-          left: "75%"
-        }, 150);
+        // $("#section").animate({
+        //   left: "75%"
+        // }, 150);
+        // $(".section").animate({
+        //   left: "75%"
+        // }, 150);
 
       },
       modify_pwd(){

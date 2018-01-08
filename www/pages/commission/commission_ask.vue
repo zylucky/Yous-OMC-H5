@@ -7,17 +7,20 @@
   		top: 0;
   		bottom: 0;
   		right: 0;
+  		background: #fff;
   	}
   	.header{
   		position: absolute;
   		top: 0;
   		width: 100%;
   		background: #fff;
+  		-webkit-box-shadow:0px 2px 3px #D6D6D6; 
+  		box-shadow:0px 2px 3px #D6D6D6;
   		.nav{
   			display: flex;
   			li{
   				position: relative;
-  				width: 33.333333%;
+  				width: 50%;
   				height: 1rem;
   				line-height: 1rem;
   				font-size: @font30;
@@ -104,19 +107,51 @@
   		background: #fb4949;
   		border-radius: 50%;
   	}
+  	.kong{
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		align-items: center;
+  		margin-top: 1.62rem;
+  		.k_ion{
+  			width: 2.12rem;
+  			height: 1.55rem;
+  			img{width: 100%;}
+  		}
+  		.k_text{
+  			font-size: @font30;
+  			color: #999;
+  			text-align: center;
+  			margin-top: 0.46rem;
+  		}
+  	}
 </style>
 
 <template>
 	<div class="box">
 		<div class="header">
 			<ul class="nav">
-				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待我审批({{pendData.length}})<span></span></li>
-				<li :class="tabq=='1'?'active':''" @click='clk(1)'>我已审批({{passData.length}})<span></span></li>
-				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的(0)</li>
+				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待确认({{pendData.length}})<span></span></li>
+				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已确认({{passData.length}})</li>
+				<!--<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的(0)</li>-->
 			</ul>
 		</div>
 		<!--列表-->
 		<div class="list_box">
+			<!--待处理-->
+			<div class="kong" v-if="pendData.length==0 && kshow">
+				<p class="k_ion">
+					<img src="../../resources/images/commission/k_icon.png" alt="" />
+				</p>
+				<p class="k_text">暂无待确认记录</p>
+			</div>
+			<!--已处理-->
+			<div class="kong" v-if="passData.length==0 && kshow1">
+				<p class="k_ion">
+					<img src="../../resources/images/commission/k_icon.png" alt="" />
+				</p>
+				<p class="k_text">暂无已确认记录</p>
+			</div>
 			<!--待我审批-->
 			<ul class="list" v-if="tabq=='0'">
 				<li v-for="(item,index) in pendData" @click="waitme(item.id)">
@@ -126,7 +161,8 @@
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
-						<i v-if="item.taskZt=='1'">已提交</i>
+						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
+						<i v-else-if="item.taskZt=='1'">已提交</i>
 						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
 						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
@@ -143,7 +179,8 @@
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
-						<i v-if="item.taskZt=='1'">已提交</i>
+						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
+						<i v-else-if="item.taskZt=='1'">已提交</i>
 						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
 						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
@@ -153,14 +190,21 @@
 			</ul>
 			<!--抄送我的-->
 			<ul class="list" v-if="tabq=='2'">
-				<li v-for="i in 2">
-					<p>DRC北京工艺设计创意产业基地<i>{{12343534546 | times}}</i></p>
+				<li v-for="item in csData">
+					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
-						<span>南塔2-2908/2908/2908/2908/2908/2908/2908/2908</span>
+						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
-					<p style="color:#959595;">申请人：李四</p>
-					<p style="color: #0eac61;">审批通过</p>
-					<i class="reddot"></i>
+					<p style="color:#959595;">申请人：{{item.xiaoshou}}</p>
+					<p style="color: #0eac61;">
+						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
+						<i v-else-if="item.taskZt=='1'">已提交</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
+						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
+						<i else></i>
+					</p>
+					<!--<i class="reddot"></i>小红点-->
 				</li>
 			</ul>
 		</div>
@@ -177,6 +221,8 @@ import { Indicator } from 'mint-ui';
 				tabq:'0',
 				pendData:[],//未审核数据
 				passData:[],//已审核数据
+				kshow:true,//未处理无数据下的状态
+				kshow1:false,//已处理无数据下的状态
 			}
 		},
 		created(){
@@ -196,9 +242,17 @@ import { Indicator } from 'mint-ui';
 				this.tabq = cut;
 				if(cut == '0'){
 					this.init();
+					if(this.pendData.length==0){						
+						this.kshow = true;
+					}else{
+						this.kshow = false;
+					}
+					this.kshow1 = false;
 				}
 				if(cut == '1'){
 					this.init1();
+					this.kshow1 = true;
+					this.kshow = false;
 				}
 			},
 			init(){//未审核数据接口

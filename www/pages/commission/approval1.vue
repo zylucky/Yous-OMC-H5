@@ -470,7 +470,7 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box">
+		<div class="btn_box" v-show='!success'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
@@ -509,6 +509,7 @@ import { Indicator } from 'mint-ui';
 		        ideashow:false,
 		        compact:{},//合同摘要数据
 		        shenpi:'',
+		        success:true,
 			}
 		},
 		created(){
@@ -655,6 +656,7 @@ import { Indicator } from 'mint-ui';
 						position: 'center',
 						duration: 2000
 					});	
+					this.success = false;
 					location.reload();
 				}
 				console.log(res);

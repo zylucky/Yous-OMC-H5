@@ -131,7 +131,13 @@
 				</p>
 				<p class="k_text">暂无待处理内容</p>
 			</div>
-			
+			<!--已处理-->
+			<div class="kong" v-if="passData.length==0 && kshow1">
+				<p class="k_ion">
+					<img src="../../resources/images/commission/k_icon.png" alt="" />
+				</p>
+				<p class="k_text">暂无已处理内容</p>
+			</div>
 			<!--待处理-->
 			<ul class="list" v-if="tabq=='0'">
 				<li v-for="item in pendData" @click="detail(item.id)">
@@ -141,21 +147,15 @@
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
-						<i v-if="item.taskZt=='1'">已提交</i>
-						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">审核中</i>
+						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
+						<i v-else-if="item.taskZt=='1'">已提交</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">待处理</i>
 						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审核完成</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
 						<i else></i>
 					</p>
 				</li>
 			</ul>
-			<!--已处理-->
-			<div class="kong" v-if="passData.length==0 && kshow1">
-				<p class="k_ion">
-					<img src="../../resources/images/commission/k_icon.png" alt="" />
-				</p>
-				<p class="k_text">暂无已处理内容</p>
-			</div>
 			<!--已处理-->
 			<ul class="list" v-if="tabq=='1'">
 				<li v-for="item in passData"  @click="detail(item.id)">
@@ -165,7 +165,8 @@
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
-						<i v-if="item.taskZt=='1'">已提交</i>
+						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
+						<i v-else-if="item.taskZt=='1'">已提交</i>
 						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">审核中</i>
 						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审核完成</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
@@ -187,7 +188,7 @@ import axios from 'axios';
 				tabq:'0',
 				pendData:[],//待处理数据
 				passData:[],//已处理数据
-				kshow:false,//未处理无数据下的状态
+				kshow:true,//未处理无数据下的状态
 				kshow1:false,//已处理无数据下的状态
 			}
 		},
@@ -248,7 +249,11 @@ import axios from 'axios';
 				this.tabq = cut;
 				if(cut=='0'){
 					this.init();//待处理数据
-					this.kshow = true;
+					if(this.pendData.length==0){						
+						this.kshow = true;
+					}else{
+						this.kshow = false;
+					}
 					this.kshow1 = false;
 				}
 				if(cut=='1'){
