@@ -294,7 +294,8 @@
 				</li>
 			</ul>
 		</div>
-		<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<!--<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>-->
+		<button v-if="btnshow" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -397,6 +398,7 @@
 				qdinp:false,//渠道人员列表
 				qdinp1:false,
 				btnshow:true,
+				chaobj:{},
 			}
 		},
 		created() {
@@ -531,26 +533,31 @@
 				this.pickshow = true;
 			},
 			onValuesChange(picker, values) {
-				this.invoicetype = values[0].name;
-//				console.log(values[0]);
-				this.theinvoice.companyName = values[0].companyName;
-				this.theinvoice.number = values[0].number;
-				this.theinvoice.address = values[0].address;
-				this.theinvoice.bankplace = values[0].bankplace;
-				this.theinvoice.id = values[0].id;
+				this.chaobj = Object.assign({},values[0])
+//				this.invoicetype = values[0].name;
+////				console.log(values[0]);
+//				this.theinvoice.companyName = values[0].companyName;
+//				this.theinvoice.number = values[0].number;
+//				this.theinvoice.address = values[0].address;
+//				this.theinvoice.bankplace = values[0].bankplace;
+//				this.theinvoice.id = values[0].id;
 			},
 			clk() {}, //阻止默认
 			elect(state) { //确认、取消
-				// console.log(state)
-				if(state == true && this.theinvoice.id == '0') {
-					Toast({
-						message: '发票类型不能为空',
-						position: 'center',
-						duration: 3000
-					});
-					console.log(this.invoicetype.id)
+				if(state) {
+					if(this.chaobj.id == "0"){
+						Toast({
+							message: '发票类型不能为空',
+							position: 'center',
+							duration: 3000
+						});
+					}else{
+						this.theinvoice = Object.assign({},this.chaobj);
+						this.invoice = this.theinvoice.companyName;
+						this.shade = false;
+						this.pickshow = false;
+					}
 				} else {
-					this.invoice = this.invoicetype;
 					this.shade = false;
 					this.pickshow = false;
 				}
@@ -596,7 +603,9 @@
 			
 		},
 		computed:{
-
+			btnzt:function(){
+				return this.money || this.channelname || this.tel || (this.theinvoice.id && this.theinvoice.id != 0) || this.invoice != '请选择发票类型' || this.formula || this.yjxx;
+			}
 		}
 
 	}
