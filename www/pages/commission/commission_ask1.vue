@@ -334,7 +334,8 @@ import { Indicator } from 'mint-ui';
 				this.$router.push({
 					path:'/approval1',//跳转到审批页面
 					query:{
-						"id":id//所传参数
+						"id":id,//所传参数
+						"btnshow":true
 					}
 				})
 			},
@@ -342,7 +343,8 @@ import { Indicator } from 'mint-ui';
 				this.$router.push({
 					path:'/approval1',//跳转到审批页面
 					query:{
-						"id":id//所传参数
+						"id":id,//所传参数
+						"btnshow":false
 					}
 				})
 			}

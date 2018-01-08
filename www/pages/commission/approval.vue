@@ -161,6 +161,7 @@
   					margin-bottom: 0.2rem;
   					p{margin-top: 0.15rem;text-align: center;position: relative;}
   					span{
+  						/*抄送人右上角删除*/
   						position: absolute;
   						top: 0rem;
   						right: -0.15rem;
@@ -189,6 +190,14 @@
   				}
   			}
   		}
+  	}
+  	.delete_icon{
+  		/*图片上传图片右上角删除*/
+  		width: 0.3rem;
+		height: 0.3rem;
+		border-radius: 50%;
+		background: #010101 url(../../resources/images/close1.png) no-repeat center;
+		background-size: 50%;
   	}
   	/*合同摘要弹框*/
   	.pop_box{
@@ -395,7 +404,7 @@
 			        <div class="img_demo fl pr" v-for="item in allData.imgList" v-if='allData.imgList && allData.imgList.length != 0'>
 			        	<img class="upload_demo_img" :src="item.imgFapiao" alt="" />
 			        </div>
-			        <div v-if="fy < 8" class="upload_btn mr10 fl" v-show='allData.imgList && allData.imgList.length == 0'>
+			        <div v-if="fy < 8" class="upload_btn mr10 fl" v-show='allData.imgList && allData.imgList.length == 0 && !imgshow'>
 			            <input @change='add_img1($event)' id="file_add" tag="fy" type="file" multiple>
 			        </div>
 				</div>
@@ -425,14 +434,13 @@
 					<li v-for="(item,index) in this.splist.chaosong">
 						<p class="picimg">
 							<img src="../../resources/images/commission/head_img.png" title="" alt=""/>
-							<span v-if='item.isshezhi == false && allData.imgList && allData.imgList.length == 0' @click='delcopy(item.id,index)'></span>
+							<span v-if='item.isshezhi == false && btnshow' @click='delcopy(item.id,index)'></span>
 							<i class="admin" v-if='item.isshezhi == true'></i>
 						</p>
 						<p class="copy_name">{{item.personname}}</p>
-						
 					</li>
 					<!--添加抄送人按钮-->
-					<li @click="addcopy" v-show='allData.imgList && allData.imgList.length == 0'>
+					<li @click="addcopy" v-show='btnshow'>
 						<p class="copy_add"></p>
 						<p></p>
 					</li>
@@ -471,7 +479,7 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box" v-show='allData.imgList && allData.imgList.length == 0'>
+		<div class="btn_box" v-show='btnshow'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
@@ -511,9 +519,13 @@ import { Indicator } from 'mint-ui';
 		        compact:{},//合同摘要数据
 		        shenpi:'',
 		        splist:[],
+		        btnshow:false,
+		        imgshow:false,
+		        sctp:0,
 			}
 		},
 		created(){
+			this.btnshow = this.$route.query.btnshow;
 			this.takexs();
 		},
 		methods:{
@@ -524,6 +536,7 @@ import { Indicator } from 'mint-ui';
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
 					console.log(this.allData);
+					
 					this.obtaintask();//获取任务流
 	            }, (err)=>{
 					console.log(err);
@@ -729,6 +742,7 @@ import { Indicator } from 'mint-ui';
 	        	  Indicator.close();
 	        	  var result = JSON.parse(res.bodyText);
 	        	  if (result.success) {
+	        	  	this.imgshow = true;
 	        	    Toast({
 	        	        message: '保存成功',
 	        	        position: 'bottom',
@@ -756,18 +770,43 @@ import { Indicator } from 'mint-ui';
 	      	this.$router.push({
 				path:'/copy_p',//跳转抄送人页面
 				query:{
-					"id":this.$route.query.id//所传参数
+					"id":this.$route.query.id,//所传参数
+					"btnshow":this.$route.query.btnshow
 				}
 			})
 	      },
 	      consent(){
-	      	this.saveToserver();//上传图片
+	      	if(this.imgList.length==0 && this.btnshow){
+	      		if(this.allData.imgList == 0 ){
+		      		Toast({
+		                message: '请添加发票图片',
+		                position: 'center'
+		           });
+		           return;
+	      		}else{
+	      			this.ideashow = true;
+	      		}
+	      	}else{
+	      		this.saveToserver();//上传图片			      			
+	      	}
 	      	this.shenpi = '1';
 	      	this.btntext = '确认同意';
 	      	this.tiptext = '请输入您的审批意见（非必填）';
-	      	this.ideashow = true;
 	      },
 	      turnto(){
+	      	if(this.imgList.length==0 && this.btnshow){
+	      		if(this.allData.imgList == 0 ){
+		      		Toast({
+		                message: '请添加发票图片',
+		                position: 'center'
+		           });
+		           return;
+	      		}else{
+	      			this.ideashow = true;
+	      		}
+	      	}else{
+	      		this.saveToserver();//上传图片			      			
+	      	}
 	      	this.shenpi = '2';
 	      	this.btntext = '确认驳回';
 	      	this.tiptext = '请输入您的驳回理由（非必填）';
@@ -775,14 +814,15 @@ import { Indicator } from 'mint-ui';
 	      },
 	      betrue(){//确认意见
 	      	this.ideashow = false;
-	      	if(this.imgList.length>0){
+	      	if(this.imgList.length>0 || this.allData.imgList.length >0){
 	      		this.approve();
-	      	}else{
-	      		Toast({
-	                message: '请添加发票图片',
-	                position: 'center'
-	            });
 	      	}
+//	      	else{
+//	      		Toast({
+//	                message: '请添加发票图片',
+//	                position: 'center'
+//	            });
+//	      	}
 	      },
 	      approve(){//审批
 	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
@@ -804,6 +844,7 @@ import { Indicator } from 'mint-ui';
 				'pici':this.nowData.pici
             }).then((res)=>{
 				if(res.data.success){
+//					this.btnshow = false;
 					Toast({
 						message: '审批成功',
 						position: 'center',

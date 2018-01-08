@@ -101,7 +101,8 @@ import axios from 'axios';
 	            	this.$router.push({
 	            		path: '/approval',//跳转回审批抄送人页面
 	            		query:{
-	            			"id":this.$route.query.id//所传参数
+	            			"id":this.$route.query.id,//所传参数
+	            			"btnshow":this.$route.query.btnshow,
 	            		}
 	            	});
 	            }, (err)=>{

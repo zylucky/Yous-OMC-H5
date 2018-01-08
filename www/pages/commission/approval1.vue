@@ -470,7 +470,7 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box" v-show='!success'>
+		<div class="btn_box" v-show='success || success1'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
@@ -509,10 +509,12 @@ import { Indicator } from 'mint-ui';
 		        ideashow:false,
 		        compact:{},//合同摘要数据
 		        shenpi:'',
-		        success:true,
+		        success:false,
+		        success1:false,
 			}
 		},
 		created(){
+			this.success = this.$route.query.btnshow;
 			this.takexs();
 		},
 		methods:{
@@ -656,7 +658,7 @@ import { Indicator } from 'mint-ui';
 						position: 'center',
 						duration: 2000
 					});	
-					this.success = false;
+					this.success1 = true;
 					location.reload();
 				}
 				console.log(res);
