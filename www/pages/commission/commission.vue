@@ -145,14 +145,16 @@
 	}
 	
 	.btn {
+		position: absolute;
+		margin: 0.8rem 0 1.5rem -2.75rem;
+		left: 50%;
 		display: block;
 		width: 5.5rem;
 		height: 0.75rem;
 		line-height: 0.75rem;
 		text-align: center;
-		margin: 0.8rem auto 0;
 		border: none;
-		background: #aaaaaa;
+		background-color: #aaaaaa;
 		border-radius: 0.08rem;
 		color: #c8c8c8;
 		font-size: @font32;
@@ -428,8 +430,6 @@
 	            		this.options[1].disabled = true//禁用单选
 	            		this.btnshow = false;
 	            	}
-	            	console.log('=============================')
-					console.log(res.data.data);
 	            }, (err)=>{
 					console.log(err);
 	            });
