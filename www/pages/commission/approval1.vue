@@ -470,7 +470,7 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box" v-show='success || success1'>
+		<div class="btn_box" v-show='success'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
@@ -510,7 +510,7 @@ import { Indicator } from 'mint-ui';
 		        compact:{},//合同摘要数据
 		        shenpi:'',
 		        success:false,
-		        success1:false,
+//		        success1:false,
 			}
 		},
 		created(){
@@ -654,11 +654,14 @@ import { Indicator } from 'mint-ui';
             }).then((res)=>{
 				if(res.data.success){
 	            	Toast({
-						message: '提交成功',
-						position: 'center',
+						message: '审批成功',
+						position: 'bottom',
 						duration: 2000
 					});	
-					this.success1 = true;
+//					this.success1 = true;
+					this.$router.push({
+						path:'/commission_ask1',//跳转审批列表
+					})
 					location.reload();
 				}
 				console.log(res);
