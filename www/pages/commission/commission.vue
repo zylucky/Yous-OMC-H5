@@ -90,7 +90,7 @@
 				display: block;
 				height: 0.8rem;
 				line-height: 0.8rem;
-				padding-right: 0.3rem;
+				padding: 0 0.3rem;
 				i{color: #000;}
 				i:last-child{float: right;}
 			}
@@ -102,7 +102,7 @@
 				display: inline-block;
 				width: 100%;
 				height: 4.5rem;
-				border: 1px solid #000;
+				/*border: 1px solid #000;*/
 				background: #fff;
 				overflow: auto;
 			}
