@@ -463,19 +463,27 @@ var router = new VueRouter({
         path: '/news',
         component: require('./pages/channel/news.vue')
     },
+    {//测试
+      path: '/confirmed_list',
+      component: require('./pages/commission/confirmed_list.vue')
+    },
+    {//测试
+      path: '/confirmed',
+      component: require('./pages/commission/confirmed.vue')
+    },
 
   ],
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {
-      console.log(savedPosition)
-      return savedPosition
-    } else {
-      if (from.meta.keepAlive) {
-        from.meta.savedPosition = document.body.scrollTop;
-      }
-      return { x: 0, y: to.meta.savedPosition || 0 }
-    }
-  }
+//   scrollBehavior (to, from, savedPosition) {
+//     if (savedPosition) {
+//       console.log(savedPosition)
+//       return savedPosition
+//     } else {
+//       if (from.meta.keepAlive) {
+//         from.meta.savedPosition = document.body.scrollTop;
+//       }
+//       return { x: 0, y: to.meta.savedPosition || 0 }
+//     }
+//   }
 });
 
 router.beforeEach(function(to, from, next){

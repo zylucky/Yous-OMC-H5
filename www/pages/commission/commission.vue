@@ -7,7 +7,7 @@
   		right: 0;
   		bottom: 0;
   		top: 0;*/
-		padding-bottom: 0.9rem;
+		padding-bottom: 3rem;
 		overflow: auto;
 	}
 	
