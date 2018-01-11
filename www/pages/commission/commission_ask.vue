@@ -163,7 +163,7 @@
 					<p>
 						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
 						<i v-else-if="item.taskZt=='1'">已提交</i>
-						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待确认</i>
 						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
 						<i else></i>
@@ -181,7 +181,7 @@
 					<p>
 						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
 						<i v-else-if="item.taskZt=='1'">已提交</i>
-						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">审核中</i>
 						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
 						<i else></i>
@@ -290,7 +290,8 @@ import { Indicator } from 'mint-ui';
 				this.$router.push({
 					path:'/approval',//跳转到审批页面
 					query:{
-						"id":id//所传参数
+						"id":id,//所传参数
+						"btnshow":true,
 					}
 				})
 			},
@@ -298,7 +299,8 @@ import { Indicator } from 'mint-ui';
 				this.$router.push({
 					path:'/approval',//跳转到审批页面
 					query:{
-						"id":id//所传参数
+						"id":id,//所传参数
+						"btnshow":false,
 					}
 				})
 			}

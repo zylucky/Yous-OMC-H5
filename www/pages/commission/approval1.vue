@@ -317,6 +317,18 @@
   		color: #fff;
   		text-align: center;
   	}
+  	.bigfp{
+  		position: fixed;
+  		left: 0;
+  		right: 0;
+  		top: 0;
+  		bottom: 0;
+  		background: rgba(0,0,0,0.5);
+  		display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        img{width: 100%;vertical-align: middle;}
+  	}
 </style>
 
 <template>
@@ -392,7 +404,7 @@
 			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
 			        </div>-->
 			        <!--已提交后的图片显示状态-->
-			        <div class="img_demo fl pr" v-for="item in allData.imgList" v-if='allData.imgList && allData.imgList.length != 0'>
+			        <div class="img_demo fl pr" v-for="item in allData.imgList" v-if='allData.imgList && allData.imgList.length != 0' @click="fdtp(item.imgFapiao)">
 			        	<img class="upload_demo_img" :src="item.imgFapiao" alt="" />
 			        </div>
 			        <!--<div v-if="fy < 8" class="upload_btn mr10 fl" v-show='allData.imgList && allData.imgList.length == 0'>
@@ -470,19 +482,15 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box" v-show='!success'>
+		<div class="btn_box" v-show='success == 1'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
 			</ul>
 		</div>
-		<!--审批意见-->
-		<div class="boxs" v-if="ideashow">
-			<!--填写区域-->
-			<div class="idea_box">
-				<textarea name="" :placeholder="tiptext" v-model="idea"></textarea>
-			</div>
-			<button class="spbtn" @click="betrue">{{btntext}}</button>
+		<!--大图显示-->
+		<div class="bigfp" v-if="fppic" @click="fppic=false">
+			<img :src='bigfpsrc'/>
 		</div>
 	</div>
 </template>
@@ -494,8 +502,6 @@ import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
-				btntext:'',//按钮内容
-				tiptext:'',//意见框提示内容
 				allData:{},//页面数据详情
 				spData:[],//审批任务流数据
 				csData:[],//抄送任务流数据
@@ -505,14 +511,16 @@ import { Indicator } from 'mint-ui';
 		        fy: 0,
 		        upload: 0,
 		        uploaded: 0,
-		        idea:'',
-		        ideashow:false,
 		        compact:{},//合同摘要数据
 		        shenpi:'',
-		        success:true,
+		        success:1,
+//		        success1:false,
+				bigfpsrc:'',//发票路径
+		        fppic:false,
 			}
 		},
 		created(){
+			this.success = this.$route.query.btnshow;
 			this.takexs();
 		},
 		methods:{
@@ -608,62 +616,30 @@ import { Indicator } from 'mint-ui';
 			})
 	      },
 	      consent(){
-//	      	this.saveToserver();//上传图片
 	      	this.shenpi = '1';
-	      	this.btntext = '确认同意';
-	      	this.tiptext = '请输入您的审批意见（非必填）';
-	      	this.ideashow = true;
+			this.$router.push({
+				path:'/approval_opinion1',//跳转到审批意见功能界面
+				query:{
+					'shenpi' : '1',
+					'id' : this.$route.query.id
+				}
+			})
 	      },
 	      turnto(){
 	      	this.shenpi = '2';
-	      	this.btntext = '确认驳回';
-	      	this.tiptext = '请输入您的驳回理由（非必填）';
-	      	this.ideashow = true;
-	      },
-	      betrue(){//确认意见
-	      	this.ideashow = false;
-//	      	if(this.imgList.length>0){
-	      		this.approve();
-//	      	}else{
-//	      		Toast({
-//	                message: '请添加发票图片',
-//	                position: 'center'
-//	            });
-//	      	}
-	      },
-	      approve(){//审批
-	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
-	      	var cookxs = JSON.parse(localStorage.getItem('cookxs'));
-			axios.post(url,{
-				"cookie":cookxs,
-        		'id':this.nowData.id,
-				'sourcetype':this.nowData.sourcetype,
-				'sourcemid':this.nowData.sourcemid,
-				'itemid':this.nowData.itemid,
-				'shenpi':this.shenpi,
-				'personid':this.nowData.personid,
-				'person':this.nowData.person,
-				'shuoming':this.idea,
-				'banben':this.nowData.banben,
-				'sptype':this.nowData.sptype,
-				'persontype':this.nowData.persontype,
-				'isfock':this.nowData.isfock,
-				'pici':this.nowData.pici
-            }).then((res)=>{
-				if(res.data.success){
-	            	Toast({
-						message: '提交成功',
-						position: 'center',
-						duration: 2000
-					});	
-					this.success = false;
-					location.reload();
+	      	this.$router.push({
+				path:'/turn_opinion1',//跳转到审批意见功能界面
+				query:{
+					'shenpi' : '2',
+					'id' : this.$route.query.id
 				}
-				console.log(res);
-            }, (err)=>{
-				console.log(err);
-            });
+			})
 	      },
+		  fdtp(src){
+	      	this.fppic = true;
+	      	this.bigfpsrc = src;
+//	      	console.log(src);
+	      }
 	      
 		}
 	}

@@ -21,7 +21,7 @@
   			background: #fff;
   		}
   	}
-  	.spbtn{
+  	.btn{
   		display: block;
   		border: none;
   		border-radius: 0.06rem;
@@ -37,12 +37,12 @@
 </style>
 
 <template>
-	<div class="boxs">
+	<div class="box">
 		<!--填写区域-->
 		<div class="idea_box">
-			<textarea name="" placeholder="请输入您的审批意见（非必填）" v-model="idea"></textarea>
+			<textarea name="" placeholder="请输入您的驳回理由（非必填）" v-model="idea"></textarea>
 		</div>
-		<button class="spbtn" @click="betrue">确认同意</button>
+		<button class="btn" @click="betrue">确认驳回</button>
 	</div>
 </template>
 
@@ -53,7 +53,7 @@ import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
-				idea:'',
+				idea:'',	
 				shenpi:'',//审批状态1同意2驳回
 				splist:[],
 				allData:{},//页面数据详情
@@ -128,7 +128,7 @@ import { Indicator } from 'mint-ui';
 							duration: 2000
 						});
 						this.$router.push({
-							path:'/confirmed_list',//跳转审批确认列表
+							path:'/commission_ask1',//跳转审批确认列表
 						})
 //						location.reload();
 					}

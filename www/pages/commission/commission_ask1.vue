@@ -133,7 +133,7 @@
 			<ul class="nav">
 				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待我审批({{pendData.length}})<span></span></li>
 				<li :class="tabq=='1'?'active':''" @click='clk(1)'>我已审批({{passData.length}})<span></span></li>
-				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的(0)</li>
+				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的({{csData.length}})</li>
 			</ul>
 		</div>
 		<!--列表-->
@@ -195,7 +195,7 @@
 			</ul>
 			<!--抄送我的-->
 			<ul class="list" v-if="tabq=='2'">
-				<li v-for="item in csData">
+				<li v-for="item in csData" @click="csmine(item.id)">
 					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>
@@ -330,11 +330,12 @@ import { Indicator } from 'mint-ui';
 			},
 			
 			
-			waitme(id){
+			waitme(id){//待审批
 				this.$router.push({
 					path:'/approval1',//跳转到审批页面
 					query:{
-						"id":id//所传参数
+						"id":id,//所传参数
+						"btnshow":1
 					}
 				})
 			},
@@ -342,7 +343,17 @@ import { Indicator } from 'mint-ui';
 				this.$router.push({
 					path:'/approval1',//跳转到审批页面
 					query:{
-						"id":id//所传参数
+						"id":id,//所传参数
+						"btnshow":0
+					}
+				})
+			},
+			csmine(id){//抄送我的
+				this.$router.push({
+					path:'/commission_details',//跳转到审批页面
+					query:{
+						"id":id,//所传参数
+						"btnshow":0
 					}
 				})
 			}

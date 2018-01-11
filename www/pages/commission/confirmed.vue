@@ -277,7 +277,7 @@
   			}
   		}
   	}
-	.upload_btn{
+  	.upload_btn{
     	position: relative;
     	background-color: #f0eff5;
 	    input{
@@ -287,44 +287,17 @@
 	      opacity: 0;
 	    }
   	}
-  	.boxs{
+  	.bigfp{
   		position: fixed;
-  		z-index: 999;
   		left: 0;
   		right: 0;
-  		bottom: 0;
   		top: 0;
-  		background: #fff;
-  	}
-  	.idea_box{
-  		width: 7.05rem;
-  		height: 4.5rem;
-  		margin: 0.2rem auto 0;
-  		border-radius: 0.08rem;
-  		background: #fff;
-  		padding: 0.35rem 0.25rem;
-  		-webkit-box-shadow:0px 0px 5px #c5c4c9; 
-  		box-shadow:0px 0px 5px #c5c4c9;
-  		textarea{
-  			font-size: @font36;
-  			border: none;
-  			height: 100%;
-  			padding: 0;
-  			background: #fff;
-  		}
-  	}
-  	.spbtn{
-  		display: block;
-  		border: none;
-  		border-radius: 0.06rem;
-  		width: 5.5rem;
-  		height: 0.75rem;
-  		background: url(../../resources/images/commission/btn_bg.png) no-repeat center;
-  		background-size: cover;
-  		margin: 5.6rem auto 0.95rem;
-  		font-size: @font34;
-  		color: #fff;
-  		text-align: center;
+  		bottom: 0;
+  		background: rgba(0,0,0,0.5);
+  		display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        img{width: 100%;vertical-align: middle;}
   	}
 </style>
 
@@ -393,23 +366,22 @@
 			</ul>
 			<!--上传图片-->
 			<div class="img_box">
-				<p class="pic"><i v-show='allData.imgList && allData.imgList.length == 0'>*</i>图片</p>
-				<!--图片上传-->
+				<p class="pic"><i>*</i>图片</p>
 				<div class="pic_load clearfix" >
-					<div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
+					<div class="img_demo fl pr" v-for='(item,index) in imgList'>
 			          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
 			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
 			        </div>
-			        <!--已提交后的图片显示状态-->
-			        <div class="img_demo fl pr" v-for="item in allData.imgList" v-if='allData.imgList && allData.imgList.length != 0'>
+					<!--已提交后的图片显示状态-->
+			        <div class="img_demo fl pr" v-for="(item,index) in allData.imgList" @click="fdtp(item.imgFapiao)">
 			        	<img class="upload_demo_img" :src="item.imgFapiao" alt="" />
+			        	<i class="delete_icon" tag="fy" @click='delete_fpic(item.id,index)' v-if="btnshow==1"></i>
 			        </div>
-			        <!--<div v-if="fy < 8" class="upload_btn mr10 fl" v-show='allData.imgList && allData.imgList.length == 0 && !imgshow'>-->
-			        <div v-if="fy < 8" class="upload_btn mr10 fl">
+			        <!--添加图片-->
+			        <div v-if="fy < 8 && btnshow==1" class="upload_btn mr10 fl">
 			            <input @change='add_img1($event)' id="file_add" tag="fy" type="file" multiple>
 			        </div>
 				</div>
-		        
 			</div>
 			<!--申请进度-->
 			<div class="plan">
@@ -418,7 +390,7 @@
 						<p class="plan_t">
 							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
 							<span>{{item.person}}</span>
-							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>							
+							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>					
 						</p>
 						<p class="plan_b">{{item.shuoming}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
@@ -435,13 +407,13 @@
 					<li v-for="(item,index) in this.splist.chaosong">
 						<p class="picimg">
 							<img src="../../resources/images/commission/head_img.png" title="" alt=""/>
-							<span v-if='item.isshezhi == false && btnshow' @click='delcopy(item.id,index)'></span>
-							<i class="admin" v-if='item.isshezhi == true'></i>
+							<span  v-if='!item.isshezhi && btnshow==1' @click='delcopy(item.id,index)'></span>
+							<i class="admin" v-if='item.isshezhi'></i>
 						</p>
 						<p class="copy_name">{{item.personname}}</p>
 					</li>
 					<!--添加抄送人按钮-->
-					<li @click="addcopy" v-show='btnshow'>
+					<li  @click="addcopy" v-if='btnshow==1'>
 						<p class="copy_add"></p>
 						<p></p>
 					</li>
@@ -460,7 +432,7 @@
 							<span></span>
 						</p>
 					</li>
-					<li>
+					<li v-if='compact.zujinList.length != 0'>
 						<!--租金租期信息compact.zujinList-->
 						<p v-for="(item,index) in compact.zujinList">
 							<span>租期{{index + 1}}：</span>
@@ -468,7 +440,7 @@
 							<span>￥{{item.yuezujin | splitK}}</span>
 						</p>
 					</li>
-					<li>
+					<li v-if='compact.fukuanFangshiList.length != 0'>
 						<!--付款方式信息compact.fukuanFangshiList-->
 						<p v-for="(item,index) in compact.fukuanFangshiList">
 							<span>付款方式：</span>
@@ -480,19 +452,15 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box" v-show='btnshow'>
+		<div class="btn_box" v-if="btnshow==1">
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
 			</ul>
 		</div>
-		<!--审批意见-->
-		<div class="boxs" v-if="ideashow">
-			<!--填写区域-->
-			<div class="idea_box">
-				<textarea name="" :placeholder="tiptext" v-model="idea"></textarea>
-			</div>
-			<button class="spbtn" @click="betrue">{{btntext}}</button>
+		<!--大图显示-->
+		<div class="bigfp" v-if="fppic" @click="fppic=false">
+			<img :src='bigfpsrc'/>
 		</div>
 	</div>
 </template>
@@ -504,30 +472,25 @@ import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
-				btntext:'',//按钮内容
-				tiptext:'',//意见框提示内容
+				popshow:false,//合同摘要弹框
+				splist:[],
+				compact:{},//合同摘要数据
 				allData:{},//页面数据详情
 				spData:[],//审批任务流数据
 				csData:[],//抄送任务流数据
 				nowData:{},//当前审核结点数据
-				popshow:false,//合同摘要弹框
+				btnshow:1,//页面状态显示条件0已确认1未确认
 				imgList:[],
 		        fy: 0,
 		        upload: 0,
 		        uploaded: 0,
-		        idea:'',
-		        ideashow:false,
-		        compact:{},//合同摘要数据
-		        shenpi:'',
-		        splist:[],
-		        btnshow:false,
-		        imgshow:false,
-		        sctp:0,
+		        bigfpsrc:'',//发票路径
+		        fppic:false,
 			}
 		},
 		created(){
 			this.btnshow = this.$route.query.btnshow;
-			this.takexs();
+			this.takexs();//获取单个销售信息
 		},
 		methods:{
 			takexs(){//获取销售人员信息
@@ -536,8 +499,7 @@ import { Indicator } from 'mint-ui';
             		"id":this.$route.query.id,
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
-					console.log(this.allData);
-					
+//					console.log(this.allData);
 					this.obtaintask();//获取任务流
 	            }, (err)=>{
 					console.log(err);
@@ -556,17 +518,44 @@ import { Indicator } from 'mint-ui';
 					for(var i in this.spData){
 						for(var j in this.spData[i]){
 							if(j == 'isfock' && this.spData[i][j] == true){
-								this.nowData = this.spData[i];
-								console.log(this.nowData);
+								this.nowData = this.spData[i];//当前审核结点数据
+//								console.log(this.nowData);
 							}
 						}
 					}
+					this.htzy();//获取合同摘要信息
 	            }, (err)=>{
 					console.log(err);
 	            });
 			},
-			
-		
+			pops(state){//合同摘要
+				this.popshow = state;
+			},
+			htzy(){//合同摘要接口
+				const url = this.$api + "/yhcms/web/qdyongjin/getHetongEase.do";
+				axios.post(url,{
+            		"htid":this.allData.hetongid//合同id
+	            }).then((res)=>{
+	            	if(res.data.success){
+	            		this.compact = res.data.data;
+//						console.log(this.compact);
+	            	}
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+			addcopy(){//添加抄送人
+				if(this.imgList.length != 0){
+					this.saveToserver();//上传图片	
+				}
+				this.$router.push({
+					path:'/copy_p',//跳转抄送人页面
+					query:{
+						"id":this.$route.query.id,//所传参数
+						"btnshow":this.$route.query.btnshow
+					}
+				})
+			},
 			delcopy(id,idx){//删除抄送人
 				this.csData.splice(idx,1);
 				const url = this.$api + "/yhcms/web/qdyongjin/delCsr.do";
@@ -574,46 +563,84 @@ import { Indicator } from 'mint-ui';
             		"id":id,
 	            }).then((res)=>{
 	            	if(res.data.success){
-//						location.reload();
 						Toast({
 							message: '已删除',
 							position: 'center',
-							duration: 2000
+							duration: 300
 						});
 	            	}
 	            }, (err)=>{
 					console.log(err);
 	            })
 			},
-			copy(){
-				var copyData1 = JSON.parse(localStorage.getItem('addCopy'));
-				for(var i=0; i<this.copyData.length; i++){
-					if(copyData1[0].id == this.copyData[i].id){
-						Toast({
-							message: '已存在该抄送人',
-							position: 'center',
-							duration: 2000
-						});
-						return;
-					}
+			consent(){//同意审批
+				console.log("同意");
+				
+				if(this.allData.imgList.length == 0 && this.imgList.length != 0){
+					this.saveToserver();//上传图片	
+					this.$router.push({
+						path:'/approval_opinion',//跳转到审批意见功能界面
+						query:{
+							'shenpi' : '1',
+							'id' : this.$route.query.id
+						}
+					})
 				}
-				this.copyData = this.copyData.concat(copyData1);
-				console.log(this.copyData)
+				if(this.allData.imgList.length != 0 && this.imgList.length != 0){
+					this.saveToserver();//上传图片		
+				}
+				if(this.allData.imgList.length != 0 && this.imgList.length == 0){
+					this.$router.push({
+						path:'/approval_opinion',//跳转到审批意见功能界面
+						query:{
+							'shenpi' : '1',
+							'id' : this.$route.query.id
+						}
+					})
+					return
+				}
+				if(this.allData.imgList.length == 0 && this.imgList.length == 0){
+					Toast({
+						message: '请选择发票图片',
+						position: 'center',
+						duration: 300
+					});
+					return
+				}
+				
 			},
-			pops(state){//合同摘要
-				this.popshow = state;
-				if(state){//待调试
-					const url = this.$api + "/yhcms/web/qdyongjin/getHetongEase.do";
-					axios.post(url,{
-	            		"htid":this.allData.hetongid//合同id
-		            }).then((res)=>{
-		            	if(res.data.success){
-		            		this.compact = res.data.data;
-							console.log(this.compact);
-		            	}
-		            }, (err)=>{
-						console.log(err);
-		            });
+			turnto(){//同意驳回
+				console.log("驳回");
+				
+				if(this.allData.imgList.length == 0 && this.imgList.length != 0){
+					this.saveToserver();//上传图片		
+					this.$router.push({
+						path:'/turn_opinion',//跳转到审批意见功能界面
+						query:{
+							'shenpi' : '2',
+							'id' : this.$route.query.id
+						}
+					})
+				}
+				if(this.allData.imgList.length != 0 && this.imgList.length != 0){
+					this.saveToserver();//上传图片		
+				}
+				if(this.allData.imgList.length != 0 && this.imgList.length == 0){
+					this.$router.push({
+						path:'/turn_opinion',//跳转到审批意见功能界面
+						query:{
+							'shenpi' : '2',
+							'id' : this.$route.query.id
+						}
+					})
+				}
+				if(this.allData.imgList.length == 0 && this.imgList.length == 0){
+//					Toast({
+//						message: '请选择发票图片',
+//						position: 'center',
+//						duration: 300
+//					});
+					return	
 				}
 			},
 			delete_img(index, id, event){//删除
@@ -693,14 +720,15 @@ import { Indicator } from 'mint-ui';
 	          };
 	
 	          if(this.upload > 0){
-	              Indicator.open({
-	                  text: '上传图片中...',
-	                  spinnerType: 'fading-circle'
-	              });
+//	              Indicator.open({
+//	                  text: '上传图片中...',
+//	                  spinnerType: 'fading-circle'
+//	              });
 	          }
 	
 	          this.imgList.forEach((img,idx)=> {cb(img, fp)});
 	          this.imgList = fp;
+			  console.log(this.imgList);
 	
 	          //保存信息
 	          if(this.upload < 1){
@@ -719,6 +747,7 @@ import { Indicator } from 'mint-ui';
 	              {"parameters":{ "smallPic":pic,"suffix": "." + type},"foreEndType":2,"code":"300000084"}
 	          ).then((res)=>{
 	              var result = JSON.parse(res.bodyText);
+
 	              if (result.success) {
 	                  cb && cb(result.data);
 	              }
@@ -728,14 +757,13 @@ import { Indicator } from 'mint-ui';
 	      },
 	      saveImageData(){
 	        const that = this;
-	        Indicator.open({
-	          text: '保存中...',
-	          spinnerType: 'fading-circle'
-	        });
+//	        Indicator.open({
+//	          text: '保存中...',
+//	          spinnerType: 'fading-circle'
+//	        });
 	        let fp = this.imgList.map((item, idx)=>{
 	            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
 	        });
-//	        console.log(fp);
 	        for(var i = 0; i<fp.length; i++){
 	        	const data = {"imgFapiao":this.$prefix + "/" + fp[i].url,"yongjinid":this.$route.query.id,"yongjintype":"1"};
 	        	this.$http.post(
@@ -744,11 +772,11 @@ import { Indicator } from 'mint-ui';
 	        	  var result = JSON.parse(res.bodyText);
 	        	  if (result.success) {
 	        	  	this.imgshow = true;
-	        	    Toast({
-	        	        message: '保存成功',
-	        	        position: 'bottom',
-	        	        duration: 1000
-	        	    });
+//	        	    Toast({
+//	        	        message: '保存成功',
+//	        	        position: 'bottom',
+//	        	        duration: 1000
+//	        	    });
 	        	  } else {
 	        	    Toast({
 	        	        message: '保存失败: ' + result.message,
@@ -762,103 +790,34 @@ import { Indicator } from 'mint-ui';
 	        	      position: 'bottom'
 	        	  });
 	        	});
-	        	
 	        }
 	      },
-	      
-
-	      addcopy(){
-	      	this.$router.push({
-				path:'/copy_p',//跳转抄送人页面
-				query:{
-					"id":this.$route.query.id,//所传参数
-					"btnshow":this.$route.query.btnshow
-				}
-			})
-	      },
-	      consent(){
-	      	if(this.imgList.length==0 && this.btnshow){
-	      		if(this.allData.imgList == 0 ){
-		      		Toast({
-		                message: '请添加发票图片',
-		                position: 'center'
-		           });
-		           return;
-	      		}else{
-	      			this.ideashow = true;
-	      		}
-	      	}else{
-	      		this.saveToserver();//上传图片			      			
-	      	}
-	      	this.shenpi = '1';
-	      	this.btntext = '确认同意';
-	      	this.tiptext = '请输入您的审批意见（非必填）';
-	      },
-	      turnto(){
-	      	if(this.imgList.length==0 && this.btnshow){
-	      		if(this.allData.imgList == 0 ){
-		      		Toast({
-		                message: '请添加发票图片',
-		                position: 'center'
-		           });
-		           return;
-	      		}else{
-	      			this.ideashow = true;
-	      		}
-	      	}else{
-	      		this.saveToserver();//上传图片			      			
-	      	}
-	      	this.shenpi = '2';
-	      	this.btntext = '确认驳回';
-	      	this.tiptext = '请输入您的驳回理由（非必填）';
-	      	this.ideashow = true;
-	      },
-	      betrue(){//确认意见
-	      	this.ideashow = false;
-	      	if(this.imgList.length>0 || this.allData.imgList.length >0){
-	      		this.approve();
-	      	}
-//	      	else{
-//	      		Toast({
-//	                message: '请添加发票图片',
-//	                position: 'center'
-//	            });
-//	      	}
-	      },
-	      approve(){//审批
-	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
-	      	var cookxs = JSON.parse(localStorage.getItem('cookxs'));
-			axios.post(url,{
-				"cookie":cookxs,
-        		'id':this.nowData.id,
-				'sourcetype':this.nowData.sourcetype,
-				'sourcemid':this.nowData.sourcemid,
-				'itemid':this.nowData.itemid,
-				'shenpi':this.shenpi,
-				'personid':this.nowData.personid,
-				'person':this.nowData.person,
-				'shuoming':this.idea,
-				'banben':this.nowData.banben,
-				'sptype':this.nowData.sptype,
-				'persontype':this.nowData.persontype,
-				'isfock':this.nowData.isfock,
-				'pici':this.nowData.pici
-            }).then((res)=>{
-				if(res.data.success){
-//					this.btnshow = false;
-					Toast({
-						message: '审批成功',
-						position: 'center',
-						duration: 2000
-					});
-					location.reload();
-				}
-				console.log(res);
+	      delete_fpic(id,idx){//删除数据库图片
+	      	this.allData.imgList.splice(idx,1);
+	      	const url = this.$api + "/yhcms/web/qdyongjin/imgdel.do";
+			axios.post(url,{ 
+        		"id":id,
+           }).then((res)=>{
+            	if(res.data.success){
+//          		Toast({
+//						message: '删除成功',
+//						position: 'center',
+//						duration: 300
+//					});
+            	}
             }, (err)=>{
 				console.log(err);
             });
 	      },
+	      fdtp(src){
+	      	this.fppic = true;
+	      	this.bigfpsrc = src;
+//	      	console.log(src);
+	      }
 	      
-		}
+		},
+		mounted(){
+			
+		},
 	}
 </script>

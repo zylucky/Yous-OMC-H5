@@ -99,9 +99,11 @@ import axios from 'axios';
 	           	}).then((res)=>{
 	            	console.log(res);
 	            	this.$router.push({
-	            		path: '/approval',//跳转回审批抄送人页面
+	            		path: '/confirmed',//跳转回审批抄送人页面
+//	            		path: '/approval',//跳转回审批抄送人页面
 	            		query:{
-	            			"id":this.$route.query.id//所传参数
+	            			"id":this.$route.query.id,//所传参数
+	            			"btnshow":this.$route.query.btnshow,
 	            		}
 	            	});
 	            }, (err)=>{

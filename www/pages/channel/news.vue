@@ -74,13 +74,28 @@
 
 <template>
 	<div class="box">
+		<!--佣金待审批-->
+		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==0">
+			<p class="newspic">
+				<img src="../../resources/images/news/2.png"/>
+			</p>
+			<p class="news_list">
+				<span class="time">{{item.updated_at | newtime}}</span>
+				<ul>
+					<li class="title">审批</li>
+					<li class="tip">您有一条佣金需审批，请知晓</li>
+					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="spzt">审批佣金</li>
+				</ul>
+			</p>
+		</div>
 		<!--佣金确认消息状态-->
-		<div class="new_box">
+		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==4">
 			<p class="newspic">
 				<img src="../../resources/images/news/1.png"/>
 			</p>
 			<p class="news_list">
-				<span class="time">12月5日  12:03</span>
+				<span class="time">{{item.updated_at | newtime}}</span>
 				<ul>
 					<li class="title" style="color: #0fad60;">佣金确认</li>
 					<li class="tip">XXX已确认佣金信息</li>
@@ -89,19 +104,50 @@
 				</ul>
 			</p>
 		</div>
-		<!--审批消息状态-->
-		<div class="new_box">
+		<!--审批消息通过状态-->
+		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==3">
 			<p class="newspic">
 				<img src="../../resources/images/news/2.png"/>
 			</p>
 			<p class="news_list">
-				<span class="time">12月5日  12:03</span>
+				<span class="time">{{item.updated_at | newtime}}</span>
 				<ul>
 					<li class="title">审批</li>
 					<li class="tip">您的佣金已审批，请知晓</li>
-					<li class="name">申请人：李四</li>
+					<li class="name">申请人：{{item.send_to_name}}</li>
 					<li class="spzt">审批通过</li>
 					<li>查看详情</li>
+				</ul>
+			</p>
+		</div>
+		<!--审批消息驳回状态-->
+		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==1">
+			<p class="newspic">
+				<img src="../../resources/images/news/2.png"/>
+			</p>
+			<p class="news_list">
+				<span class="time">{{item.updated_at | newtime}}</span>
+				<ul>
+					<li class="title">审批</li>
+					<li class="tip">XXX驳回了您的佣金申请</li>
+					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="spzt" style="color: #ff7070;">审批驳回</li>
+					<li>查看详情</li>
+				</ul>
+			</p>
+		</div>
+		<!--抄送我的-->
+		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==2">
+			<p class="newspic">
+				<img src="../../resources/images/news/4.png"/>
+			</p>
+			<p class="news_list">
+				<span class="time">{{item.updated_at | newtime}}</span>
+				<ul>
+					<li class="title">抄送</li>
+					<li class="tip">XXX抄送了佣金申请给您</li>
+					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="spzt">查看详情</li>
 				</ul>
 			</p>
 		</div>
@@ -115,6 +161,7 @@ export default{
 	data(){
 		return{
 			userid:'',//用户id
+			newData:[],//消息通知数据
 		}
 	},
 	created(){
@@ -147,8 +194,11 @@ export default{
 			axios.get(url, {
 				
 			}).then((res)=>{
+//				clearInterval(timer);//清楚定时器
 				if(res.data.success){
-					console.log(res)					
+					this.newData = res.data.data;
+					console.log(this.newData);
+//					var timer = setTimeout(this.takenews,2000);//定时查询
 				}
             }, (err)=>{
 				console.log(err);

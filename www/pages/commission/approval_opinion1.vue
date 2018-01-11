@@ -128,7 +128,7 @@ import { Indicator } from 'mint-ui';
 							duration: 2000
 						});
 						this.$router.push({
-							path:'/confirmed_list',//跳转审批确认列表
+							path:'/commission_ask1',//跳转审批确认列表
 						})
 //						location.reload();
 					}

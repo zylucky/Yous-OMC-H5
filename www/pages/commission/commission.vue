@@ -7,7 +7,7 @@
   		right: 0;
   		bottom: 0;
   		top: 0;*/
-		padding-bottom: 0.9rem;
+		padding-bottom: 3rem;
 		overflow: auto;
 	}
 	
@@ -90,7 +90,7 @@
 				display: block;
 				height: 0.8rem;
 				line-height: 0.8rem;
-				padding-right: 0.3rem;
+				padding: 0 0.3rem;
 				i{color: #000;}
 				i:last-child{float: right;}
 			}
@@ -102,7 +102,7 @@
 				display: inline-block;
 				width: 100%;
 				height: 4.5rem;
-				border: 1px solid #000;
+				/*border: 1px solid #000;*/
 				background: #fff;
 				overflow: auto;
 			}
@@ -111,7 +111,7 @@
 			border-bottom: none;
 		}
 		#invoices{
-			width: 3.8rem;
+			width: 3.9rem;
 			height: 100%;
 			line-height: 1.15rem;
 			margin-left: 0.75rem;
@@ -145,14 +145,16 @@
 	}
 	
 	.btn {
+		position: absolute;
+		margin: 0.8rem 0 1.5rem -2.75rem;
+		left: 50%;
 		display: block;
 		width: 5.5rem;
 		height: 0.75rem;
 		line-height: 0.75rem;
 		text-align: center;
-		margin: 0.8rem auto 0;
 		border: none;
-		background: #aaaaaa;
+		background-color: #aaaaaa;
 		border-radius: 0.08rem;
 		color: #c8c8c8;
 		font-size: @font32;
@@ -161,6 +163,7 @@
 	.btnactive {
 		background: url(../../resources/images/commission/btn_bg.png) no-repeat center;
 		background-size: cover;
+		color: #fff;
 	}
 	
 	.shade {
@@ -292,7 +295,8 @@
 				</li>
 			</ul>
 		</div>
-		<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && value != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<!--<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>-->
+		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>{{btntext}}</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -316,6 +320,7 @@
 	export default {
 		data() {
 			return {
+				btntext:'提交',
 				money: '', //佣金信息
 				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
@@ -395,10 +400,12 @@
 				qdinp:false,//渠道人员列表
 				qdinp1:false,
 				btnshow:true,
+				chaobj:{},
 			}
 		},
 		created() {
 			this.xsid = this.$route.query.xsid;
+			this.zt = this.$route.query.zt;//处理状态1未处理，0已处理
 			this.takexs();//获取销售人员信息
 		},
 		methods: {
@@ -428,8 +435,14 @@
 	            		this.options[1].disabled = true//禁用单选
 	            		this.btnshow = false;
 	            	}
-	            	console.log('=============================')
-					console.log(res.data.data);
+	            	if(this.xsData.taskZt==4){//驳回状态
+	            		this.btntext = '重新提交'
+	            		if(this.zt == 0){
+	            			$('.new_box input').attr('disabled','disabled');//只读不可更改
+		            		this.options[0].disabled = true//禁用单选
+		            		this.options[1].disabled = true//禁用单选
+	            		}
+	            	}
 	            }, (err)=>{
 					console.log(err);
 	            });
@@ -527,30 +540,40 @@
 				if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 					return;
 				}
+				if(this.xsData.taskZt==4){//驳回状态
+					if(this.zt==0){
+						return						
+					}
+				}
 				this.shade = true;
 				this.pickshow = true;
 			},
 			onValuesChange(picker, values) {
-				this.invoicetype = values[0].name;
-//				console.log(values[0]);
-				this.theinvoice.companyName = values[0].companyName;
-				this.theinvoice.number = values[0].number;
-				this.theinvoice.address = values[0].address;
-				this.theinvoice.bankplace = values[0].bankplace;
-				this.theinvoice.id = values[0].id;
+				this.chaobj = Object.assign({},values[0])
+//				this.invoicetype = values[0].name;
+////				console.log(values[0]);
+//				this.theinvoice.companyName = values[0].companyName;
+//				this.theinvoice.number = values[0].number;
+//				this.theinvoice.address = values[0].address;
+//				this.theinvoice.bankplace = values[0].bankplace;
+//				this.theinvoice.id = values[0].id;
 			},
 			clk() {}, //阻止默认
 			elect(state) { //确认、取消
-				// console.log(state)
-				if(state == true && this.theinvoice.id == '0') {
-					Toast({
-						message: '发票类型不能为空',
-						position: 'center',
-						duration: 3000
-					});
-					console.log(this.invoicetype.id)
+				if(state) {
+					if(this.chaobj.id == "0"){
+						Toast({
+							message: '发票类型不能为空',
+							position: 'center',
+							duration: 3000
+						});
+					}else{
+						this.theinvoice = Object.assign({},this.chaobj);
+						this.invoice = this.theinvoice.companyName;
+						this.shade = false;
+						this.pickshow = false;
+					}
 				} else {
-					this.invoice = this.invoicetype;
 					this.shade = false;
 					this.pickshow = false;
 				}
@@ -596,7 +619,9 @@
 			
 		},
 		computed:{
-
+			btnzt:function(){
+				return this.money || this.channelname || this.tel || (this.theinvoice.id && this.theinvoice.id != 0) || this.invoice != '请选择发票类型' || this.formula || this.yjxx;
+			}
 		}
 
 	}
