@@ -255,7 +255,6 @@
 						<p>{{xsData.xsfpnashuiren}}</p>
 					</li>
 				</ul>
-				<!--------------->
 				<ul v-if="xsData.xsfpdizhidianhua">
 					<li>
 						<p>电话：</p>
