@@ -111,7 +111,7 @@
 			border-bottom: none;
 		}
 		#invoices{
-			width: 3.8rem;
+			width: 3.9rem;
 			height: 100%;
 			line-height: 1.15rem;
 			margin-left: 0.75rem;
@@ -163,6 +163,7 @@
 	.btnactive {
 		background: url(../../resources/images/commission/btn_bg.png) no-repeat center;
 		background-size: cover;
+		color: #fff;
 	}
 	
 	.shade {
@@ -295,7 +296,7 @@
 			</ul>
 		</div>
 		<!--<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>-->
-		<button v-if="btnshow" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
+		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>{{btntext}}</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -319,6 +320,7 @@
 	export default {
 		data() {
 			return {
+				btntext:'提交',
 				money: '', //佣金信息
 				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
@@ -403,6 +405,7 @@
 		},
 		created() {
 			this.xsid = this.$route.query.xsid;
+			this.zt = this.$route.query.zt;//处理状态1未处理，0已处理
 			this.takexs();//获取销售人员信息
 		},
 		methods: {
@@ -431,6 +434,14 @@
 	            		this.options[0].disabled = true//禁用单选
 	            		this.options[1].disabled = true//禁用单选
 	            		this.btnshow = false;
+	            	}
+	            	if(this.xsData.taskZt==4){//驳回状态
+	            		this.btntext = '重新提交'
+	            		if(this.zt == 0){
+	            			$('.new_box input').attr('disabled','disabled');//只读不可更改
+		            		this.options[0].disabled = true//禁用单选
+		            		this.options[1].disabled = true//禁用单选
+	            		}
 	            	}
 	            }, (err)=>{
 					console.log(err);
@@ -528,6 +539,11 @@
 				}
 				if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 					return;
+				}
+				if(this.xsData.taskZt==4){//驳回状态
+					if(this.zt==0){
+						return						
+					}
 				}
 				this.shade = true;
 				this.pickshow = true;

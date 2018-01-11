@@ -287,6 +287,18 @@
 	      opacity: 0;
 	    }
   	}
+  	.bigfp{
+  		position: fixed;
+  		left: 0;
+  		right: 0;
+  		top: 0;
+  		bottom: 0;
+  		background: rgba(0,0,0,0.5);
+  		display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        img{width: 100%;vertical-align: middle;}
+  	}
 </style>
 
 <template>
@@ -361,7 +373,7 @@
 			          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
 			        </div>
 					<!--已提交后的图片显示状态-->
-			        <div class="img_demo fl pr" v-for="(item,index) in allData.imgList">
+			        <div class="img_demo fl pr" v-for="(item,index) in allData.imgList" @click="fdtp(item.imgFapiao)">
 			        	<img class="upload_demo_img" :src="item.imgFapiao" alt="" />
 			        	<i class="delete_icon" tag="fy" @click='delete_fpic(item.id,index)' v-if="btnshow==1"></i>
 			        </div>
@@ -446,6 +458,10 @@
 				<li @click="turnto">驳回</li>
 			</ul>
 		</div>
+		<!--大图显示-->
+		<div class="bigfp" v-if="fppic" @click="fppic=false">
+			<img :src='bigfpsrc'/>
+		</div>
 	</div>
 </template>
 
@@ -468,6 +484,8 @@ import { Indicator } from 'mint-ui';
 		        fy: 0,
 		        upload: 0,
 		        uploaded: 0,
+		        bigfpsrc:'',//发票路径
+		        fppic:false,
 			}
 		},
 		created(){
@@ -791,7 +809,11 @@ import { Indicator } from 'mint-ui';
 				console.log(err);
             });
 	      },
-	      
+	      fdtp(src){
+	      	this.fppic = true;
+	      	this.bigfpsrc = src;
+//	      	console.log(src);
+	      }
 	      
 		},
 		mounted(){

@@ -62,7 +62,7 @@
 					height: 1.45rem;
 					background: url(../../resources/images/commission/icon1.png) no-repeat center;
 					background-size: cover;
-					animation: change 1s linear;
+					animation: change .5s linear;
 				}
   			}
   		}
@@ -279,67 +279,67 @@
 						<img src="../../resources/images/commission/head_img.png" alt="" />
 					</li>
 					<li>
-						<div class="name">李三</div>
+						<div class="name">{{nowData.person}}</div>
 						<div class="state">审批通过</div>
 						<span class="state_pic"></span>
 					</li>
 				</ul>
 				<p>
 					<span>项目房间号：</span>
-					<span>建外SOHO A-2907</span>
+					<span>{{allData.loupan}} {{allData.loudong}}-{{allData.fanghao}}</span>
 				</p>
 				<p>
 					<span>合同编号：</span>
-					<span>URS-SG-KJ-16090055<i @click="pops(true)">合同摘要</i></span>
+					<span>{{allData.htbianhao}}<i @click="pops(true)">合同摘要</i></span>
 				</p>
 			</div>
 			<ul class="list">
 				<li>
 					<p>
 						<span>渠道账号</span>
-						<span>15101622569</span>
+						<span>{{allData.xsqvdaotel}}</span>
 					</p>
 					<p>
 						<span>渠道门店</span>
-						<span>远行地产（建外SHHO店）</span>
+						<span>暂无此字段需要核对</span>
 					</p>
 					<p>
 						<span>渠道人员</span>
-						<span>张三</span>
+						<span>{{allData.xsqvdao}}</span>
 					</p>
 				</li>
 				<li>
 					<p>
 						<span>申领金额</span>
-						<span>￥10,000.00</span>
+						<span>￥{{allData.xsyongjin | splitK}}</span>
 					</p>
 					<p>
 						<span>佣金信息</span>
-						<span>正常</span>
+						<span>{{allData.xsyongjinxinxi==true?"正常":"不正常"}}</span>
 					</p>
 					<p>
 						<span>计算公式</span>
-						<span>月租金x12/0.4</span>
+						<span>{{allData.xsjisuangongshi}}</span>
 					</p>
 				</li>
 				<li>
 					<p>
 						<span>收款方</span>
-						<span>远行地产（建外SHHO店）</span>
+						<span>{{allData.qdhuming}}</span>
 					</p>
 					<p>
 						<span>开户行</span>
-						<span>招商银行建外大街支行</span>
+						<span>{{allData.qdkaihuhang}}</span>
 					</p>
 					<p>
 						<span>银行账号</span>
-						<span>6210 2212 2512 3300</span>
+						<span>{{allData.qdzhanghao | delkg}}</span>
 					</p>
 				</li>
 				<li>
 					<p style="margin-bottom: 0;">
 						<span>渠道备注</span>
-						<span>请尽快审批</span>
+						<span>{{allData.qdbeizhu}}</span>
 					</p>
 				</li>
 				
@@ -348,20 +348,20 @@
 			<div class="img_box">
 				<p class="pic">图片</p>
 				<p style="margin-bottom: 0;" class="pic_img">
-					<span v-for="i in 3"><img src="../../resources/images/banner/banner01.png" alt="" /></span>
+					<span v-for="item in allData.imgList"><img :src="item.imgFapiao" alt="" /></span>
 				</p>
 			</div>
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="i in 5">
+					<li v-for="item in this.splist.shenpi">
 						<p class="plan_t">
 							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
-							<span>张三</span>
-							<span>发起申请</span>							
+							<span>{{item.person}}</span>
+							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>						
 						</p>
-						<p class="plan_b">的说服力的思考</p>
-						<p class="date">12/11 10:10</p>
+						<p class="plan_b">{{item.shuoming}}</p>
+						<p class="date">{{item.shenpitime | time}}</p>
 					</li>
 				</ul>
 			</div>
@@ -372,9 +372,9 @@
 					<span>审批通过后，通知抄送人</span>
 				</p>
 				<ul class="copy_list">
-					<li v-for="(item,index) in copyData">
+					<li v-for="(item,index) in this.splist.chaosong">
 						<p class="picimg"><img src="../../resources/images/commission/head_img.png" title="" alt=""/></p>
-						<p class="copy_name">{{item.name}}</p>
+						<p class="copy_name">{{item.personname}}</p>
 					</li>
 				</ul>
 			</div>
@@ -387,31 +387,23 @@
 					<li>
 						<p>
 							<span>总租期：</span>
-							<span>2017/12/19-2019/12/18</span>
+							<span>{{compact.startdate | timed}}-{{compact.enddate | timed}}</span>
 							<span></span>
 						</p>
 					</li>
-					<li>
-						<p>
-							<span>租期1：</span>
-							<span>2017/12/19-2018/12/18</span>
-							<span>￥10,000.00</span>
-						</p>
-						<p>
-							<span>租期2：</span>
-							<span>2018/12/19-2019/12/18</span>
-							<span>￥10,000.00</span>
+					<li v-if='compact.zujinList.length != 0'>
+						<!--租金租期信息compact.zujinList-->
+						<p v-for="(item,index) in compact.zujinList">
+							<span>租期{{index + 1}}：</span>
+							<span>{{item.startdate | timed}}-{{item.enddate | timed}}</span>
+							<span>￥{{item.yuezujin | splitK}}</span>
 						</p>
 					</li>
-					<li>
-						<p>
+					<li v-if='compact.fukuanFangshiList.length != 0'>
+						<!--付款方式信息compact.fukuanFangshiList-->
+						<p v-for="(item,index) in compact.fukuanFangshiList">
 							<span>付款方式：</span>
-							<span>2017/12/19-2018/12/18（押二付六）</span>
-							<span></span>
-						</p>
-						<p>
-							<span>付款方式：</span>
-							<span>2018/12/19-2019/12/18（押二付六）</span>
+							<span>{{item.startdate | timed}}-{{item.enddate | timed}}（押二付六）</span>
 							<span></span>
 						</p>
 					</li>
@@ -422,40 +414,76 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { Toast } from 'mint-ui';
+import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
-				copyData:[
-					{
-						name: '李三',
-						qx: '0',
-						id: '1',
-						value: '东北一区-销售主管'
-					},
-					{
-						name: '张明',
-						qx: '0',
-						id: '2',
-						value: '东北一区-助理销售主管'
-					},
-					{
-						name: '李四',
-						qx: '0',
-						id: '3',
-						value: '东北二区-销售主管'
-					}
-				],//抄送人
 				popshow:false,//合同摘要弹框
+				splist:[],
+				compact:{},//合同摘要数据
+				allData:{},//页面数据详情
+				spData:[],//审批任务流数据
+				csData:[],//抄送任务流数据
+				nowData:{},//当前审核结点数据
 
 			}
 		},
 		created(){
-
+			this.takexs();//获取单个销售信息
 		},
 		methods:{
+			takexs(){//获取销售人员信息
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForid.do";
+				axios.post(url,{ 
+            		"id":this.$route.query.id,
+	            }).then((res)=>{
+	            	this.allData = res.data.data;
+//					console.log(this.allData);
+					this.obtaintask();//获取任务流
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
+			obtaintask(){//获取任务流
+				const url = this.$api + "/yhcms/web/qdyongjin/getSpStream.do";
+				axios.post(url,{ 
+            		"id":this.allData.id,
+	           }).then((res)=>{
+	           		this.splist = res.data.data;
+	            	this.spData = res.data.data.shenpi;
+	            	this.csData = res.data.data.chaosong;
+//					console.log(this.spData);
+//					console.log(this.splist);
+					for(var i in this.spData){
+						for(var j in this.spData[i]){
+							if(j == 'isfock' && this.spData[i][j] == false){
+								this.nowData = this.spData[i];//当前审核结点数据
+//								console.log(this.nowData);
+							}
+						}
+					}
+					this.htzy();//获取合同摘要信息
+	            }, (err)=>{
+					console.log(err);
+	            });
+			},
 			pops(state){//合同摘要
 				this.popshow = state;
+			},
+			htzy(){//合同摘要接口
+				const url = this.$api + "/yhcms/web/qdyongjin/getHetongEase.do";
+				axios.post(url,{
+            		"htid":this.allData.hetongid//合同id
+	            }).then((res)=>{
+	            	if(res.data.success){
+	            		this.compact = res.data.data;
+//						console.log(this.compact);
+	            	}
+	            }, (err)=>{
+					console.log(err);
+	            });
 			},
 		}
 	}

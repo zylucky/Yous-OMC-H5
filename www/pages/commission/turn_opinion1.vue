@@ -42,7 +42,7 @@
 		<div class="idea_box">
 			<textarea name="" placeholder="请输入您的驳回理由（非必填）" v-model="idea"></textarea>
 		</div>
-		<button class="btn">确认驳回</button>
+		<button class="btn" @click="betrue">确认驳回</button>
 	</div>
 </template>
 
@@ -127,12 +127,18 @@ import { Indicator } from 'mint-ui';
 							position: 'center',
 							duration: 2000
 						});
-						location.reload();
+						this.$router.push({
+							path:'/commission_ask1',//跳转审批确认列表
+						})
+//						location.reload();
 					}
 					console.log(res);
 	            }, (err)=>{
 					console.log(err);
 	            });
+		    },
+		    betrue(){
+		    	this.approve();
 		    },
 		},
 	}
