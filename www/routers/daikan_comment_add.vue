@@ -12,6 +12,12 @@
     textarea{  background-color: white;  }
     .pop-right{float: right;color:rgb(28,119,212);font-size: .3rem;padding-right: .2rem;padding-top: .2rem;}
     .pop-left{float: left;color:rgb(28,119,212);font-size: .3rem;padding-left: .2rem;padding-top: .2rem;}
+    input::-webkit-input-placeholder {
+        text-align: right;
+    }
+    .mint-field .mint-cell-title{
+        width:135px;
+    }
 </style>
 <template>
     <div class="container unique-comment-add">
@@ -25,8 +31,8 @@
         <mt-field label="客户预算" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehuyusuan"></mt-field>
         <mt-field label="需求面积" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehumianji"></mt-field>
         <mt-field label="办公人数" style="color: #333;"  type="text" placeholder="请输入办公人数" v-model="bangongrenshu"></mt-field>
-        <mt-field label="所选区域" style="color: #333;"  type="text" placeholder="请输入所选区域" v-model="kehuqvyv"></mt-field>
-        <mt-cell class="unique-kehu" title="用房时间" is-link :value="kehuyongfangshijian" @click.native="yongfangshijian()">
+        <mt-field label="客户所选区域" style="color: #333;"  type="text" placeholder="请输入所选区域" v-model="kehuqvyv"></mt-field>
+        <mt-cell class="unique-kehu" title="客户用房时间" is-link :value="kehuyongfangshijian" @click.native="yongfangshijian()">
         </mt-cell>
         <mt-cell class="unique-kehu" title="是否负责人" is-link :value="shifoufuzeren" @click.native="fuzeren()">
         </mt-cell>
