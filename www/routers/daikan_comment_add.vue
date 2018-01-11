@@ -12,6 +12,12 @@
     textarea{  background-color: white;  }
     .pop-right{float: right;color:rgb(28,119,212);font-size: .3rem;padding-right: .2rem;padding-top: .2rem;}
     .pop-left{float: left;color:rgb(28,119,212);font-size: .3rem;padding-left: .2rem;padding-top: .2rem;}
+    input::-webkit-input-placeholder {
+        text-align: right;
+    }
+    .mint-field .mint-cell-title{
+        width:135px;
+    }
 </style>
 <template>
     <div class="container unique-comment-add">
@@ -24,6 +30,13 @@
         </mt-cell>
         <mt-field label="客户预算" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehuyusuan"></mt-field>
         <mt-field label="需求面积" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehumianji"></mt-field>
+        <mt-field label="办公人数" style="color: #333;"  type="text" placeholder="请输入办公人数" v-model="bangongrenshu"></mt-field>
+        <mt-field label="客户所选区域" style="color: #333;"  type="text" placeholder="请输入所选区域" v-model="kehuqvyv"></mt-field>
+        <mt-cell class="unique-kehu" title="客户用房时间" is-link :value="kehuyongfangshijian" @click.native="yongfangshijian()">
+        </mt-cell>
+        <mt-cell class="unique-kehu" title="是否负责人" is-link :value="shifoufuzeren" @click.native="fuzeren()">
+        </mt-cell>
+        <mt-field label="下次渠道推荐说明" style="color: #333;"  type="text" placeholder="请输入说明" v-model="xiaciqvdaoshuoming"></mt-field>
         <mt-popup
                 style="width:100%;"
                 v-model="popupVisible"
@@ -36,6 +49,29 @@
             </div>
             <mt-picker  :slots="slots" @change="onValuesChange"></mt-picker>
         </mt-popup>
+        <mt-popup
+                style="width:100%;"
+                v-model="fzrpopupVisible"
+                position="bottom"
+                popup-transition="popup-fade"
+                defaultIndex="0"
+        >
+            <div style="margin-bottom: 1rem;">
+                <span class="pop-right" @click="fzrconfirm">完成</span>
+                <span class="pop-left" @click="fzrpopupVisible=false;">取消</span>
+            </div>
+            <mt-picker  :slots="fzrslots" @change="onfzrValuesChange"></mt-picker>
+        </mt-popup>
+        <mt-datetime-picker
+                ref="picker"
+                type="date"
+                year-format="{value} 年"
+                month-format="{value} 月"
+                date-format="{value} 日"
+                @confirm="yongfangConfirm"
+        >
+        </mt-datetime-picker>
+
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <div v-for="(cell,index1) in property"
         :key="index1"
@@ -76,22 +112,38 @@
 <script>
     import {Toast} from 'mint-ui'; //toast
     import { MessageBox } from 'mint-ui';
+    import { DatetimePicker } from 'mint-ui';
     export default{
         data(){
             return {
                 yt:'请选择',
                 yttmp:'',
                 kehuyusuan:null,
+                bangongrenshu:null,
+                kehuqvyv:null,
                 kehumianji:null,
+                shifoufuzeren:'请选择',
+                xiaciqvdaoshuoming:null,
+                kehuyongfangshijian:'请选择',
                 popupVisible:false,
+
+                fzrtmp:null,
+                fzrpopupVisible:false,
                 slots:
                     [{
                         flex: 1,
                         values: [],
                         className: 'slot3',
                         textAlign: 'center'
-                    }]
-                ,
+                    }],
+                fzrslots:
+                    [{
+                        flex: 1,
+                        values: [],
+                        className: 'slot3',
+                        textAlign: 'center',
+                        defaultIndex:0,
+                    }],
                 response:{},
                 enum1:[],
                 enum2:[],
@@ -115,6 +167,29 @@
             onValuesChange(picker, values) {
                 this.yttmp = values[0];
             },
+            yongfangshijian(){
+                this.$refs.picker.open();
+            },
+            yongfangConfirm(value){
+                var date = new Date(value);
+                var year = date.getFullYear();
+                var month = date.getMonth()+1;
+                var day = date.getDate();
+                if(month<10){month = '0'+month;}
+                if(day<10){day = '0'+day;}
+                this.kehuyongfangshijian = year+'-'+month+'-'+day;
+            },
+            fzrconfirm(){
+                this.shifoufuzeren = this.fzrtmp;
+                this.fzrpopupVisible = false;
+            },
+            fuzeren(){
+                this.fzrpopupVisible = true;
+            },
+            onfzrValuesChange(picker, values) {
+                console.log(values)
+                this.fzrtmp = values[0];
+            },
             getEnum(){
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"manyido1"}).then((res)=>{
                     var response = JSON.parse(res.data);
@@ -135,6 +210,8 @@
                         this.enum3.forEach((item,index)=>{
                             this.slots[0].values.push(item.enumValue)
                         })
+                        this.fzrslots[0].values.push('是');
+                        this.fzrslots[0].values.push('否');
                     }
                 });
             },
@@ -192,7 +269,14 @@
                         "dakaid":this.$route.params.id,
                         "kehuyetai":this.yt=='请选择'?'':this.yt,
                         "kehuyusuan":this.kehuyusuan,
-                        "kehumianji":this.kehumianji},
+                        "kehumianji":this.kehumianji,
+                        "bangongrenshu":this.kehumianji,
+                        "kehuqvyv":this.kehuqvyv,
+                        "kehumianji":this.kehumianji,
+                        "shifoufuzeren":this.shifoufuzeren=='请选择'?'':this.shifoufuzeren,
+                        "xiaciqvdaoshuoming":this.xiaciqvdaoshuoming,
+                        "kehuyongfangshijian":this.kehuyongfangshijian=='请选择'?'':this.kehuyongfangshijian,
+                    },
                     "fangzis":this.property,
                 }
                 this.$http.post(this.$api+'/yhcms/web/qddaka/savePingJia.do',params ).then((res)=>{
