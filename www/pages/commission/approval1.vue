@@ -99,12 +99,12 @@
   					img{width: 100%;}
   					i{
   						position: absolute;
-  						bottom: -0.6rem;
+  						bottom: -1rem;
   						left: 50%;
   						margin-left: -0.01rem;
   						display: inline-block;
   						width: 0.02rem;
-  						height: 0.6rem;
+  						height: 1rem;
   						border-left: 1px dashed #3d3331;
   					}
   				}
@@ -421,10 +421,16 @@
 						<p class="plan_t">
 							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
 							<span>{{item.person}}</span>
-							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>							
+							<span :style="item.shenpi!=1?'color: #ff7072':''">
+								<i v-if='item.shenpi==1'>{{item.shenpi==1?"已审批":"待审批"}}</i>
+								<i v-if='item.shenpi!=1 && item.shenpi!=2'>待审批</i>
+								<i v-if='item.shenpi==2'>{{item.shenpi==2?"已驳回":"已审批"}}</i>
+							</span>							
 						</p>
 						<p class="plan_b">{{item.shuoming}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
+						<br v-if='item.shenpi==2' />
+						<div v-if='item.shenpi==2' style="width: 100%;border-bottom: 1px solid #ff7072;"></div>
 					</li>
 				</ul>
 			</div>
@@ -544,7 +550,7 @@ import { Indicator } from 'mint-ui';
 	           }).then((res)=>{
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
-//					console.log(this.spData);
+					console.log(this.spData);
 //					console.log(this.csData);
 					for(var i in this.spData){
 						for(var j in this.spData[i]){
