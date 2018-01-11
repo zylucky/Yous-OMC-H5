@@ -325,7 +325,7 @@
 				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
 				tel: '', //联系方式
-				yjxx:'',//佣金信息状态
+				yjxx:true,//佣金信息状态
 				invoice: '请选择发票类型', //发票类型
 				slots: [{
 					flex: 1,
@@ -427,7 +427,7 @@
 						this.theinvoice.number = this.xsData.xsfpnashuiren;
 						this.theinvoice.address = this.xsData.xsfpdizhidianhua;
 						this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
-//						this.invoice = this.xsData.xsfpdanwei;
+						this.invoice = this.xsData.xsfpdanwei;
 					}
 	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
@@ -436,7 +436,7 @@
 	            		this.btnshow = false;
 	            	}
 	            	if(this.xsData.taskZt==4){//驳回状态
-	            		this.btntext = '重新提交'
+	            		this.btntext = '提交'
 	            		if(this.zt == 0){
 	            			$('.new_box input').attr('disabled','disabled');//只读不可更改
 		            		this.options[0].disabled = true//禁用单选
