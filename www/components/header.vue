@@ -258,13 +258,13 @@
         $("body").removeAttr("style");
         this.$router.push({path:'/commission_list'});
       },
-      yjsp(){//佣金审批
+      yjsp(){//佣金确认
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
-        this.$router.push({path:'/commission_ask'});
+        this.$router.push({path:'/confirmed_list'});
       },
-      yjsp1(){//佣金审批1
+      yjsp1(){//佣金审批
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");

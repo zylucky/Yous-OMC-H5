@@ -470,19 +470,11 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn_box" v-show='success'>
+		<div class="btn_box" v-show='success == 1'>
 			<ul>
 				<li @click="consent">同意<span></span></li>
 				<li @click="turnto">驳回</li>
 			</ul>
-		</div>
-		<!--审批意见-->
-		<div class="boxs" v-if="ideashow">
-			<!--填写区域-->
-			<div class="idea_box">
-				<textarea name="" :placeholder="tiptext" v-model="idea"></textarea>
-			</div>
-			<button class="spbtn" @click="betrue">{{btntext}}</button>
 		</div>
 	</div>
 </template>
@@ -494,8 +486,6 @@ import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
-				btntext:'',//按钮内容
-				tiptext:'',//意见框提示内容
 				allData:{},//页面数据详情
 				spData:[],//审批任务流数据
 				csData:[],//抄送任务流数据
@@ -505,11 +495,9 @@ import { Indicator } from 'mint-ui';
 		        fy: 0,
 		        upload: 0,
 		        uploaded: 0,
-		        idea:'',
-		        ideashow:false,
 		        compact:{},//合同摘要数据
 		        shenpi:'',
-		        success:false,
+		        success:1,
 //		        success1:false,
 			}
 		},
@@ -610,65 +598,26 @@ import { Indicator } from 'mint-ui';
 			})
 	      },
 	      consent(){
-//	      	this.saveToserver();//上传图片
 	      	this.shenpi = '1';
-	      	this.btntext = '确认同意';
-	      	this.tiptext = '请输入您的审批意见（非必填）';
-	      	this.ideashow = true;
+			this.$router.push({
+				path:'/approval_opinion1',//跳转到审批意见功能界面
+				query:{
+					'shenpi' : '1',
+					'id' : this.$route.query.id
+				}
+			})
 	      },
 	      turnto(){
 	      	this.shenpi = '2';
-	      	this.btntext = '确认驳回';
-	      	this.tiptext = '请输入您的驳回理由（非必填）';
-	      	this.ideashow = true;
-	      },
-	      betrue(){//确认意见
-	      	this.ideashow = false;
-//	      	if(this.imgList.length>0){
-	      		this.approve();
-//	      	}else{
-//	      		Toast({
-//	                message: '请添加发票图片',
-//	                position: 'center'
-//	            });
-//	      	}
-	      },
-	      approve(){//审批
-	      	const url = this.$api + "/yhcms/web/qdyongjin/Sp.do";
-	      	var cookxs = JSON.parse(localStorage.getItem('cookxs'));
-			axios.post(url,{
-				"cookie":cookxs,
-        		'id':this.nowData.id,
-				'sourcetype':this.nowData.sourcetype,
-				'sourcemid':this.nowData.sourcemid,
-				'itemid':this.nowData.itemid,
-				'shenpi':this.shenpi,
-				'personid':this.nowData.personid,
-				'person':this.nowData.person,
-				'shuoming':this.idea,
-				'banben':this.nowData.banben,
-				'sptype':this.nowData.sptype,
-				'persontype':this.nowData.persontype,
-				'isfock':this.nowData.isfock,
-				'pici':this.nowData.pici
-            }).then((res)=>{
-				if(res.data.success){
-	            	Toast({
-						message: '审批成功',
-						position: 'bottom',
-						duration: 2000
-					});	
-//					this.success1 = true;
-					this.$router.push({
-						path:'/commission_ask1',//跳转审批列表
-					})
-					location.reload();
+	      	this.$router.push({
+				path:'/turn_opinion1',//跳转到审批意见功能界面
+				query:{
+					'shenpi' : '2',
+					'id' : this.$route.query.id
 				}
-				console.log(res);
-            }, (err)=>{
-				console.log(err);
-            });
+			})
 	      },
+
 	      
 		}
 	}

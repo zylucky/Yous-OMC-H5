@@ -335,7 +335,7 @@ import { Indicator } from 'mint-ui';
 					path:'/approval1',//跳转到审批页面
 					query:{
 						"id":id,//所传参数
-						"btnshow":true
+						"btnshow":1
 					}
 				})
 			},
@@ -344,7 +344,7 @@ import { Indicator } from 'mint-ui';
 					path:'/approval1',//跳转到审批页面
 					query:{
 						"id":id,//所传参数
-						"btnshow":false
+						"btnshow":0
 					}
 				})
 			}

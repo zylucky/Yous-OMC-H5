@@ -423,6 +423,10 @@ var router = new VueRouter({
       path: '/approval_opinion',
       component: require('./pages/commission/approval_opinion.vue')
     },
+    {//审批意见
+      path: '/approval_opinion1',
+      component: require('./pages/commission/approval_opinion1.vue')
+    },
     // {//驳回意见
     //   path: '/turn_opinion',
     //   name: 'turn_opinion',
@@ -434,6 +438,10 @@ var router = new VueRouter({
     {//驳回意见
       path: '/turn_opinion',
       component: require('./pages/commission/turn_opinion.vue')
+    },
+    {//驳回意见
+      path: '/turn_opinion1',
+      component: require('./pages/commission/turn_opinion1.vue')
     },
     // {//添加抄送人
     //   path: '/copy_p',

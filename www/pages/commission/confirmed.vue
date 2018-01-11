@@ -527,6 +527,9 @@ import { Indicator } from 'mint-ui';
 	            });
 			},
 			addcopy(){//添加抄送人
+				if(this.imgList.length != 0){
+					this.saveToserver();//上传图片	
+				}
 				this.$router.push({
 					path:'/copy_p',//跳转抄送人页面
 					query:{
