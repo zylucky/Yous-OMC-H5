@@ -140,7 +140,7 @@
 			</div>
 			<!--待处理-->
 			<ul class="list" v-if="tabq=='0'">
-				<li v-for="item in pendData" @click="detail(item.id,1)">
+				<li v-for="item in pendData" @click="detail(item.id,1,item.taskZt)">
 					<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span> 
@@ -158,7 +158,7 @@
 			</ul>
 			<!--已处理-->
 			<ul class="list" v-if="tabq=='1'">
-				<li v-for="item in passData"  @click="detail(item.id,0)">
+				<li v-for="item in passData"  @click="detail(item.id,0,item.taskZt)">
 					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>
@@ -263,14 +263,25 @@ import axios from 'axios';
 				}
 			},
 			//跳转数据
-			detail(id,zt){
-				this.$router.push({
-					path:'/commission',//跳转佣金信息
-					query:{
-						"xsid":id,//所传参数
-						"zt":zt//处理状态1未处理，2已处理
-					}
-				})
+			detail(id,zt,taskzt){
+				console.log(taskzt);
+				if(taskzt == 4){//已驳回
+					this.$router.push({
+						path:'/commission_turn',//跳转佣金信息
+						query:{
+							"xsid":id,//所传参数
+							"zt":zt//处理状态1未处理，2已处理
+						}
+					})	
+				}else{
+					this.$router.push({
+						path:'/commission',//跳转佣金信息
+						query:{
+							"xsid":id,//所传参数
+							"zt":zt//处理状态1未处理，2已处理
+						}
+					})					
+				}
 			}
 			
 		}
