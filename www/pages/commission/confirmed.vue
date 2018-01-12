@@ -296,9 +296,16 @@
   		bottom: 0;
   		background: rgba(0,0,0,0.5);
   		display: table-cell;
-        vertical-align: middle;
         text-align: center;
-        img{width: 100%;vertical-align: middle;}
+        img{
+        	vertical-align: middle;
+        	max-width: 100%;
+        }
+        span{
+        	display: inline-block;
+        	height: 100%;
+        	vertical-align: middle;
+        }
   	}
 </style>
 
@@ -462,6 +469,7 @@
 		<!--大图显示-->
 		<div class="bigfp" v-if="fppic" @click="fppic=false">
 			<img :src='bigfpsrc'/>
+			<span></span>
 		</div>
 	</div>
 </template>
