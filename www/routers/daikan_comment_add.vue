@@ -1,4 +1,4 @@
-<style>
+<style  lang="less">
     @import "../resources/css/reset.css";
     .comment_btn1{  border-radius:5px;height: 26px;  width:2.16rem;font-size:0.25rem;  }
     .comment_btn{  border-radius:5px;height: 26px;  width:1.6rem;font-size:0.25rem;  }
@@ -12,11 +12,11 @@
     textarea{  background-color: white;  }
     .pop-right{float: right;color:rgb(28,119,212);font-size: .3rem;padding-right: .2rem;padding-top: .2rem;}
     .pop-left{float: left;color:rgb(28,119,212);font-size: .3rem;padding-left: .2rem;padding-top: .2rem;}
-    input::-webkit-input-placeholder {
-        text-align: right;
+    .unique-comment-add input::-webkit-input-placeholder {
+        text-align: right!important;
     }
-    .mint-field .mint-cell-title{
-        width:135px;
+    .unique-comment-add .mint-field .mint-cell-title{
+        width:2.7rem;
     }
 </style>
 <template>
