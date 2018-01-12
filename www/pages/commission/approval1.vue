@@ -558,6 +558,17 @@ import { Indicator } from 'mint-ui';
 	           }).then((res)=>{
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
+	            	var arrdata = res.data.data.shenpi;//拷贝
+	            	arrdata.reverse();
+	            	for(var m in arrdata){//当前审批节点数据截取
+						for(var n in arrdata[m]){
+							if(n == 'shenpi' && arrdata[m][n] == 2){
+								console.log('==============shenpi====================');
+								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
+							}
+						}
+					}
+	            	
 					console.log(this.spData);
 //					console.log(this.csData);
 					for(var i in this.spData){//当前审批节点数据截取
