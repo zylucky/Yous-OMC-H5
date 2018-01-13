@@ -429,7 +429,7 @@
 						this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
 						this.invoice = this.xsData.xsfpdanwei;
 					}
-	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
 	            		this.options[0].disabled = true//禁用单选
 	            		this.options[1].disabled = true//禁用单选
@@ -537,7 +537,7 @@
 					this.shade = true;
 					this.pickshow = true;
 				}
-				if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+				if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
 					return;
 				}
 				if(this.xsData.taskZt==4){//驳回状态

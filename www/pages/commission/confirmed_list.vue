@@ -16,6 +16,7 @@
   		background: #fff;
   		-webkit-box-shadow:0px 2px 3px #D6D6D6; 
   		box-shadow:0px 2px 3px #D6D6D6;
+  		z-index: 1;
   		.nav{
   			display: flex;
   			li{

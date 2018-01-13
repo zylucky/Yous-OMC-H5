@@ -268,6 +268,27 @@
 			left: 3.5rem;
 		}
 	}
+	.bigfp{
+  		position: fixed;
+  		z-index: 99;
+  		left: 0;
+  		right: 0;
+  		top: 0;
+  		bottom: 0;
+  		overflow: auto;
+  		background: rgba(0,0,0,0.5);
+  		display: table-cell;
+        text-align: center;
+        img{
+        	vertical-align: middle;
+        	max-width: 100%;
+        }
+        span{
+        	display: inline-block;
+        	height: 100%;
+        	vertical-align: middle;
+        }
+  	}
 </style>
 
 <template>
@@ -279,8 +300,8 @@
 						<img src="../../resources/images/commission/head_img.png" alt="" />
 					</li>
 					<li>
-						<div class="name">{{nowData.person}}</div>
-						<div class="state">审批通过</div>
+						<div class="name">{{allData.xiaoshou}}</div>
+						<div class="state">抄送给您</div>
 						<span class="state_pic"></span>
 					</li>
 				</ul>
@@ -348,20 +369,23 @@
 			<div class="img_box">
 				<p class="pic">图片</p>
 				<p style="margin-bottom: 0;" class="pic_img">
-					<span v-for="item in allData.imgList"><img :src="item.imgFapiao" alt="" /></span>
+					<span v-for="item in allData.imgList" @click="fdtp(item.imgFapiao)">
+						<img :src="item.imgFapiao" alt="" />
+					</span>
 				</p>
 			</div>
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="item in this.splist.shenpi">
+					<li v-for="item in this.spData" :style="item.shenpi == 2?'padding-bottom:0.6rem':''">
 						<p class="plan_t">
-							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
+							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line" v-if="item.shenpi != 2"></i></span>
 							<span>{{item.person}}</span>
 							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>						
 						</p>
 						<p class="plan_b">{{item.shuoming}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
+						<p v-if="item.shenpi == 2" style="position: absolute;width: 7.5rem;height:0.1rem;background:#f0eff5;left: -0.28rem;bottom: 0;"></p>
 					</li>
 				</ul>
 			</div>
@@ -410,6 +434,10 @@
 				</ul>
 			</div>
 		</div>
+		<!--大图显示-->
+		<div class="bigfp" v-if="fppic" @click="fppic=false">
+			<img :src='bigfpsrc'/><span></span>
+		</div>
 	</div>
 </template>
 
@@ -427,6 +455,8 @@ import { Indicator } from 'mint-ui';
 				spData:[],//审批任务流数据
 				csData:[],//抄送任务流数据
 				nowData:{},//当前审核结点数据
+				bigfpsrc:'',//发票路径
+		        fppic:false,
 
 			}
 		},
@@ -440,7 +470,7 @@ import { Indicator } from 'mint-ui';
             		"id":this.$route.query.id,
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
-//					console.log(this.allData);
+					console.log(this.allData);
 					this.obtaintask();//获取任务流
 	            }, (err)=>{
 					console.log(err);
@@ -454,6 +484,17 @@ import { Indicator } from 'mint-ui';
 	           		this.splist = res.data.data;
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
+	            	var arrdata = this.spData.slice(0);//数组深拷贝
+	            	arrdata.reverse();//反转
+	            	for(var m in arrdata){//驳回审批节点数据开始审批
+						for(var n in arrdata[m]){
+							if(n == 'shenpi' && arrdata[m][n] == 2){
+//								console.log('==============shenpi====================');
+								this.spData = arrdata.slice(0,Number(m)).reverse();
+								return
+							}
+						}
+					}
 //					console.log(this.spData);
 //					console.log(this.splist);
 					for(var i in this.spData){
@@ -485,6 +526,11 @@ import { Indicator } from 'mint-ui';
 					console.log(err);
 	            });
 			},
+			fdtp(src){
+		      	this.fppic = true;
+		      	this.bigfpsrc = src;
+	//	      	console.log(src);
+		    },
 		}
 	}
 </script>

@@ -324,6 +324,7 @@
   		right: 0;
   		top: 0;
   		bottom: 0;
+  		overflow: auto;
   		background: rgba(0,0,0,0.5);
   		display: table-cell;
         text-align: center;
@@ -424,20 +425,19 @@
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="item in spData">
+					<li v-for="item in spData" :style="item.shenpi == 2?'padding-bottom:0.6rem':''">
 						<p class="plan_t">
-							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
+							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line" v-if="item.shenpi != 2"></i></span>
 							<span>{{item.person}}</span>
 							<span :style="item.shenpi!=1?'color: #ff7072':''">
 								<i v-if='item.shenpi==1'>{{item.shenpi==1?"已审批":"待审批"}}</i>
-								<i v-if='item.shenpi!=1 && item.shenpi!=2 && item.isfock'>待审批</i>
+								<i style="color: #fea843" v-if='item.shenpi!=1 && item.shenpi!=2 && item.isfock'>审批中</i>
 								<i v-if='item.shenpi==2'>{{item.shenpi==2?"已驳回":"已审批"}}</i>
 							</span>							
 						</p>
 						<p class="plan_b">{{item.shuoming}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
-						<br v-if='item.shenpi==2' />
-						<div v-if='item.shenpi==2' style="width: 100%;border-bottom: 1px solid #ff7072;"></div>
+						<p v-if="item.shenpi == 2" style="position: absolute;width: 7.5rem;height:0.1rem;background:#f0eff5;left: -0.28rem;bottom: 0;"></p>
 					</li>
 				</ul>
 			</div>
@@ -476,7 +476,7 @@
 							<span></span>
 						</p>
 					</li>
-					<li>
+					<li v-if='compact.zujinList.length != 0'>
 						<!--租金租期信息compact.zujinList-->
 						<p v-for="(item,index) in compact.zujinList">
 							<span>租期{{index + 1}}：</span>
@@ -484,7 +484,7 @@
 							<span>￥{{item.yuezujin | splitK}}</span>
 						</p>
 					</li>
-					<li>
+					<li v-if='compact.fukuanFangshiList.length != 0'>
 						<!--付款方式信息compact.fukuanFangshiList-->
 						<p v-for="(item,index) in compact.fukuanFangshiList">
 							<span>付款方式：</span>
@@ -504,8 +504,7 @@
 		</div>
 		<!--大图显示-->
 		<div class="bigfp" v-if="fppic" @click="fppic=false">
-			<img :src='bigfpsrc'/>
-			<span></span>
+			<img :src='bigfpsrc'/><span></span>
 		</div>
 	</div>
 </template>
@@ -545,7 +544,7 @@ import { Indicator } from 'mint-ui';
             		"id":this.$route.query.id,
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
-					console.log(this.allData);
+//					console.log(this.allData);
 					this.obtaintask();//获取任务流
 	            }, (err)=>{
 					console.log(err);
@@ -563,19 +562,20 @@ import { Indicator } from 'mint-ui';
 	            	for(var m in arrdata){//驳回审批节点数据开始审批
 						for(var n in arrdata[m]){
 							if(n == 'shenpi' && arrdata[m][n] == 2){
+//								console.log(this.spData)
 								console.log('==============shenpi====================');
 								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
+								return
 							}
 						}
 					}
-	            	
-					console.log(this.spData);
+//					console.log(this.spData);
 //					console.log(this.csData);
 					for(var i in this.spData){//当前审批节点数据截取
 						for(var j in this.spData[i]){
 							if(j == 'isfock' && this.spData[i][j] == true){
 								this.nowData = this.spData[i];
-								console.log(this.nowData);
+//								console.log(this.nowData);
 							}
 						}
 					}
@@ -612,7 +612,7 @@ import { Indicator } from 'mint-ui';
 					}
 				}
 				this.copyData = this.copyData.concat(copyData1);
-				console.log(this.copyData)
+//				console.log(this.copyData)
 			},
 			pops(state){//合同摘要
 				this.popshow = state;
@@ -623,7 +623,7 @@ import { Indicator } from 'mint-ui';
 		            }).then((res)=>{
 		            	if(res.data.success){
 		            		this.compact = res.data.data;
-							console.log(this.compact);
+//							console.log(this.compact);
 		            	}
 		            }, (err)=>{
 						console.log(err);

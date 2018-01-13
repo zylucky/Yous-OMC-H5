@@ -273,15 +273,46 @@ import axios from 'axios';
 							"zt":zt//处理状态1未处理，2已处理
 						}
 					})	
-				}else{
+				}
+				if(taskzt == 3){//审批通过
 					this.$router.push({
-						path:'/commission',//跳转佣金信息
+						path:'/commission_rule',//跳转审批通过详情
 						query:{
 							"xsid":id,//所传参数
 							"zt":zt//处理状态1未处理，2已处理
 						}
 					})					
 				}
+				if(taskzt == 2){//审批已处理
+					if(!this.passData.qdhuming){
+						this.$router.push({
+							path:'/commission_ru',//跳转待确认详情
+							query:{
+								"xsid":id,//所传参数
+								"zt":zt//处理状态1未处理，2已处理
+							}
+						})		
+					}else{
+						this.$router.push({
+							path:'/commission_un',//跳转未确认详情
+							query:{
+								"xsid":id,//所传参数
+								"zt":zt//处理状态1未处理，2已处理
+							}
+						})					
+					}
+				}
+				
+				if(taskzt == 0){
+					this.$router.push({
+						path:'/commission',//跳转数据修改填写
+						query:{
+							"xsid":id,//所传参数
+							"zt":zt//处理状态1未处理，2已处理
+						}
+					})					
+				}
+				
 			}
 			
 		}
