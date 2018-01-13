@@ -218,6 +218,12 @@
 	background: url(../../resources/images/commission/btn.png) no-repeat center;
 	background-size: cover;
 }
+.picker-center-highlight:before, .picker-center-highlight:after{
+	background-color:#ccc !important;
+}
+.picker-item.picker-selected{
+	font-weight: bold!important;
+}
 </style>
 
 <template>
@@ -581,7 +587,7 @@
 			splitk(num) { //千位分隔符 
 				if(num != ''){
 					var number = parseInt(num.replace(/,/g,'')).toLocaleString();
-					return number;				
+					return number;										
 				}else{
 					return '';
 				}
@@ -591,6 +597,9 @@
 			},
 			inputFunc() {
 				this.money = this.splitk(this.money);
+				if(this.money == 'NaN'){
+					this.money = ''
+				}
 			},
 			bas(){
 				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == '' || this.formula == '' || this.yjxx == ''){

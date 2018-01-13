@@ -87,6 +87,17 @@
 			background-size: cover;
 			animation: change 1s linear;
 		}
+		.icon1{
+			position: absolute;
+			top: 0.25rem;
+			right: 0.55rem;
+			display: block;
+			width: 1.45rem;
+			height: 1.45rem;
+			background: url(../../resources/images/commission/icon.png) no-repeat center;
+			background-size: cover;
+			animation: change 1s linear;
+		}
 	}
 	.pop_box{
 		position: fixed;
@@ -212,7 +223,7 @@
 						<i @click="invoice">发票抬头</i>
 					</li>
 				</ul>
-				<span class="icon"></span>
+				<span :class="xsData.qdhuming?'icon1':'icon'"></span>
 			</div>
 			<!--收款方信息-->
 			<div class="new_box" v-if="xsData.qdhuming">

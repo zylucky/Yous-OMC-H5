@@ -415,7 +415,7 @@
 							<span></span>
 						</p>
 					</li>
-					<li v-if='compact.zujinList.length != 0'>
+					<li v-if='compact.zujinList && compact.zujinList.length != 0'>
 						<!--租金租期信息compact.zujinList-->
 						<p v-for="(item,index) in compact.zujinList">
 							<span>租期{{index + 1}}：</span>
@@ -423,7 +423,7 @@
 							<span>￥{{item.yuezujin | splitK}}</span>
 						</p>
 					</li>
-					<li v-if='compact.fukuanFangshiList.length != 0'>
+					<li v-if='compact.zujinList && compact.fukuanFangshiList.length != 0'>
 						<!--付款方式信息compact.fukuanFangshiList-->
 						<p v-for="(item,index) in compact.fukuanFangshiList">
 							<span>付款方式：</span>

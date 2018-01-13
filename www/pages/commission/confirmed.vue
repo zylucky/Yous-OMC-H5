@@ -155,7 +155,7 @@
 	  				display: flex;
 	  				flex-direction: column;
 	  				align-items:center;
-	  				width: 0.8rem;
+	  				/*width: 0.8rem;*/
   					height: 1.55rem;
   					margin-right: 0.3rem;
   					margin-bottom: 0.2rem;
@@ -446,7 +446,7 @@
 							<span></span>
 						</p>
 					</li>
-					<li v-if='compact.zujinList.length != 0'>
+					<li v-if='compact.zujinList && compact.zujinList.length != 0'>
 						<!--租金租期信息compact.zujinList-->
 						<p v-for="(item,index) in compact.zujinList">
 							<span>租期{{index + 1}}：</span>
@@ -454,11 +454,11 @@
 							<span>￥{{item.yuezujin | splitK}}</span>
 						</p>
 					</li>
-					<li v-if='compact.fukuanFangshiList.length != 0'>
+					<li v-if='compact.zujinList && compact.fukuanFangshiList.length != 0'>
 						<!--付款方式信息compact.fukuanFangshiList-->
 						<p v-for="(item,index) in compact.fukuanFangshiList">
 							<span>付款方式：</span>
-							<span>{{item.startdate | timed}}-{{item.enddate | timed}}（押二付六）</span>
+							<span>{{item.startdate | timed}}-{{item.enddate | timed}}</span>
 							<span></span>
 						</p>
 					</li>

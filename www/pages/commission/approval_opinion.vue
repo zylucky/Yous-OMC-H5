@@ -33,6 +33,9 @@
   		font-size: @font34;
   		color: #fff;
   		text-align: center;
+  		position: absolute;
+		left: 50%;
+		margin-left: -2.75rem;
   	}
 </style>
 
