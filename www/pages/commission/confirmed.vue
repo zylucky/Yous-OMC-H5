@@ -394,11 +394,15 @@
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="item in this.splist.shenpi">
+					<li v-for="item in this.spData">
 						<p class="plan_t">
 							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
 							<span>{{item.person}}</span>
-							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>					
+							<span :style="item.shenpi!=1?'color: #ff7072':''">
+								<i v-if='item.shenpi==1'>{{item.shenpi==1?"已审批":"待审批"}}</i>
+								<i v-if='item.shenpi!=1 && item.shenpi!=2 && item.isfock'>待审批</i>
+								<i v-if='item.shenpi==2'>{{item.shenpi==2?"已驳回":"已审批"}}</i>
+							</span>	
 						</p>
 						<p class="plan_b">{{item.shuoming}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
@@ -522,6 +526,16 @@ import { Indicator } from 'mint-ui';
 	           		this.splist = res.data.data;
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
+	            	var arrdata = this.spData.slice(0);//数组深拷贝
+	            	arrdata.reverse();//反转
+	            	for(var m in arrdata){//驳回审批节点数据开始审批
+						for(var n in arrdata[m]){
+							if(n == 'shenpi' && arrdata[m][n] == 2){
+//								console.log('==============shenpi====================');
+								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
+							}
+						}
+					}
 //					console.log(this.spData);
 //					console.log(this.splist);
 					for(var i in this.spData){
