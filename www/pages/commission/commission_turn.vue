@@ -255,8 +255,8 @@
 						<p>{{xsData.xsfpnashuiren}}</p>
 					</li>
 				</ul>
-				<!--------------->
-				<ul>
+				
+				<ul v-if="xsData.xsfpdizhidianhua">
 					<li>
 						<p>电话：</p>
 						<p>{{xsData.xsfpdizhidianhua.split(' ')[1]}}</p>
@@ -267,11 +267,11 @@
 					</li>
 					<li>
 						<p>开户银行：</p>
-						<p>{{xsData.xsfpkaihuhang}}</p>
+						<p>{{xsData.xsfpkaihuhang.split(' ')[0]}}</p>
 					</li>
 					<li>
 						<p>银行账号：</p>
-						<p>{{xsData.qdzhanghao | delkg}}</p>
+						<p>{{xsData.xsfpkaihuhang.split(' ')[1] | delkg}}</p>
 					</li>
 				</ul>
 			</div>

@@ -309,9 +309,13 @@ var router = new VueRouter({
       path: '/commission_list',
       component: require('./pages/commission/commission_list.vue')
     },
-    {//已确认页面
+    {//已确认审核通过页面
       path: '/commission_rule',
       component: require('./pages/commission/commission_rule.vue')
+    },
+    {//已确认页面
+      path: '/commission_ru',
+      component: require('./pages/commission/commission_ru.vue')
     },
     {//未确认页面
       path: '/commission_un',
@@ -365,11 +369,11 @@ var router = new VueRouter({
         path: '/news',
         component: require('./pages/channel/news.vue')
     },
-    {//测试
+    {//佣金确认列表
       path: '/confirmed_list',
       component: require('./pages/commission/confirmed_list.vue')
     },
-    {//测试
+    {//佣金确认列表详情
       path: '/confirmed',
       component: require('./pages/commission/confirmed.vue')
     },

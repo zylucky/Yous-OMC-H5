@@ -218,6 +218,12 @@
 	background: url(../../resources/images/commission/btn.png) no-repeat center;
 	background-size: cover;
 }
+.picker-center-highlight:before, .picker-center-highlight:after{
+	background-color:#ccc !important;
+}
+.picker-item.picker-selected{
+	font-weight: bold!important;
+}
 </style>
 
 <template>
@@ -343,7 +349,7 @@
 							companyName: '北京幼师科技有限公司',
 							number: '9111 0105 3064 0709 X3',
 							address: '北京市朝阳区东三环中路39号院24号楼22层2602 010-56143922',
-							bankplace: '招商银行北京分行建国门支行110921667410910'
+							bankplace: '招商银行北京分行建国门支行 110921667410910'
 						},
 						{
 							id: 2,
@@ -429,7 +435,7 @@
 						this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
 						this.invoice = this.xsData.xsfpdanwei;
 					}
-	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
 	            		this.options[0].disabled = true//禁用单选
 	            		this.options[1].disabled = true//禁用单选
@@ -537,7 +543,7 @@
 					this.shade = true;
 					this.pickshow = true;
 				}
-				if(this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
+				if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
 					return;
 				}
 				if(this.xsData.taskZt==4){//驳回状态
@@ -581,7 +587,7 @@
 			splitk(num) { //千位分隔符 
 				if(num != ''){
 					var number = parseInt(num.replace(/,/g,'')).toLocaleString();
-					return number;				
+					return number;										
 				}else{
 					return '';
 				}
@@ -591,6 +597,9 @@
 			},
 			inputFunc() {
 				this.money = this.splitk(this.money);
+				if(this.money == 'NaN'){
+					this.money = ''
+				}
 			},
 			bas(){
 				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == '' || this.formula == '' || this.yjxx == ''){

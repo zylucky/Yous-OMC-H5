@@ -155,7 +155,7 @@
 	  				display: flex;
 	  				flex-direction: column;
 	  				align-items:center;
-	  				width: 0.8rem;
+	  				/*width: 0.8rem;*/
   					height: 1.55rem;
   					margin-right: 0.3rem;
   					margin-bottom: 0.2rem;
@@ -294,11 +294,19 @@
   		right: 0;
   		top: 0;
   		bottom: 0;
+  		overflow: auto;
   		background: rgba(0,0,0,0.5);
   		display: table-cell;
-        vertical-align: middle;
         text-align: center;
-        img{width: 100%;vertical-align: middle;}
+        img{
+        	vertical-align: middle;
+        	max-width: 100%;
+        }
+        span{
+        	display: inline-block;
+        	height: 100%;
+        	vertical-align: middle;
+        }
   	}
 </style>
 
@@ -387,14 +395,19 @@
 			<!--申请进度-->
 			<div class="plan">
 				<ul>
-					<li v-for="item in this.splist.shenpi">
+					<li v-for="item in this.spData" :style="item.shenpi == 2?'padding-bottom:0.6rem':''">
 						<p class="plan_t">
-							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line"></i></span>
+							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line" v-if="item.shenpi != 2"></i></span>
 							<span>{{item.person}}</span>
-							<span :style="item.shenpi!=1?'color: #ff7072':''">{{item.shenpi==1?"已审批":"待审批"}}</span>					
+							<span :style="item.shenpi!=1?'color: #ff7072':''">
+								<i v-if='item.shenpi==1'>{{item.shenpi==1?"已审批":"待审批"}}</i>
+								<i style="color: #fea843" v-if='item.shenpi!=1 && item.shenpi!=2 && item.isfock'>审批中</i>
+								<i v-if='item.shenpi==2'>{{item.shenpi==2?"已驳回":"已审批"}}</i>
+							</span>	
 						</p>
-						<p class="plan_b">{{item.shuoming}}</p>
+						<p class="plan_b">{{item.shuoming!=''?item.shuoming:''}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
+						<p v-if="item.shenpi == 2" style="position: absolute;width: 7.5rem;height:0.1rem;background:#f0eff5;left: -0.28rem;bottom: 0;"></p>
 					</li>
 				</ul>
 			</div>
@@ -433,7 +446,7 @@
 							<span></span>
 						</p>
 					</li>
-					<li v-if='compact.zujinList.length != 0'>
+					<li v-if='compact.zujinList && compact.zujinList.length != 0'>
 						<!--租金租期信息compact.zujinList-->
 						<p v-for="(item,index) in compact.zujinList">
 							<span>租期{{index + 1}}：</span>
@@ -441,11 +454,11 @@
 							<span>￥{{item.yuezujin | splitK}}</span>
 						</p>
 					</li>
-					<li v-if='compact.fukuanFangshiList.length != 0'>
+					<li v-if='compact.zujinList && compact.fukuanFangshiList.length != 0'>
 						<!--付款方式信息compact.fukuanFangshiList-->
 						<p v-for="(item,index) in compact.fukuanFangshiList">
 							<span>付款方式：</span>
-							<span>{{item.startdate | timed}}-{{item.enddate | timed}}（押二付六）</span>
+							<span>{{item.startdate | timed}}-{{item.enddate | timed}}</span>
 							<span></span>
 						</p>
 					</li>
@@ -461,7 +474,7 @@
 		</div>
 		<!--大图显示-->
 		<div class="bigfp" v-if="fppic" @click="fppic=false">
-			<img :src='bigfpsrc'/>
+			<img :src='bigfpsrc'/><span></span>
 		</div>
 	</div>
 </template>
@@ -514,6 +527,17 @@ import { Indicator } from 'mint-ui';
 	           		this.splist = res.data.data;
 	            	this.spData = res.data.data.shenpi;
 	            	this.csData = res.data.data.chaosong;
+	            	var arrdata = this.spData.slice(0);//数组深拷贝
+	            	arrdata.reverse();//反转
+	            	for(var m in arrdata){//驳回审批节点数据开始审批
+						for(var n in arrdata[m]){
+							if(n == 'shenpi' && arrdata[m][n] == 2){
+//								console.log('==============shenpi====================');
+								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
+								return
+							}
+						}
+					}
 //					console.log(this.spData);
 //					console.log(this.splist);
 					for(var i in this.spData){

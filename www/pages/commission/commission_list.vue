@@ -14,6 +14,7 @@
   		top: 0;
   		width: 100%;
   		background: #fff;
+  		z-index: 1;
   		-webkit-box-shadow:0px 2px 3px #D6D6D6; 
   		box-shadow:0px 2px 3px #D6D6D6;
   		.nav{
@@ -273,15 +274,48 @@ import axios from 'axios';
 							"zt":zt//处理状态1未处理，2已处理
 						}
 					})	
-				}else{
+				}
+				if(taskzt == 3){//审批通过
 					this.$router.push({
-						path:'/commission',//跳转佣金信息
+						path:'/commission_rule',//跳转审批通过详情
 						query:{
 							"xsid":id,//所传参数
 							"zt":zt//处理状态1未处理，2已处理
 						}
 					})					
 				}
+				if(taskzt == 2){//审批已处理
+					if(!this.passData.qdhuming){
+						this.$router.push({
+							path:'/commission_un',//跳转待确认详情
+							query:{
+								"xsid":id,//所传参数
+								"zt":zt//处理状态1未处理，2已处理
+							}
+						})		
+					}
+				}
+//				if(taskzt == 2){
+//					alert(456);
+//					this.$router.push({
+//						path:'/commission_ru',//跳转未确认详情
+//						query:{
+//							"xsid":id,//所传参数
+//							"zt":zt//处理状态1未处理，2已处理
+//						}
+//					})					
+//				}
+				
+				if(taskzt == 0){
+					this.$router.push({
+						path:'/commission',//跳转数据修改填写
+						query:{
+							"xsid":id,//所传参数
+							"zt":zt//处理状态1未处理，2已处理
+						}
+					})					
+				}
+				
 			}
 			
 		}
