@@ -384,7 +384,7 @@
 					<!--已提交后的图片显示状态-->
 			        <div class="img_demo fl pr" v-for="(item,index) in allData.imgList" @click="fdtp(item.imgFapiao)">
 			        	<img class="upload_demo_img" :src="item.imgFapiao" alt="" />
-			        	<i class="delete_icon" tag="fy" @click='delete_fpic(item.id,index)' v-if="btnshow==1"></i>
+			        	<i class="delete_icon" tag="fy" @click.stop='delete_fpic(item.id,index)' v-if="btnshow==1"></i>
 			        </div>
 			        <!--添加图片-->
 			        <div v-if="fy < 8 && btnshow==1" class="upload_btn mr10 fl">
@@ -733,6 +733,10 @@ import { Indicator } from 'mint-ui';
 	                     if(that.uploaded >= that.upload){
 	                         // 新图片上传完成
 	                         Indicator.close();
+	                         Indicator.open({
+				                  text: '上传图片中...',
+				                  spinnerType: 'fading-circle'
+				              });
 	                         setTimeout(function(){
 	                             that.saveImageData();
 	                         }, 1000);
@@ -797,11 +801,12 @@ import { Indicator } from 'mint-ui';
 	        	  var result = JSON.parse(res.bodyText);
 	        	  if (result.success) {
 	        	  	this.imgshow = true;
-//	        	    Toast({
-//	        	        message: '保存成功',
-//	        	        position: 'bottom',
-//	        	        duration: 1000
-//	        	    });
+	        	    Toast({
+	        	        message: '保存成功',
+	        	        position: 'bottom',
+	        	        duration: 1000
+	        	    });      	    	
+
 	        	  } else {
 	        	    Toast({
 	        	        message: '保存失败: ' + result.message,
