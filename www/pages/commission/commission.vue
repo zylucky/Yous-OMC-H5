@@ -302,7 +302,7 @@
 			</ul>
 		</div>
 		<!--<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>-->
-		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>{{btnzt}}</button>
+		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
