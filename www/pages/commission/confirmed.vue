@@ -722,6 +722,10 @@ import { Indicator } from 'mint-ui';
 	      },
 	      saveToserver(){
 	          //开始上传图片
+	          Indicator.open({
+                  text: '上传图片中...',
+                  spinnerType: 'fading-circle'
+              });
 	          const that = this;
 	          let fp = [];
 	          const cb = (img, obj) => {
@@ -733,10 +737,10 @@ import { Indicator } from 'mint-ui';
 	                     if(that.uploaded >= that.upload){
 	                         // 新图片上传完成
 	                         Indicator.close();
-	                         Indicator.open({
-				                  text: '上传图片中...',
-				                  spinnerType: 'fading-circle'
-				              });
+//	                         Indicator.open({
+//				                  text: '上传图片中...',
+//				                  spinnerType: 'fading-circle'
+//				              });
 	                         setTimeout(function(){
 	                             that.saveImageData();
 	                         }, 1000);
