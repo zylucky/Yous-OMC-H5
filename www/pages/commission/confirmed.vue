@@ -635,8 +635,6 @@ import { Indicator } from 'mint-ui';
 				
 			},
 			turnto(){//同意驳回
-				console.log("驳回");
-				
 				if(this.allData.imgList.length == 0 && this.imgList.length != 0){
 					this.saveToserver();//上传图片		
 					this.$router.push({
@@ -660,13 +658,15 @@ import { Indicator } from 'mint-ui';
 					})
 				}
 				if(this.allData.imgList.length == 0 && this.imgList.length == 0){
-//					Toast({
-//						message: '请选择发票图片',
-//						position: 'center',
-//						duration: 300
-//					});
-					return	
+					this.$router.push({
+						path:'/turn_opinion',//跳转到审批意见功能界面
+						query:{
+							'shenpi' : '2',
+							'id' : this.$route.query.id
+						}
+					})	
 				}
+
 			},
 			delete_img(index, id, event){//删除
 		        const tag = $(event.target).attr("tag"), which = {"fy":"imgList"}[tag];

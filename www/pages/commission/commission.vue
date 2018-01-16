@@ -427,7 +427,7 @@
             		this.formula = this.xsData.xsjisuangongshi;
             		this.channelname = this.xsData.xsqvdao;
             		this.tel = this.xsData.xsqvdaotel;
-					
+            		this.yjxx = this.xsData.xsyongjinxinxi;
 					if(this.xsData.xsfpdanwei != '' && this.xsData.xsfpnashuiren != ''){
 	            		this.theinvoice.companyName = this.xsData.xsfpdanwei;
 						this.theinvoice.number = this.xsData.xsfpnashuiren;
