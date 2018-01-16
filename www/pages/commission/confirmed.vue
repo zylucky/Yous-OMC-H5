@@ -797,7 +797,7 @@ import { Indicator } from 'mint-ui';
 	        	const data = {"imgFapiao":this.$prefix + "/" + fp[i].url,"yongjinid":this.$route.query.id,"yongjintype":"1"};
 	        	this.$http.post(
 	        	   this.$api + "/yhcms/web/qdyongjin/imgadd.do", data).then((res)=>{
-	        	  Indicator.close();
+//	        	  Indicator.close();
 	        	  var result = JSON.parse(res.bodyText);
 	        	  if (result.success) {
 	        	  	this.imgshow = true;
@@ -806,7 +806,7 @@ import { Indicator } from 'mint-ui';
 	        	        position: 'bottom',
 	        	        duration: 1000
 	        	    });      	    	
-
+					Indicator.close();
 	        	  } else {
 	        	    Toast({
 	        	        message: '保存失败: ' + result.message,
