@@ -249,7 +249,7 @@
 			</p>
 			<p>
 				<span><i>*</i>计算公式</span>
-				<input type="text" placeholder="请输入佣金计算公式" v-model="formula" />
+				<input type="text" placeholder="请输入佣金计算公式" v-model="formula" class="formulas" />
 			</p>
 			<p>
 				<span><i>*</i>渠道姓名</span>
@@ -536,6 +536,13 @@
 			//佣金信息状态
 			check(a){
 				this.yjxx = a;
+				if(a == 'true'){//正常时的月租金公式
+					this.formula = '月租金 * 12 * 0.96'
+					$('.formulas').attr('disabled','disabled');
+				}else{
+					this.formula = ''
+					$('.formulas').removeAttr('disabled');
+				}
 			},
 			selinvoice() { //发票类型选择
 //				if(this.xsData.taskZt==0 || this.xsData.taskZt==1 || this.xsData.taskZt==2 || this.xsData.taskZt==3){
