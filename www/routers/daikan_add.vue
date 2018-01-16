@@ -10,6 +10,7 @@
     .unique-daikan-add input::-webkit-input-placeholder {
         text-align: right!important;
     }
+    .unique-daikan-add input{text-align: right;}
 </style>
 <template>
     <div class="container unique-daikan-add">
