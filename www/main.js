@@ -384,6 +384,7 @@ var router = new VueRouter({
   //     return savedPosition
   //   } else {
   //     if (from.meta.keepAlive) {
+  //       console.log(from.meta.keepAlive)
   //       from.meta.savedPosition = document.body.scrollTop;
   //     }
   //     return { x: 0, y: to.meta.savedPosition || 0 }

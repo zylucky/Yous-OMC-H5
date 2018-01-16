@@ -302,7 +302,7 @@
 			</ul>
 		</div>
 		<!--<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>-->
-		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>{{btntext}}</button>
+		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive': 'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -331,7 +331,7 @@
 				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
 				tel: '', //联系方式
-				yjxx:true,//佣金信息状态
+				yjxx:null,//佣金信息状态
 				invoice: '请选择发票类型', //发票类型
 				slots: [{
 					flex: 1,
@@ -602,9 +602,50 @@
 				}
 			},
 			bas(){
-				if(this.money == '' || this.channelname =='' || this.tel == '' ||  this.invoice == '请选择发票类型' || this.invoice == '' || this.formula == '' || this.yjxx == ''){
+				if(this.money == '' || this.money == undefined){
 					Toast({
-						message: '请将信息填写完整',
+						message: '佣金金额不能为空',
+						position: 'center',
+						duration: 2000
+					});
+					return;
+				}
+				if(this.yjxx == null || this.yjxx == ''){
+					Toast({
+						message: '请确认佣金信息',
+						position: 'center',
+						duration: 2000
+					});
+					return;
+				}
+				if(this.formula == undefined || this.formula == ''){
+					Toast({
+						message: '佣金计算公式不能为空',
+						position: 'center',
+						duration: 2000
+					});
+					return;
+				}
+				if(this.channelname == '' || this.channelname == undefined){
+					Toast({
+						message: '渠道姓名不能为空',
+						position: 'center',
+						duration: 2000
+					});
+					return;
+				}
+				
+				if(this.tel == undefined || this.tel == ''){
+					Toast({
+						message: '联系方式不能为空',
+						position: 'center',
+						duration: 2000
+					});
+					return;
+				}
+				if(this.invoice == undefined || this.invoice == '请选择发票类型'){
+					Toast({
+						message: '请选择发票类型',
 						position: 'center',
 						duration: 2000
 					});
@@ -612,6 +653,17 @@
 				}else{
 					this.init();
 				}
+				
+//				if(this.money == undefined || this.channelname == undefined || this.tel == undefined ||  this.invoice == '请选择发票类型' || this.invoice == undefined || this.formula == undefined){
+//					Toast({
+//						message: '请将信息填写完整',
+//						position: 'center',
+//						duration: 2000
+//					});
+//					return;
+//				}else{
+//					this.init();
+//				}
 				
 			},
 			getUrlParam(name) {
@@ -629,9 +681,8 @@
 		},
 		computed:{
 			btnzt:function(){
-				return this.money || this.channelname || this.tel || (this.theinvoice.id && this.theinvoice.id != 0) || this.invoice != '请选择发票类型' || this.formula || this.yjxx;
+				return this.money || this.channelname || this.tel || this.formula || this.invoice != undefined || this.yjxx;
 			}
 		}
-
 	}
 </script>
