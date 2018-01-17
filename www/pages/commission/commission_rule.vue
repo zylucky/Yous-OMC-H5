@@ -239,7 +239,6 @@
 					<span>{{xsData.qdbeizhu}}</span>
 				</p>
 			</div>
-			
 		</div>
 		<!--发票抬头弹框-->
 		<div class="pop_box" v-if="popshow" @click="popbox">
