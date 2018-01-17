@@ -34,6 +34,8 @@
 			background: url(../resources/images/news/point.png) no-repeat center;
 			background-size: cover;
 			line-height: 0.33rem;
+      display: flex;
+      justify-content: center;
 			i{
 				text-align: center;
 				color: #fff;
@@ -63,7 +65,7 @@
           <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50">
       </a>-->
       <a href="javascript:;" class="news" @click="tonews">
-      	<span class="newcount" v-if="newData.length != 0"><i style="display: inline-block;transform: scale(0.5);">{{newData.length}}</i></span>
+      	<span class="newcount" v-if="newData.length != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
       	<!--<img src="../resources/images/news/new_ion.png"/>-->
       </a>
       <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
@@ -113,6 +115,7 @@
           },
           userid:'',//用户id
           newData:[],//消息通知数据
+          status:0,
       };
     },
     created(){
@@ -120,7 +123,7 @@
     },
     methods: {
     	takeid(){//获取用户id
-        var cookxs = JSON.parse(localStorage.getItem('cooknx'));
+        var cookxs = JSON.parse(localStorage.getItem('cookxs'));
 //      console.log(cookxs);
   //      const url = "http://116.62.68.26:8080/yhcms/web/qdyongjin/getLoginInfo.do";
         const url = this.$api + "/yhcms/web/qdyongjin/getLoginInfo.do";
@@ -140,14 +143,19 @@
               });
       },
       takenews(){//接收消息
-        const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/qd";//消息接口地
+        const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
         axios.get(url, {
           
         }).then((res)=>{
   //        clearInterval(timer);//清楚定时器
           if(res.data.success){
             this.newData = res.data.data;
-            console.log(this.newData);
+            for(var i=0; i<this.newData.length; i++){
+              if(this.newData[i].status == 1){
+                this.status ++;
+              }
+            }
+            console.log(this.status);
   //          var timer = setTimeout(this.takenews,2000);//定时查询
           }       
               }, (err)=>{

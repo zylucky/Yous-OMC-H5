@@ -244,7 +244,8 @@
 				</ul>
 			</div>
 			<!--审批意见-->
-			<div class="new_box" v-if="xsData.qdbeizhu">
+			<!--<div class="new_box" v-if="xsData.qdbeizhu">-->
+			<div class="new_box" v-if="false">
 				<p class="turns">
 					<span>审批意见：</span>
 					<span>{{xsData.qdbeizhu}}</span>
