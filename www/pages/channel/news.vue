@@ -247,6 +247,7 @@
 
 <script>
 import axios from 'axios';
+import {Toast} from 'mint-ui';
 export default{
 	data(){
 		return{
@@ -307,7 +308,7 @@ export default{
 		tolink1(id,sourcemid){//待审批
 			this.delnew(id);
 			this.$router.push({
-				path:'/commission_details',//跳转渠道佣金数据保存
+				path:'/confirmed',//跳转渠道佣金数据保存
 				query:{
 					"btnshow":1,//所传参数
 					"id":sourcemid

@@ -305,7 +305,7 @@
           });
       },
       tonews(){
-      	if(localStorage.getItem('cooknx')){
+      	if(localStorage.getItem('cookxs')){
 	      	this.$router.push({
 						path:'/news',//跳转到消息列表
 					})

@@ -13,9 +13,8 @@ Vue.use(VueResource);
 Vue.use(MintUI);
 
 import { Search } from 'mint-ui';
-
 Vue.component(Search.name, Search);
-
+import {Toast} from 'mint-ui';
 
 // Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
