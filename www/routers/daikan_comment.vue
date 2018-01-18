@@ -28,11 +28,12 @@
     }
     .unique-comment
         .mint-cell-title{
+        width: 3rem;
         flex: inherit;
     }
     .unique-comment
         .mint-cell-value{
-        margin-left: 0.2rem;
+        margin-left: .2rem;
     }
 
     textarea{
@@ -53,8 +54,8 @@
         <mt-cell title="客户预算" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyusuan==''?'无':response.kehu.kehuyusuan"></mt-cell>
         <mt-cell title="需求面积" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehumianji==''?'无':response.kehu.kehumianji"></mt-cell>
         <mt-cell title="办公人数" style="color: #333;" disabled placeholder=""  v-model="response.kehu.bangongrenshu==''?'无':response.kehu.bangongrenshu"></mt-cell>
-        <mt-cell title="所选区域" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuqvyv==''?'无':response.kehu.kehuqvyv"></mt-cell>
-        <mt-cell title="用房时间" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyongfangshijian">{{response.kehu.kehuyongfangshijian|times}}</mt-cell>
+        <mt-cell title="客户所选区域" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuqvyv==''?'无':response.kehu.kehuqvyv"></mt-cell>
+        <mt-cell title="客户用房时间" style="color: #333;" disabled placeholder=""  v-model="response.kehu.kehuyongfangshijian">{{response.kehu.kehuyongfangshijian|times}}</mt-cell>
         <mt-cell title="是否负责人" style="color: #333;" disabled placeholder=""  v-model="response.kehu.shifoufuzeren==''?'无':response.kehu.shifoufuzeren"></mt-cell>
         <mt-cell title="下次渠道推荐说明" style="color: #333;" disabled placeholder=""  v-model="response.kehu.xiaciqvdaoshuoming==''?'无':response.kehu.xiaciqvdaoshuoming"></mt-cell>
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
