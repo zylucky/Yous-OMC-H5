@@ -14,7 +14,7 @@ Vue.use(MintUI);
 
 
 Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀11111122222
-//Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
+//Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀111111
 
 // 测试环境
 //Vue.prototype.$api = "http://192.168.0.222:8080" //api地址
