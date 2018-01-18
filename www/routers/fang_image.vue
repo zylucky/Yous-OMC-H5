@@ -35,7 +35,7 @@
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-          <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
+          <i v-show="fytqxzt" class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
       <div class="common_title">户型图</div>
@@ -45,7 +45,7 @@
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-          <i class="delete_icon" tag="hx" @click='delete_img(index, item.id, $event)'></i>
+          <i v-show="fytqxzt" class="delete_icon" tag="hx" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
       <div class="common_title">封面图</div>
@@ -55,7 +55,7 @@
         </div>
         <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-          <i class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
+          <i v-show="fytqxzt" class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
         </div>
       </div>
     </div>
@@ -83,9 +83,41 @@
         fm: 0,
         upload: 0,
         uploaded: 0,
+        qxzt:'',
+        fytqxzt:true,
       }
     },
     methods:{
+      tebqqxpd(){
+          let user22 = JSON.parse(localStorage.getItem('cookxs'));
+          const url = this.$api + "/yhcms/web/wxqx/getXsQx.do";
+          this.$http.post(url, {"cookie":user22.sjs,"fyid":this.$route.params.fyid,"foreEndType":2,"code":"30000008"}).then((res)=>{
+              Indicator.close();
+              const data = JSON.parse(res.bodyText).data;
+              this.qxzt = data.qxzt;
+              if(data.qxzt == 0){
+                  MessageBox('提示',meg);
+                  window.history.go(-1);
+                  return;
+              }
+              if(data.qxzt == 2){
+                  MessageBox('提示',"此用户已被禁用，请联系管理员！");
+                  this.$router.push({path: '/login'});
+              }
+              //此用户有所有权限
+              if(data.qxzt == 3 || data.qxzt == 4){
+                  this.fytqxzt = true;
+              }
+              //没有删除图片的权限111111
+              if(data.qxzt == 5){
+                  this.fytqxzt = false;
+                 /* $("input").attr('placeholder',"");*/
+              }
+              this.getInitData();
+          }, (res)=>{
+              Indicator.close()
+          });
+      },
       delete_img(index, id, event){
         const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
         if(id !== 'xxx'){
@@ -300,7 +332,8 @@
       },
     },
     mounted(){
-        this.getInitData();
+        this.tebqqxpd();
+        /*this.getInitData();*/
     }
   }
 
