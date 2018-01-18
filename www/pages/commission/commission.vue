@@ -215,6 +215,7 @@
 	background: none;
 }
 .mint-radio-core{
+	border: none;
 	background: url(../../resources/images/commission/btn.png) no-repeat center;
 	background-size: cover;
 }
@@ -346,7 +347,7 @@
 						{
 							id: 1,
 							name: '幼狮增值税专用发票',
-							companyName: '北京幼师科技有限公司',
+							companyName: '北京幼狮科技有限公司',
 							number: '9111 0105 3064 0709 X3',
 							address: '北京市朝阳区东三环中路39号院24号楼22层2602 010-56143922',
 							bankplace: '招商银行北京分行建国门支行 110921667410910'
@@ -354,7 +355,7 @@
 						{
 							id: 2,
 							name: '幼狮增值税普通发票',
-							companyName: '北京幼师科技有限公司',
+							companyName: '北京幼狮科技有限公司',
 							number: '9111 0105 3064 0709 X3',
 							address: '',
 							bankplace: ''

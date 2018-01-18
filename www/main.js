@@ -13,9 +13,8 @@ Vue.use(VueResource);
 Vue.use(MintUI);
 
 import { Search } from 'mint-ui';
-
 Vue.component(Search.name, Search);
-
+import {Toast} from 'mint-ui';
 
 // Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
@@ -105,17 +104,11 @@ var router = new VueRouter({
       path: '/',
       /*component: require('./routers/loupan_list.vue')*/
       component: require('./routers/fang_photo.vue'),
-      meta: {
-        keepAlive: true
-      }
     },
     {
       path: '/index',
       /*component: require('./routers/loupan_list.vue')*/
       component: require('./routers/fang_photo.vue'),
-      meta: {
-        keepAlive: true
-      }
     },
     {
       path: '/loupan_basic/:lpid',
@@ -289,7 +282,7 @@ var router = new VueRouter({
       path: '/daikan_comment/:id',
       component: require('./routers/daikan_comment.vue')
     },
-    {
+    {//
       path: '/daikan_comment_add/:id',
       component: require('./routers/daikan_comment_add.vue')
     },
@@ -303,96 +296,146 @@ var router = new VueRouter({
     },
     {//信息填写
       path: '/commission',
-      component: require('./pages/commission/commission.vue')
+      component: require('./pages/commission/commission.vue'),
+      meta: {
+        title: '佣金管理'
+      }
     },
     {//列表
       path: '/commission_list',
-      component: require('./pages/commission/commission_list.vue')
+      component: require('./pages/commission/commission_list.vue'),
+      meta: {
+        title: '佣金管理'
+      }
     },
     {//已确认审核通过页面
       path: '/commission_rule',
-      component: require('./pages/commission/commission_rule.vue')
+      component: require('./pages/commission/commission_rule.vue'),
+      meta: {
+        title: '审核通过'
+      }
     },
     {//已确认页面
       path: '/commission_ru',
-      component: require('./pages/commission/commission_ru.vue')
+      component: require('./pages/commission/commission_ru.vue'),
+      meta: {
+        title: '佣金确认'
+      }
     },
     {//未确认页面
       path: '/commission_un',
-      component: require('./pages/commission/commission_un.vue')
+      component: require('./pages/commission/commission_un.vue'),
+      meta: {
+        title: '佣金确认'
+      }
     },
     {//审批驳回页面
       path: '/commission_turn',
-      component: require('./pages/commission/commission_turn.vue')
+      component: require('./pages/commission/commission_turn.vue'),
+      meta: {
+        title: '审批驳回'
+      }
     },
     {//佣金审批
       path: '/commission_ask',
-      component: require('./pages/commission/commission_ask.vue')
+      component: require('./pages/commission/commission_ask.vue'),
+      meta: {
+        title: '佣金审批'
+      }
     },
     {//佣金审批1
       path: '/commission_ask1',
-      component: require('./pages/commission/commission_ask1.vue')
+      component: require('./pages/commission/commission_ask1.vue'),
+      meta: {
+        title: '佣金审批'
+      }
     },
     {//审批
       path: '/approval',
-      component: require('./pages/commission/approval.vue')
+      component: require('./pages/commission/approval.vue'),
+      meta: {
+        title: '佣金审批'
+      }
     },
     {//审批1
       path: '/approval1',
-      component: require('./pages/commission/approval1.vue')
+      component: require('./pages/commission/approval1.vue'),
+      meta: {
+        title: '佣金审批'
+      }
     },
     {//审批意见
       path: '/approval_opinion',
-      component: require('./pages/commission/approval_opinion.vue')
+      component: require('./pages/commission/approval_opinion.vue'),
+      meta: {
+        title: '审批意见'
+      }
     },
     {//审批意见
       path: '/approval_opinion1',
-      component: require('./pages/commission/approval_opinion1.vue')
+      component: require('./pages/commission/approval_opinion1.vue'),
+      meta: {
+        title: '审批意见'
+      }
     },
     {//驳回意见
       path: '/turn_opinion',
-      component: require('./pages/commission/turn_opinion.vue')
+      component: require('./pages/commission/turn_opinion.vue'),
+      meta: {
+        title: '驳回意见'
+      }
     },
     {//驳回意见
       path: '/turn_opinion1',
-      component: require('./pages/commission/turn_opinion1.vue')
+      component: require('./pages/commission/turn_opinion1.vue'),
+      meta: {
+        title: '驳回意见'
+      }
     },
     {//添加抄送人
       path: '/copy_p',
-      component: require('./pages/commission/copy_p.vue')
+      component: require('./pages/commission/copy_p.vue'),
+      meta: {
+        title: '添加抄送人'
+      }
     },
     {//抄送详情查看
       path: '/commission_details',
-      component: require('./pages/commission/commission_details.vue')
+      component: require('./pages/commission/commission_details.vue'),
+      meta: {
+        title: '抄送我的'
+      }
     },
     {//销售消息通知
         path: '/news',
-        component: require('./pages/channel/news.vue')
+        component: require('./pages/channel/news.vue'),
+        meta: {
+          title: '消息通知'
+        }
     },
     {//佣金确认列表
       path: '/confirmed_list',
-      component: require('./pages/commission/confirmed_list.vue')
+      component: require('./pages/commission/confirmed_list.vue'),
+      meta: {
+        title: '佣金确认'
+      }
     },
     {//佣金确认列表详情
       path: '/confirmed',
-      component: require('./pages/commission/confirmed.vue')
+      component: require('./pages/commission/confirmed.vue'),
+      meta: {
+        title: '佣金确认'
+      }
     },
-  ],
-  // scrollBehavior (to, from, savedPosition) {
-  //   if (savedPosition) {
-  //     console.log(savedPosition)
-  //     return savedPosition
-  //   } else {
-  //     if (from.meta.keepAlive) {
-  //       console.log(from.meta.keepAlive)
-  //       from.meta.savedPosition = document.body.scrollTop;
-  //     }
-  //     return { x: 0, y: to.meta.savedPosition || 0 }
-  //   }
-  // }
+  ]
 });
 
 router.beforeEach(function(to, from, next){
+    /* 路由发生变化修改页面title */
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    }
+    next();
 
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
