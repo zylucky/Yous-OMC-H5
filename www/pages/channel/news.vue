@@ -89,6 +89,17 @@
   			margin-top: 0.46rem;
   		}
   	}
+  	.dian{
+  		position: absolute;
+  		right: 0.1rem;
+  		top: 50%;
+  		margin-top: -0.05rem;
+  		display: inline-block;
+  		width: 0.1rem;
+  		height: 0.1rem;
+  		border-radius: 50%;
+  		background: red;
+  	}
 </style>
 
 <template>
@@ -134,7 +145,7 @@
 					<li class="title" style="color: #0fad60;">佣金确认</li>
 					<li class="tip">{{item.content}}</li>
 					<li class="spzt">渠道已确认</li>
-					<li @click="tolink(item.id,item.sourcemid)">查看详情</li>
+					<li @click="tolink(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 				<!--待审批-->
 				<ul v-if="item.type==4">
@@ -142,7 +153,7 @@
 					<li class="tip">{{item.content}}</li>
 					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt">待审批</li>
-					<li @click="tolink1(item.id,item.sourcemid)">查看详情</li>
+					<li @click="tolink1(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 				<!--审批通过-->
 				<ul v-if="item.type==8">
@@ -150,7 +161,7 @@
 					<li class="tip">{{item.content}}</li>
 					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt">审批通过</li>
-					<li @click="tolink2(item.id,item.sourcemid)">查看详情</li>
+					<li @click="tolink2(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 				<!--审批消息驳回状态-->
 				<ul v-if="item.type==7">
@@ -158,7 +169,7 @@
 					<li class="tip">{{item.content}}</li>
 					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt" style="color: #ff7070;">审批驳回</li>
-					<li @click="tolink3(item.id,item.sourcemid)">查看详情</li>
+					<li @click="tolink3(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 				<!--销售佣金信息驳回状态-->
 				<ul v-if="item.type==1">
@@ -166,14 +177,14 @@
 					<li class="tip">{{item.content}}</li>
 					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt" style="color: #ff7070;">佣金驳回</li>
-					<li @click="tolink4(item.id,item.sourcemid)">查看详情</li>
+					<li @click="tolink4(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 				<!--抄送我的-->
 				<ul v-if="item.type==2">
 					<li class="title">抄送</li>
 					<li class="tip">{{item.content}}</li>
 					<li class="name">申请人：{{item.send_to_name}}</li>
-					<li class="spzt" @click="tolink5(item.id,item.sourcemid)">查看详情</li>
+					<li class="spzt" @click="tolink5(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 			</p>
 		</div>
@@ -289,43 +300,73 @@ export default{
 				if(res.data.success){
 					this.newData = res.data.data;
 					console.log(this.newData);
-//					var timer = setTimeout(this.takenews,2000);//定时查询
+//					this.timer = setTimeout(this.takenews,2000);//定时查询
 				}
             }, (err)=>{
 				console.log(err);
             });
 		},
-		tolink(id,sourcemid){//渠道佣金已确认
+		tolink(id,sourcemid,status){//渠道佣金已确认
+			this.delnew(id);
+			if(status != 2){
+				this.$router.push({
+					path:'/confirmed',//跳转渠道佣金数据保存
+					query:{
+						"btnshow":1,//所传参数
+						"id":sourcemid
+					}
+				})				
+			}else{
+				this.$router.push({
+					path:'/confirmed',//跳转渠道佣金数据保存
+					query:{
+						"btnshow":0,//所传参数
+						"id":sourcemid
+					}
+				})
+			}
+		},
+		tolink1(id,sourcemid,status){//待审批
+			this.delnew(id);
+			if(status != 2){
+				this.$router.push({
+					path:'/confirmed',//跳转渠道佣金数据保存
+					query:{
+						"btnshow":1,//所传参数
+						"id":sourcemid
+					}
+				})				
+			}else{
+				this.$router.push({
+					path:'/confirmed',//跳转渠道佣金数据保存
+					query:{
+						"btnshow":0,//所传参数
+						"id":sourcemid
+					}
+				})
+			}
+		},
+		tolink2(id,sourcemid,status){//审批通过
 			this.delnew(id);
 			this.$router.push({
-				path:'/confirmed',//跳转渠道佣金数据保存
+				path:'/commission_rule',
 				query:{
-					"btnshow":1,//所传参数
-					"id":sourcemid
+					"zt":0,//所传参数
+					"xsid":sourcemid
 				}
 			})
 		},
-		tolink1(id,sourcemid){//待审批
+		tolink3(id,sourcemid,status){//审批消息驳回状态
 			this.delnew(id);
 			this.$router.push({
 				path:'/confirmed',//跳转渠道佣金数据保存
-				query:{
-					"btnshow":1,//所传参数
-					"id":sourcemid
-				}
-			})
-		},
-		tolink2(id,sourcemid){//审批通过
-			this.delnew(id);
-			this.$router.push({
-				path:'/commission_details',//跳转渠道佣金数据保存
 				query:{
 					"btnshow":0,//所传参数
 					"id":sourcemid
 				}
 			})
 		},
-		tolink3(id,sourcemid){//审批消息驳回状态
+		tolink4(id,sourcemid,status){//销售佣金信息驳回状态
 			this.delnew(id);
 			this.$router.push({
 				path:'/confirmed',//跳转渠道佣金数据保存
@@ -335,17 +376,7 @@ export default{
 				}
 			})
 		},
-		tolink4(id,sourcemid){//销售佣金信息驳回状态
-			this.delnew(id);
-			this.$router.push({
-				path:'/confirmed',//跳转渠道佣金数据保存
-				query:{
-					"btnshow":0,//所传参数
-					"id":sourcemid
-				}
-			})
-		},
-		tolink5(id,sourcemid){//抄送我的
+		tolink5(id,sourcemid,status){//抄送我的
 			this.delnew(id);
 			this.$router.push({
 				path:'/commission_details',//跳转渠道佣金数据保存

@@ -65,7 +65,7 @@
           <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50">
       </a>-->
       <a href="javascript:;" class="news" @click="tonews">
-      	<span class="newcount" v-if="newData.length != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
+      	<span class="newcount" v-if="newData.length != 0 && status != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
       	<!--<img src="../resources/images/news/new_ion.png"/>-->
       </a>
       <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
