@@ -13,7 +13,7 @@ Vue.use(VueResource);
 Vue.use(MintUI);
 
 
-Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀11111122222222333333
+Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀11111122222
 //Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 
 // 测试环境
