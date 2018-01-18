@@ -233,13 +233,12 @@
 				</ul>
 			</div>
 			<!--审批意见-->
-			<div class="new_box">
+			<div class="new_box" v-if="false">
 				<p class="turns">
 					<span>审批意见：</span>
 					<span>{{xsData.qdbeizhu}}</span>
 				</p>
 			</div>
-			
 		</div>
 		<!--发票抬头弹框-->
 		<div class="pop_box" v-if="popshow" @click="popbox">

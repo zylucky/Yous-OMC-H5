@@ -10,6 +10,7 @@
   		overflow: auto;
   		padding-left: 0.22rem;
   		padding-top: 0.9rem;
+  		background: #ffffff;
   	}
   	.new_box{
   		display: flex;
@@ -70,27 +71,116 @@
   			border-top: 1px solid #e4e4e4;
   		}
   	}
+  	.kong{
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		align-items: center;
+  		margin-top: 1.62rem;
+  		.k_ion{
+  			width: 1.75rem;
+  			height: 1.78rem;
+  			img{width: 100%;}
+  		}
+  		.k_text{
+  			font-size: @font30;
+  			color: #999;
+  			text-align: center;
+  			margin-top: 0.46rem;
+  		}
+  	}
 </style>
 
 <template>
 	<div class="box">
+		<!--消息为空-->
+		<div class="kong" v-if="newData.length == 0">
+			<p class="k_ion">
+				<img src="../../resources/images/news/new_icon.png" alt="" />
+			</p>
+			<p class="k_text">暂无消息</p>
+		</div>
 		<!--佣金待审批-->
-		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==0">
-			<p class="newspic">
+		<div class="new_box" v-for="(item,index) in newData">
+			<!--确认图标-->
+			<p class="newspic" v-if="item.type==0">
 				<img src="../../resources/images/news/2.png"/>
 			</p>
+			<!--抄送我的-->
+			<p class="newspic" v-if="item.type==2">
+				<img src="../../resources/images/news/4.png"/>
+			</p>
+			<!--驳回图标-->
+			<p class="newspic" v-if="item.type==7 || item.type==1">
+				<img src="../../resources/images/news/2.png"/>
+			</p>
+			<!--通过图标-->
+			<p class="newspic" v-if="item.type==8 || item.type==4">
+				<img src="../../resources/images/news/2.png"/>
+			</p>
+			
+			
 			<p class="news_list">
 				<span class="time">{{item.updated_at | newtime}}</span>
-				<ul>
+				<!---->
+				<!--<ul v-if="false">
 					<li class="title">审批</li>
-					<li class="tip">您有一条佣金需审批，请知晓</li>
-					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt">审批佣金</li>
+				</ul>-->
+				<!--渠道佣金已确认-->
+				<ul v-if="item.type==0">
+					<li class="title" style="color: #0fad60;">佣金确认</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="spzt">渠道已确认</li>
+					<li @click="tolink(item.id,item.sourcemid)">查看详情</li>
+				</ul>
+				<!--待审批-->
+				<ul v-if="item.type==4">
+					<li class="title">审批</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
+					<li class="spzt">待审批</li>
+					<li @click="tolink1(item.id,item.sourcemid)">查看详情</li>
+				</ul>
+				<!--审批通过-->
+				<ul v-if="item.type==8">
+					<li class="title">审批</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
+					<li class="spzt">审批通过</li>
+					<li @click="tolink2(item.id,item.sourcemid)">查看详情</li>
+				</ul>
+				<!--审批消息驳回状态-->
+				<ul v-if="item.type==7">
+					<li class="title">审批</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
+					<li class="spzt" style="color: #ff7070;">审批驳回</li>
+					<li @click="tolink3(item.id,item.sourcemid)">查看详情</li>
+				</ul>
+				<!--销售佣金信息驳回状态-->
+				<ul v-if="item.type==1">
+					<li class="title">审批</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
+					<li class="spzt" style="color: #ff7070;">佣金驳回</li>
+					<li @click="tolink4(item.id,item.sourcemid)">查看详情</li>
+				</ul>
+				<!--抄送我的-->
+				<ul v-if="item.type==2">
+					<li class="title">抄送</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="spzt" @click="tolink5(item.id,item.sourcemid)">查看详情</li>
 				</ul>
 			</p>
 		</div>
+		
+		
 		<!--佣金确认消息状态-->
-		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==4">
+		<!--<div class="new_box" v-for="(item,index) in newData" v-if="item.type==4">
 			<p class="newspic">
 				<img src="../../resources/images/news/1.png"/>
 			</p>
@@ -98,14 +188,14 @@
 				<span class="time">{{item.updated_at | newtime}}</span>
 				<ul>
 					<li class="title" style="color: #0fad60;">佣金确认</li>
-					<li class="tip">XXX已确认佣金信息</li>
+					<li class="tip">{{item.content}}</li>
 					<li class="spzt">渠道已确认</li>
 					<li>查看详情</li>
 				</ul>
 			</p>
-		</div>
+		</div>-->
 		<!--审批消息通过状态-->
-		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==3">
+		<!--<div class="new_box" v-for="(item,index) in newData" v-if="item.type==3">
 			<p class="newspic">
 				<img src="../../resources/images/news/2.png"/>
 			</p>
@@ -113,15 +203,15 @@
 				<span class="time">{{item.updated_at | newtime}}</span>
 				<ul>
 					<li class="title">审批</li>
-					<li class="tip">您的佣金已审批，请知晓</li>
-					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt">审批通过</li>
 					<li>查看详情</li>
 				</ul>
 			</p>
-		</div>
+		</div>-->
 		<!--审批消息驳回状态-->
-		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==1">
+		<!--<div class="new_box" v-for="(item,index) in newData" v-if="item.type==1">
 			<p class="newspic">
 				<img src="../../resources/images/news/2.png"/>
 			</p>
@@ -129,15 +219,15 @@
 				<span class="time">{{item.updated_at | newtime}}</span>
 				<ul>
 					<li class="title">审批</li>
-					<li class="tip">XXX驳回了您的佣金申请</li>
-					<li class="name">申请人：{{item.send_to_name}}</li>
+					<li class="tip">{{item.content}}</li>
+					<li class="name">申请人：{{item.send_from_name}}</li>
 					<li class="spzt" style="color: #ff7070;">审批驳回</li>
 					<li>查看详情</li>
 				</ul>
 			</p>
-		</div>
+		</div>-->
 		<!--抄送我的-->
-		<div class="new_box" v-for="(item,index) in newData" v-if="item.type==2">
+		<!--<div class="new_box" v-for="(item,index) in newData" v-if="item.type==2">
 			<p class="newspic">
 				<img src="../../resources/images/news/4.png"/>
 			</p>
@@ -145,12 +235,12 @@
 				<span class="time">{{item.updated_at | newtime}}</span>
 				<ul>
 					<li class="title">抄送</li>
-					<li class="tip">XXX抄送了佣金申请给您</li>
+					<li class="tip">{{item.content}}</li>
 					<li class="name">申请人：{{item.send_to_name}}</li>
 					<li class="spzt">查看详情</li>
 				</ul>
 			</p>
-		</div>
+		</div>-->
 		
 	</div>
 </template>
@@ -190,19 +280,110 @@ export default{
             });
 		},
 		takenews(){//接收消息
-			const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/qd";//消息接口地
+			const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
 			axios.get(url, {
 				
 			}).then((res)=>{
-//				clearInterval(timer);//清楚定时器
+				clearInterval(timer);//清楚定时器
 				if(res.data.success){
 					this.newData = res.data.data;
 					console.log(this.newData);
-//					var timer = setTimeout(this.takenews,2000);//定时查询
+					var timer = setTimeout(this.takenews,2000);//定时查询
 				}
             }, (err)=>{
 				console.log(err);
             });
+		},
+		tolink(id,sourcemid){//渠道佣金已确认
+			this.delnew(id);
+			this.$router.push({
+				path:'/confirmed',//跳转渠道佣金数据保存
+				query:{
+					"btnshow":1,//所传参数
+					"id":sourcemid
+				}
+			})
+		},
+		tolink1(id,sourcemid){//待审批
+			this.delnew(id);
+			this.$router.push({
+				path:'/commission_details',//跳转渠道佣金数据保存
+				query:{
+					"btnshow":1,//所传参数
+					"id":sourcemid
+				}
+			})
+		},
+		tolink2(id,sourcemid){//审批通过
+			this.delnew(id);
+			this.$router.push({
+				path:'/commission_details',//跳转渠道佣金数据保存
+				query:{
+					"btnshow":0,//所传参数
+					"id":sourcemid
+				}
+			})
+		},
+		tolink3(id,sourcemid){//审批消息驳回状态
+			this.delnew(id);
+			this.$router.push({
+				path:'/confirmed',//跳转渠道佣金数据保存
+				query:{
+					"btnshow":0,//所传参数
+					"id":sourcemid
+				}
+			})
+		},
+		tolink4(id,sourcemid){//销售佣金信息驳回状态
+			this.delnew(id);
+			this.$router.push({
+				path:'/confirmed',//跳转渠道佣金数据保存
+				query:{
+					"btnshow":0,//所传参数
+					"id":sourcemid
+				}
+			})
+		},
+		tolink5(id,sourcemid){//抄送我的
+			this.delnew(id);
+			this.$router.push({
+				path:'/commission_details',//跳转渠道佣金数据保存
+				query:{
+					"btnshow":0,//所传参数
+					"id":sourcemid
+				}
+			})
+		},
+		delnew(id){
+			const url = "http://www.youshikongjian.com/readMessage/"+ id;
+			axios.get(url, {
+				
+			}).then((res)=>{
+				if(res.data.success){
+					
+				}	
+				console.log(res)
+            }, (err)=>{
+				console.log(err);
+            });
+		},
+		
+//		this.$router.push({
+//				path:'/channel',//跳转渠道佣金数据保存
+//				query:{
+//					"passzt":1,//所传参数
+//					"qdid":sourcemid
+//				}
+//			})
+	},
+	filters:{
+		newtime(t){
+			var time;
+			var time1 = t.split(' ')[0].split('-');//年份
+			var time2 = t.split(' ')[1].split(':');//时间
+			time1 = time1[1] + '月' + time1[2] + '日';
+			time2 = time2[0] + ':' + time2[1];
+			return time = time1 + " " + time2;
 		}
 	}
 }
