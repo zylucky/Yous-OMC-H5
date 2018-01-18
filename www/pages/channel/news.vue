@@ -48,7 +48,7 @@
   			border-radius: 0.08rem;
   		}
   		li{
-  			height: 0.5rem;
+  			height: 0.5rem !important;
   			font-size: @font26;
   			/*line-height: 0.5rem;*/
   		}
@@ -59,6 +59,8 @@
   			font-size: @font30;
   			color: #feac00;
   			line-height: 0.5rem;
+  			background: none !important;
+  			padding-left: 0 !important;
   		}
   		.price,.huname,.name{
   			color: #969696;
@@ -144,8 +146,8 @@
 				<ul v-if="item.type==0">
 					<li class="title" style="color: #0fad60;">佣金确认</li>
 					<li class="tip">{{item.content}}</li>
-					<li class="spzt">渠道已确认</li>
-					<li @click="tolink(item.id,item.sourcemid,item.status)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
+					<li class="spzt">{{item.title!=null?item.title:'渠道已确认'}}</li>
+					<li @click="tolink(item.id,item.sourcemid,item.status,item.title)">查看详情<span class="dian" v-if="item.status != 2"></span></li>
 				</ul>
 				<!--待审批-->
 				<ul v-if="item.type==4">
@@ -306,16 +308,26 @@ export default{
 				console.log(err);
             });
 		},
-		tolink(id,sourcemid,status){//渠道佣金已确认
+		tolink(id,sourcemid,status,title){//渠道佣金已确认
 			this.delnew(id);
 			if(status != 2){
-				this.$router.push({
-					path:'/confirmed',//跳转渠道佣金数据保存
-					query:{
-						"btnshow":1,//所传参数
-						"id":sourcemid
-					}
-				})				
+				if(title == null){
+					this.$router.push({
+						path:'/confirmed',//跳转渠道佣金数据保存
+						query:{
+							"btnshow":1,//所传参数
+							"id":sourcemid
+						}
+					})									
+				}else{
+					this.$router.push({
+						path:'/commission',//跳转渠道佣金数据保存
+						query:{
+							"zt":1,//所传参数
+							"xsid":sourcemid
+						}
+					})
+				}
 			}else{
 				this.$router.push({
 					path:'/confirmed',//跳转渠道佣金数据保存
@@ -323,7 +335,7 @@ export default{
 						"btnshow":0,//所传参数
 						"id":sourcemid
 					}
-				})
+				})					
 			}
 		},
 		tolink1(id,sourcemid,status){//待审批
