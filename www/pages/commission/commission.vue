@@ -371,7 +371,7 @@
 						{
 							id: 4,
 							name: '华溯商贸增值税普通发票',
-							companyName: '北京幼师科技有限公司',
+							companyName: '北京幼狮科技有限公司',
 							number: '9111 0105 3064 0709 X3',
 							address: '',
 							bankplace: ''
