@@ -282,7 +282,7 @@ var router = new VueRouter({
       path: '/daikan_comment/:id',
       component: require('./routers/daikan_comment.vue')
     },
-    {//
+    {
       path: '/daikan_comment_add/:id',
       component: require('./routers/daikan_comment_add.vue')
     },
