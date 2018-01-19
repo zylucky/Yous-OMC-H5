@@ -20,9 +20,9 @@ Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀11111122222
 //Vue.prototype.$api = "http://192.168.0.222:8080" //api地址
 
 // 生产环境
-Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+//Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
-//Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 //Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
 Vue.config.debug = true;// 开启debug模式
 
@@ -254,7 +254,8 @@ router.beforeEach(function(to, from, next){
                 }else{
                     next({path: '/login'});
                 }
-                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+                alert(user22.sjs);
+                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
                         "foreEndType": 2,
                         "code": "300000045",
                         "cookie": user22.sjs,
@@ -264,6 +265,7 @@ router.beforeEach(function(to, from, next){
                         if (data.success) {
                         } else {
                             if (data.userzt == 2) {
+                                alert(11111);
                                 Toast({
                                     message: '此用户已被删除或被禁用，请联系管理员！',
                                     position: 'bottom'
