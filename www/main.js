@@ -190,7 +190,7 @@ var router = new VueRouter({
       path: '/fang_struct/:fyid',
       component: require('./routers/fang_struct.vue')
     },
-    {
+    /*{
       path: '/fang_owner/:fyid',
       component: require('./routers/fang_owner.vue')
     },
@@ -201,16 +201,16 @@ var router = new VueRouter({
     {
       path: '/fang_owner/edit/:yzid',
       component: require('./routers/fang_edit_owner.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/:fyid',
       component: require('./routers/fang_agenter.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/add/:fyid',
       component: require('./routers/fang_add_agent.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/edit/:dlid',
       component: require('./routers/fang_edit_agent.vue')
     },
@@ -225,7 +225,7 @@ var router = new VueRouter({
     {
       path: '/fang_renter/edit/:zhid',
       component: require('./routers/fang_edit_rent.vue')
-    },
+    },*/
     {
       path: '/fang_image/:fyid',
       component: require('./routers/fang_image.vue')
@@ -460,7 +460,8 @@ router.beforeEach(function(to, from, next){
                 }else{
                     next({path: '/login'});
                 }
-                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+                alert(user22.sjs);
+                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
                         "foreEndType": 2,
                         "code": "300000045",
                         "cookie": user22.sjs,
@@ -470,6 +471,7 @@ router.beforeEach(function(to, from, next){
                         if (data.success) {
                         } else {
                             if (data.userzt == 2) {
+                                alert(11111);
                                 Toast({
                                     message: '此用户已被删除或被禁用，请联系管理员！',
                                     position: 'bottom'
@@ -478,8 +480,10 @@ router.beforeEach(function(to, from, next){
                                 next({path: '/login'});
                             }
                         }
-                        //alert(data); // John
-                    }, "json");
+                        //alert(data); // John11111
+                    }, "json").catch(function (error) {
+                        window.location.href = "http://omc.urskongjian.com/error/uphtm.html";
+                    });
             }
         }else{
             next({path: '/login'});
