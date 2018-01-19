@@ -262,7 +262,7 @@
         let fm = this.fmList.map((item, idx)=>{
             return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
         });
-
+        console.log(fp)
         const data = {"parameters":{"fyid":this.fyid,"fytp":fp,"hxt":hx,"gjt":this.gjList,"fmtp":fm},"foreEndType":2,"code":"300000082"};
         this.$http.post(
            this.$api + "/yhcms/web/zdfyxx/saveZdFyTp.do", data).then((res)=>{

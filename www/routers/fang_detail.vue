@@ -1,6 +1,6 @@
 <style scoped lang="less">
   @import "../resources/css/website/order.less";
-  @import "../resources/plugin/swiper/css/swiper.css"; /*swiper 轮播*/
+  @import "../resources/plugin/swiper/css/swiper.css";
   .weixin_wrap{padding-bottom:.2rem}
   .weixin_head span{width:47% !important;margin-right: 0.2rem !important}
   .weixin_head span.row{width:100% !important}
@@ -27,7 +27,6 @@
                   <img v-if="image" :src="$prefix + '/' + image" alt="">
                   <img v-else :src="$prefix + '/upload/2017-08-27/6404b4de960b81fc5403c870aefcea34.png'" alt="">
                 </a>
-
               </div>
             </div>
             <div class="banner-page">

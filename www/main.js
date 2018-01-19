@@ -12,9 +12,14 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
 
+import { Search } from 'mint-ui';
+Vue.component(Search.name, Search);
 
-Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
-//Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀1111222222
+
+// Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
+Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
+
+
 
 // 测试环境
 //Vue.prototype.$api = "http://192.168.0.222:8080" //api地址
@@ -22,9 +27,75 @@ Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 // 生产环境
 Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
-//Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
-//Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
+
+
+Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+
 Vue.config.debug = true;// 开启debug模式
+
+// 过滤器
+Vue.filter('splitK', function(num) {//千位分隔符 过滤器
+  var decimal = String(num).split('.')[1] || '';//小数部分
+  var tempArr = [];
+  var revNumArr = String(num).split('.')[0].split("").reverse();//倒序
+  for (var i in revNumArr){
+    tempArr.push(revNumArr[i]);
+    if((i+1)%3 === 0 && i != revNumArr.length-1){
+      tempArr.push(',');
+    }
+  }
+  var zs = tempArr.reverse().join('');//整数部分
+  return decimal?zs+'.'+decimal:zs+'.00';
+})
+Vue.filter('delkg', function(num){//银行卡四位空格分割
+  var str=String(num).replace(/(\d{4})/g,'$1 ').replace(/\s*$/,'');
+  return str;
+})
+Vue.filter('times', function(s){//毫秒数转化日期
+  if(s==null || s==''){
+    return
+  }
+ var myDate = new Date(s);
+  var year = myDate.getFullYear();
+  var month = myDate.getMonth()+1;
+  var day = myDate.getDate();
+  if(month<10){month = '0' + month;}
+  if(day<10){day = '0' + day;}
+  return year+'-'+month+'-'+day;
+})
+Vue.filter('timed', function(s){//毫秒数转化日期
+  if(s==null || s==''){
+    return
+  }
+ var myDate = new Date(s);
+  var year = myDate.getFullYear();
+  var month = myDate.getMonth()+1;
+  var day = myDate.getDate();
+  if(month<10){month = '0' + month;}
+  if(day<10){day = '0' + day;}
+  return year+'/'+month+'/'+day;
+})
+Vue.filter('time', function(s){//毫秒数转化日期
+  if(s==null || s==''){
+    return
+  }
+ var myDate = new Date(s);
+  var year = myDate.getFullYear();
+  var month = myDate.getMonth()+1;
+  var day = myDate.getDate();
+  var hour = myDate.getHours();
+  var minute = myDate.getMinutes();
+  var second = myDate.getSeconds();
+  if(month<10){month = '0' + month;}
+  if(day<10){day = '0' + day;}
+  if(hour<10){hour = '0' + hour;}
+  if(minute<10){minute = '0' + minute;}
+  if(second<10){second = '0' + second;}
+  return year+'-'+month+'-'+day + ' ' + hour + ':' + minute;
+})
+
+
+
 
 var router = new VueRouter({
   mode: "hash",
@@ -33,12 +104,12 @@ var router = new VueRouter({
     {
       path: '/',
       /*component: require('./routers/loupan_list.vue')*/
-      component: require('./routers/fang_photo.vue')
+      component: require('./routers/fang_photo.vue'),
     },
     {
       path: '/index',
       /*component: require('./routers/loupan_list.vue')*/
-      component: require('./routers/fang_photo.vue')
+      component: require('./routers/fang_photo.vue'),
     },
     {
       path: '/loupan_basic/:lpid',
@@ -223,14 +294,150 @@ var router = new VueRouter({
     {
       path: '/daikan_total',
       component: require('./routers/daikan_totals.vue')
-    }
-
+    },
+    {//信息填写
+      path: '/commission',
+      component: require('./pages/commission/commission.vue'),
+      meta: {
+        title: '佣金管理'
+      }
+    },
+    {//列表
+      path: '/commission_list',
+      component: require('./pages/commission/commission_list.vue'),
+      meta: {
+        title: '佣金管理'
+      }
+    },
+    {//已确认审核通过页面
+      path: '/commission_rule',
+      component: require('./pages/commission/commission_rule.vue'),
+      meta: {
+        title: '审核通过'
+      }
+    },
+    {//已确认页面
+      path: '/commission_ru',
+      component: require('./pages/commission/commission_ru.vue'),
+      meta: {
+        title: '佣金确认'
+      }
+    },
+    {//未确认页面
+      path: '/commission_un',
+      component: require('./pages/commission/commission_un.vue'),
+      meta: {
+        title: '佣金确认'
+      }
+    },
+    {//审批驳回页面
+      path: '/commission_turn',
+      component: require('./pages/commission/commission_turn.vue'),
+      meta: {
+        title: '审批驳回'
+      }
+    },
+    {//佣金审批
+      path: '/commission_ask',
+      component: require('./pages/commission/commission_ask.vue'),
+      meta: {
+        title: '佣金审批'
+      }
+    },
+    {//佣金审批1
+      path: '/commission_ask1',
+      component: require('./pages/commission/commission_ask1.vue'),
+      meta: {
+        title: '佣金审批'
+      }
+    },
+    {//审批
+      path: '/approval',
+      component: require('./pages/commission/approval.vue'),
+      meta: {
+        title: '佣金审批'
+      }
+    },
+    {//审批1
+      path: '/approval1',
+      component: require('./pages/commission/approval1.vue'),
+      meta: {
+        title: '佣金审批'
+      }
+    },
+    {//审批意见
+      path: '/approval_opinion',
+      component: require('./pages/commission/approval_opinion.vue'),
+      meta: {
+        title: '审批意见'
+      }
+    },
+    {//审批意见
+      path: '/approval_opinion1',
+      component: require('./pages/commission/approval_opinion1.vue'),
+      meta: {
+        title: '审批意见'
+      }
+    },
+    {//驳回意见
+      path: '/turn_opinion',
+      component: require('./pages/commission/turn_opinion.vue'),
+      meta: {
+        title: '驳回意见'
+      }
+    },
+    {//驳回意见
+      path: '/turn_opinion1',
+      component: require('./pages/commission/turn_opinion1.vue'),
+      meta: {
+        title: '驳回意见'
+      }
+    },
+    {//添加抄送人
+      path: '/copy_p',
+      component: require('./pages/commission/copy_p.vue'),
+      meta: {
+        title: '添加抄送人'
+      }
+    },
+    {//抄送详情查看
+      path: '/commission_details',
+      component: require('./pages/commission/commission_details.vue'),
+      meta: {
+        title: '抄送我的'
+      }
+    },
+    {//销售消息通知
+        path: '/news',
+        component: require('./pages/channel/news.vue'),
+        meta: {
+          title: '消息通知'
+        }
+    },
+    {//佣金确认列表
+      path: '/confirmed_list',
+      component: require('./pages/commission/confirmed_list.vue'),
+      meta: {
+        title: '佣金确认'
+      }
+    },
+    {//佣金确认列表详情
+      path: '/confirmed',
+      component: require('./pages/commission/confirmed.vue'),
+      meta: {
+        title: '佣金确认'
+      }
+    },
   ]
 });
 
-
-
 router.beforeEach(function(to, from, next){
+    /* 路由发生变化修改页面title */
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    }
+    next();
+
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
         next({ path: '/login' });
@@ -254,7 +461,7 @@ router.beforeEach(function(to, from, next){
                 }else{
                     next({path: '/login'});
                 }
-                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
                         "foreEndType": 2,
                         "code": "300000045",
                         "cookie": user22.sjs,

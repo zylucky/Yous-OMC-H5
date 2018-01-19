@@ -11,7 +11,48 @@
       top:0;
     }
   }
-
+.news{
+  	position: relative;
+  	margin-top: 0.2rem;
+    display:block;
+    width:0.43rem;
+    height:0.4rem;
+    float:right;
+    margin-right:0.52rem;
+    /*border: 1px solid #fff;*/
+    img{
+    	width: 100%;
+    	vertical-align: inherit;
+    }
+    .newcount{
+			position: absolute;
+			top: -0.165rem;
+			right: -0.2rem;
+			width: 0.33rem;
+			height: 0.33rem;
+			text-align: center;
+			background: url(../resources/images/news/point.png) no-repeat center;
+			background-size: cover;
+			line-height: 0.33rem;
+      display: flex;
+      justify-content: center;
+			i{
+				text-align: center;
+				color: #fff;
+			}
+    }
+  }
+  .news:link{
+  	background: url(../resources/images/news/new_ion.png) no-repeat center;
+  	background-size: cover;
+  }
+  .news:active{
+  	background: url(../resources/images/news/new_ion1.png) no-repeat center;
+  	background-size: cover;
+  }
+  #header{
+  	line-height: inherit;
+  }
 </style>
 <template>
   <div header>
@@ -23,6 +64,10 @@
        <!--<a href="javascript:void(0);" class="detail-search">
           <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50">
       </a>-->
+      <a href="javascript:;" class="news" @click="tonews">
+      	<span class="newcount" v-if="newData.length != 0 && status != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
+      	<!--<img src="../resources/images/news/new_ion.png"/>-->
+      </a>
       <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
         <input type="text" id="keyword" placeholder="请输入楼盘关键字搜索" v-model.trim="para.search_keywork" maxlength="50"
                @focus="changeRou">
@@ -42,6 +87,9 @@
 
             <a href="javascript:;" @click="daikan_daka">带看打卡</a>
             <a href="javascript:;" @click="daikan_logs">带看记录</a>
+            <!--<a href="javascript:;" @click="yjgl">佣金管理</a>-->
+            <!--<a href="javascript:;" @click="yjsp">佣金确认</a>-->
+            <!--<a href="javascript:;" @click="yjsp1">佣金审批</a>-->
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
@@ -53,6 +101,7 @@
   <!--header end-->
 </template>
 <script type="text/babel">
+	import axios from 'axios';
     import $ from 'jquery';
     import {Toast} from 'mint-ui';
     import {Indicator} from 'mint-ui';
@@ -64,9 +113,55 @@
           para: {
               "search_keywork": "",
           },
+          userid:'',//用户id
+          newData:[],//消息通知数据
+          status:0,
       };
     },
+    created(){
+    	this.takeid();
+    },
     methods: {
+    	takeid(){//获取用户id
+        var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+//      console.log(cookxs);
+  //      const url = "http://116.62.68.26:8080/yhcms/web/qdyongjin/getLoginInfo.do";
+        const url = this.$api + "/yhcms/web/qdyongjin/getLoginInfo.do";
+        axios.post(url,{
+          "cookie":cookxs,
+          "ptype":1
+             }).then((res)=>{
+                if(res.data.success){
+    //            console.log(res.data.data.userid)
+                  this.userid = res.data.data.userid
+                  this.takenews();
+                }else{
+                  return;
+                }
+              }, (err)=>{
+          console.log(err);
+              });
+      },
+      takenews(){//接收消息
+        const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
+        axios.get(url, {
+          
+        }).then((res)=>{
+  //        clearInterval(timer);//清楚定时器
+          if(res.data.success){
+            this.newData = res.data.data;
+            for(var i=0; i<this.newData.length; i++){
+              if(this.newData[i].status == 1){
+                this.status ++;
+              }
+            }
+            console.log(this.status);
+  //          var timer = setTimeout(this.takenews,2000);//定时查询
+          }       
+              }, (err)=>{
+          console.log(err);
+              });
+      },
       init(){
           this.para.search_keywork = this.$route.query.keyword;
       },
@@ -133,12 +228,12 @@
             }
           )
         });
-        $("#section").animate({
-          left: "75%"
-        }, 150);
-        $(".section").animate({
-          left: "75%"
-        }, 150);
+        // $("#section").animate({
+        //   left: "75%"
+        // }, 150);
+        // $(".section").animate({
+        //   left: "75%"
+        // }, 150);
 
       },
       modify_pwd(){
@@ -147,13 +242,13 @@
           $("body").removeAttr("style");
           this.$router.push({path:'/modify_pwd'});
       },
-      daikan_daka(){
+      daikan_daka(){//带看打卡
           $("#zhezhao").remove();
           $('html').removeAttr("style");
           $("body").removeAttr("style");
           this.$router.push({path:'/daikan'});
       },
-      daikan_logs(){
+      daikan_logs(){//带看记录
           $("#zhezhao").remove();
           $('html').removeAttr("style");
           $("body").removeAttr("style");
@@ -164,6 +259,24 @@
           $('html').removeAttr("style");
           $("body").removeAttr("style");
           this.$router.push({path:'/daikan_total'});
+      },
+      yjgl(){//佣金管理
+        $("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+        this.$router.push({path:'/commission_list'});
+      },
+      yjsp(){//佣金确认
+        $("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+        this.$router.push({path:'/confirmed_list'});
+      },
+      yjsp1(){//佣金审批
+        $("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+        this.$router.push({path:'/commission_ask1'});
       },
       login_out(){
         $("#zhezhao").remove();
@@ -190,6 +303,16 @@
           }, (res)=>{
               Indicator.close()
           });
+      },
+      tonews(){
+      	if(localStorage.getItem('cookxs')){
+	      	this.$router.push({
+						path:'/news',//跳转到消息列表
+					})
+      	}else{
+      		this.$router.push({path:'/login'});
+          return;
+      	}
       }
     },
     mounted: function () {

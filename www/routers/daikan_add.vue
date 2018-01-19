@@ -1,4 +1,4 @@
-<style>
+<style lang="less">
     @import "../resources/css/reset.css";
     .radio_class{  background-image: url(../resources/images/icons/circle.png);  }
     .title{  height:0.6rem;width: 100%;  background-color:rgb(235,235,235);  padding-left: 0.2rem;  padding-top: 0.1rem;  color: #333;  font-weight: 500;  font-size: 16px;  }
@@ -6,10 +6,14 @@
     .container{  font-family: "Microsoft YaHei";  background-color: white;  }
     .btnimg{  background-image: url(../resources/images/submit.png);  }
     textarea{  background-color: white!important;  }
-    .mint-field .mint-cell-title{width:1.5rem;}
+    .unique-daikan-add .mint-field .mint-cell-title{width:1.5rem;}
+    .unique-daikan-add input::-webkit-input-placeholder {
+        text-align: right!important;
+    }
+    .unique-daikan-add input{text-align: right;}
 </style>
 <template>
-    <div class="container">
+    <div class="container unique-daikan-add">
         <div class="title">渠道信息</div>
         <mt-field label="渠道公司" style="color: #333;"  placeholder="请输入渠道公司" v-model="company"></mt-field>
         <mt-cell
