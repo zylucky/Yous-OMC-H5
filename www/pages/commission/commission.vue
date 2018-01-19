@@ -220,7 +220,7 @@
 	background-size: cover;
 }
 
-.active{
+.activ{
 	background: url(../../resources/images/commission/btn2.png) no-repeat center !important;
 	background-size: cover !important;
 }
@@ -442,10 +442,10 @@
 					
 					if(this.yjxx == true){
 						$(".mint-radio:eq(1) span").removeClass('actives');
-						$(".mint-radio:eq(0) span").addClass("active");
+						$(".mint-radio:eq(0) span").addClass("activ");
 					}
 					if(this.yjxx == false){
-						$(".mint-radio:eq(0) span").removeClass('active');
+						$(".mint-radio:eq(0) span").removeClass('activ');
 						$(".mint-radio:eq(1) span").addClass("actives");
 					}	
 						
@@ -560,10 +560,10 @@
 				this.yjxx = a;
 				if(a == "true"){
 					$(".mint-radio:eq(1) span").removeClass('actives');
-					$(".mint-radio:eq(0) span").addClass("active");
+					$(".mint-radio:eq(0) span").addClass("activ");
 				}
 				if(a == "false"){
-					$(".mint-radio:eq(0) span").removeClass('active');
+					$(".mint-radio:eq(0) span").removeClass('activ');
 					$(".mint-radio:eq(1) span").addClass("actives");
 				}
 				if(a == 'true'){//正常时的月租金公式
