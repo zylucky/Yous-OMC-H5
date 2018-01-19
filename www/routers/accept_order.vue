@@ -10,7 +10,6 @@
       display: inline-block;
     }
   }
-
 </style>
 <template>
   <div class="all_elements">

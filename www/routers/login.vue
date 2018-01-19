@@ -71,7 +71,9 @@
           let user22 = JSON.parse(localStorage.getItem('cookxs'));
           console.log(user22.sjs);
         this.$http.post(
+        	
           this.$api + "/yhcms/web/jcsj/loginxs.do",
+//        "http://116.62.68.26:8080/yhcms/web/jcsj/loginxs.do",
           {
             "parameters": {
               "uaccounts": un,

@@ -283,8 +283,21 @@ var router = new VueRouter({
       path: '*',
       component: require('./routers/login.vue')
     },
-  ]
+  ],
+  // scrollBehavior (to, from, savedPosition) {
+  //   if (savedPosition) {
+  //     console.log(savedPosition)
+  //     return savedPosition
+  //   } else {
+  //     if (from.meta.keepAlive) {
+  //       from.meta.savedPosition = document.body.scrollTop;
+  //       console.log(document.body.scrollTop);
+  //     }
+  //     return { x: 0, y: to.meta.savedPosition || 0 }
+  //   }
+  // }
 });
+
 
 new Vue({
   el: '#app',
