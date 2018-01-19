@@ -219,7 +219,7 @@
 					</li>
 					<li>
 						<p>发票类型：</p>
-						<p>幼狮科技增值税专用发票</p>
+						<p>{{xsData.xsfpleixing}}</p>
 						<i @click="invoice">发票抬头</i>
 					</li>
 				</ul>

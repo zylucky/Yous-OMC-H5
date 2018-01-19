@@ -62,7 +62,7 @@
 			padding-left: 0.3rem;
 			background: #eeeeee;
 			-webkit-box-shadow: 0px 0px 8px #D9D9D9;
-			box-shadow: 0px 0px 8px #D9D9D9;
+			box-shadow: 0px 1px 6px #bdbdbd;
 		}
 		p {
 			position: relative;
@@ -371,7 +371,7 @@
 						{
 							id: 4,
 							name: '华溯商贸增值税普通发票',
-							companyName: '北京幼师科技有限公司',
+							companyName: '北京幼狮科技有限公司',
 							number: '9111 0105 3064 0709 X3',
 							address: '',
 							bankplace: ''
@@ -434,7 +434,7 @@
 						this.theinvoice.number = this.xsData.xsfpnashuiren;
 						this.theinvoice.address = this.xsData.xsfpdizhidianhua;
 						this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
-						this.invoice = this.xsData.xsfpdanwei;
+						this.invoice = this.xsData.xsfpleixing;
 					}
 	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
@@ -564,6 +564,7 @@
 			},
 			onValuesChange(picker, values) {
 				this.chaobj = Object.assign({},values[0])
+				console.log(this.chaobj);
 //				this.invoicetype = values[0].name;
 ////				console.log(values[0]);
 //				this.theinvoice.companyName = values[0].companyName;
@@ -583,7 +584,8 @@
 						});
 					}else{
 						this.theinvoice = Object.assign({},this.chaobj);
-						this.invoice = this.theinvoice.companyName;
+//						this.invoice = this.theinvoice.companyName;
+						this.invoice = this.theinvoice.name;
 						this.shade = false;
 						this.pickshow = false;
 					}
