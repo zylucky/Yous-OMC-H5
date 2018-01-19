@@ -204,8 +204,8 @@
 }
 /*按钮背景*/
 .mint-radio-input:checked + .mint-radio-core{
-	border-color: rgba(255,255,255,0);
-	background: url(../../resources/images/commission/btn1.png) no-repeat center;
+	background-color: rgba(255,255,255,0);
+	background: url(../../resources/images/commission/btn2.png) no-repeat center;
 	background-size: cover;
 }
 .mint-cell-wrapper,.mint-cell:last-child,.mint-cell{
