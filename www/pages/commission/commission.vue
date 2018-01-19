@@ -205,8 +205,8 @@
 /*按钮背景*/
 .mint-radio-input:checked + .mint-radio-core{
 	background-color: rgba(255,255,255,0);
-	background: url(../../resources/images/commission/btn2.png) no-repeat center;
-	background-size: cover;
+	/*background: url(../../resources/images/commission/btn2.png) no-repeat center;
+	background-size: cover;*/
 }
 .mint-cell-wrapper,.mint-cell:last-child,.mint-cell{
 	background: none;
@@ -219,6 +219,16 @@
 	background: url(../../resources/images/commission/btn.png) no-repeat center;
 	background-size: cover;
 }
+
+.active{
+	background: url(../../resources/images/commission/btn2.png) no-repeat center !important;
+	background-size: cover !important;
+}
+.actives{
+	background: url(../../resources/images/commission/btn1.png) no-repeat center !important;
+	background-size: cover !important;
+}
+
 .picker-center-highlight:before, .picker-center-highlight:after{
 	background-color:#ccc !important;
 }
@@ -429,6 +439,16 @@
             		this.channelname = this.xsData.xsqvdao;
             		this.tel = this.xsData.xsqvdaotel;
             		this.yjxx = this.xsData.xsyongjinxinxi;
+					
+					if(this.yjxx == true){
+						$(".mint-radio:eq(1) span").removeClass('actives');
+						$(".mint-radio:eq(0) span").addClass("active");
+					}
+					if(this.yjxx == false){
+						$(".mint-radio:eq(0) span").removeClass('active');
+						$(".mint-radio:eq(1) span").addClass("actives");
+					}	
+						
 					if(this.xsData.xsfpdanwei != '' && this.xsData.xsfpnashuiren != ''){
 	            		this.theinvoice.companyName = this.xsData.xsfpdanwei;
 						this.theinvoice.number = this.xsData.xsfpnashuiren;
@@ -536,7 +556,16 @@
 			},
 			//佣金信息状态
 			check(a){
+				console.log(a)
 				this.yjxx = a;
+				if(a == "true"){
+					$(".mint-radio:eq(1) span").removeClass('actives');
+					$(".mint-radio:eq(0) span").addClass("active");
+				}
+				if(a == "false"){
+					$(".mint-radio:eq(0) span").removeClass('active');
+					$(".mint-radio:eq(1) span").addClass("actives");
+				}
 				if(a == 'true'){//正常时的月租金公式
 					this.formula = '月租金 * 12 * 0.96'
 					$('.formulas').attr('disabled','disabled');
