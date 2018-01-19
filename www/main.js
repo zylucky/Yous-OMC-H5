@@ -14,7 +14,7 @@ Vue.use(MintUI);
 
 import { Search } from 'mint-ui';
 Vue.component(Search.name, Search);
-import {Toast} from 'mint-ui';
+
 
 // Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
@@ -282,7 +282,7 @@ var router = new VueRouter({
       path: '/daikan_comment/:id',
       component: require('./routers/daikan_comment.vue')
     },
-    {//
+    {
       path: '/daikan_comment_add/:id',
       component: require('./routers/daikan_comment_add.vue')
     },
@@ -460,7 +460,7 @@ router.beforeEach(function(to, from, next){
                 }else{
                     next({path: '/login'});
                 }
-                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
                         "foreEndType": 2,
                         "code": "300000045",
                         "cookie": user22.sjs,
