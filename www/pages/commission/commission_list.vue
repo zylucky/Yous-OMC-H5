@@ -300,6 +300,7 @@ import axios from 'axios';
 			},
 			clk(cut){
 				$('.list_box').scrollTop(0);
+				this.jz = true;
 				Indicator.open({
 				  text: 'Loading...',
 				  spinnerType: 'fading-circle'
