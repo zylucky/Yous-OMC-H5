@@ -8,6 +8,7 @@ import MintUI from 'mint-ui';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import search from './routers/search.vue';
+import store from '../src/vx';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
@@ -550,6 +551,7 @@ router.beforeEach(function(to, from, next){
 new Vue({
   el: '#app',
   router: router,
+  store,
   render: function (h) {
     return h(App)
   }

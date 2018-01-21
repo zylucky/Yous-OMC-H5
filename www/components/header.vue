@@ -261,18 +261,38 @@
           this.$router.push({path:'/daikan_total'});
       },
       yjgl(){//佣金管理
+      	this.$store.state.tabzt = 0;//tab切换状态
+				this.$store.state.page1 = 1;//当前页
+				this.$store.state.page = 1;//当前页
+				this.$store.state.datas = '';//数据
+				this.$store.state.datas1 = '';//数据
+				
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
         this.$router.push({path:'/commission_list'});
       },
       yjsp(){//佣金确认
+      	this.$store.state.tabzt = 0;//tab切换状态
+				this.$store.state.page1 = 1;//当前页
+				this.$store.state.page = 1;//当前页
+				this.$store.state.datas = '';//数据
+				this.$store.state.datas1 = '';//数据
+      	
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
         this.$router.push({path:'/confirmed_list'});
       },
       yjsp1(){//佣金审批
+      	this.$store.state.tabzt = 0;//tab切换状态
+				this.$store.state.page1 = 1;//当前页
+				this.$store.state.page = 1;//当前页
+				this.$store.state.page2 = 1;//当前页
+				this.$store.state.datas = '';//数据
+				this.$store.state.datas1 = '';//数据
+				this.$store.state.datas2 = '';//数据
+      	
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");

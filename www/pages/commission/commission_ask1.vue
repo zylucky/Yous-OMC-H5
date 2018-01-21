@@ -144,21 +144,21 @@
 		<!--列表-->
 		<div class="list_box">
 			<!--带我审批-->
-			<div class="kong" v-if="pendData.length==0 && kshow">
+			<div class="kong" v-if="pendData.length==0 && kshow && tabq=='0'">
 				<p class="k_ion">
 					<img src="../../resources/images/commission/k_icon.png" alt="" />
 				</p>
 				<p class="k_text">暂无审批单</p>
 			</div>
 			<!--我已审批-->
-			<div class="kong" v-if="passData.length==0 && kshow1">
+			<div class="kong" v-if="passData.length==0 && kshow1 && tabq=='1'">
 				<p class="k_ion">
 					<img src="../../resources/images/commission/k_icon.png" alt="" />
 				</p>
 				<p class="k_text">暂无已审批申请</p>
 			</div>
 			<!--抄送我的-->
-			<div class="kong" v-if="csData.length==0 && kshow2">
+			<div class="kong" v-if="csData.length==0 && kshow2 && tabq=='2'">
 				<p class="k_ion" style="width: 1.39rem;height: 1.39rem;">
 					<img src="../../resources/images/commission/cs_icon.png" alt="" />
 				</p>
@@ -254,13 +254,45 @@ import { InfiniteScroll } from 'mint-ui';
 			}
 		},
 		created(){
-			Indicator.open({
-			  text: 'Loading...',
-			  spinnerType: 'fading-circle'
-			});
-			this.init();
-			this.init1();
-			this.init2();
+			if(this.$store.state.tabzt != ''){//tab切换状态
+				this.tabq = this.$store.state.tabzt;
+			}
+			if(this.$store.state.page1 != ''){//当前数据页
+				this.page1 = this.$store.state.page1;
+			}
+			if(this.$store.state.page != ''){//当前数据页
+				this.page = this.$store.state.page;
+			}
+			if(this.$store.state.page2 != ''){//当前数据页
+				this.page2 = this.$store.state.page2;
+			}
+			if(this.$store.state.datas != ''){//当前tab数据
+				this.pendData = this.$store.state.datas;
+			}else{		
+				Indicator.open({
+				  text: 'Loading...',
+				  spinnerType: 'fading-circle'
+				});
+				this.init();	
+			}
+			if(this.$store.state.datas1 != ''){//
+				this.passData = this.$store.state.datas1;
+			}else{
+				Indicator.open({
+				  text: 'Loading...',
+				  spinnerType: 'fading-circle'
+				});
+				this.init1();
+			}
+			if(this.$store.state.datas2 != ''){//
+				this.csData = this.$store.state.datas2;
+			}else{
+				Indicator.open({
+				  text: 'Loading...',
+				  spinnerType: 'fading-circle'
+				});
+				this.init2();
+			}
 		},
 		methods:{
 			clk(cut){
@@ -271,6 +303,9 @@ import { InfiniteScroll } from 'mint-ui';
 				  spinnerType: 'fading-circle'
 				});
 				this.tabq = cut;
+				
+				this.$store.commit('sendObj',this.tabq);//当前tab状态存入state仓库
+				
 				if(cut == '0'){
 					this.noMore = true;
 					this.dataqq1 = true;	
@@ -314,7 +349,7 @@ import { InfiniteScroll } from 'mint-ui';
 	            		"page":this.page1,
 	            		"size":this.size
 	            }).then((res)=>{
-	            	if(res.data.data.length == 0){
+	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
 						  position: 'bottom',
@@ -322,6 +357,17 @@ import { InfiniteScroll } from 'mint-ui';
 						});
 						this.jz = false;
 					}
+	            	if(!res.data.data && this.tabq == 0){
+	            		Toast({
+						  message: '没有更多数据了!',
+						  position: 'bottom',
+						  duration: 2000
+						});
+						this.jz = false;
+					}
+	            	if(this.tabq != 0){
+	            		this.jz = false;
+	            	}
 	            	if(res.data.success && res.data.data){
 	            		this.loading = false;
 	            		this.noMore = false;
@@ -348,7 +394,7 @@ import { InfiniteScroll } from 'mint-ui';
 	            		"page":this.page,
 	            		"size":this.size
 	            }).then((res)=>{
-	            	if(res.data.data.length == 0){
+	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
 						  position: 'bottom',
@@ -356,6 +402,17 @@ import { InfiniteScroll } from 'mint-ui';
 						});
 						this.jz = false;
 					}
+	            	if(!res.data.data && this.tabq == 1){
+	            		Toast({
+						  message: '没有更多数据了!',
+						  position: 'bottom',
+						  duration: 2000
+						});
+						this.jz = false;
+					}
+	            	if(this.tabq != 1){
+	            		this.jz = false;
+	            	}
 	            	if(res.data.success && res.data.data){
 	            		this.loading = false;
 	            		this.noMore = false;
@@ -472,7 +529,31 @@ import { InfiniteScroll } from 'mint-ui';
 			
 		},
 		mounted(){
-			
+			this.$store.commit('sendObj',this.tabq);//当前tab状态存入state仓库
+			var _this = this;
+			if(_this.$store.state.scollposion != ''){//滚动条位置存在则滚动到对应位置
+				$('.list_box').scrollTop(_this.$store.state.scollposion);
+				console.log(_this.$store.state.scollposion);
+			}else{
+				$('.list_box').scrollTop(0);
+			}
+			$('.list_box').scroll(function() {//记录滚动条位置
+			  _this.$store.commit('openRed',$('.list_box').scrollTop());//将滚动条位置存入state仓库
+			  if(_this.tabq == '0'){//未确认数据
+			  	_this.$store.commit('saveData',_this.pendData);//当前数据存入state仓库
+			  	_this.$store.commit('savePage',_this.page1);//当前页码存入state仓库	
+			  }
+			  if(_this.tabq == '1'){//已确认数据
+			  	_this.$store.commit('saveData1',_this.passData);//当前数据存入state仓库
+			  	_this.$store.commit('savePage1',_this.page);//当前页码存入state仓库	
+			  }
+			  if(_this.tabq == '2'){//抄送我的数据
+			  	_this.$store.commit('saveData2',_this.csData);//当前数据存入state仓库
+			  	_this.$store.commit('savePage2',_this.page2);//当前页码存入state仓库	
+			  }
+			  
+			  
+			});
 		},
 	}
 </script>
