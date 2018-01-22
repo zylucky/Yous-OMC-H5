@@ -56,7 +56,9 @@
   		right: 0;
   		top: 1rem;
   		bottom: 0;
-  		overflow: auto;
+  		overflow-x: hidden;
+  		overflow-y: scroll;
+  		-webkit-overflow-scrolling: touch;
   		ul{padding-bottom: 1rem;}
   	}
   	.list li{
@@ -213,7 +215,7 @@ import axios from 'axios';
 				size:10,//每次请求条数
 				dataqq:false,//切换点击请求数据状态
 				dataqq1:false,//切换点击请求数据状态1
-				jz:true,//底部加载图标
+				jz:false,//底部加载图标
 			}
 		},
 		created(){
@@ -264,6 +266,7 @@ import axios from 'axios';
 						this.jz = false;
 					}
 	            	if(res.data.success && res.data.data){
+	            		this.jz = false;
 	            		this.loading = false;
 	            		this.noMore = false;
 	            		if(this.dataqq1){
@@ -300,6 +303,7 @@ import axios from 'axios';
 						this.jz = false;
 					}
 	            	if(res.data.success && res.data.data){
+	            		this.jz = false;
 	            		this.loading = false;
 	            		this.noMore = false;
 	            		if(this.dataqq){
@@ -408,7 +412,7 @@ import axios from 'axios';
 			loadMore() {//未确认数据
 				if (!this.loading && !this.noMore) {
 				  this.loading = true;
-
+				  this.jz = true;
 				  Indicator.open({
 				    text: 'Loading...',
 				    spinnerType: 'fading-circle'

@@ -8,7 +8,9 @@
   		bottom: 0;
   		top: 0;*/
 		padding-bottom: 3rem;
-		overflow: auto;
+		overflow-x: hidden;
+  		overflow-y: scroll;
+  		-webkit-overflow-scrolling: touch;
 	}
 	
 	.site_card {
@@ -567,7 +569,7 @@
 					$(".mint-radio:eq(1) span").addClass("actives");
 				}
 				if(a == 'true'){//正常时的月租金公式
-					this.formula = '月租金 * 12 * 0.96'
+					this.formula = '月租金 * 12 * 0.08'
 					$('.formulas').attr('disabled','disabled');
 				}else{
 					this.formula = ''

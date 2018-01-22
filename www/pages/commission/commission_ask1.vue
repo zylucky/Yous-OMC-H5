@@ -55,7 +55,9 @@
   		right: 0;
   		top: 1rem;
   		bottom: 0;
-  		overflow: auto;
+  		overflow-x: hidden;
+  		overflow-y: scroll;
+  		-webkit-overflow-scrolling: touch;
   		ul{padding-bottom: 1rem;}
   	}
   	.list li{
@@ -250,7 +252,7 @@ import { InfiniteScroll } from 'mint-ui';
 				dataqq:false,//切换点击请求数据状态
 				dataqq1:false,//切换点击请求数据状态1
 				dataqq2:false,//切换点击请求数据状态2
-				jz:true,//底部加载图标
+				jz:false,//底部加载图标
 			}
 		},
 		created(){
@@ -369,6 +371,7 @@ import { InfiniteScroll } from 'mint-ui';
 	            		this.jz = false;
 	            	}
 	            	if(res.data.success && res.data.data){
+	            		this.jz = false;
 	            		this.loading = false;
 	            		this.noMore = false;
 	            		if(this.dataqq1){
@@ -414,6 +417,7 @@ import { InfiniteScroll } from 'mint-ui';
 	            		this.jz = false;
 	            	}
 	            	if(res.data.success && res.data.data){
+	            		this.jz = false;
 	            		this.loading = false;
 	            		this.noMore = false;
 	            		if(this.dataqq){
@@ -460,6 +464,7 @@ import { InfiniteScroll } from 'mint-ui';
 	            	}
 
 	            	if(res.data.success && res.data.data){
+	            		this.jz = false;
 	            		this.loading = false;
 	            		this.noMore = false;
 	            		if(this.dataqq){
@@ -507,6 +512,7 @@ import { InfiniteScroll } from 'mint-ui';
 			},
 			loadMore() {//未确认数据
 				if (!this.loading && !this.noMore) {
+				  this.jz = true;
 				  this.loading = true;
 				  Indicator.open({
 				    text: 'Loading...',
