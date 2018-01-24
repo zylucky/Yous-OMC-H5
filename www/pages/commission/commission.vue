@@ -432,8 +432,7 @@
 				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForid.do";
 				axios.post(url,{ 
             		"id":this.xsid,
-	            }).then((res)=>{
-//	            	console.log(res)
+	           }).then((res)=>{
 	            	this.xsData = res.data.data;
             		this.money = this.xsData.xsyongjin;
             		this.value = String(this.xsData.xsyongjinxinxi);
@@ -483,6 +482,7 @@
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
 	            axios.post(url,{
 	            	"ccode":this.xsData.ccode,
+	            	"createdate":this.xsData.createdate,
             		"cookie":cookxs,
             		'fanghao':this.xsData.fanghao,
             		'fanghaoid':this.xsData.fanghaoid,
@@ -519,7 +519,7 @@
 							path:'/commission_list',//跳转佣金信息
 						})
 	            	}
-					console.log(res);
+//					console.log(res);
 	            }, (err)=>{
 					console.log(err);
 	            });
@@ -546,7 +546,7 @@
 					"phone":this.tel
 	            }).then((res)=>{
 	            	this.qdfind = res.data.data;
-					console.log(this.qdfind);
+//					console.log(this.qdfind);
 	            }, (err)=>{
 					console.log(err);
 	            });
@@ -595,7 +595,7 @@
 			},
 			onValuesChange(picker, values) {
 				this.chaobj = Object.assign({},values[0])
-				console.log(this.chaobj);
+//				console.log(this.chaobj);
 //				this.invoicetype = values[0].name;
 ////				console.log(values[0]);
 //				this.theinvoice.companyName = values[0].companyName;
