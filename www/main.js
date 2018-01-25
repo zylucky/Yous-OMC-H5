@@ -492,48 +492,38 @@ router.beforeEach(function(to, from, next){
 /*router.beforeEach(function(to, from, next) {
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
-      alert(111);
         next({ path: '/login' });
     }
     else {
         if (user != null) {
-            alert(222);
             const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
             if (delta > 86400 * 3) {
-                alert(333);
                 next({path: '/login'});
             } else {
-                alert(444);
                 const user22 = JSON.parse(localStorage.getItem('cookxs'));
-                alert(user22);
+//              alert(user22);
                 if(user22 != null){
-                    alert(121212);
                     next();
 
                 }else{
-                    alert(1313131);
                     next({path: '/login'});
 
                 }
-                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
+                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
                         "foreEndType": 2,
                         "code": "300000045",
                         "cookie": user22.sjs,
                     },
                     function (data) {
                         if (data.success) {
-                            alert(555);
                             next();
                         } else {
-                            alert(666);
                             if (data.userzt == 2) {
-                                alert(777);
                                 Toast({
                                     message: '此用户已被删除或被禁用，请联系管理员！',
                                     position: 'bottom'
                                 });
                             } else {
-                                alert(8888);
                                 next({path: '/login'});
                             }
                         }
@@ -541,7 +531,7 @@ router.beforeEach(function(to, from, next){
                     }, "json");
             }
         }else{
-            alert(9999);
+
           next();
         }
     }
