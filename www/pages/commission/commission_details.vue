@@ -470,7 +470,7 @@ import { Indicator } from 'mint-ui';
             		"id":this.$route.query.id,
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
-					console.log(this.allData);
+//					console.log(this.allData);
 					this.obtaintask();//获取任务流
 	            }, (err)=>{
 					console.log(err);

@@ -97,7 +97,7 @@ import axios from 'axios';
 					"personname":item.name,
 					"pertype":item.pertype
 	           	}).then((res)=>{
-	            	console.log(res);
+//	            	console.log(res);
 	            	this.$router.push({
 	            		path: '/confirmed',//跳转回审批抄送人页面
 //	            		path: '/approval',//跳转回审批抄送人页面
@@ -117,7 +117,7 @@ import axios from 'axios';
             		"name":this.search
 	           	}).then((res)=>{
 	           		this.products = (res.data.data);
-	            	console.log(this.products);
+//	            	console.log(this.products);
 	            }, (err)=>{
 					console.log(err);
 	            });

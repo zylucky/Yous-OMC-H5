@@ -8,7 +8,9 @@
   		bottom: 0;
   		top: 0;*/
 		padding-bottom: 3rem;
-		overflow: auto;
+		overflow-x: hidden;
+  		overflow-y: scroll;
+  		-webkit-overflow-scrolling: touch;
 	}
 	
 	.site_card {
@@ -204,9 +206,9 @@
 }
 /*按钮背景*/
 .mint-radio-input:checked + .mint-radio-core{
-	border-color: rgba(255,255,255,0);
-	background: url(../../resources/images/commission/btn1.png) no-repeat center;
-	background-size: cover;
+	background-color: rgba(255,255,255,0);
+	/*background: url(../../resources/images/commission/btn2.png) no-repeat center;
+	background-size: cover;*/
 }
 .mint-cell-wrapper,.mint-cell:last-child,.mint-cell{
 	background: none;
@@ -219,6 +221,16 @@
 	background: url(../../resources/images/commission/btn.png) no-repeat center;
 	background-size: cover;
 }
+
+.activ{
+	background: url(../../resources/images/commission/btn2.png) no-repeat center !important;
+	background-size: cover !important;
+}
+.actives{
+	background: url(../../resources/images/commission/btn1.png) no-repeat center !important;
+	background-size: cover !important;
+}
+
 .picker-center-highlight:before, .picker-center-highlight:after{
 	background-color:#ccc !important;
 }
@@ -283,7 +295,7 @@
 				<span id='invoices' @click='selinvoice'>{{invoice}}</span>
 				<label for="invoice" style="float: right;">></label>
 			</p>
-			<ul class="invoice_list" v-if='this.theinvoice.companyName || xsData.taskZt==4'>
+			<ul class="invoice_list" v-if='this.theinvoice.companyName || xsData.taskZt==4 || chuzuren != "" || chuzuren != null'>
 				<li>
 					<i>名<s style="visibility: hidden;">我我我我</s>称:</i>
 					<span>{{theinvoice.companyName}}</span>
@@ -408,6 +420,7 @@
 				qdinp1:false,
 				btnshow:true,
 				chaobj:{},
+				chuzuren:'',//出租人
 			}
 		},
 		created() {
@@ -420,8 +433,7 @@
 				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForid.do";
 				axios.post(url,{ 
             		"id":this.xsid,
-	            }).then((res)=>{
-//	            	console.log(res)
+	           }).then((res)=>{
 	            	this.xsData = res.data.data;
             		this.money = this.xsData.xsyongjin;
             		this.value = String(this.xsData.xsyongjinxinxi);
@@ -429,6 +441,17 @@
             		this.channelname = this.xsData.xsqvdao;
             		this.tel = this.xsData.xsqvdaotel;
             		this.yjxx = this.xsData.xsyongjinxinxi;
+            		this.chuzuren = this.xsData.chuzuren;
+	
+					if(this.yjxx == true){
+						$(".mint-radio:eq(1) span").removeClass('actives');
+						$(".mint-radio:eq(0) span").addClass("activ");
+					}
+					if(this.yjxx == false){
+						$(".mint-radio:eq(0) span").removeClass('activ');
+						$(".mint-radio:eq(1) span").addClass("actives");
+					}	
+						
 					if(this.xsData.xsfpdanwei != '' && this.xsData.xsfpnashuiren != ''){
 	            		this.theinvoice.companyName = this.xsData.xsfpdanwei;
 						this.theinvoice.number = this.xsData.xsfpnashuiren;
@@ -436,6 +459,29 @@
 						this.theinvoice.bankplace = this.xsData.xsfpkaihuhang;
 						this.invoice = this.xsData.xsfpleixing;
 					}
+					
+            		if(this.chuzuren == '幼狮科技'){
+            			this.theinvoice.companyName = this.slots[0].values[1].companyName;
+						this.theinvoice.number = this.slots[0].values[1].number;
+						this.theinvoice.address = this.slots[0].values[1].address;
+						this.theinvoice.bankplace = this.slots[0].values[1].bankplace;
+						this.invoice = this.slots[0].values[1].name;
+            		}
+            		if(this.chuzuren == '华溯商贸'){
+            			this.theinvoice.companyName = this.slots[0].values[4].companyName;
+						this.theinvoice.number = this.slots[0].values[4].number;
+						this.theinvoice.address = this.slots[0].values[4].address;
+						this.theinvoice.bankplace = this.slots[0].values[4].bankplace;
+						this.invoice = this.slots[0].values[4].name;
+            		}
+            		if(this.chuzuren == '彭坤' || this.chuzuren == '彭亮'){
+            			this.theinvoice.companyName = this.slots[0].values[2].companyName;
+						this.theinvoice.number = this.slots[0].values[2].number;
+						this.theinvoice.address = this.slots[0].values[2].address;
+						this.theinvoice.bankplace = this.slots[0].values[2].bankplace;
+						this.invoice = this.slots[0].values[2].name;
+            		}
+					
 	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
 	            		$('.new_box input').attr('disabled','disabled');//只读不可更改
 	            		this.options[0].disabled = true//禁用单选
@@ -461,6 +507,7 @@
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
 	            axios.post(url,{
 	            	"ccode":this.xsData.ccode,
+	            	"createdate":this.xsData.createdate,
             		"cookie":cookxs,
             		'fanghao':this.xsData.fanghao,
             		'fanghaoid':this.xsData.fanghaoid,
@@ -497,7 +544,7 @@
 							path:'/commission_list',//跳转佣金信息
 						})
 	            	}
-					console.log(res);
+//					console.log(res);
 	            }, (err)=>{
 					console.log(err);
 	            });
@@ -524,7 +571,7 @@
 					"phone":this.tel
 	            }).then((res)=>{
 	            	this.qdfind = res.data.data;
-					console.log(this.qdfind);
+//					console.log(this.qdfind);
 	            }, (err)=>{
 					console.log(err);
 	            });
@@ -536,9 +583,18 @@
 			},
 			//佣金信息状态
 			check(a){
+//				console.log(a)
 				this.yjxx = a;
+				if(a == "true"){
+					$(".mint-radio:eq(1) span").removeClass('actives');
+					$(".mint-radio:eq(0) span").addClass("activ");
+				}
+				if(a == "false"){
+					$(".mint-radio:eq(0) span").removeClass('activ');
+					$(".mint-radio:eq(1) span").addClass("actives");
+				}
 				if(a == 'true'){//正常时的月租金公式
-					this.formula = '月租金 * 12 * 0.96'
+					this.formula = '月租金 * 12 * 0.08'
 					$('.formulas').attr('disabled','disabled');
 				}else{
 					this.formula = ''
@@ -564,7 +620,7 @@
 			},
 			onValuesChange(picker, values) {
 				this.chaobj = Object.assign({},values[0])
-				console.log(this.chaobj);
+//				console.log(this.chaobj);
 //				this.invoicetype = values[0].name;
 ////				console.log(values[0]);
 //				this.theinvoice.companyName = values[0].companyName;
@@ -584,7 +640,6 @@
 						});
 					}else{
 						this.theinvoice = Object.assign({},this.chaobj);
-//						this.invoice = this.theinvoice.companyName;
 						this.invoice = this.theinvoice.name;
 						this.shade = false;
 						this.pickshow = false;
