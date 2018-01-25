@@ -583,7 +583,7 @@
 			},
 			//佣金信息状态
 			check(a){
-				console.log(a)
+//				console.log(a)
 				this.yjxx = a;
 				if(a == "true"){
 					$(".mint-radio:eq(1) span").removeClass('actives');

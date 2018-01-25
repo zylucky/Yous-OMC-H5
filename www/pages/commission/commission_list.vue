@@ -333,7 +333,7 @@ import axios from 'axios';
 				this.tabq = cut;
 				
 				this.$store.commit('sendObj',this.tabq);//当前tab状态存入state仓库
-				console.log(this.$store.state.tabzt);
+//				console.log(this.$store.state.tabzt);
 				
 				if(cut=='0'){
 					this.noMore = true;
@@ -358,7 +358,7 @@ import axios from 'axios';
 			},
 			//跳转数据
 			detail(id,zt,taskzt){
-				console.log(taskzt);
+//				console.log(taskzt);
 				if(taskzt == 4){//已驳回
 					this.$router.push({
 						path:'/commission_turn',//跳转佣金信息
@@ -433,7 +433,7 @@ import axios from 'axios';
 			var _this = this;
 			if(_this.$store.state.scollposion != ''){//滚动条位置存在则滚动到对应位置
 				$('.list_box').scrollTop(_this.$store.state.scollposion);
-				console.log(_this.$store.state.scollposion);
+//				console.log(_this.$store.state.scollposion);
 			}else{
 				$('.list_box').scrollTop(0);
 			}

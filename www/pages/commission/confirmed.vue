@@ -763,7 +763,7 @@ import { Indicator } from 'mint-ui';
 	
 	          this.imgList.forEach((img,idx)=> {cb(img, fp)});
 	          this.imgList = fp;
-			  console.log(this.imgList);
+//			  console.log(this.imgList);
 	
 	          //保存信息
 	          if(this.upload < 1){

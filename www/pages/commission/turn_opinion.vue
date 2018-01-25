@@ -135,7 +135,7 @@ import { Indicator } from 'mint-ui';
 						})
 //						location.reload();
 					}
-					console.log(res);
+//					console.log(res);
 	            }, (err)=>{
 					console.log(err);
 	            });

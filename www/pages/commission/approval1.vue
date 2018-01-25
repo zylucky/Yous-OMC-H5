@@ -565,7 +565,7 @@ import { Indicator } from 'mint-ui';
 						for(var n in arrdata[m]){
 							if(n == 'shenpi' && arrdata[m][n] == 2){
 //								console.log(this.spData)
-								console.log('==============shenpi====================');
+//								console.log('==============shenpi====================');
 								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
 								return
 							}

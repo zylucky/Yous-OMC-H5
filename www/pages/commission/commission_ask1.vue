@@ -539,7 +539,7 @@ import { InfiniteScroll } from 'mint-ui';
 			var _this = this;
 			if(_this.$store.state.scollposion != ''){//滚动条位置存在则滚动到对应位置
 				$('.list_box').scrollTop(_this.$store.state.scollposion);
-				console.log(_this.$store.state.scollposion);
+//				console.log(_this.$store.state.scollposion);
 			}else{
 				$('.list_box').scrollTop(0);
 			}

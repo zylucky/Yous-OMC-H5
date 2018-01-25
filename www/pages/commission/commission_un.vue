@@ -316,7 +316,7 @@ import axios from 'axios';
             		"id":this.xsid,
 	            }).then((res)=>{
 	            	this.xsData = res.data.data;
-	            	console.log(this.xsData);
+//	            	console.log(this.xsData);
 	            }, (err)=>{
 					console.log(err);
 	            });
