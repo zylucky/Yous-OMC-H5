@@ -86,10 +86,10 @@
             <a href="javascript:;">待办任务</a>-->
 
             <a href="javascript:;" @click="daikan_daka">带看打卡</a>
-            <a href="javascript:;" @click="daikan_logs">带看记录</a>
-            <a href="javascript:;" @click="yjgl">佣金管理</a>
-            <a href="javascript:;" @click="yjsp">佣金确认</a>
-            <a href="javascript:;" @click="yjsp1">佣金审批</a>
+            <a href="javascript:;" @click="daikan_logs">带看跟进</a>
+            <!--<a href="javascript:;" @click="yjgl">佣金管理</a>-->
+            <!--<a href="javascript:;" @click="yjsp">佣金确认</a>-->
+            <!--<a href="javascript:;" @click="yjsp1">佣金审批</a>-->
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
