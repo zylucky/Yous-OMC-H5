@@ -17,8 +17,10 @@ import { Search } from 'mint-ui';
 Vue.component(Search.name, Search);
 
 
+
    Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
 //Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
+
 
 
 // 测试环境
@@ -28,9 +30,11 @@ Vue.component(Search.name, Search);
 Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 //Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //api地址本地
 
+
 //Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 // Vue.prototype.$api = "http://192.168.21.55:8080" //
 // Vue.prototype.$api = "http://192.168.23.144:8080" //api地址116的地址
+
 Vue.config.debug = true;// 开启debug模式
 
 // 过滤器
@@ -191,7 +195,7 @@ var router = new VueRouter({
       path: '/fang_struct/:fyid',
       component: require('./routers/fang_struct.vue')
     },
-    {
+    /*{
       path: '/fang_owner/:fyid',
       component: require('./routers/fang_owner.vue')
     },
@@ -202,16 +206,16 @@ var router = new VueRouter({
     {
       path: '/fang_owner/edit/:yzid',
       component: require('./routers/fang_edit_owner.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/:fyid',
       component: require('./routers/fang_agenter.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/add/:fyid',
       component: require('./routers/fang_add_agent.vue')
-    },
-    {
+    },*/
+    /*{
       path: '/fang_agenter/edit/:dlid',
       component: require('./routers/fang_edit_agent.vue')
     },
@@ -226,7 +230,7 @@ var router = new VueRouter({
     {
       path: '/fang_renter/edit/:zhid',
       component: require('./routers/fang_edit_rent.vue')
-    },
+    },*/
     {
       path: '/fang_image/:fyid',
       component: require('./routers/fang_image.vue')
@@ -479,8 +483,10 @@ router.beforeEach(function(to, from, next){
                                 next({path: '/login'});
                             }
                         }
-                        //alert(data); // John
-                    }, "json");
+                        //alert(data); // John11111
+                    }, "json").catch(function (error) {
+                        window.location.href = "http://omc.urskongjian.com/error/uphtm.html";
+                    });
             }
         }else{
             next({path: '/login'});

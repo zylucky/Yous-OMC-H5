@@ -8,6 +8,9 @@
     }
     .btn{
         float: right;margin-right: 20px;height:0.5rem;
+        background: url("../resources/images/daikan/btn.png");border: none;
+        background-size:100% 100%;
+        color:#4B8FD7;
     }
     .btn_line{
         height: 0.7rem;background-color:rgb(235,235,235);
@@ -44,8 +47,8 @@
                 </span>
             </mt-cell>
             <div class="btn_line">
-                <img src="../resources/images/daikan/chakan.png"  v-if="item.ispingjia" class="btn"  @click="check(item.id)" size="small">
-                <img src="../resources/images/daikan/pingjia.png" v-if="!item.ispingjia" class="btn"  @click="pingjia(item.id)" size="small">
+                <button  class="btn" v-if="item.ispingjia" @click="check(item.id)">查看跟进</button>
+                <button class="btn" v-if="!item.ispingjia" @click="pingjia(item.id)">客户跟进</button>
             </div>
         </div>
         <div v-if="logShow2" style="width: 100%;text-align: center;padding-top: 10%;">
