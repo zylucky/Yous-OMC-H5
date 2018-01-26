@@ -64,7 +64,7 @@
        <!--<a href="javascript:void(0);" class="detail-search">
           <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50">
       </a>-->
-      <a href="javascript:;" class="news" @click="tonews">
+      <a href="javascript:;" class="news" @click="tonews" v-if="false">
       	<span class="newcount" v-if="newData.length != 0 && status != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
       	<!--<img src="../resources/images/news/new_ion.png"/>-->
       </a>
@@ -86,10 +86,12 @@
             <a href="javascript:;">待办任务</a>-->
 
             <a href="javascript:;" @click="daikan_daka">带看打卡</a>
+
             <a href="javascript:;" @click="daikan_logs">带看记录</a>
-            <!--<a href="javascript:;" @click="yjgl">佣金管理</a>-->
-            <!--<a href="javascript:;" @click="yjsp">佣金确认</a>-->
-            <!--<a href="javascript:;" @click="yjsp1">佣金审批</a>-->
+            <a href="javascript:;" @click="yjgl" v-if="false">佣金管理</a>
+            <a href="javascript:;" @click="yjsp" v-if="false">佣金确认</a>
+            <a href="javascript:;" @click="yjsp1" v-if="false">佣金审批</a>
+
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
           </div>
@@ -143,7 +145,7 @@
               });
       },
       takenews(){//接收消息
-        const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
+        const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
         axios.get(url, {
           
         }).then((res)=>{
@@ -261,18 +263,38 @@
           this.$router.push({path:'/daikan_total'});
       },
       yjgl(){//佣金管理
+      	this.$store.state.tabzt = 0;//tab切换状态
+				this.$store.state.page1 = 1;//当前页
+				this.$store.state.page = 1;//当前页
+				this.$store.state.datas = '';//数据
+				this.$store.state.datas1 = '';//数据
+				
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
         this.$router.push({path:'/commission_list'});
       },
       yjsp(){//佣金确认
+      	this.$store.state.tabzt = 0;//tab切换状态
+				this.$store.state.page1 = 1;//当前页
+				this.$store.state.page = 1;//当前页
+				this.$store.state.datas = '';//数据
+				this.$store.state.datas1 = '';//数据
+      	
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
         this.$router.push({path:'/confirmed_list'});
       },
       yjsp1(){//佣金审批
+      	this.$store.state.tabzt = 0;//tab切换状态
+				this.$store.state.page1 = 1;//当前页
+				this.$store.state.page = 1;//当前页
+				this.$store.state.page2 = 1;//当前页
+				this.$store.state.datas = '';//数据
+				this.$store.state.datas1 = '';//数据
+				this.$store.state.datas2 = '';//数据
+      	
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");

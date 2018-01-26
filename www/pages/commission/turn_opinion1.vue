@@ -43,7 +43,7 @@
 	<div class="box">
 		<!--填写区域-->
 		<div class="idea_box">
-			<textarea name="" placeholder="请输入您的驳回理由（非必填）" v-model="idea"></textarea>
+			<textarea name="" placeholder="请输入您的驳回理由（必填）" v-model="idea"></textarea>
 		</div>
 		<button class="btn" @click="betrue">确认驳回</button>
 	</div>
@@ -135,13 +135,21 @@ import { Indicator } from 'mint-ui';
 						})
 //						location.reload();
 					}
-					console.log(res);
+//					console.log(res);
 	            }, (err)=>{
 					console.log(err);
 	            });
 		    },
 		    betrue(){
-		    	this.approve();
+		    	if(this.idea != ""){
+		    		this.approve();		    		
+		    	}else{
+		    		Toast({
+						message: '驳回意见不能为空！',
+						position: 'center',
+						duration: 2000
+					});
+		    	}
 		    },
 		},
 	}

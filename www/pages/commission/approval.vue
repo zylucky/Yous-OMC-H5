@@ -536,7 +536,7 @@ import { Indicator } from 'mint-ui';
             		"id":this.$route.query.id,
 	            }).then((res)=>{
 	            	this.allData = res.data.data;
-					console.log(this.allData);
+//					console.log(this.allData);
 					
 					this.obtaintask();//获取任务流
 	            }, (err)=>{
@@ -557,7 +557,7 @@ import { Indicator } from 'mint-ui';
 						for(var j in this.spData[i]){
 							if(j == 'isfock' && this.spData[i][j] == true){
 								this.nowData = this.spData[i];
-								console.log(this.nowData);
+//								console.log(this.nowData);
 							}
 						}
 					}
@@ -598,7 +598,7 @@ import { Indicator } from 'mint-ui';
 					}
 				}
 				this.copyData = this.copyData.concat(copyData1);
-				console.log(this.copyData)
+//				console.log(this.copyData)
 			},
 			pops(state){//合同摘要
 				this.popshow = state;
@@ -609,7 +609,7 @@ import { Indicator } from 'mint-ui';
 		            }).then((res)=>{
 		            	if(res.data.success){
 		            		this.compact = res.data.data;
-							console.log(this.compact);
+//							console.log(this.compact);
 		            	}
 		            }, (err)=>{
 						console.log(err);
