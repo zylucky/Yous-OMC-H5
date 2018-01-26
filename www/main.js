@@ -47,7 +47,7 @@ Vue.filter('splitK', function(num) {//千位分隔符 过滤器
   var zs = tempArr.reverse().join('');//整数部分
   return decimal?zs+'.'+decimal:zs+'.00';
 })
-Vue.filter('delkg', function(num){//银行卡四位空格分割
+Vue.filter('delkg', function(num){//银行卡四位空格分割/
   var str=String(num).replace(/(\d{4})/g,'$1 ').replace(/\s*$/,'');
   return str;
 })
