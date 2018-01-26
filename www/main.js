@@ -18,7 +18,7 @@ Vue.component(Search.name, Search);
 
 
 
-   Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀
+   Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀1111111
 //Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 
 
