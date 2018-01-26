@@ -33,9 +33,12 @@
         <div v-if="fy < 8" class="upload_btn mr10 fl">
             <input @change='add_img1' id="file_add" tag="fy" type="file" multiple>
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
+        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0 || fyt != 2">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
+        </div>
+        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-else>
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
         </div>
       </div>
       <div class="common_title">户型图</div>
@@ -43,9 +46,12 @@
         <div v-if="hx < 1" class="upload_btn mr10 fl">
             <input @change='add_img2' id="file_add" tag="hx" type="file">
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
+        <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0 || hxt != 2">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="hx" @click='delete_img(index, item.id, $event)'></i>
+        </div>
+        <div class="img_demo fl pr" v-for='(item,index) in hxList' v-else>
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
         </div>
       </div>
       <div class="common_title">封面图</div>
@@ -53,9 +59,12 @@
         <div v-if="fm < 1" class="upload_btn mr10 fl">
             <input @change='add_img3' id="file_add" tag="fm" type="file">
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
+        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0 || fmt!=2">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
+        </div>
+        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-else>
+          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
         </div>
       </div>
     </div>
@@ -74,6 +83,9 @@
         zdid: "",
         fyid: "",
         house_id:'',
+        fyt:1,
+        hxt:1,
+        fmt:1,
         imgList:[],
         hxList:[],
         gjList:[],
@@ -154,6 +166,39 @@
         reader.readAsDataURL(image);
         this[tag] += 1;
         this.upload += 1;
+      },
+      tebqqxpd(){
+          let user22 = JSON.parse(localStorage.getItem('cookxs'));
+          const url = this.$api + "/yhcms/web/wxqx/getXsQx.do";
+          this.$http.post(url, {"cookie":user22.sjs,"fyid":this.$route.params.fyid,"foreEndType":2,"code":"30000008"}).then((res)=>{
+              Indicator.close();
+              const data = JSON.parse(res.bodyText).data;
+              const meg = JSON.parse(res.bodyText).message;
+              this.ryzt = data.ryzt;
+              this.qxzt = data.qxzt;
+              //data.qxzt = 3;
+              if(data.qxzt == 0){
+                  MessageBox('提示',meg);
+                  window.history.go(-1);
+                  return;
+              }
+              if(data.qxzt == 2){
+                  MessageBox('提示',"此用户已被禁用，请联系管理员！");
+                  this.$router.push({path: '/login'});
+              }
+              //所有权限
+              if(data.qxzt == 3 || data.qxzt == 4){
+
+              }
+              if(data.ryzt == 5){
+                  this.fyt = 2;
+                  this.hxt = 2;
+                  this.fmt = 2;
+              }
+              this.getInitData();
+          }, (res)=>{
+              Indicator.close()
+          });
       },
       getInitData(){
           const fyid = this.$route.params.fyid;
@@ -300,7 +345,8 @@
       },
     },
     mounted(){
-        this.getInitData();
+        this.tebqqxpd();
+        /*this.getInitData();*/
     }
   }
 
