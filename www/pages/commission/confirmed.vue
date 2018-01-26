@@ -7,7 +7,9 @@
   		top: 0;
   		right: 0;
   		bottom: 0;
-  		overflow: hidden;
+  		overflow-x: hidden;
+  		overflow-y: scroll;
+  		-webkit-overflow-scrolling: touch;
   	}
   	.content{
   		position: absolute;
@@ -761,7 +763,7 @@ import { Indicator } from 'mint-ui';
 	
 	          this.imgList.forEach((img,idx)=> {cb(img, fp)});
 	          this.imgList = fp;
-			  console.log(this.imgList);
+//			  console.log(this.imgList);
 	
 	          //保存信息
 	          if(this.upload < 1){

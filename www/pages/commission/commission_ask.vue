@@ -263,7 +263,7 @@ import { Indicator } from 'mint-ui';
 	            		"zt":2
 	            }).then((res)=>{
 	            	this.pendData = res.data.data;
-	            	console.log(this.pendData);
+//	            	console.log(this.pendData);
 					Indicator.close();
 	            }, (err)=>{
 	            	Indicator.close();
@@ -277,7 +277,7 @@ import { Indicator } from 'mint-ui';
 	            		"zt":3
 	            }).then((res)=>{
 	            	this.passData = res.data.data;
-	            	console.log(this.passData);
+//	            	console.log(this.passData);
 					Indicator.close();
 	            }, (err)=>{
 	            	Indicator.close();
