@@ -345,6 +345,10 @@
       $('#first_list_link').click(function(){
         $("#zhezhao").remove();
       });
+      if(localStorage.getItem('xshead') && localStorage.getItem('xshead') != ''){
+      	var headsrc = JSON.parse(localStorage.getItem('xshead'));
+      	$('.portrait').attr('src',headsrc);
+      }
     }
   };
 </script>
