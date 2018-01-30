@@ -508,6 +508,7 @@
 	            axios.post(url,{
 	            	"ccode":this.xsData.ccode,
 	            	"createdate":this.xsData.createdate,
+	            	"chuzuren":this.xsData.chuzuren,
             		"cookie":cookxs,
             		'fanghao':this.xsData.fanghao,
             		'fanghaoid':this.xsData.fanghaoid,
@@ -541,7 +542,9 @@
 							duration: 2000
 						});	
 						this.$router.push({
-							path:'/commission_list',//跳转佣金信息
+//							path:'/commission_list',//跳转佣金信息
+							path:'/yjgl_list',//跳转佣金管理列表
+							resault:'success'//提交成功后回到列表根据该字段刷新页面
 						})
 	            	}
 //					console.log(res);

@@ -98,6 +98,8 @@
   					z-index: 9;
   					width: 0.7rem;
   					height: 0.7rem;
+  					border-radius: 50%;
+  					overflow: hidden;
   					img{width: 100%;}
   					i{
   						position: absolute;
@@ -177,7 +179,10 @@
   				.picimg{
   					width: 0.7rem;
   					height: 0.7rem;
-  					img{width: 100%;}
+  					img{  						
+  						border-radius: 50%;
+  						width: 100%;
+  					}
   					.admin{
   						position: absolute;
   						right: 0;
@@ -429,7 +434,10 @@
 				<ul>
 					<li v-for="item in spData" :style="item.shenpi == 2?'padding-bottom:0.6rem':''">
 						<p class="plan_t">
-							<span><img src="../../resources/images/commission/head_img.png" title="" alt=""/><i class="line" v-if="item.shenpi != 2"></i></span>
+							<span>
+								<img v-if="item.headimg" :src="item.headimg" title="" alt=""/>
+								<img v-if="item.headimg == null || item.headimg == '' || !item.headimg"  src="../../resources/images/commission/head_img.png" title="" alt=""/>
+								<i class="line" v-if="item.shenpi != 2"></i></span>
 							<span>{{item.person}}</span>
 							<span :style="item.shenpi!=1?'color: #ff7072':''">
 								<i v-if='item.shenpi==1'>{{item.shenpi==1?"已审批":"待审批"}}</i>
@@ -452,7 +460,9 @@
 				<ul class="copy_list">
 					<li v-for="(item,index) in csData">
 						<p class="picimg">
-							<img src="../../resources/images/commission/head_img.png" title="" alt=""/>
+							<img v-if="item.headimg" :src="item.headimg" title="" alt=""/>
+							<img v-if="item.headimg == null || item.headimg == '' || !item.headimg" src="../../resources/images/commission/head_img.png" title="" alt=""/>
+							
 							<span v-if='item.isshezhi == false && allData.imgList && allData.imgList.length == 0' @click='delcopy(item.id,index)'></span>
 							<i class="admin" v-if='item.isshezhi == true'></i>
 						</p>

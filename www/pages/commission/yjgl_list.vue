@@ -7,27 +7,27 @@
   		top: 0;
   		bottom: 0;
   		right: 0;
-  		background: #ffffff;
+  		background: #fff;
   	}
   	.header{
   		position: absolute;
   		top: 0;
   		width: 100%;
   		background: #fff;
-  		z-index: 1;
   		-webkit-box-shadow:0px 2px 3px #D6D6D6; 
   		box-shadow:0px 2px 3px #D6D6D6;
+  		z-index: 1;
   		.nav{
   			display: flex;
   			li{
   				position: relative;
-  				width: 50%;
+  				width: 33.333333%;
   				height: 1rem;
   				line-height: 1rem;
   				font-size: @font30;
   				text-align: center;
   			}
-  			li:first-child span{
+  			li span{
   				position: absolute;
   				top: 50%;
   				right: 0;
@@ -43,10 +43,10 @@
   	.active:after{
   		position: absolute;
   		left: 50%;
-  		margin-left: -0.7rem;
+  		margin-left: -0.91rem;
   		bottom: 0;
   		content: "";
-  		width: 1.4rem;
+  		width: 1.82rem;
   		height: 0.03rem;
   		background: #3586f2;
   	}
@@ -62,6 +62,7 @@
   		ul{padding-bottom: 1rem;}
   	}
   	.list li{
+  		position: relative;
   		width:7.06rem;
 		margin:0.25rem auto 0;
 		border-radius: 0.07rem;
@@ -97,6 +98,18 @@
 		}
 		p:last-child{margin-bottom: 0;}
   	}
+  	.list li:hover{background: #eee !important;}
+  	.reddot{
+  		position: absolute;
+  		top: 50%;
+  		right: 0.3rem;
+  		margin-top: -0.075rem;
+  		display: inline-block;
+  		width: 0.15rem;
+  		height: 0.15rem;
+  		background: #fb4949;
+  		border-radius: 50%;
+  	}
   	.kong{
   		display: flex;
   		flex-direction: column;
@@ -127,56 +140,77 @@
 		<div class="header">
 			<ul class="nav">
 				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待处理({{pendData.length}})<span></span></li>
-				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{passData.length}})</li>
+				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{passData.length}})<span></span></li>
+				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的({{csData.length}})</li>
 			</ul>
 		</div>
 		<!--列表-->
 		<div class="list_box">
-			<!--待处理-->
+			<!--带我审批-->
 			<div class="kong" v-if="pendData.length==0 && kshow && tabq=='0'">
 				<p class="k_ion">
 					<img src="../../resources/images/commission/k_icon.png" alt="" />
 				</p>
-				<p class="k_text">暂无待处理内容</p>
+				<p class="k_text">暂无审批单</p>
 			</div>
-			<!--已处理-->
+			<!--我已审批-->
 			<div class="kong" v-if="passData.length==0 && kshow1 && tabq=='1'">
 				<p class="k_ion">
 					<img src="../../resources/images/commission/k_icon.png" alt="" />
 				</p>
-				<p class="k_text">暂无已处理内容</p>
+				<p class="k_text">暂无已审批申请</p>
 			</div>
-			<!--待处理-->
+			<!--抄送我的-->
+			<div class="kong" v-if="csData.length==0 && kshow2 && tabq=='2'">
+				<p class="k_ion" style="width: 1.39rem;height: 1.39rem;">
+					<img src="../../resources/images/commission/cs_icon.png" alt="" />
+				</p>
+				<p class="k_text">暂无抄送我的审批</p>
+			</div>
+			<!--待我审批-->
 			<ul class="list" v-infinite-scroll="loadMore"
 	  infinite-scroll-disabled="loading"
 	  infinite-scroll-distance="10" infinite-scroll-immediate-check="checked">
-				<li v-for="item in pendData" @click="detail(item.id,1,item.taskZt)" v-if="tabq=='0'">
+				<li v-for="(item,index) in pendData" @click="waitme(item.id,item.listzt,item.taskZt,1)" v-if="tabq=='0'">
 					<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
 					<p>
-						<span>{{item.loudong}}-{{item.fanghao}}</span> 
+						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
-						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待处理</i>
-						<i v-else-if="item.taskZt=='1'">已处理</i>
-						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">审核中</i>
-						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审核完成</i>
-						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
+						<i v-if="item.listzt=='1'">已提交</i>
+						<i v-else-if="item.listzt=='0'" style="color: #3687f3;">待提交</i>
+						<i v-else-if="item.listzt=='2' || item.listzt=='5'" style="color: #0fad60;">待审核</i>
+						<i v-else-if="item.listzt=='4'" style="color: #ff716f;">已驳回</i>
 						<i else></i>
 					</p>
 				</li>
-				<!--已处理-->
-				<li v-for="item in passData"  @click="detail(item.id,0,item.taskZt)" v-if="tabq=='1'">
+				<!--我已审批-->
+				<li v-for="item in passData"  @click="done(item.id,item.listzt,item.taskZt,0)" v-if="tabq=='1'">
 					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
 					<p>
 						<span>{{item.loudong}}-{{item.fanghao}}</span>
 					</p>
 					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
 					<p>
+						<i v-if="item.listzt=='1'">已提交</i>
+						<i v-else-if="item.listzt=='3'" style="color: #0fad60;">已审核</i>
+						<i v-else-if="item.listzt=='4'" style="color: #ff716f;">已驳回</i>
+						<i else></i>
+					</p>
+				</li>
+				<!--抄送我的-->
+				<li v-for="item in csData" @click="csmine(item.id)" v-if="tabq=='2'">
+					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
+					<p>
+						<span>{{item.loudong}}-{{item.fanghao}}</span>
+					</p>
+					<p style="color:#959595;">申请人：{{item.xiaoshou}}</p>
+					<p style="color: #0eac61;">
 						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
 						<i v-else-if="item.taskZt=='1'">已提交</i>
-						<i v-else-if="item.taskZt=='2'" style="color: #3684f3;">审核中</i>
-						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审核完成</i>
+						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
 						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
 						<i else></i>
 					</p>
@@ -185,36 +219,39 @@
 					<mt-spinner type="fading-circle" :size="30"></mt-spinner>
 				</div>
 			</ul>
-
+			
+			
 		</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios';
 import { TabContainer, TabContainerItem } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 import { Toast } from 'mint-ui';
 import { InfiniteScroll } from 'mint-ui';
-import { Spinner } from 'mint-ui';
-
-import axios from 'axios';
 	export default{
 		data(){
 			return{
 				tabq:'0',
 				pendData:[],//待处理数据
 				passData:[],//已处理数据
-				kshow:true,//未处理无数据下的状态
-				kshow1:false,//已处理无数据下的状态
+				csData:[],//抄送我的数据
+				kshow:true,//待我审批无数据下的状态
+				kshow1:false,//我已审批无数据下的状态
+				kshow2:false,//抄送我的无数据下的状态
 				loading:false,
 				noMore:false,
 				checked:false,
 				
-				page:1,//当前页
-				page1:1,//当前页
+				page:1,//已审批当前页
+				page1:1,//待审批当前页
+				page2:1,//抄送我的当前页
 				size:10,//每次请求条数
 				dataqq:false,//切换点击请求数据状态
 				dataqq1:false,//切换点击请求数据状态1
+				dataqq2:false,//切换点击请求数据状态2
 				jz:false,//底部加载图标
 			}
 		},
@@ -228,8 +265,15 @@ import axios from 'axios';
 			if(this.$store.state.page != ''){//当前数据页
 				this.page = this.$store.state.page;
 			}
+			if(this.$store.state.page2 != ''){//当前数据页
+				this.page2 = this.$store.state.page2;
+			}
 			if(this.$store.state.datas != ''){//当前tab数据
-				this.pendData = this.$store.state.datas;
+				if(this.$route.query.resault == 'success'){
+					window.location.reload();
+				}else{					
+					this.pendData = this.$store.state.datas;
+				}
 			}else{		
 				Indicator.open({
 				  text: 'Loading...',
@@ -238,7 +282,11 @@ import axios from 'axios';
 				this.init();	
 			}
 			if(this.$store.state.datas1 != ''){//
-				this.passData = this.$store.state.datas1;
+				if(this.$route.query.resault == 'success'){
+					window.location.reload();
+				}else{
+					this.passData = this.$store.state.datas1;					
+				}
 			}else{
 				Indicator.open({
 				  text: 'Loading...',
@@ -246,18 +294,77 @@ import axios from 'axios';
 				});
 				this.init1();
 			}
+			if(this.$store.state.datas2 != ''){//
+				if(this.$route.query.resault == 'success'){
+					window.location.reload();
+				}else{
+					this.csData = this.$store.state.datas2;					
+				}
+			}else{
+				Indicator.open({
+				  text: 'Loading...',
+				  spinnerType: 'fading-circle'
+				});
+				this.init2();
+			}
 		},
 		methods:{
-			init(){//待处理接口
-				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
+			clk(cut){
+				$('.list_box').scrollTop(0);
+				this.jz = true;
+				Indicator.open({
+				  text: 'Loading...',
+				  spinnerType: 'fading-circle'
+				});
+				this.tabq = cut;
+				
+				this.$store.commit('sendObj',this.tabq);//当前tab状态存入state仓库
+				
+				if(cut == '0'){
+					this.noMore = true;
+					this.dataqq1 = true;	
+					this.page1 = 1;//当前页
+					this.init();
+					if(this.pendData.length==0){						
+						this.kshow = true;
+						this.kshow1 = false;
+						this.kshow2 = false;
+					}else{
+						this.kshow = false;
+						this.kshow1 = false;
+						this.kshow2 = false;
+					}
+				}
+				if(cut == '1'){
+					this.noMore = true;
+					this.dataqq = true;					
+					this.page = 1;//当前页
+					this.init1();
+					this.kshow1 = true;
+					this.kshow = false;
+					this.kshow2 = false;
+				}
+				if(cut == '2'){
+					this.noMore = true;
+					this.dataqq2 = true;					
+					this.page2 = 1;//当前页
+					this.init2();
+					this.kshow1 = false;
+					this.kshow = false;
+					this.kshow2 = true;
+				}
+			},
+			init(){//未审核数据接口
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShouSum.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+				console.log(cookxs);
 	            axios.post(url,{ 
 	            		"cookie":cookxs,
-	            		"zt":0,
+	            		"zt":'0',
 	            		"page":this.page1,
 	            		"size":this.size
 	            }).then((res)=>{
-	            	if(res.data.data.length == 0){
+	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
 						  position: 'bottom',
@@ -265,6 +372,17 @@ import axios from 'axios';
 						});
 						this.jz = false;
 					}
+	            	if(!res.data.data && this.tabq == 0){
+	            		Toast({
+						  message: '没有更多数据了!',
+						  position: 'bottom',
+						  duration: 2000
+						});
+						this.jz = false;
+					}
+	            	if(this.tabq != 0){
+	            		this.jz = false;
+	            	}
 	            	if(res.data.success && res.data.data){
 	            		this.jz = false;
 	            		this.loading = false;
@@ -278,23 +396,21 @@ import axios from 'axios';
 	            	}else{
 	            		this.pendData = [];
 	            	}
-
 					Indicator.close();
 	            }, (err)=>{
 	            	Indicator.close();
 	            });
 			},
-			init1(){//已处理接口
-				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShou.do";
+			init1(){//已审核数据接口
+				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForXiaoShouSum.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
-//				console.log(cookxs);
 	            axios.post(url,{ 
 	            		"cookie":cookxs,
-	            		"zt":1,
+	            		"zt":'1',
 	            		"page":this.page,
 	            		"size":this.size
 	            }).then((res)=>{
-	            	if(res.data.data.length == 0){
+	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
 						  position: 'bottom',
@@ -302,6 +418,17 @@ import axios from 'axios';
 						});
 						this.jz = false;
 					}
+	            	if(!res.data.data && this.tabq == 1){
+	            		Toast({
+						  message: '没有更多数据了!',
+						  position: 'bottom',
+						  duration: 2000
+						});
+						this.jz = false;
+					}
+	            	if(this.tabq != 1){
+	            		this.jz = false;
+	            	}
 	            	if(res.data.success && res.data.data){
 	            		this.jz = false;
 	            		this.loading = false;
@@ -311,73 +438,104 @@ import axios from 'axios';
 	            			this.dataqq = false;
 	            		}else{
 	            			this.passData = this.passData.concat(res.data.data);  
-	            		}           		
+	            		}           	           		
 	            	}else{
 	            		this.passData = [];
 	            	}
-//	            	this.passData = res.data.data;
 					Indicator.close();
-//	                console.log(this.passData);
 	            }, (err)=>{
 	            	Indicator.close();
-	               console.log(err);
 	            });
 			},
-			clk(cut){
-				$('.list_box').scrollTop(0);
-				this.jz = true;
-				Indicator.open({
-				  text: 'Loading...',
-				  spinnerType: 'fading-circle'
-				});
-				this.tabq = cut;
-				
-				this.$store.commit('sendObj',this.tabq);//当前tab状态存入state仓库
-//				console.log(this.$store.state.tabzt);
-				
-				if(cut=='0'){
-					this.noMore = true;
-					this.dataqq1 = true;	
-					this.page1 = 1;//当前页
-					this.init();//待处理数据
-					if(this.pendData.length==0){						
-						this.kshow = true;
-					}else{
-						this.kshow = false;
+			init2(){
+				const url = this.$api + "/yhcms/web/qdyongjin/getXsWaitORYiSp.do";
+				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
+	            axios.post(url,{ 
+	            		"cookie":cookxs,
+	            		"sptype":'2',
+	            		"page":this.page2,
+	            		"size":this.size
+	            }).then((res)=>{
+	            	if(res.data.data && res.data.data.length == 0){
+	            		Toast({
+						  message: '人家，是有底线的呢！',
+						  position: 'bottom',
+						  duration: 2000
+						});
+						this.jz = false;
+	            	}
+	            	if(!res.data.data && this.tabq == 2){
+	            		Toast({
+						  message: '没有更多数据了!',
+						  position: 'bottom',
+						  duration: 2000
+						});
+						this.jz = false;
 					}
-					this.kshow1 = false;
-				}
-				if(cut=='1'){
-					this.noMore = true;
-					this.dataqq = true;					
-					this.page = 1;//当前页
-					this.init1();//已处理数据
-					this.kshow1 = true;
-					this.kshow = false;
-				}
+	            	if(this.tabq != 2){
+	            		this.jz = false;
+	            	}
+
+	            	if(res.data.success && res.data.data){
+	            		this.jz = false;
+	            		this.loading = false;
+	            		this.noMore = false;
+	            		if(this.dataqq){
+	            			this.csData = res.data.data;
+	            			this.dataqq2 = false;
+	            		}else{
+	            			this.csData = this.csData.concat(res.data.data);  
+	            		} 	            		
+	            	}else{
+	            		this.csData = [];
+	            	}
+					Indicator.close();
+	            }, (err)=>{
+	            	Indicator.close();
+	            });
 			},
-			//跳转数据
-			detail(id,zt,taskzt){
-//				console.log(taskzt);
-				if(taskzt == 4){//已驳回
+			
+			
+			waitme(id,listzt,taskZt,zt){//待审批
+				if(listzt == 0){//待提交
+					this.$router.push({
+						path:'/commission',//跳转数据修改填写
+						query:{
+							"xsid":id,//所传参数
+							"zt":zt//处理状态1未处理，0已处理
+						}
+					})
+				}
+				if(listzt == 2){//待审核（可以进行图片上传操作）
+					this.$router.push({
+						path:'/confirmed',//跳转到审批页面
+						query:{
+							"id":id,//所传参数
+							"btnshow":1,
+						}
+					})
+				}
+				if(listzt == 5){//待审核（不能进行图片上传操作）
+					this.$router.push({
+						path:'/approval1',//跳转到审批页面
+						query:{
+							"id":id,//所传参数
+							"btnshow":1
+						}
+					})
+				}
+				if(listzt == 4){//已驳回数据
 					this.$router.push({
 						path:'/commission_turn',//跳转佣金信息
 						query:{
 							"xsid":id,//所传参数
-							"zt":zt//处理状态1未处理，2已处理
+							"zt":zt//处理状态1未处理，0已处理
 						}
 					})	
 				}
-				if(taskzt == 3){//审批通过
-					this.$router.push({
-						path:'/commission_rule',//跳转审批通过详情
-						query:{
-							"xsid":id,//所传参数
-							"zt":zt//处理状态1未处理，2已处理
-						}
-					})					
-				}
-				if(taskzt == 2){//审批已处理
+			},
+			done(id,listzt,taskZt,zt){//已处理数据跳转点击
+				if(listzt == 1){//已处理（已提交状态）
 					if(!this.passData.qdhuming){
 						this.$router.push({
 							path:'/commission_un',//跳转待确认详情
@@ -388,44 +546,56 @@ import axios from 'axios';
 						})		
 					}
 				}
-//				if(taskzt == 2){
-//					alert(456);
-//					this.$router.push({
-//						path:'/commission_ru',//跳转未确认详情
-//						query:{
-//							"xsid":id,//所传参数
-//							"zt":zt//处理状态1未处理，2已处理
-//						}
-//					})					
-//				}
-				
-				if(taskzt == 0){
+				if(listzt == 3){//跳转审批通过
 					this.$router.push({
-						path:'/commission',//跳转数据修改填写
+						path:'/approval1',//跳转审批通过详情
+						query:{
+							"id":id,//所传参数
+							"btnshow":0
+						}
+					})
+				}
+				if(listzt == 4){//跳转审批被驳回
+					this.$router.push({
+						path:'/commission_turn',
 						query:{
 							"xsid":id,//所传参数
 							"zt":zt//处理状态1未处理，2已处理
 						}
-					})					
+					})	
 				}
+			},
+			csmine(id){//抄送我的
+				this.$router.push({
+					path:'/commission_details',//跳转到审批页面
+					query:{
+						"id":id,//所传参数
+						"btnshow":0
+					}
+				})
 			},
 			loadMore() {//未确认数据
 				if (!this.loading && !this.noMore) {
-				  this.loading = true;
 				  this.jz = true;
+				  this.loading = true;
 				  Indicator.open({
 				    text: 'Loading...',
 				    spinnerType: 'fading-circle'
 				  });
 				  if(this.tabq == 0){	
 				  	this.page1 += 1;
-				  	this.init();//未确认数据
-				  }else{
+				  	this.init();
+				  }
+				  if(this.tabq == 1){
 				  	this.page += 1;
-				  	this.init1();//未确认数据
+				  	this.init1();
+				  }
+				  if(this.tabq == 2){
+				  	this.page2 += 1;
+				  	this.init2();
 				  }
 				}
-			},
+			}
 			
 		},
 		mounted(){
@@ -447,6 +617,12 @@ import axios from 'axios';
 			  	_this.$store.commit('saveData1',_this.passData);//当前数据存入state仓库
 			  	_this.$store.commit('savePage1',_this.page);//当前页码存入state仓库	
 			  }
+			  if(_this.tabq == '2'){//抄送我的数据
+			  	_this.$store.commit('saveData2',_this.csData);//当前数据存入state仓库
+			  	_this.$store.commit('savePage2',_this.page2);//当前页码存入state仓库	
+			  }
+			  
+			  
 			});
 		},
 	}

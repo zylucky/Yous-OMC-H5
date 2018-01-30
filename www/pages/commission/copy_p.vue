@@ -22,6 +22,7 @@
 				height: 0.75rem;
 				margin-right: 0.25rem;
 				img {
+					border-radius: 50%;
 					width: 100%;
 					height: auto;
 				}
@@ -63,7 +64,8 @@
 		<ul class="list" id="list">
 			<li v-for='(item,index) in products' @click="addcopy(index,item)" v-if="index<8">
 				<div class="pic">
-					<img src="../../resources/images/commission/head_img.png" />
+					<img v-if="item.headimg" :src="item.headimg" alt="" title="" />
+					<img v-if="item.headimg == null || item.headimg == '' || !item.headimg" src="../../resources/images/commission/head_img.png" />
 				</div>
 				<div class="name">
 					<p v-html='item.name.replace(search,"<span style=\"color:#3486f2;\">"+search+"</span>")'>{{item.name}}</p>

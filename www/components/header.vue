@@ -88,8 +88,8 @@
             <a href="javascript:;" @click="daikan_daka">带看打卡</a>
 
             <a href="javascript:;" @click="daikan_logs">带看记录</a>
-            <a href="javascript:;" @click="yjgl">佣金管理</a>
-            <a href="javascript:;" @click="yjsp">佣金确认</a>
+            <a href="javascript:;" @click="yjgl" v-if="false">佣金管理</a>
+            <a href="javascript:;" @click="yjsp" v-if="false">佣金确认</a>
             <a href="javascript:;" @click="yjsp1">佣金审批</a>
 
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
@@ -145,15 +145,17 @@
               });
       },
       takenews(){//接收消息
-        const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
+//      const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
+        const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口测试
         axios.get(url, {
           
         }).then((res)=>{
   //        clearInterval(timer);//清楚定时器
           if(res.data.success){
             this.newData = res.data.data;
+            console.log(this.newData)
             for(var i=0; i<this.newData.length; i++){
-              if(this.newData[i].status == 1){
+              if(this.newData[i].status == 0){
                 this.status ++;
               }
             }
@@ -298,7 +300,8 @@
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
-        this.$router.push({path:'/commission_ask1'});
+//      this.$router.push({path:'/commission_ask1'});
+				this.$router.push({path:'yjgl_list'});
       },
       login_out(){
         $("#zhezhao").remove();
