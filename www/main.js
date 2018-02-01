@@ -17,15 +17,16 @@ import { Search } from 'mint-ui';
 Vue.component(Search.name, Search);
 
 
-
-//   Vue.prototype.$prefix = "http://47.92.145.21:81" //图片前缀1111111
-Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
-
-
-
 // 生产环境
-//Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+Vue.prototype.$prefix = "http://47.92.145.21:81"//图片前缀
+Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+
+//测试ip
+/*
+Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+*/
+
 // Vue.prototype.$api = "http://192.168.21.55:8080" //Mr.Cheng IP Address
 
 
@@ -520,7 +521,7 @@ router.beforeEach(function(to, from, next){
 								                }else{
 								                    next({path: '/login'});
 								                }
-								                $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
+								                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
 								                        "foreEndType": 2,
 								                        "code": "300000045",
 								                        "cookie": user22.sjs,
