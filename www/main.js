@@ -511,6 +511,10 @@ router.beforeEach(function(to, from, next){
                                             } else {
 
                                                const user22 = JSON.parse(localStorage.getItem('cookxs'));
+                                               if(!localStorage.getItem('cookxs')){
+                                               		next({path: '/login'});
+                                               		return;
+                                               }
 								                if(user22 != null){
 								                    next();
 								                }else{
