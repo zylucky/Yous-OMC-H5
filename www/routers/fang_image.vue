@@ -186,7 +186,7 @@
               if(data.qxzt == 3 || data.qxzt == 4){
 
               }
-              if(data.ryzt == 5){
+              if(data.qxzt == 5){
                   this.fytqxzt = false;
                   
               }
