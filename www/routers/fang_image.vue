@@ -33,39 +33,33 @@
         <div v-if="fy < 8" class="upload_btn mr10 fl">
             <input @change='add_img1' id="file_add" tag="fy" type="file" multiple>
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0 || fyt != 2">
+        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i v-show="fytqxzt" class="delete_icon" tag="fy" @click='delete_img(index, item.id, $event)'></i>
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in imgList' v-else>
-          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-        </div>
+        
       </div>
       <div class="common_title">户型图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="hx < 1" class="upload_btn mr10 fl">
             <input @change='add_img2' id="file_add" tag="hx" type="file">
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0 || hxt != 2">
+        <div class="img_demo fl pr" v-for='(item,index) in hxList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i v-show="fytqxzt" class="delete_icon" tag="hx" @click='delete_img(index, item.id, $event)'></i>
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in hxList' v-else>
-          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-        </div>
+       
       </div>
       <div class="common_title">封面图</div>
       <div class="image_wrap clearfix mb140">
         <div v-if="fm < 1" class="upload_btn mr10 fl">
             <input @change='add_img3' id="file_add" tag="fm" type="file">
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0 || fmt!=2">
+        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-if="item.isdelete==0">
           <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
           <i v-show="fytqxzt" class="delete_icon" tag="fm" @click='delete_img(index, item.id, $event)'></i>
         </div>
-        <div class="img_demo fl pr" v-for='(item,index) in fmList' v-else>
-          <img class="upload_demo_img" :src="item.id==='xxx'? item.url : $prefix + '/' + item.url" alt="" />
-        </div>
+        
       </div>
     </div>
     <a href="javascript:;" class="ys_default_btn mb80" @click.stop.prevent="saveToserver">保存</a>
@@ -193,9 +187,8 @@
 
               }
               if(data.ryzt == 5){
-                  this.fyt = 2;
-                  this.hxt = 2;
-                  this.fmt = 2;
+                  this.fytqxzt = false;
+                  
               }
               this.getInitData();
           }, (res)=>{

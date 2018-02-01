@@ -151,11 +151,11 @@ export default{
     },
     watch:{
         company(){
-            if(this.company!=""&&!this.mark){
+            if(this.company !=""&&!this.mark){
                 this.$http.post(this.$api+'/yhcms/web/qduser/getQdCompany.do',{
                     companyName:this.company
                 }).then((res)=>{
-                    this.companyList = JSON.parse(res.data).data;
+                    this.companyList = JSON.parse(JSON.stringify(res.data)).data;
                     this.companyShow = true;
                 });
             }else{
@@ -168,7 +168,7 @@ export default{
                     gsid:this.companyId,
                     name:this.person,
                 }).then((res)=>{
-                    this.personList = JSON.parse(res.data).data;
+                    this.personList = JSON.parse(JSON.stringify(res.data)).data;
                     this.personShow = true;
                 });
             }else{
@@ -287,7 +287,7 @@ export default{
         getAddress(latitude,longitude){
             console.log('qingqiudizhi')
             this.$http.post(this.$api+'/yhcms/web/qddaka/getDakaAddress.do',{x:latitude,y:longitude,}).then((res)=>{
-               var response = JSON.parse(res.data);
+               var response = JSON.parse(JSON.stringify(res.data));
                console.log(response.data)
                 if(response.success==true){
                     this.dk_address = response.data;
@@ -325,7 +325,7 @@ export default{
                 this.$http.post(this.$api+'/yhcms/web/jcsj/getLp.do',{
                     lpname:this.property[index].loupan,
                 }).then((res)=>{
-                    this.property[index].loupanList = JSON.parse(res.data).data;
+                    this.property[index].loupanList = JSON.parse(JSON.stringify(res.data)).data;
                     this.property[index].loupanShow = true;
                     if(this.$route.query.house_id){
                         this.property[this.cnt1].loupanShow =false;
@@ -344,7 +344,7 @@ export default{
                     lpid:this.property[index].loupanId,
                     zdh:this.property[index].loudong,
                 }).then((res)=>{
-                    this.property[index].loudongList = JSON.parse(res.data).data;
+                    this.property[index].loudongList = JSON.parse(JSON.stringify(res.data)).data;
                     this.property[index].loudongShow = true;
                     if(this.$route.query.house_id){
                         this.property[this.cnt2].loudongShow =false;
@@ -363,7 +363,7 @@ export default{
                     zdid:this.property[index].loudongId,
                     fybh:this.property[index].fangjian,
                 }).then((res)=>{
-                    this.property[index].fangjianList = JSON.parse(res.data).data;
+                    this.property[index].fangjianList = JSON.parse(JSON.stringify(res.data)).data;
                     this.property[index].fangjianShow = true;
                     if(this.$route.query.house_id){
                         this.property[this.cnt3].fangjianShow =false;

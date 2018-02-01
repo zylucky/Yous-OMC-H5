@@ -145,21 +145,21 @@
               });
       },
       takenews(){//接收消息
-//      const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
-        const url = "http://www.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口测试
+        const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
+//      const url = "http://beta.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口测试
         axios.get(url, {
           
         }).then((res)=>{
   //        clearInterval(timer);//清楚定时器
           if(res.data.success){
             this.newData = res.data.data;
-            console.log(this.newData)
+//          console.log(this.newData)
             for(var i=0; i<this.newData.length; i++){
               if(this.newData[i].status == 0){
                 this.status ++;
               }
             }
-            console.log(this.status);
+//          console.log(this.status);
   //          var timer = setTimeout(this.takenews,2000);//定时查询
           }       
               }, (err)=>{
