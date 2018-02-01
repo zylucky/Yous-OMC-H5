@@ -131,7 +131,9 @@ import { Indicator } from 'mint-ui';
 							duration: 2000
 						});
 						this.$router.push({
-							path:'/commission_ask1',//跳转审批确认列表
+//							path:'/commission_ask1',//跳转审批确认列表
+							path:'/yjgl_list',//跳转佣金管理列表
+							resault:'success'//提交成功后回到列表根据该字段刷新页面
 						})
 //						location.reload();
 					}

@@ -64,7 +64,7 @@
        <!--<a href="javascript:void(0);" class="detail-search">
           <input type="text" id="keyword" placeholder="请输入关键字搜索" value="" maxlength="50">
       </a>-->
-      <a href="javascript:;" class="news" @click="tonews" v-if="false">
+      <a href="javascript:;" class="news" @click="tonews">
       	<span class="newcount" v-if="newData.length != 0 && status != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
       	<!--<img src="../resources/images/news/new_ion.png"/>-->
       </a>
@@ -90,7 +90,7 @@
             <a href="javascript:;" @click="daikan_logs">带看记录</a>
             <a href="javascript:;" @click="yjgl" v-if="false">佣金管理</a>
             <a href="javascript:;" @click="yjsp" v-if="false">佣金确认</a>
-            <a href="javascript:;" @click="yjsp1" v-if="false">佣金审批</a>
+            <a href="javascript:;" @click="yjsp1">佣金审批</a>
 
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
@@ -146,18 +146,20 @@
       },
       takenews(){//接收消息
         const url = "http://erp.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口地
+//      const url = "http://beta.youshikongjian.com/receiveMessage/"+ this.userid + "/sys/omc";//消息接口测试
         axios.get(url, {
           
         }).then((res)=>{
   //        clearInterval(timer);//清楚定时器
           if(res.data.success){
             this.newData = res.data.data;
+//          console.log(this.newData)
             for(var i=0; i<this.newData.length; i++){
-              if(this.newData[i].status == 1){
+              if(this.newData[i].status == 0){
                 this.status ++;
               }
             }
-            console.log(this.status);
+//          console.log(this.status);
   //          var timer = setTimeout(this.takenews,2000);//定时查询
           }       
               }, (err)=>{
@@ -298,7 +300,8 @@
         $("#zhezhao").remove();
         $('html').removeAttr("style");
         $("body").removeAttr("style");
-        this.$router.push({path:'/commission_ask1'});
+//      this.$router.push({path:'/commission_ask1'});
+				this.$router.push({path:'yjgl_list'});
       },
       login_out(){
         $("#zhezhao").remove();
@@ -345,6 +348,10 @@
       $('#first_list_link').click(function(){
         $("#zhezhao").remove();
       });
+      if(localStorage.getItem('xshead') && localStorage.getItem('xshead') != ''){
+      	var headsrc = JSON.parse(localStorage.getItem('xshead'));
+      	$('.portrait').attr('src',headsrc);
+      }
     }
   };
 </script>

@@ -77,7 +77,8 @@
           {
             "parameters": {
               "uaccounts": un,
-              "upass": password
+              "upass": password,
+              "img":JSON.parse(localStorage.getItem('xshead'))
             },
             "foreEndType": 2,
             "code": "300000045",
