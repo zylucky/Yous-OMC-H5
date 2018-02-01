@@ -492,7 +492,7 @@ router.beforeEach(function(to, from, next){
 									    //存微信的头像
 									    const head = data.headimgurl;
 									    localStorage.setItem('xshead', JSON.stringify(head));
-									    alert(head);
+//									    alert(head);
 									    next();
 										
 									}

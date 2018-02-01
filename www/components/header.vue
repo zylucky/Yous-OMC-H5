@@ -90,7 +90,7 @@
             <a href="javascript:;" @click="daikan_logs">带看记录</a>
             <a href="javascript:;" @click="yjgl" v-if="false">佣金管理</a>
             <a href="javascript:;" @click="yjsp" v-if="false">佣金确认</a>
-            <a href="javascript:;" @click="yjsp1">佣金审批</a>
+            <a href="javascript:;" @click="yjsp1">佣金管理</a>
 
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
             <a href="javascript:;" @click="modify_pwd">修改密码</a>
