@@ -64,13 +64,6 @@
                     :key="item.id"
                     @click.native="fuzhi4(index,item)">
             </mt-cell>
-            <div class="title">是否二看</div>
-            <mt-radio
-                    style="margin-top: 0px;"
-                    title=""
-                    v-model="cell.shifouerkan"
-                    :options="[{label:'是',value:'true'}, {label:'否',value:'false'}]">
-            </mt-radio>
             <!--<input name="Fruit" type="radio" class="radio_class" id="radio_a">-->
             <!--<label for="radio_a">yes</label>-->
             <!--<input name="Fruit" type="radio" class="radio_class" id="radio_b">-->
@@ -78,7 +71,14 @@
             <!--<mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>-->
             <div class="title2"></div>
         </div>
-        <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;">
+        <div class="title">是否二看</div>
+        <mt-radio
+                style="margin-top: 0px;"
+                title=""
+                v-model="property.shifouerkan"
+                :options="options" @change='clk'>
+        </mt-radio>
+        <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;border-top: 1px solid #d7d7d7;">
             <span style="font-size: 20px;">+</span>添加房源</p></div>
         <div class="title">打卡信息</div>
         <!--<mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>-->
@@ -131,7 +131,7 @@ export default{
                     fangjianId:'',
                     fangjianList:[],
                     fangjianShow:false,
-                    shifouerkan:'false',
+                    shifouerkan:false,
                     fangyuandizhi:'',
 
 
@@ -147,6 +147,7 @@ export default{
             cnt1:0,
             cnt2:0,
             cnt3:0,
+            options:[{label:'是',value:'true'}, {label:'否',value:'false'}],
         }
     },
     watch:{
@@ -312,7 +313,7 @@ export default{
                         fangjianList:[],
                         fangjianShow:false,
                         fangyuandizhi:'',
-                        shifouerkan:'false',
+                        shifouerkan:false,
 
                     }
             this.property.push(property);
@@ -485,7 +486,7 @@ export default{
                 "shuoming":this.info,
             }
             this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
-                var response = JSON.parse(res.data);
+                var response = JSON.parse(JSON.stringify(res.data));
                 if(response.success==true){
                     Toast({
                         message: '提交成功',
@@ -503,6 +504,11 @@ export default{
                     iconClass: ''
                 });
             });
+        },
+        clk(a){
+//      	console.log(a);
+        	this.property.shifouerkan = a;
+        	console.log(this.property.shifouerkan);
         }
     },
     mounted(){
@@ -525,5 +531,9 @@ export default{
 
 </script>
 <style>
-
+.mint-radio-input:checked + .mint-radio-core{
+	background-color: #26a2ff !important;
+	background: #26a2ff !important;
+	border-color: #26a2ff !important;
+}
 </style>

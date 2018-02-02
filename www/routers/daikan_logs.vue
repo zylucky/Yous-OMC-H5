@@ -92,7 +92,7 @@ export default{
             cookie:JSON.parse(localStorage.getItem('cookxs')),
         }
         this.$http.post(this.$api+'/yhcms/web/qddaka/getQdDakaForPerson.do',para).then((res)=>{
-            var response = JSON.parse(res.data);
+            var response = JSON.parse(JSON.stringify(res.data));
             if(response.success==true){
                 this.list = response.data;
                 if(this.list.length>0){
