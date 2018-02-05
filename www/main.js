@@ -435,7 +435,6 @@ var router = new VueRouter({
     
   ]
 });
-
 router.beforeEach(function(to, from, next){
     /* 路由发生变化修改页面title */
     if (to.meta.title) {
@@ -590,53 +589,53 @@ router.beforeEach(function(to, from, next){
     }
 });
 
-//router.beforeEach(function(to, from, next) {
-//  const user = JSON.parse(localStorage.getItem('loginxs'));
-//  if (!user && to.path != '/login') {
-//      next({ path: '/login' });
-//  }
-//  else {
-//      if (user != null) {
-//          const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
-//          if (delta > 86400 * 3) {
-//              next({path: '/login'});
-//          } else {
-//              const user22 = JSON.parse(localStorage.getItem('cookxs'));
-////              alert(user22);
-//              if(user22 != null){
-//                  next();
-//
-//              }else{
-//                  next({path: '/login'});
-//
-//              }
-//              $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
-//                      "foreEndType": 2,
-//                      "code": "300000045",
-//                      "cookie": user22.sjs,
-//                  },
-//                  function (data) {
-//                      if (data.success) {
-//                          next();
-//                      } else {
-//                          if (data.userzt == 2) {
-//                              Toast({
-//                                  message: '此用户已被删除或被禁用，请联系管理员！',
-//                                  position: 'bottom'
-//                              });
-//                          } else {
-//                              next({path: '/login'});
-//                          }
-//                      }
-//                      //alert(data); // John
-//                  }, "json");
-//          }
-//      }else{
-//
-//        next();
-//      }
-//  }
-//});
+/*router.beforeEach(function(to, from, next) {
+    const user = JSON.parse(localStorage.getItem('loginxs'));
+    if (!user && to.path != '/login') {
+        next({ path: '/login' });
+    }
+    else {
+        if (user != null) {
+            const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
+            if (delta > 86400 * 3) {
+                next({path: '/login'});
+            } else {
+                const user22 = JSON.parse(localStorage.getItem('cookxs'));
+//              alert(user22);
+                if(user22 != null){
+                    next();
+
+                }else{
+                    next({path: '/login'});
+
+                }
+                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+                        "foreEndType": 2,
+                        "code": "300000045",
+                        "cookie": user22.sjs,
+                    },
+                    function (data) {
+                        if (data.success) {
+                            next();
+                        } else {
+                            if (data.userzt == 2) {
+                                Toast({
+                                    message: '此用户已被删除或被禁用，请联系管理员！',
+                                    position: 'bottom'
+                                });
+                            } else {
+                                next({path: '/login'});
+                            }
+                        }
+                        //alert(data); // John
+                    }, "json");
+            }
+        }else{
+
+          next();
+        }
+    }
+});*/
 
 
 new Vue({

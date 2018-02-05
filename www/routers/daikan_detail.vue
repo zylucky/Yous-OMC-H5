@@ -52,7 +52,7 @@
         methods:{
             getDetail(){
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getQdDaka.do',{id:this.$route.params.id}).then((res)=>{
-                    var response = JSON.parse(res.data);
+                    var response = JSON.parse(JSON.stringify(res.data));
                     if(response.success==true){
                         this.response = response.data;
                         this.dktime = this.formDate(this.response.dakatime);

@@ -96,13 +96,13 @@
         methods:{
             getEnum(){
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"manyido1"}).then((res)=>{
-                    var response = JSON.parse(res.data);
+                    var response = JSON.parse(JSON.stringify(res.data));
                     if(response.success==true){
                         this.enum1 = response.data;
                     }
                 });
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getEnum.do',{"key":"manyido2"}).then((res)=>{
-                    var response = JSON.parse(res.data);
+                    var response = JSON.parse(JSON.stringify(res.data));
                     if(response.success==true){
                         this.enum2 = response.data;
                     }
@@ -110,7 +110,7 @@
             },
             getDetail(){
                 this.$http.post(this.$api+'/yhcms/web/qddaka/getQdDaka.do',{id:this.$route.params.id}).then((res)=>{
-                    var response = JSON.parse(res.data);
+                    var response = JSON.parse(JSON.stringify(res.data));
                     if(response.success==true){
                         this.response = response.data;
                         this.response.fangZis.forEach((property,index)=>{
