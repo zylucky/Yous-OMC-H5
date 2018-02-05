@@ -263,6 +263,7 @@
 			<p>
 				<span><i>*</i>计算公式</span>
 				<input type="text" placeholder="请输入佣金计算公式" v-model="formula" class="formulas" />
+				<!--<textarea name="" rows="10" cols="1" placeholder="请输入佣金计算公式" v-model="formula" class="formulas"></textarea>-->
 			</p>
 			<p>
 				<span><i>*</i>渠道姓名</span>
@@ -344,7 +345,7 @@
 				formula:'',//佣金计算公式
 				channelname: '', //渠道姓名
 				tel: '', //联系方式
-				yjxx:null,//佣金信息状态
+				yjxx:true,//佣金信息状态
 				invoice: '请选择发票类型', //发票类型
 				slots: [{
 					flex: 1,
@@ -678,7 +679,7 @@
 					});
 					return;
 				}
-				if(this.yjxx == null || this.yjxx == ''){
+				if(this.yjxx == null){
 					Toast({
 						message: '请确认佣金信息',
 						position: 'center',

@@ -508,6 +508,14 @@ export default{
         clk(a){
 //      	console.log(a);
         	this.property.shifouerkan = a;
+        	if(a == "true"){
+        		$(".mint-radio:eq(1) span").removeClass('actives');
+        		$(".mint-radio:eq(0) span").addClass("activ");
+        	}
+        	if(a == "false"){
+        		$(".mint-radio:eq(0) span").removeClass('activ');
+        		$(".mint-radio:eq(1) span").addClass("actives");
+        	}
         	console.log(this.property.shifouerkan);
         }
     },
@@ -531,9 +539,38 @@ export default{
 
 </script>
 <style>
-.mint-radio-input:checked + .mint-radio-core{
+/*.mint-radio-input:checked + .mint-radio-core{
 	background-color: #26a2ff !important;
 	background: #26a2ff !important;
 	border-color: #26a2ff !important;
+}*/
+.mint-radiolist{
+	display: flex;
+}
+/*按钮背景*/
+.mint-radio-input:checked + .mint-radio-core{
+	/*background-color: rgba(255,255,255,0);*/
+	/*background: url(../../resources/images/commission/btn2.png) no-repeat center;
+	background-size: cover;*/
+}
+.mint-cell-wrapper,.mint-cell:last-child,.mint-cell{
+	background: none;
+}
+.mint-radio-input:checked + .mint-radio-core::after{
+	background: none;
+}
+.mint-radio-core{
+	border: none;
+	background: url(../resources/images/commission/btn.png) no-repeat center;
+	background-size: cover;
+}
+
+.activ{
+	background: url(../resources/images/commission/btn2.png) no-repeat center !important;
+	background-size: cover !important;
+}
+.actives{
+	background: url(../resources/images/commission/btn1.png) no-repeat center !important;
+	background-size: cover !important;
 }
 </style>
