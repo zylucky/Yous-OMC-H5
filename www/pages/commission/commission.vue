@@ -316,7 +316,7 @@
 			</ul>
 		</div>
 		<!--<button v-if="btnshow" :class="money != '' && channelname !='' && tel != '' && theinvoice.id != '0' && invoice != '请选择发票类型' && formula != '' && yjxx != ''?'btn btnactive': 'btn'"  @click='bas()'>提交</button>-->
-		<button v-if="btnshow && zt==1" :class="btnzt?'btn btnactive':'btn'"  @click='bas()'>提交</button>
+		<button id="btn" v-if="btnshow && zt==1" :class="btnzt?'btn btnactive':'btn'"  @click='bas()'>提交</button>
 		<!--发票选择弹框-->
 		<div class="shade" v-if="shade">
 			<div class="picker_bottom" v-if="pickshow" @click.stop="clk">
@@ -336,6 +336,7 @@
 	import { Picker } from 'mint-ui'
 	import { Toast } from 'mint-ui';
 	import { Radio } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import axios from 'axios';
 	export default {
 		data() {
@@ -542,14 +543,19 @@
 							position: 'center',
 							duration: 2000
 						});	
+						Indicator.close();
+						$('#btn').removeAttr('disabled');
 						this.$router.push({
 //							path:'/commission_list',//跳转佣金信息
 							path:'/yjgl_list',//跳转佣金管理列表
-							resault:'success'//提交成功后回到列表根据该字段刷新页面
+							query:{
+								resault:'success'//提交成功后回到列表根据该字段刷新页面.
+							}
 						})
 	            	}
 //					console.log(res);
 	            }, (err)=>{
+	            	$('#btn').removeAttr('disabled');
 					console.log(err);
 	            });
 			},
@@ -720,6 +726,14 @@
 					});
 					return;
 				}else{
+					Indicator.open({
+					  text: '提交中...',
+					  spinnerType: 'fading-circle'
+					});
+					$('#btn').attr('disabled','disabled');
+//					setTimeout(function(){
+//						$('#btn').removeAttr('disabled');
+//					},5000)
 					this.init();
 				}
 				

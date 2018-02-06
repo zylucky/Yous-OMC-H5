@@ -289,7 +289,7 @@
 			</div>
 		</div>
 		<!--提交-->
-		<button class="btn" @click="cxtj" v-if="zt == 0 && !xsData.qdhuming">重新提交</button>
+		<button class="btn" @click="cxtj" v-if="zt == 0 && !xsData.qdhuming" v-show="false">重新提交</button>
 	</div>
 </template>
 
