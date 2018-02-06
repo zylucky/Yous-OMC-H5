@@ -549,7 +549,7 @@
 //							path:'/commission_list',//跳转佣金信息
 							path:'/yjgl_list',//跳转佣金管理列表
 							query:{
-								resault:'success'//提交成功后回到列表根据该字段刷新页面
+								resault:'success'//提交成功后回到列表根据该字段刷新页面.
 							}
 						})
 	            	}
