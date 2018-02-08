@@ -379,13 +379,13 @@ export default{
         },
         getFangyuan(){
             this.$http.post(this.$api+'/yhcms/web/qddaka/getHouseForId.do',{id:this.$route.query.house_id}).then((res)=>{
-                this.property[0].loupan = JSON.parse(res.data).data.loupan;
-                this.property[0].loupanId = JSON.parse(res.data).data.loupanid;
-                this.property[0].loudong = JSON.parse(res.data).data.loudong;
-                this.property[0].loudongId = JSON.parse(res.data).data.loudongid;
+                this.property[0].loupan = JSON.parse(JSON.stringify(res.data)).data.loupan;
+                this.property[0].loupanId = JSON.parse(JSON.stringify(res.data)).data.loupanid;
+                this.property[0].loudong = JSON.parse(JSON.stringify(res.data)).data.loudong;
+                this.property[0].loudongId = JSON.parse(JSON.stringify(res.data)).data.loudongid;
                 //this.property[0].loudongShow = false;
-                this.property[0].fangjian = JSON.parse(res.data).data.houseno;
-                this.property[0].fangjianId = JSON.parse(res.data).data.houseid;
+                this.property[0].fangjian = JSON.parse(JSON.stringify(res.data)).data.houseno;
+                this.property[0].fangjianId = JSON.parse(JSON.stringify(res.data)).data.houseid;
                 //this.property[0].fangjianShow = false;
             })
         },

@@ -133,6 +133,7 @@
   		justify-content: center;
   		margin-top: 0.3rem;
   	}
+  	-ms-input-placeholder
 </style>
 
 <template>
