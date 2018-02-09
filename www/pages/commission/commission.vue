@@ -424,11 +424,13 @@
 				btnshow:true,
 				chaobj:{},
 				chuzuren:'',//出租人
+				st:'',
 			}
 		},
 		created() {
 			this.xsid = this.$route.query.xsid;
 			this.zt = this.$route.query.zt;//处理状态1未处理，0已处理
+			this.st = this.$route.query.st;
 			this.takexs();//获取销售人员信息
 		},
 		methods: {
@@ -772,6 +774,11 @@
 					this.mark = false;
 					this.qdinp1 = false;
 					this.qdinp = false;
+				}
+				if(this.st == 6){
+					this.qdinp1 = false;
+					this.qdinp = false;
+					this.st = 5;	
 				}
 			}
 		},

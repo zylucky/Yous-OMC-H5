@@ -133,7 +133,6 @@
   		justify-content: center;
   		margin-top: 0.3rem;
   	}
-  	-ms-input-placeholder
 </style>
 
 <template>
@@ -525,7 +524,7 @@ import { InfiniteScroll } from 'mint-ui';
 						}
 					})
 				}
-				if(listzt == 4){//已驳回数据
+				if(listzt == 4 && this.tabq == 0){//已驳回数据
 					this.$router.push({
 						path:'/commission_turn',//跳转佣金信息
 						query:{
@@ -556,12 +555,12 @@ import { InfiniteScroll } from 'mint-ui';
 						}
 					})
 				}
-				if(listzt == 4){//跳转审批被驳回
+				if(listzt == 4 && this.tabq == 1){//跳转审批被驳回
 					this.$router.push({
-						path:'/commission_turn',
+						path:'/approval1',//跳转审批通过详情
 						query:{
-							"xsid":id,//所传参数
-							"zt":zt//处理状态1未处理，2已处理
+							"id":id,//所传参数
+							"btnshow":0
 						}
 					})	
 				}

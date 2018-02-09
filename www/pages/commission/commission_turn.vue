@@ -320,7 +320,8 @@ import axios from 'axios';
 					path:'/commission',//跳转佣金信息
 					query:{
 						"xsid":this.xsData.id,//所传参数
-						"zt":this.zt//处理状态1未处理，2已处理
+						"zt":this.zt,//处理状态1未处理，2已处理
+						"st":6,//
 					}
 				})	
 			}
