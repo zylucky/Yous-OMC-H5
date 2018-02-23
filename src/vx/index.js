@@ -13,6 +13,9 @@ export default new Vuex.Store({
 		page:'',//当前页
 		page2:'',//当前页
 		smcode:'',//实名认证弹框
+		total1:0,
+		total2:0,
+		total3:0,
 	},
 	mutations:{
 		openRed(state,obj){//滚动条位置
@@ -41,6 +44,15 @@ export default new Vuex.Store({
 		},
 		setSmcode(state,obj){
 			state.smcode = obj;
-		}
+		},
+		settotal1(state,obj){
+			state.total1 = obj;
+		},
+		settotal2(state,obj){
+			state.total2 = obj;
+		},
+		settotal3(state,obj){
+			state.total3 = obj;
+		},
 	}
 })

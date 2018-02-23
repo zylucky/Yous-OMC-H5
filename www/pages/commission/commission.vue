@@ -267,8 +267,8 @@
 			</p>
 			<p>
 				<span><i>*</i>渠道姓名</span>
-				<input type="text" placeholder="请输入渠道人员姓名" v-model="channelname" v-on:input="channeluser"/>
-				<span class="inp_box" v-if="qdfind.length != 0 && channelname != '' && qdinp1">
+				<input type="text" id="qdname" placeholder="请输入渠道人员姓名" v-model="channelname" />
+				<span class="inp_box" v-if="qdfind.length != 0 && channelname != '' && channelname != undefined && qdinp1">
 					<span class="inp" v-for="item in qdfind" @click="qdxz(item.name,item.phone)">
 						<i class="inp_name">{{item.name}}</i>
 						<i class="inp_tel">{{item.phone}}</i>
@@ -341,6 +341,7 @@
 	export default {
 		data() {
 			return {
+				mark:false,
 				btntext:'提交',
 				money: '', //佣金信息
 				formula:'',//佣金计算公式
@@ -423,11 +424,13 @@
 				btnshow:true,
 				chaobj:{},
 				chuzuren:'',//出租人
+				st:'',
 			}
 		},
 		created() {
 			this.xsid = this.$route.query.xsid;
 			this.zt = this.$route.query.zt;//处理状态1未处理，0已处理
+			this.st = this.$route.query.st;
 			this.takexs();//获取销售人员信息
 		},
 		methods: {
@@ -566,13 +569,13 @@
 					this.channel();
 				}
 			},
-			channeluser(){//模糊查询渠道人员信息查找通过姓名
-				if(this.channelname != ''){
-					this.qdinp1 = true;
-					this.qdinp = false;
-					this.channel();
-				}
-			},
+//			channeluser(){//模糊查询渠道人员信息查找通过姓名
+//				if(this.channelname != ''){
+//					this.qdinp1 = true;
+//					this.qdinp = false;
+//					this.channel();
+//				}
+//			},
 			channel(){//模糊查询渠道人员信息
 //				const url = "http://192.168.1.44:8080/yhcms/web/qdyongjin/xiaoshouSubmit.do";
 				const url = this.$api + "/yhcms/web/qdyongjin/getLikeQd.do";
@@ -587,9 +590,11 @@
 	            });
 			},
 			qdxz(name,tel){//选择信息
+				this.mark = true;
 				this.channelname = name;
 				this.tel = tel;
 				this.qdinp = false;
+				this.qdinp1 = false;
 			},
 			//佣金信息状态
 			check(a){
@@ -760,7 +765,22 @@
 			
 		},
 		watch: {
-			
+			channelname(){
+				if(this.channelname != '' && !this.mark){
+					this.qdinp1 = true;
+					this.qdinp = false;
+					this.channel();
+				}else{
+					this.mark = false;
+					this.qdinp1 = false;
+					this.qdinp = false;
+				}
+				if(this.st == 6){
+					this.qdinp1 = false;
+					this.qdinp = false;
+					this.st = 5;	
+				}
+			}
 		},
 		computed:{
 			btnzt:function(){

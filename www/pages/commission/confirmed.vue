@@ -98,9 +98,8 @@
   					z-index: 9;
   					width: 0.7rem;
   					height: 0.7rem;
-  					border-radius: 50%;
-  					overflow: hidden;
-  					img{width: 100%;}
+  					/*overflow: hidden;*/
+  					img{width: 100%;border-radius: 50%;}
   					i{
   						position: absolute;
   						bottom: -0.6rem;
@@ -417,7 +416,7 @@
 						</p>
 						<p class="plan_b">{{item.shuoming!=''?item.shuoming:''}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
-						<p v-if="item.shenpi == 2" style="position: absolute;width: 7.5rem;height:0.1rem;background:#f0eff5;left: -0.28rem;bottom: 0;"></p>
+						<!--<p v-if="item.shenpi == 2" style="position: absolute;width: 7.5rem;height:0.1rem;background:#f0eff5;left: -0.28rem;bottom: 0;"></p>-->
 					</li>
 				</ul>
 			</div>
@@ -541,15 +540,15 @@ import { Indicator } from 'mint-ui';
 	            	this.csData = res.data.data.chaosong;
 	            	var arrdata = this.spData.slice(0);//数组深拷贝
 	            	arrdata.reverse();//反转
-	            	for(var m in arrdata){//驳回审批节点数据开始审批
-						for(var n in arrdata[m]){
-							if(n == 'shenpi' && arrdata[m][n] == 2){
-//								console.log('==============shenpi====================');
-								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
-								return
-							}
-						}
-					}
+//	            	for(var m in arrdata){//驳回审批节点数据开始审批
+//						for(var n in arrdata[m]){
+//							if(n == 'shenpi' && arrdata[m][n] == 2){
+////								console.log('==============shenpi====================');
+//								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
+//								return
+//							}
+//						}
+//					}
 //					console.log(this.spData);
 //					console.log(this.splist);
 					for(var i in this.spData){

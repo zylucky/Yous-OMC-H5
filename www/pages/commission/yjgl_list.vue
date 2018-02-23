@@ -139,9 +139,9 @@
 	<div class="box">
 		<div class="header">
 			<ul class="nav">
-				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待处理({{pendData.length}})<span></span></li>
-				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{passData.length}})<span></span></li>
-				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的({{csData.length}})</li>
+				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待处理({{total1}})<span></span></li>
+				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{total2}})<span></span></li>
+				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的({{total3}})</li>
 			</ul>
 		</div>
 		<!--列表-->
@@ -253,6 +253,9 @@ import { InfiniteScroll } from 'mint-ui';
 				dataqq1:false,//切换点击请求数据状态1
 				dataqq2:false,//切换点击请求数据状态2
 				jz:false,//底部加载图标
+				total1:0,
+				total2:0,
+				total3:0,
 			}
 		},
 		created(){
@@ -364,6 +367,9 @@ import { InfiniteScroll } from 'mint-ui';
 	            		"page":this.page1,
 	            		"size":this.size
 	            }).then((res)=>{
+	            	this.total1 = res.data.total;
+	            	this.$store.commit('settotal1',this.total1);//
+	            	this.total1 = this.$store.state.total1
 	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
@@ -410,6 +416,9 @@ import { InfiniteScroll } from 'mint-ui';
 	            		"page":this.page,
 	            		"size":this.size
 	            }).then((res)=>{
+	            	this.total2 = res.data.total;
+	            	this.$store.commit('settotal2',this.total2);//
+	            	this.total2 = this.$store.state.total2;
 	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
@@ -456,6 +465,9 @@ import { InfiniteScroll } from 'mint-ui';
 	            		"page":this.page2,
 	            		"size":this.size
 	            }).then((res)=>{
+	            	this.total3 = res.data.total;
+	            	this.$store.commit('settotal3',this.total3);//
+	            	this.total3 = this.$store.state.total3;
 	            	if(res.data.data && res.data.data.length == 0){
 	            		Toast({
 						  message: '人家，是有底线的呢！',
@@ -524,7 +536,7 @@ import { InfiniteScroll } from 'mint-ui';
 						}
 					})
 				}
-				if(listzt == 4){//已驳回数据
+				if(listzt == 4 && this.tabq == 0){//已驳回数据
 					this.$router.push({
 						path:'/commission_turn',//跳转佣金信息
 						query:{
@@ -555,12 +567,12 @@ import { InfiniteScroll } from 'mint-ui';
 						}
 					})
 				}
-				if(listzt == 4){//跳转审批被驳回
+				if(listzt == 4 && this.tabq == 1){//跳转审批被驳回
 					this.$router.push({
-						path:'/commission_turn',
+						path:'/approval1',//跳转审批通过详情
 						query:{
-							"xsid":id,//所传参数
-							"zt":zt//处理状态1未处理，2已处理
+							"id":id,//所传参数
+							"btnshow":0
 						}
 					})	
 				}

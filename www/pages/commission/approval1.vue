@@ -98,9 +98,8 @@
   					z-index: 9;
   					width: 0.7rem;
   					height: 0.7rem;
-  					border-radius: 50%;
-  					overflow: hidden;
-  					img{width: 100%;}
+  					/*overflow: hidden;*/
+  					img{width: 100%;border-radius: 50%;}
   					i{
   						position: absolute;
   						bottom: -1rem;
@@ -447,7 +446,7 @@
 						</p>
 						<p class="plan_b">{{item.shuoming}}</p>
 						<p class="date">{{item.shenpitime | time}}</p>
-						<p v-if="item.shenpi == 2" style="position: absolute;width: 7.5rem;height:0.1rem;background:#f0eff5;left: -0.28rem;bottom: 0;"></p>
+						<!--<p v-if="item.shenpi == 2" style="position: absolute;width: 120%;height:0.1rem;background:#f0eff5;left: -1rem;bottom: 0;"></p>-->
 					</li>
 				</ul>
 			</div>
@@ -469,7 +468,7 @@
 						<p class="copy_name">{{item.personname}}</p>
 					</li>
 					<!--添加抄送人按钮-->
-					<li @click="addcopy" v-show='allData.imgList && allData.imgList.length == 0'>
+					<li @click="addcopy" v-show='allData.imgList && allData.imgList.length == 0 && success != 0'>
 						<p class="copy_add"></p>
 						<p></p>
 					</li>
@@ -571,16 +570,16 @@ import { Indicator } from 'mint-ui';
 	            	this.csData = res.data.data.chaosong;
 	            	var arrdata = this.spData.slice(0);//数组深拷贝
 	            	arrdata.reverse();//反转
-	            	for(var m in arrdata){//驳回审批节点数据开始审批
-						for(var n in arrdata[m]){
-							if(n == 'shenpi' && arrdata[m][n] == 2){
-//								console.log(this.spData)
-//								console.log('==============shenpi====================');
-								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
-								return
-							}
-						}
-					}
+//	            	for(var m in arrdata){//驳回审批节点数据开始审批
+//						for(var n in arrdata[m]){
+//							if(n == 'shenpi' && arrdata[m][n] == 2){
+////								console.log(this.spData)
+////								console.log('==============shenpi====================');
+//								this.spData = arrdata.slice(0,Number(m) + 1).reverse();
+//								return
+//							}
+//						}
+//					}
 //					console.log(this.spData);
 //					console.log(this.csData);
 					for(var i in this.spData){//当前审批节点数据截取

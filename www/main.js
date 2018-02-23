@@ -25,7 +25,7 @@ Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 /*Vue.prototype.$prefix = "http://116.62.68.26:81" //图片前缀
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址*/
 
-// Vue.prototype.$api = "http://192.168.21.55:8080" //Mr.Cheng IP Address
+// Vue.prototype.$api = "http://192.168.0.105:8080" //Mr.Cheng IP Address
 
 
 Vue.config.debug = true;// 开启debug模式
