@@ -335,7 +335,7 @@
 						<span>渠道账号</span>
 						<span>{{allData.xsqvdaotel}}</span>
 					</p>
-					<p>
+					<p v-if="false">
 						<span>渠道门店</span>
 						<span>暂无此字段需要核对</span>
 					</p>
