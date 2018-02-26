@@ -665,9 +665,14 @@
 				}
 			},
 			splitk(num) { //千位分隔符 
-				if(num != ''){
+				if(num != '' && num.indexOf('.')==-1){
 					var number = parseInt(num.replace(/,/g,'')).toLocaleString();
 					return number;										
+				}else if(num != '' && num.indexOf('.')){
+					console.log(num)
+					var zheng = String(num).split('.')[0];//小数部分
+					var decimal = String(num).split('.')[1] || '';//小数部分
+			     	return zheng + '.' + decimal;
 				}else{
 					return '';
 				}
