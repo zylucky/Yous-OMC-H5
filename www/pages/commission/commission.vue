@@ -390,6 +390,14 @@
 							number: '9111 0105 3064 0709 X3',
 							address: '',
 							bankplace: ''
+						},
+						{
+							id: 5,
+							name: '航远投资增值税普通发票',
+							companyName: '北京航远投资管理有限公司',
+							number: '9111 0105 0896 4805 64',
+							address: '',
+							bankplace: ''
 						}
 					],
 					className: 'slot1',
@@ -479,12 +487,19 @@
 						this.theinvoice.bankplace = this.slots[0].values[4].bankplace;
 						this.invoice = this.slots[0].values[4].name;
             		}
-            		if(this.chuzuren == '彭坤' || this.chuzuren == '彭亮'){
+            		if(this.chuzuren == '彭昆' || this.chuzuren == '彭亮'){
             			this.theinvoice.companyName = this.slots[0].values[2].companyName;
 						this.theinvoice.number = this.slots[0].values[2].number;
 						this.theinvoice.address = this.slots[0].values[2].address;
 						this.theinvoice.bankplace = this.slots[0].values[2].bankplace;
 						this.invoice = this.slots[0].values[2].name;
+            		}
+            		if(this.chuzuren == '航远投资管理'){
+            			this.theinvoice.companyName = this.slots[0].values[5].companyName;
+						this.theinvoice.number = this.slots[0].values[5].number;
+						this.theinvoice.address = this.slots[0].values[5].address;
+						this.theinvoice.bankplace = this.slots[0].values[5].bankplace;
+						this.invoice = this.slots[0].values[5].name;
             		}
 					
 	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
