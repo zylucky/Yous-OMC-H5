@@ -393,7 +393,7 @@
 			        	<i class="delete_icon" tag="fy" @click.stop='delete_fpic(item.id,index)' v-if="btnshow==1"></i>
 			        </div>
 			        <!--添加图片-->
-			        <div v-if="fy < 8 && btnshow==1" class="upload_btn mr10 fl">
+			        <div v-if="fy < 15 && btnshow==1" class="upload_btn mr10 fl">
 			            <input @change='add_img1($event)' id="file_add" tag="fy" type="file" multiple>
 			        </div>
 				</div>
@@ -694,7 +694,7 @@ import { Indicator } from 'mint-ui';
 	      add_img1(event){
 	        const images = event.target.files;
 	        let len = images.length;
-	        len = Math.min(len, 8 - this.fy);
+	        len = Math.min(len, 15 - this.fy);
 	        for(let i = 0; i < len; ++i){
 	            this.append_img(images[i]);
 	        }

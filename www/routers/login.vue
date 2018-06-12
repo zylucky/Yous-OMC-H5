@@ -97,10 +97,18 @@
                 position: 'bottom',
                 duration: 1000
             });
-
-            setTimeout(function(){
-                _this.$router.push({path:'/index'});
-            },1000);
+						//登陆跳转
+//						if(localStorage.getItem('back_page') && localStorage.getItem('back_page') != '' && localStorage.getItem('back_page') != undefined){
+////							alert('跳转');
+//							setTimeout(function(){
+//	                _this.$router.push({path:localStorage.getItem('back_page')});
+//	            },1000);
+//						}else{
+							setTimeout(function(){
+//							    _this.$router.push({path:'/index'});
+							    history.go(-1);
+							},1000);							
+//						}
 
           } else {
             Toast({

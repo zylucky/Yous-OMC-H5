@@ -365,7 +365,7 @@
 							companyName: '北京幼狮科技有限公司',
 							number: '9111 0105 3064 0709 X3',
 							address: '北京市朝阳区东三环中路39号院24号楼22层2602 010-56143922',
-							bankplace: '招商银行北京分行建国门支行 110921667410910'
+							bankplace: '招商银行北京分行建国门支行 110921667410901'
 						},
 						{
 							id: 2,
@@ -388,6 +388,14 @@
 							name: '华溯商贸增值税普通发票',
 							companyName: '北京幼狮科技有限公司',
 							number: '9111 0105 3064 0709 X3',
+							address: '',
+							bankplace: ''
+						},
+						{
+							id: 5,
+							name: '航远投资增值税普通发票',
+							companyName: '北京航远投资管理有限公司',
+							number: '9111 0105 0896 4805 64',
 							address: '',
 							bankplace: ''
 						}
@@ -479,12 +487,19 @@
 						this.theinvoice.bankplace = this.slots[0].values[4].bankplace;
 						this.invoice = this.slots[0].values[4].name;
             		}
-            		if(this.chuzuren == '彭坤' || this.chuzuren == '彭亮'){
+            		if(this.chuzuren == '彭昆' || this.chuzuren == '彭亮'){
             			this.theinvoice.companyName = this.slots[0].values[2].companyName;
 						this.theinvoice.number = this.slots[0].values[2].number;
 						this.theinvoice.address = this.slots[0].values[2].address;
 						this.theinvoice.bankplace = this.slots[0].values[2].bankplace;
 						this.invoice = this.slots[0].values[2].name;
+            		}
+            		if(this.chuzuren == '航远投资管理'){
+            			this.theinvoice.companyName = this.slots[0].values[5].companyName;
+						this.theinvoice.number = this.slots[0].values[5].number;
+						this.theinvoice.address = this.slots[0].values[5].address;
+						this.theinvoice.bankplace = this.slots[0].values[5].bankplace;
+						this.invoice = this.slots[0].values[5].name;
             		}
 					
 	            	if(this.xsData.taskZt==1 || this.xsData.taskZt==3){
