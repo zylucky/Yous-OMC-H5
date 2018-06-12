@@ -257,7 +257,22 @@
           setTimeout(function(){
               that.$router.push({path:'/fang_image/' + that.hourse_id});
           },300);
-      }
+      },
+      wechat_share(){//微信分享
+      	const url = "http://omc.urskongjian.com/yhcms/web/weixin/share.do";
+//    	console.log(window.location.href)
+//				axios.post(url,{
+//					"url":''
+//	      }).then((res)=>{
+//	        if(res.data.success){
+//	
+//	        }else{
+//	          
+//	        }
+//	      }, (err)=>{
+//					console.log(err);
+//	      });
+      },
     },
     mounted(){
       Indicator.open({
@@ -265,6 +280,7 @@
         spinnerType: 'fading-circle'
       });
       this.getPerDetail();
+//    this.wechat_share();
     }
   }
 </script>

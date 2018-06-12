@@ -435,12 +435,29 @@ var router = new VueRouter({
     
   ]
 });
+
 router.beforeEach(function(to, from, next){
     /* 路由发生变化修改页面title */
     if (to.meta.title) {
       document.title = to.meta.title;
     }
     next();
+    //监听页面从何处跳转
+	if (to.path == '/daikan') {//带看打卡
+		localStorage.setItem('back_page','/daikan');
+//	  	alert('带看打卡');
+	  	next();
+	}
+	if(to.path == '/daikan_logs'){//带看记录
+		localStorage.setItem('back_page','/daikan_logs');
+//	  	alert('带看记录');
+	  	next();
+	}
+	if(to.path == '/yjgl_list'){//佣金管理
+		localStorage.setItem('back_page','/yjgl_list');
+//	  	alert('佣金管理');
+	  	next();
+	}
 
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
@@ -590,6 +607,24 @@ router.beforeEach(function(to, from, next){
 });
 
 /*router.beforeEach(function(to, from, next) {
+	//监听页面从何处跳转
+	if (to.path == '/daikan') {//带看打卡
+		localStorage.setItem('back_page','/daikan');
+//	  	alert('带看打卡');
+	  	next();
+	}
+	if(to.path == '/daikan_logs'){//带看记录
+		localStorage.setItem('back_page','/daikan_logs');
+//	  	alert('带看记录');
+	  	next();
+	}
+	if(to.path == '/yjgl_list'){//佣金管理
+		localStorage.setItem('back_page','/yjgl_list');
+//	  	alert('佣金管理');
+	  	next();
+	}
+	
+	
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
         next({ path: '/login' });

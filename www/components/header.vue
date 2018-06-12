@@ -317,6 +317,9 @@
                   $("body").removeAttr("style");
                   localStorage.removeItem('cookxs');
                   localStorage.removeItem('loginxs');
+                  
+                  localStorage.removeItem('back_page');
+                  
                   this.$router.push({path:'/login'});
               }else{
                   Toast({

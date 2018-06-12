@@ -133,8 +133,6 @@ export default{
                     fangjianShow:false,
                     shifouerkan:false,
                     fangyuandizhi:'',
-
-
                 }
             ],
             dk_address:'',
@@ -149,6 +147,11 @@ export default{
             cnt3:0,
             options:[{label:'是',value:'true'}, {label:'否',value:'false'}],
         }
+    },
+    created(){//判断跳转
+    	if(JSON.stringify(localStorage.getItem('cookxs'))){//用户登陆信息
+//  		alert(JSON.stringify(localStorage.getItem('cookxs')));
+    	}
     },
     watch:{
         company(){
