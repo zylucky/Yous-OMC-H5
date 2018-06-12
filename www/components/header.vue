@@ -318,7 +318,7 @@
                   localStorage.removeItem('cookxs');
                   localStorage.removeItem('loginxs');
                   
-                  localStorage.removeItem('back_page');
+//                localStorage.removeItem('back_page');
                   
                   this.$router.push({path:'/login'});
               }else{
