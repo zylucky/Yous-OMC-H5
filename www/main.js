@@ -435,161 +435,180 @@ var router = new VueRouter({
     
   ]
 });
-router.beforeEach(function(to, from, next){
-    /* 路由发生变化修改页面title */
-    if (to.meta.title) {
-      document.title = to.meta.title;
-    }
-    next();
 
-    const user = JSON.parse(localStorage.getItem('loginxs'));
-    if (!user && to.path != '/login') {
-        next({ path: '/login' });
-    }else  if (!user && to.path == '/login') {
-        next();
-    }else  if (user && to.path == '/login') {
-        next();
-    }
-    /*if (!user && to.path != '/login') {
-     next({path: '/login'});
-     }*/
-    else{
-        if(user!=null) {
-            const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
-            if (delta > 86400 * 30) {
-                next({path: '/login'});
-            } else {
-        		var name="code";
-		        var wxcode=null;
-		        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-		        var r = window.location.search.substr(1).match(reg);
-		        if (r!=null){
-		        	wxcode= r[2];
-		        	
-		        }
-		        if(wxcode == null){
-			        var charString=window.location.href;
-			        var tt=encodeURIComponent(charString);
-	                window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx109df14878717ecb&redirect_uri="+tt+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
-		      	}else{
-		      		$.post(
-                       "http://omc.urskongjian.com/yhcms/web/jcsj/getOpenid11.do?code="+wxcode
-                 ).then(function (res) {
-                      var data = JSON.parse(res);
-                      if (data.success) {
-                          if(data.subscribe){
-                          if (data.subscribe == 1 || data.subscribe == 3 ) {
-                                if(to.path=='/register'||to.path=='/forgot_pwd'||to.path.indexOf('/reset_pwd')!=-1){
-                                    next();
-                                }else{
-                                    if(localStorage.getItem('xshead')){
-									    next();
-									}else{
-										
-									    //存微信的头像
-									    const head = data.headimgurl;
-									    localStorage.setItem('xshead', JSON.stringify(head));
-//									    alert(head);
-									    next();
-										
-									}
-                                    const user = JSON.parse(localStorage.getItem('cookxs'));
-                                    if (!user && to.path != '/login') {
-                                        next({ path: '/login' });
-                                    }else  if (!user && to.path == '/login') {
-                                        next();
-                                    }else  if (user && to.path == '/login') {
-                                        next();
-                                    }
-                                    else{
-                                        if(user!=null) {
-                                            const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
-                                            if (delta > 86400 * 30) {
-                                                next({path: '/login'});
-                                            } else {
+//router.beforeEach(function(to, from, next){
+//  /* 路由发生变化修改页面title */
+//  if (to.meta.title) {
+//    document.title = to.meta.title;
+//  }
+//  next();
+//
+//  const user = JSON.parse(localStorage.getItem('loginxs'));
+//  if (!user && to.path != '/login') {
+//      next({ path: '/login' });
+//  }else  if (!user && to.path == '/login') {
+//      next();
+//  }else  if (user && to.path == '/login') {
+//      next();
+//  }
+//  /*if (!user && to.path != '/login') {
+//   next({path: '/login'});
+//   }*/
+//  else{
+//      if(user!=null) {
+//          const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
+//          if (delta > 86400 * 30) {
+//              next({path: '/login'});
+//          } else {
+//      		var name="code";
+//		        var wxcode=null;
+//		        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+//		        var r = window.location.search.substr(1).match(reg);
+//		        if (r!=null){
+//		        	wxcode= r[2];
+//		        	
+//		        }
+//		        if(wxcode == null){
+//			        var charString=window.location.href;
+//			        var tt=encodeURIComponent(charString);
+//	                window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx109df14878717ecb&redirect_uri="+tt+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+//		      	}else{
+//		      		$.post(
+//                     "http://omc.urskongjian.com/yhcms/web/jcsj/getOpenid11.do?code="+wxcode
+//               ).then(function (res) {
+//                    var data = JSON.parse(res);
+//                    if (data.success) {
+//                        if(data.subscribe){
+//                        if (data.subscribe == 1 || data.subscribe == 3 ) {
+//                              if(to.path=='/register'||to.path=='/forgot_pwd'||to.path.indexOf('/reset_pwd')!=-1){
+//                                  next();
+//                              }else{
+//                                  if(localStorage.getItem('xshead')){
+//									    next();
+//									}else{
+//										
+//									    //存微信的头像
+//									    const head = data.headimgurl;
+//									    localStorage.setItem('xshead', JSON.stringify(head));
+////									    alert(head);
+//									    next();
+//										
+//									}
+//                                  const user = JSON.parse(localStorage.getItem('cookxs'));
+//                                  if (!user && to.path != '/login') {
+//                                      next({ path: '/login' });
+//                                  }else  if (!user && to.path == '/login') {
+//                                      next();
+//                                  }else  if (user && to.path == '/login') {
+//                                      next();
+//                                  }
+//                                  else{
+//                                      if(user!=null) {
+//                                          const time = user.time == null ? 0 : user.time, now = (new Date).getMilliseconds(), delta = now - time;
+//                                          if (delta > 86400 * 30) {
+//                                              next({path: '/login'});
+//                                          } else {
+//
+//                                             const user22 = JSON.parse(localStorage.getItem('cookxs'));
+//                                              if(!localStorage.getItem('cookxs')){
+//                                                  next({path: '/login'});
+//                                                  return;
+//                                              }
+//								                if(user22 != null){
+//								                    next();
+//								                }else{
+//								                    next({path: '/login'});
+//								                }
+//								                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+//								                        "foreEndType": 2,
+//								                        "code": "300000045",
+//								                        "cookie": user22.sjs,
+//								                    },
+//								                    function (data) {
+//								                        next();
+//								                        if (data.success) {
+//								                        } else {
+//								                            if (data.userzt == 2) {
+//								                                Toast({
+//								                                    message: '此用户已被删除或被禁用，请联系管理员！',
+//								                                    position: 'bottom'
+//								                                });
+//								                            } else {
+//								                                next({path: '/login'});
+//								                            }
+//								                        }
+//								                        //alert(data); // John11111
+//								                    }, "json").catch(function (error) {
+//								                        window.location.href = "http://omc.urskongjian.com/error/uphtm.html";
+//								                    });
+//                                          }
+//                                      }else{
+//                                          next({path: '/login'});
+//                                          //next();
+//                                      }
+//                                  }
+//
+//
+//
+//
+//                              }
+//                              next();
+//                          } else {
+//                              confirm("您还没有关注我们的公众号，请先关注我们的公众号！");
+//                              window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI0NjY4ODM5OQ==&scene=123&from=singlemessage#wechat_redirect";
+//                              //window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI0NjY4ODM5OQ==#wechat_redirect";
+//                          }
+//                      }else{
+//                          next();
+//                      }
+//
+//                      }
+//
+//                      else {
+//                          Toast({
+//                              message: '获取状态失败:! 请稍候再试 ' + data.message,
+//                              position: 'bottom'
+//                          });
+//                      }
+//                  }), function (res) {
+//                    Toast({
+//                        message: '获取状态失败! 请稍候再试',
+//                        position: 'bottom'
+//                    });
+//                }
+//		      	}
+//		        
+//		        
+//		        
+//			        
+//              
+//          }
+//      }else{
+//          next({path: '/login'});
+//          //next();
+//      }
+//  }
+//});
 
-                                               const user22 = JSON.parse(localStorage.getItem('cookxs'));
-                                                if(!localStorage.getItem('cookxs')){
-                                                    next({path: '/login'});
-                                                    return;
-                                                }
-								                if(user22 != null){
-								                    next();
-								                }else{
-								                    next({path: '/login'});
-								                }
-								                $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
-								                        "foreEndType": 2,
-								                        "code": "300000045",
-								                        "cookie": user22.sjs,
-								                    },
-								                    function (data) {
-								                        next();
-								                        if (data.success) {
-								                        } else {
-								                            if (data.userzt == 2) {
-								                                Toast({
-								                                    message: '此用户已被删除或被禁用，请联系管理员！',
-								                                    position: 'bottom'
-								                                });
-								                            } else {
-								                                next({path: '/login'});
-								                            }
-								                        }
-								                        //alert(data); // John11111
-								                    }, "json").catch(function (error) {
-								                        window.location.href = "http://omc.urskongjian.com/error/uphtm.html";
-								                    });
-                                            }
-                                        }else{
-                                            next({path: '/login'});
-                                            //next();
-                                        }
-                                    }
-
-
-
-
-                                }
-                                next();
-                            } else {
-                                confirm("您还没有关注我们的公众号，请先关注我们的公众号！");
-                                window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI0NjY4ODM5OQ==&scene=123&from=singlemessage#wechat_redirect";
-                                //window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI0NjY4ODM5OQ==#wechat_redirect";
-                            }
-                        }else{
-                            next();
-                        }
-
-                        }
-
-                        else {
-                            Toast({
-                                message: '获取状态失败:! 请稍候再试 ' + data.message,
-                                position: 'bottom'
-                            });
-                        }
-                    }), function (res) {
-                      Toast({
-                          message: '获取状态失败! 请稍候再试',
-                          position: 'bottom'
-                      });
-                  }
-		      	}
-		        
-		        
-		        
-			        
-                
-            }
-        }else{
-            next({path: '/login'});
-            //next();
-        }
-    }
-});
-
-/*router.beforeEach(function(to, from, next) {
+router.beforeEach(function(to, from, next) {
+	//监听页面从何处跳转
+	if (to.path == '/daikan') {//带看打卡
+		localStorage.setItem('back_page','/daikan');
+//	  	alert('带看打卡');
+	  	next();
+	}
+	if(to.path == '/daikan_logs'){//带看记录
+		localStorage.setItem('back_page','/daikan_logs');
+//	  	alert('带看记录');
+	  	next();
+	}
+	if(to.path == '/yjgl_list'){//佣金管理
+		localStorage.setItem('back_page','/yjgl_list');
+//	  	alert('佣金管理');
+	  	next();
+	}
+	
+	
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
         next({ path: '/login' });
@@ -635,7 +654,7 @@ router.beforeEach(function(to, from, next){
           next();
         }
     }
-});*/
+});
 
 
 new Vue({
