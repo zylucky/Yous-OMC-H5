@@ -22,8 +22,8 @@ Vue.prototype.$prefix = "http://47.92.145.21:81"//图片前缀
 Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 
 //测试ip
-/*Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
-Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址*/
+//Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
+//Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 
 // Vue.prototype.$api = "http://192.168.0.105:8080" //Mr.Cheng IP Address
 
@@ -432,6 +432,13 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
+    {//我的渠道
+      path: '/my_qd',
+      component: require('./routers/my_qd.vue'),
+      meta: {
+        title: '我的渠道'
+      }
+    },
     
   ]
 });
@@ -442,22 +449,22 @@ router.beforeEach(function(to, from, next){
       document.title = to.meta.title;
     }
     next();
-    //监听页面从何处跳转
-	if (to.path == '/daikan') {//带看打卡
-		localStorage.setItem('back_page','/daikan');
-//	  	alert('带看打卡');
-	  	next();
-	}
-	if(to.path == '/daikan_logs'){//带看记录
-		localStorage.setItem('back_page','/daikan_logs');
-//	  	alert('带看记录');
-	  	next();
-	}
-	if(to.path == '/yjgl_list'){//佣金管理
-		localStorage.setItem('back_page','/yjgl_list');
-//	  	alert('佣金管理');
-	  	next();
-	}
+//  //监听页面从何处跳转
+//	if (to.path == '/daikan') {//带看打卡
+//		localStorage.setItem('back_page','/daikan');
+////	  	alert('带看打卡');
+//	  	next();
+//	}
+//	if(to.path == '/daikan_logs'){//带看记录
+//		localStorage.setItem('back_page','/daikan_logs');
+////	  	alert('带看记录');
+//	  	next();
+//	}
+//	if(to.path == '/yjgl_list'){//佣金管理
+//		localStorage.setItem('back_page','/yjgl_list');
+////	  	alert('佣金管理');
+//	  	next();
+//	}
 
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
@@ -607,24 +614,10 @@ router.beforeEach(function(to, from, next){
 });
 
 /*router.beforeEach(function(to, from, next) {
-	//监听页面从何处跳转
-	if (to.path == '/daikan') {//带看打卡
-		localStorage.setItem('back_page','/daikan');
-//	  	alert('带看打卡');
-	  	next();
-	}
-	if(to.path == '/daikan_logs'){//带看记录
-		localStorage.setItem('back_page','/daikan_logs');
-//	  	alert('带看记录');
-	  	next();
-	}
-	if(to.path == '/yjgl_list'){//佣金管理
-		localStorage.setItem('back_page','/yjgl_list');
-//	  	alert('佣金管理');
-	  	next();
-	}
-	
-	
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    }
+    next();
     const user = JSON.parse(localStorage.getItem('loginxs'));
     if (!user && to.path != '/login') {
         next({ path: '/login' });
