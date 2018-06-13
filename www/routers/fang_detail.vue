@@ -104,6 +104,7 @@
 </template>
 
 <script>
+	import axios from 'axios';
   import header1 from '../components/header.vue';
   import footer1 from '../components/footer.vue';
   import {Indicator} from 'mint-ui';
@@ -260,12 +261,14 @@
       },
       wechat_share(){//微信分享
       	const url = "http://omc.urskongjian.com/yhcms/web/weixin/share.do";
-//    	console.log(window.location.href)
+      	var url_share = window.location.href;
+      	url_share = url_share.split('#')[0] + '#/';
+      	console.log(url_share);
 //				axios.post(url,{
-//					"url":''
+//					"url":url_share
 //	      }).then((res)=>{
 //	        if(res.data.success){
-//	
+//						console.log(res);
 //	        }else{
 //	          
 //	        }
@@ -280,7 +283,7 @@
         spinnerType: 'fading-circle'
       });
       this.getPerDetail();
-//    this.wechat_share();
+//    this.wechat_share();//微信分享调用
     }
   }
 </script>

@@ -432,6 +432,13 @@ var router = new VueRouter({
         title: '佣金管理'
       }
     },
+    {//我的渠道
+      path: '/my_qd',
+      component: require('./routers/my_qd.vue'),
+      meta: {
+        title: '我的渠道'
+      }
+    },
     
   ]
 });
