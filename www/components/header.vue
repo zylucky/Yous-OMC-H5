@@ -91,6 +91,7 @@
             <a href="javascript:;" @click="yjgl" v-if="false">佣金管理</a>
             <a href="javascript:;" @click="yjsp" v-if="false">佣金确认</a>
             <a href="javascript:;" @click="yjsp1" v-if='now_hash!="yjgl_list"'>佣金管理</a>
+            <a href="javascript:;" @click="xk_list" v-if='now_hash!="index"' v-show="now_hash!=''">销控列表</a>
             <a href="javascript:;" @click="my_qd" v-if='now_hash!="my_qd"'>我的渠道</a>
 
             <!--<a href="javascript:;" @click="daikan_total">带看统计</a>-->
@@ -318,6 +319,12 @@
         $('html').removeAttr("style");
         $("body").removeAttr("style");
 				this.$router.push({path:'/my_qd'});
+      },
+      xk_list(){
+      	$("#zhezhao").remove();
+        $('html').removeAttr("style");
+        $("body").removeAttr("style");
+				this.$router.push({path:'/index'});
       },
       login_out(){
         $("#zhezhao").remove();
