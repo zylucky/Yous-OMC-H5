@@ -4,7 +4,8 @@
   	.box{
   		position: absolute;
   		left: 0;
-  		top: 0;
+  		/*top: 0;*/
+  		top: .88rem;
   		bottom: 0;
   		right: 0;
   		background: #fff;
@@ -136,102 +137,114 @@
 </style>
 
 <template>
-	<div class="box">
-		<div class="header">
-			<ul class="nav">
-				<li :class="tabq=='0'?'active':''" @click='clk(0)'>待处理({{total1}})<span></span></li>
-				<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{total2}})<span></span></li>
-				<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的({{total3}})</li>
-			</ul>
-		</div>
-		<!--列表-->
-		<div class="list_box">
-			<!--带我审批-->
-			<div class="kong" v-if="pendData.length==0 && kshow && tabq=='0'">
-				<p class="k_ion">
-					<img src="../../resources/images/commission/k_icon.png" alt="" />
-				</p>
-				<p class="k_text">暂无审批单</p>
-			</div>
-			<!--我已审批-->
-			<div class="kong" v-if="passData.length==0 && kshow1 && tabq=='1'">
-				<p class="k_ion">
-					<img src="../../resources/images/commission/k_icon.png" alt="" />
-				</p>
-				<p class="k_text">暂无已审批申请</p>
-			</div>
-			<!--抄送我的-->
-			<div class="kong" v-if="csData.length==0 && kshow2 && tabq=='2'">
-				<p class="k_ion" style="width: 1.39rem;height: 1.39rem;">
-					<img src="../../resources/images/commission/cs_icon.png" alt="" />
-				</p>
-				<p class="k_text">暂无抄送我的审批</p>
-			</div>
-			<!--待我审批-->
-			<ul class="list" v-infinite-scroll="loadMore"
-	  infinite-scroll-disabled="loading"
-	  infinite-scroll-distance="10" infinite-scroll-immediate-check="checked">
-				<li v-for="(item,index) in pendData" @click="waitme(item.id,item.listzt,item.taskZt,1)" v-if="tabq=='0'">
-					<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
-					<p>
-						<span>{{item.loudong}}-{{item.fanghao}}</span>
-					</p>
-					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
-					<p>
-						<i v-if="item.listzt=='1'">已提交</i>
-						<i v-else-if="item.listzt=='0'" style="color: #3687f3;">待提交</i>
-						<i v-else-if="item.listzt=='2' || item.listzt=='5'" style="color: #0fad60;">待审核</i>
-						<i v-else-if="item.listzt=='4'" style="color: #ff716f;">已驳回</i>
-						<i else></i>
-					</p>
-				</li>
-				<!--我已审批-->
-				<li v-for="item in passData"  @click="done(item.id,item.listzt,item.taskZt,0)" v-if="tabq=='1'">
-					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
-					<p>
-						<span>{{item.loudong}}-{{item.fanghao}}</span>
-					</p>
-					<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
-					<p>
-						<i v-if="item.listzt=='1'">已提交</i>
-						<i v-else-if="item.listzt=='3'" style="color: #0fad60;">已审核</i>
-						<i v-else-if="item.listzt=='4'" style="color: #ff716f;">已驳回</i>
-						<i else></i>
-					</p>
-				</li>
-				<!--抄送我的-->
-				<li v-for="item in csData" @click="csmine(item.id)" v-if="tabq=='2'">
-					<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
-					<p>
-						<span>{{item.loudong}}-{{item.fanghao}}</span>
-					</p>
-					<p style="color:#959595;">申请人：{{item.xiaoshou}}</p>
-					<p style="color: #0eac61;">
-						<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
-						<i v-else-if="item.taskZt=='1'">已提交</i>
-						<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
-						<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
-						<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
-						<i else></i>
-					</p>
-				</li>
-				<div class="jzgd" v-if="jz">					
-					<mt-spinner type="fading-circle" :size="30"></mt-spinner>
+	<div>
+		<section id="header">
+	      <header1></header1>
+	    </section>
+	    <section class="section" style="position: initial;">
+	    	<div class="box">
+				<div class="header">
+					<ul class="nav">
+						<li :class="tabq=='0'?'active':''" @click='clk(0)'>待处理({{total1}})<span></span></li>
+						<li :class="tabq=='1'?'active':''" @click='clk(1)'>已处理({{total2}})<span></span></li>
+						<li :class="tabq=='2'?'active':''" @click='clk(2)'>抄送我的({{total3}})</li>
+					</ul>
 				</div>
-			</ul>
-			
-			
-		</div>
+				<!--列表-->
+				<div class="list_box">
+					<!--带我审批-->
+					<div class="kong" v-if="pendData.length==0 && kshow && tabq=='0'">
+						<p class="k_ion">
+							<img src="../../resources/images/commission/k_icon.png" alt="" />
+						</p>
+						<p class="k_text">暂无审批单</p>
+					</div>
+					<!--我已审批-->
+					<div class="kong" v-if="passData.length==0 && kshow1 && tabq=='1'">
+						<p class="k_ion">
+							<img src="../../resources/images/commission/k_icon.png" alt="" />
+						</p>
+						<p class="k_text">暂无已审批申请</p>
+					</div>
+					<!--抄送我的-->
+					<div class="kong" v-if="csData.length==0 && kshow2 && tabq=='2'">
+						<p class="k_ion" style="width: 1.39rem;height: 1.39rem;">
+							<img src="../../resources/images/commission/cs_icon.png" alt="" />
+						</p>
+						<p class="k_text">暂无抄送我的审批</p>
+					</div>
+					<!--待我审批-->
+					<ul class="list" v-infinite-scroll="loadMore"
+			  infinite-scroll-disabled="loading"
+			  infinite-scroll-distance="10" infinite-scroll-immediate-check="checked">
+						<li v-for="(item,index) in pendData" @click="waitme(item.id,item.listzt,item.taskZt,1)" v-if="tabq=='0'">
+							<p><span>{{item.loupan}}</span><i>{{item.createdate | times}}</i></p>
+							<p>
+								<span>{{item.loudong}}-{{item.fanghao}}</span>
+							</p>
+							<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
+							<p>
+								<i v-if="item.listzt=='1'">已提交</i>
+								<i v-else-if="item.listzt=='0'" style="color: #3687f3;">待提交</i>
+								<i v-else-if="item.listzt=='2' || item.listzt=='5'" style="color: #0fad60;">待审核</i>
+								<i v-else-if="item.listzt=='4'" style="color: #ff716f;">已驳回</i>
+								<i else></i>
+							</p>
+						</li>
+						<!--我已审批-->
+						<li v-for="item in passData"  @click="done(item.id,item.listzt,item.taskZt,0)" v-if="tabq=='1'">
+							<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
+							<p>
+								<span>{{item.loudong}}-{{item.fanghao}}</span>
+							</p>
+							<p style="color:#959595;">合同编号：{{item.htbianhao}}</p>
+							<p>
+								<i v-if="item.listzt=='1'">已提交</i>
+								<i v-else-if="item.listzt=='3'" style="color: #0fad60;">已审核</i>
+								<i v-else-if="item.listzt=='4'" style="color: #ff716f;">已驳回</i>
+								<i else></i>
+							</p>
+						</li>
+						<!--抄送我的-->
+						<li v-for="item in csData" @click="csmine(item.id)" v-if="tabq=='2'">
+							<p>{{item.loupan}}<i>{{item.createdate | times}}</i></p>
+							<p>
+								<span>{{item.loudong}}-{{item.fanghao}}</span>
+							</p>
+							<p style="color:#959595;">申请人：{{item.xiaoshou}}</p>
+							<p style="color: #0eac61;">
+								<i v-if="item.taskZt=='0'" style="color: #3886f2;">待提交</i>
+								<i v-else-if="item.taskZt=='1'">已提交</i>
+								<i v-else-if="item.taskZt=='2'" style="color: #3687f3;">待审批</i>
+								<i v-else-if="item.taskZt=='3'" style="color: #0fad60;">审批通过</i>
+								<i v-else-if="item.taskZt=='4'" style="color: #ff716f;">已驳回</i>
+								<i else></i>
+							</p>
+						</li>
+						<div class="jzgd" v-if="jz">					
+							<mt-spinner type="fading-circle" :size="30"></mt-spinner>
+						</div>
+					</ul>
+					
+					
+				</div>
+			</div>
+	    </section>
 	</div>
+	
 </template>
 
 <script>
+import header1 from '../../components/header2.vue';
 import axios from 'axios';
 import { TabContainer, TabContainerItem } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 import { Toast } from 'mint-ui';
 import { InfiniteScroll } from 'mint-ui';
 	export default{
+		components: {
+	      header1,
+	    },
 		data(){
 			return{
 				tabq:'0',

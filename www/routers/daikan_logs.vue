@@ -36,7 +36,13 @@
 
 </style>
 <template>
-    <div class="container">
+	<div>
+		<section id="header">
+	      <header1></header1>
+	    </section>
+		<section class="section">
+			
+			<div class="container">
         <div class="unique" v-if="logShow1" v-for="(item,index) in list">
             <mt-cell style="clear: both;height: 80px;"
                      is-link
@@ -59,11 +65,18 @@
             <span style="color: rgb(131,131,131)">我在<a href="javascript:;" style="color:rgb(28,119,212);" @click="daikan_add()">带看打卡</a>等你哟～</span>
         </div>
     </div>
+		</section>
+	</div>
+    
 
 
 </template>
 <script>
+import header1 from '../components/header2.vue';
 export default{
+	components: {
+      header1,
+    },
     data(){
         return{
             list:[],

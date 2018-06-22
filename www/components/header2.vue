@@ -68,11 +68,11 @@
       	<span class="newcount" v-if="newData.length != 0 && status != 0"><i style="display: inline-block;transform: scale(0.5);">{{status}}</i></span>
       	<!--<img src="../resources/images/news/new_ion.png"/>-->
       </a>
-      <a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
+      <!--<a href="javascript:;" class="detail-search" style="position: fixed;left: 0; top: 0">
         <input type="text" id="keyword" placeholder="请输入楼盘关键字搜索" v-model.trim="para.search_keywork" maxlength="50"
                @focus="changeRou">
       </a>
-      <i class="location_icon"></i>
+      <i class="location_icon"></i>-->
     </header>
     <mt-popup v-model="popupVisible" position="left" class="mint-popup-3" :modal="false">
       <!--左侧登录div-->

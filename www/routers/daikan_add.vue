@@ -13,93 +13,104 @@
     .unique-daikan-add input{text-align: right;}
 </style>
 <template>
-    <div class="container unique-daikan-add">
-        <div class="title">渠道信息</div>
-        <mt-field label="渠道公司" style="color: #333;"  placeholder="请输入渠道公司" v-model="company"></mt-field>
-        <mt-cell
-                v-show="companyShow"
-                v-for="item in companyList"
-                :title="item.gsname"
-                :key="item.id"
-                @click.native="fuzhi0(item)">
-        </mt-cell>
-        <mt-field label="渠道人员" style="color: #333;" placeholder="请输入渠道人员" v-model="person"></mt-field>
-        <mt-cell
-                v-show="personShow"
-                v-for="item in personList"
-                :title="item.qD_PerName"
-                :value="item.value"
-                :key="item.t_QD_Person_ID"
-                @click.native="fuzhi1(item)">
-        </mt-cell>
-        <mt-field label="联系电话" style="color: #333;" placeholder="请输入联系电话"  v-model="tel"></mt-field>
-        <div class="title" >房源信息</div>
-        <div v-for="(cell,index) in property">
-            <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);padding-right: 0.2rem;">删除</span></div>
-
-            <mt-field label="楼盘" style="color: #333;"  placeholder="请输入楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
-            <mt-cell
-                    v-show="cell.loupanShow"
-                    v-for="item in cell.loupanList"
-                    :title="item.topic"
-                    :value="item.value"
-                    :key="item.id"
-                    @click.native="fuzhi2(index,item)">
-            </mt-cell>
-            <mt-field label="楼栋" style="color: #333;" placeholder="请输入楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
-            <mt-cell
-                    v-show="cell.loudongShow"
-                    v-for="item in cell.loudongList"
-                    :title="item.zdh"
-                    :value="item.value"
-                    :key="item.id"
-                    @click.native="fuzhi3(index,item)">
-            </mt-cell>
-            <mt-field label="房号" style="color: #333;" placeholder="请输入房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
-            <mt-cell
-                    v-show="cell.fangjianShow"
-                    v-for="item in cell.fangjianList"
-                    :title="item.fybh"
-                    :value="item.value"
-                    :key="item.id"
-                    @click.native="fuzhi4(index,item)">
-            </mt-cell>
-            <!--<input name="Fruit" type="radio" class="radio_class" id="radio_a">-->
-            <!--<label for="radio_a">yes</label>-->
-            <!--<input name="Fruit" type="radio" class="radio_class" id="radio_b">-->
-            <!--<label for="radio_b">no</label>-->
-            <!--<mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>-->
-            <div class="title2"></div>
-        </div>
-        <div class="title">是否二看</div>
-        <mt-radio
-                style="margin-top: 0px;"
-                title=""
-                v-model="property.shifouerkan"
-                :options="options" @change='clk'>
-        </mt-radio>
-        <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;border-top: 1px solid #d7d7d7;">
-            <span style="font-size: 20px;">+</span>添加房源</p></div>
-        <div class="title">打卡信息</div>
-        <!--<mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>-->
-        <mt-field label="说明" style="box-shadow:0 0 1px 0.3px #d7d7d7;background-color: white;" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
-        <div style="width: 100%;text-align: center;margin-top: 1rem;">
-            <mt-button
-                    class="btnimg"
-                    style="
-            width: 80%;height: 0.7rem;
-            color: white;font-size: 0.3rem;
-            " @click="submit()" >提交</mt-button>
-        </div>
-        <div style="height: 2rem;"></div>
+	<div>
+	<section id="header">
+      <header1></header1>
+    </section>
+    <section class="section">
+    	<div class="container unique-daikan-add">
+	        <div class="title">渠道信息</div>
+	        <mt-field label="渠道公司" style="color: #333;"  placeholder="请输入渠道公司" v-model="company"></mt-field>
+	        <mt-cell
+	                v-show="companyShow"
+	                v-for="item in companyList"
+	                :title="item.gsname"
+	                :key="item.id"
+	                @click.native="fuzhi0(item)">
+	        </mt-cell>
+	        <mt-field label="渠道人员" style="color: #333;" placeholder="请输入渠道人员" v-model="person"></mt-field>
+	        <mt-cell
+	                v-show="personShow"
+	                v-for="item in personList"
+	                :title="item.qD_PerName"
+	                :value="item.value"
+	                :key="item.t_QD_Person_ID"
+	                @click.native="fuzhi1(item)">
+	        </mt-cell>
+	        <mt-field label="联系电话" style="color: #333;" placeholder="请输入联系电话"  v-model="tel"></mt-field>
+	        <div class="title" >房源信息</div>
+	        <div v-for="(cell,index) in property">
+	            <div class="title" style="color:rgb(28,119,212);font-weight: normal!important;background-color:white;">房源{{index+1}}<span @click="delProperty(index)" v-if="index>0" style="float: right;color:rgb(28,119,212);padding-right: 0.2rem;">删除</span></div>
+	
+	            <mt-field label="楼盘" style="color: #333;"  placeholder="请输入楼盘" v-on:input="getLoupan(index)"  v-model="cell.loupan"></mt-field>
+	            <mt-cell
+	                    v-show="cell.loupanShow"
+	                    v-for="item in cell.loupanList"
+	                    :title="item.topic"
+	                    :value="item.value"
+	                    :key="item.id"
+	                    @click.native="fuzhi2(index,item)">
+	            </mt-cell>
+	            <mt-field label="楼栋" style="color: #333;" placeholder="请输入楼栋"  v-on:input="getLoudong(index)" v-model="cell.loudong"></mt-field>
+	            <mt-cell
+	                    v-show="cell.loudongShow"
+	                    v-for="item in cell.loudongList"
+	                    :title="item.zdh"
+	                    :value="item.value"
+	                    :key="item.id"
+	                    @click.native="fuzhi3(index,item)">
+	            </mt-cell>
+	            <mt-field label="房号" style="color: #333;" placeholder="请输入房号" v-on:input="getFanghao(index)" v-model="cell.fangjian"></mt-field>
+	            <mt-cell
+	                    v-show="cell.fangjianShow"
+	                    v-for="item in cell.fangjianList"
+	                    :title="item.fybh"
+	                    :value="item.value"
+	                    :key="item.id"
+	                    @click.native="fuzhi4(index,item)">
+	            </mt-cell>
+	            <!--<input name="Fruit" type="radio" class="radio_class" id="radio_a">-->
+	            <!--<label for="radio_a">yes</label>-->
+	            <!--<input name="Fruit" type="radio" class="radio_class" id="radio_b">-->
+	            <!--<label for="radio_b">no</label>-->
+	            <!--<mt-field label="房源地址" placeholder=""  v-model="cell.fangyuandizhi"></mt-field>-->
+	            <div class="title2"></div>
+	        </div>
+	        <div class="title">是否二看</div>
+	        <mt-radio
+	                style="margin-top: 0px;"
+	                title=""
+	                v-model="property.shifouerkan"
+	                :options="options" @change='clk'>
+	        </mt-radio>
+	        <div @click="addProperty()" style="text-align: center;color:rgb(28,119,212);"><p style="background-color:white;font-size: 16px;margin-top: 5px;margin-bottom: 5px;border-top: 1px solid #d7d7d7;">
+	            <span style="font-size: 20px;">+</span>添加房源</p></div>
+	        <div class="title">打卡信息</div>
+	        <!--<mt-field label="打卡地址" disabled placeholder="地址获取中......"  v-model="dk_address"></mt-field>-->
+	        <mt-field label="说明" style="box-shadow:0 0 1px 0.3px #d7d7d7;background-color: white;" placeholder="请输入打卡说明" rows="4" type="textarea" v-model="info"></mt-field>
+	        <div style="width: 100%;text-align: center;margin-top: 1rem;">
+	            <mt-button
+	                    class="btnimg"
+	                    style="
+	            width: 80%;height: 0.7rem;
+	            color: white;font-size: 0.3rem;
+	            " @click="submit()" >提交</mt-button>
+	        </div>
+	        <div style="height: 2rem;"></div>
+	    </div>
+    </section>
     </div>
 </template>
 
 <script>
-import wx from 'weixin-js-sdk'
-import { Toast } from 'mint-ui'
+import header1 from '../components/header2.vue';
+import wx from 'weixin-js-sdk';
+import { Toast } from 'mint-ui';
 import { MessageBox } from 'mint-ui';
 export default{
+	components: {
+      header1,
+    },
     data(){
         return{
             company:'',
@@ -133,8 +144,6 @@ export default{
                     fangjianShow:false,
                     shifouerkan:false,
                     fangyuandizhi:'',
-
-
                 }
             ],
             dk_address:'',
@@ -149,6 +158,11 @@ export default{
             cnt3:0,
             options:[{label:'是',value:'true'}, {label:'否',value:'false'}],
         }
+    },
+    created(){//判断跳转
+    	if(JSON.stringify(localStorage.getItem('cookxs'))){//用户登陆信息
+//  		alert(JSON.stringify(localStorage.getItem('cookxs')));
+    	}
     },
     watch:{
         company(){
