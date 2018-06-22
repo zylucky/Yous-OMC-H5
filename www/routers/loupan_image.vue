@@ -57,7 +57,7 @@
 <script>
   import {Toast} from 'mint-ui';
   import {Indicator} from 'mint-ui';
-  import { MessageBox } from 'mint-ui'; //弹窗
+  import { MessageBox } from 'mint-ui'; //弹窗12
 
   export default {
     data(){
