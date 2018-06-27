@@ -77,76 +77,99 @@
 	.beijign{margin-top: 0.15rem;line-height: 0.26rem;font-size:0.26rem;color: #666666;}
 	.zhcue{margin-top: 0.15rem;line-height: 0.26rem;}
 	.zhcue i{font-size: 0.26rem;color: #999999;}
+	.blankdis{display: none;}
+	.balk{position: absolute;top: 1.08rem;bottom: 0rem;left: 0rem;right: 0rem;background-color: #ffffff;}
+	.wode_blank{
+		height: 2.746666rem;
+		margin-top: 1.773333rem;
+		text-align: center;
+		background: url(../resources/images/my_qd/balnk.png) no-repeat center;
+		background-size: auto 100%;
+	}
+	.wode_blank_wenzi{
+		height: 0.4rem;
+		font-size: 0.4rem;
+		margin-top: 0.4rem;
+		text-align: center;
+		color: #999999;
+	}
 </style>
 
 <template>
 	<div class="">
-		<div class="sousuo">
-			<span class="" @click="sousuotianzhuan">
-				<i class="suoysouico"></i>
-				<i class="suousokong" v-text="wenjian"></i>
-			</span>
+		<div>
+			<div class="sousuo">
+				<span class="" @click="sousuotianzhuan">
+					<i class="suoysouico"></i>
+					<i class="suousokong" v-text="wenjian"></i>
+				</span>
+			</div>
+		  	<div class="page-loadmore list">
+		  		<div class="yaoqiyi">
+		  			<span class="zitiyanse">我的邀请码：</span>
+		  			<span class="zitiyanse" v-text="yaqma"></span>
+		  		</div>
+		    <!--<h1 class="page-title">Pull up</h1>
+		    <p class="page-loadmore-desc">在列表底部, 按住 - 上拉 - 释放可以获取更多数据</p>
+		    <p class="page-loadmore-desc">translate : {{ translate }}</p>
+		    <div class="loading-background" :style="{ transform: 'scale3d(' + moveTranslate + ',' + moveTranslate + ',1)' }">
+		      translateScale : {{ moveTranslate }} 
+		    </div>-->
+		    
+		<!--有重影的效果-->
+		    <!--<div class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">-->
+		      
+		      	<div class="balk blankdis">
+					<div class="wode_gj">
+						<div class="wode_blank"></div>
+						<div class="wode_blank_wenzi">您还没有邀请过渠道，快去邀请吧！</div>
+					</div>
+				</div>
+		      	<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"       :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore" class="blankdis balkneor">
+			        <ul class="page-loadmore-list suoysoubail">
+			          <!--<li v-for="item in list" class="page-loadmore-listitem">{{ item }}</li>-->
+			          <li v-for="item in list" class="page-loadmore-listitem listysms">
+			          	<span class="douxiang">
+			          		<img :src="item.wximg" width="100%" height="100%"/>
+			          	</span>
+			          	<span class="zhogmjianbufe">
+			          		<p>
+			          			<i class="xingming">{{item.name}}</i>
+			          			<i class="pboewid">{{item.phone}}</i>
+			          		</p>
+			          		<p class="beijign">{{item.gsname}}</p>
+			          		<p class="zhcue">
+			          			<i>注册时间：</i>
+			          			<i>{{item.createTime}}</i>
+			          		</p>
+			          	</span>
+			          	<a :href="'tel:'+item.phone" class="dadianhua"></a>
+			          </li>
+			        </ul>
+		
+		<!--		转圈圈的效果-->
+		       <!--<div slot="top" class="mint-loadmore-top">
+		          <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
+		          <span v-show="topStatus === 'loading'">
+		            <mt-spinner type="snake"></mt-spinner>
+		          </span>
+		        </div>    -->
+		
+		
+		        <!--<div slot="bottom" class="mint-loadmore-bottom">
+		          <span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }">↑</span>
+		          <span v-show="bottomStatus === 'loading'">
+		            <mt-spinner type="snake"></mt-spinner>
+		          </span>
+		        </div>-->
+		      	</mt-loadmore>
+		
+		
+		
+		
+		    <!--</div>-->
+		  	</div>
 		</div>
-	  	<div class="page-loadmore list">
-	  		<div class="yaoqiyi">
-	  			<span class="zitiyanse">我的邀请码：</span>
-	  			<span class="zitiyanse" v-text="yaqma"></span>
-	  		</div>
-	    <!--<h1 class="page-title">Pull up</h1>
-	    <p class="page-loadmore-desc">在列表底部, 按住 - 上拉 - 释放可以获取更多数据</p>
-	    <p class="page-loadmore-desc">translate : {{ translate }}</p>
-	    <div class="loading-background" :style="{ transform: 'scale3d(' + moveTranslate + ',' + moveTranslate + ',1)' }">
-	      translateScale : {{ moveTranslate }} 
-	    </div>-->
-	    
-	<!--有重影的效果-->
-	    <!--<div class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">-->
-	      
-	      
-	      	<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"       :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore">
-		        <ul class="page-loadmore-list suoysoubail">
-		          <!--<li v-for="item in list" class="page-loadmore-listitem">{{ item }}</li>-->
-		          <li v-for="item in list" class="page-loadmore-listitem listysms">
-		          	<span class="douxiang">
-		          		<img :src="item.wximg" width="100%" height="100%"/>
-		          	</span>
-		          	<span class="zhogmjianbufe">
-		          		<p>
-		          			<i class="xingming">{{item.name}}</i>
-		          			<i class="pboewid">{{item.phone}}</i>
-		          		</p>
-		          		<p class="beijign">{{item.gsname}}</p>
-		          		<p class="zhcue">
-		          			<i>注册时间：</i>
-		          			<i>{{item.createTime}}</i>
-		          		</p>
-		          	</span>
-		          	<a :href="'tel:'+item.phone" class="dadianhua"></a>
-		          </li>
-		        </ul>
-	
-	<!--		转圈圈的效果-->
-	       <!--<div slot="top" class="mint-loadmore-top">
-	          <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
-	          <span v-show="topStatus === 'loading'">
-	            <mt-spinner type="snake"></mt-spinner>
-	          </span>
-	        </div>    -->
-	
-	
-	        <!--<div slot="bottom" class="mint-loadmore-bottom">
-	          <span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }">↑</span>
-	          <span v-show="bottomStatus === 'loading'">
-	            <mt-spinner type="snake"></mt-spinner>
-	          </span>
-	        </div>-->
-	      	</mt-loadmore>
-	
-	
-	
-	
-	    <!--</div>-->
-	  	</div>
 	</div>
 </template>
 
@@ -176,6 +199,26 @@
     },
 
     methods: {
+	  init(){
+  	    const user22 = JSON.parse(localStorage.getItem('cookxs'));
+	  	this.$http.post(this.$api + "/yhcms/web/wxqx/getChannelInfo.do",{"cookie":user22.sjs,"curr_page":1,"items_perpage":10,"search_keywork":''}).then((res)=>{
+	          Indicator.close();
+	          var result = JSON.parse(res.bodyText);
+	          if(result.success){
+	          	if(result.data.length == 0){
+	          		this.status = 3;
+					$('.balk').removeClass('blankdis');
+	          	}else{
+	          		$('.balkneor').removeClass('blankdis');
+	          	}
+	          	//执行这个代码会默认下拉一次
+//				this.$refs.loadmore.onBottomLoaded();
+	          }else{
+	          }
+	      }, (res)=>{
+	          Indicator.close();
+	      });
+	  },
       handleBottomChange(status) {
         this.bottomStatus = status;
       },
@@ -188,17 +231,29 @@
 	    	  this.$http.post(this.$api + "/yhcms/web/wxqx/getChannelInfo.do",{"cookie":user22.sjs,"curr_page":this.page,"items_perpage":10,"search_keywork":this.search_keywork}).then((res)=>{
 	              Indicator.close();
 	              var result = JSON.parse(res.bodyText);
-	              console.log(result.data);
 	              if(result.success){
-	              	if(result.data.length == 0){
+	              	if(this.page == 2 && result.data.length<10){
 	              		this.status = 2;
-	              		Toast({
-	                      message: '没有更多数据！',
-	                      position: 'bottom'
-	                 });
+	              	}
+	              	if(result.data.length == 0){
+	              		if(this.status == 3){
+	              			
+	              		}else{
+	              			Toast({
+		                      message: '没有更多数据！',
+		                      position: 'bottom'
+		                	});
+	              		}
+	              		
 	              	}else{
 	              		this.status = 1;
+	              		for(var i=0;i<result.data.length;i++){
+	              			if(result.data[i].gsname == ''){
+	              				result.data[i].gsname = '未知公司';
+	              			}
+	              		}
 	              		this.list = this.list.concat(result.data);
+	              		console.log(this.list);
 	              		this.page = this.page + 1;
 	              	}
 					this.$refs.loadmore.onBottomLoaded();
@@ -213,7 +268,8 @@
 	          });
           	
           }else{
-			document.body.scrollTop = -100;	
+			document.body.scrollTop = -100;
+//			this.$refs.loadmore.onBottomLoaded();
           }
 //        let lastValue = this.list[this.list.length - 1];
 //        if (lastValue < 40) {
@@ -236,6 +292,7 @@
         this.translate = translateNum.toFixed(2);
         this.moveTranslate = (1 + translateNum / 70).toFixed(2);
       },
+      
       loadTop() {
         setTimeout(() => {
 			//下拉刷新
@@ -243,7 +300,6 @@
     	  this.$http.post(this.$api + "/yhcms/web/wxqx/getChannelInfo.do",{"cookie":user22.sjs,"curr_page":1,"items_perpage":10,"search_keywork":this.search_keywork}).then((res)=>{
               Indicator.close();
               var result = JSON.parse(res.bodyText);
-              console.log(result.data);
               if(result.success){
               	this.page = 2;
               	this.status = 1;
@@ -299,6 +355,7 @@
     },
 
     mounted() {
+    	this.init();
 //		$('.suoysoubail').animate({scrollTop:0},2);
 //		alert(document.body.scrollTop);
 //		$('.yaoqiyi').animate({scrollTop:0},2);

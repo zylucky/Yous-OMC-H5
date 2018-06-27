@@ -78,8 +78,8 @@
             "parameters": {
               "uaccounts": un,
               "upass": password,
-              "img":JSON.parse(localStorage.getItem('xshead'))
             },
+            "img":JSON.parse(localStorage.getItem('xshead')),
             "foreEndType": 2,
             "code": "300000045",
             "cookie":user22.sjs,

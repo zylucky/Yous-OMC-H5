@@ -92,7 +92,7 @@
           </div>
         </div>
       </div>
-      <div class="tel-order clearfix">
+      <div class="tel-order clearfix dkdk_fx">
         <a id="semwaploupanxiangqingdibu400" @click="daikan_daka" class="phone--tel-order">带看打卡</a>
       </div>
 
@@ -105,6 +105,7 @@
 
 <script>
 	import axios from 'axios';
+	import wx from 'weixin-js-sdk';
   import header1 from '../components/header.vue';
   import footer1 from '../components/footer.vue';
   import {Indicator} from 'mint-ui';
@@ -126,14 +127,14 @@
         floors:0, //总楼层
         locat_floor:0, //所在楼层
         fjzt: "", 
-
+				topic:'',//楼盘
         house_image: [],
         name: "",
         phone: "",
         fjcg: "",
         chx: "",
         wygs: '',//物业公司
-          zdh:'',
+          zdh:'',//座栋号
         fybh:"",
         wyf: '',//物业费
         kprq: '',//建成年代
@@ -177,6 +178,7 @@
             if (result.data) {
               const data = result.data[0];
               document.title = data.topic;
+              _this.topic = data.topic;
               $('title').html(result.data.name);
               _this.daily_price = !data.dj ? '暂无数据' : data.dj;
               _this.monthly_price = !data.yzj ? '暂无数据' : data.yzj;
@@ -223,6 +225,8 @@
               _this.tcf = !data.tcf ? '暂无数据' : data.tcf + '元/月';
               _this.wlgs = data.wlgs || '暂无数据';
               _this.lpdj = data.lpsort || '暂无数据';
+              
+              _this.fx_send();//微信分享调用
             }
 
             setTimeout(function(){
@@ -260,22 +264,67 @@
           },300);
       },
       wechat_share(){//微信分享
-      	const url = "http://omc.urskongjian.com/yhcms/web/weixin/share.do";
+      	const url = "http://omc.urskongjian.com/yhcms/web/weixin/shareYskj.do";
       	var url_share = window.location.href;
-      	url_share = url_share.split('#')[0] + '#/';
+      	url_share = url_share.split('#')[0];
       	console.log(url_share);
-//				axios.post(url,{
-//					"url":url_share
-//	      }).then((res)=>{
-//	        if(res.data.success){
-//						console.log(res);
-//	        }else{
-//	          
-//	        }
-//	      }, (err)=>{
-//					console.log(err);
-//	      });
+				axios.post(url,{
+					"url":url_share
+	     }).then((res)=>{
+	        let we_cs = res.data;
+	        console.log(we_cs);	          
+					//微信签名调取
+					wx.config({
+					      debug: false, // 开启调试模式
+					      appId: we_cs.appId, // 必填，公众号的唯一标识
+					      timestamp: we_cs.timestamp, // 必填，生成签名的时间戳
+					      nonceStr: we_cs.nonceStr, // 必填，生成签名的随机串
+					      signature: we_cs.signature, // 必填，签名
+					      jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone", "getLocation", "scanQRCode", "closeWindow", "addCard", "chooseWxPay"]
+					});
+					
+	      }, (err)=>{
+					console.log(err);
+	      });
       },
+      fx_send(){
+      	wx.ready(()=>{
+					wx.onMenuShareAppMessage({
+					    title: this.topic + '  ' + this.zdh + this.fybh, // 分享标题
+					    desc: "面积："+this.room_area + '     ' + "月租金："+ this.monthly_price, // 分享描述
+					    link: location.href + '&wx_share=fx',
+					    imgUrl: 'http://omc.urskongjian.com:81/yskjapp/shi_ion.png', // 分享图标
+					    type: 'link', // 分享类型,music、video或link，不填默认为link
+					    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+					    success: function () { 
+
+					    },
+					    
+					    cancel: function () { 
+
+					    }
+					});
+							
+					wx.onMenuShareTimeline({
+					    title: this.topic + '  ' + this.zdh +'  '+ this.fybh, // 分享标题
+					    link: location.href + '&wx_share=fx', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+					    imgUrl: 'http://omc.urskongjian.com:81/yskjapp/shi_ion.png', // 分享图标
+					    success: function () { 
+
+					    },
+					    cancel: function () { 
+					    	
+					    }
+					});
+				})
+      },
+      getUrlStr(name){
+	        let reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)","i");
+	        if(reg.test(window.location.href)){
+	            return unescape(RegExp.$2.replace(/\+/g," "))
+	        }
+	        return undefined
+	    }
     },
     mounted(){
       Indicator.open({
@@ -283,7 +332,12 @@
         spinnerType: 'fading-circle'
       });
       this.getPerDetail();
-//    this.wechat_share();//微信分享调用
+			this.wechat_share();//微信分享调用
+			
+			if(this.getUrlStr('wx_share') == 'fx'){
+				$('.photoedit').css('display','none');
+				$('.dkdk_fx').css('display','none');
+			}
     }
   }
 </script>
