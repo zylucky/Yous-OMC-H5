@@ -646,7 +646,7 @@ router.beforeEach(function(to, from, next){
 //                  next({path: '/login'});
 //
 //              }
-//              $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
+//              $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
 //                      "foreEndType": 2,
 //                      "code": "300000045",
 //                      "cookie": user22.sjs,
