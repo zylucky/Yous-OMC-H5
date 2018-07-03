@@ -522,6 +522,9 @@
 			},
 		
 			init(){//销售数据提交
+//				alert(this.channelname);
+//				alert(JSON.stringify(this.xsData.xsqvdaoid));
+//				alert(this.tel);
 				const url = this.$api + "/yhcms/web/qdyongjin/xiaoshouSubmit.do";
 //				const url = "http://192.168.1.44:8080/yhcms/web/qdyongjin/xiaoshouSubmit.do";
 				var cookxs = JSON.parse(localStorage.getItem('cookxs'));
