@@ -82,6 +82,10 @@
           <span>供&nbsp;&nbsp;暖&nbsp;&nbsp;费：<i v-text="gnf" style="color: #5b5b5b;"></i></span>
           <span class="row">网络公司：<i v-text="wlgs" style="color: #5b5b5b;"></i></span>
         </div>
+        <div class="weixin_head clearfix">
+          <span class="fjldcss" style="width: 100% !important;">房间亮点：</span>
+          <span v-text="fangjlidian" style="width: 100% !important;"></span>
+        </div>
         <div class="weixin_head gift clearfix">
           <span class="row">礼品等级：<i v-text="lpdj"></i></i></span>
         </div>
@@ -146,6 +150,7 @@
         lpdj: "",
         building_images: [],
         property: {"1":"写字楼", "2":"公寓","3":"商务楼","4":"住宅","5":"商业","6":"酒店","7":"综合","8":"别墅","9":"商业综合体","10":"酒店式公寓"},
+        fangjlidian:"",
 
       }
     },
@@ -177,6 +182,7 @@
           if (result.success) {
             if (result.data) {
               const data = result.data[0];
+              _this.fangjlidian = !result.data1.roomBrightSpot ? '暂无数据' : result.data1.roomBrightSpot;
               document.title = data.topic;
               _this.topic = data.topic;
               $('title').html(result.data.name);
