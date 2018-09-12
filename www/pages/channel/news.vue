@@ -311,7 +311,7 @@ export default{
 		},
 		tolink(id,sourcemid,status,title){//渠道佣金已确认
 			this.delnew(id);
-			if(status != 2){
+			if(status == 2 || status == 0){
 				if(title == null){
 					this.$router.push({
 						path:'/confirmed',//跳转渠道佣金数据保存

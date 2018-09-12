@@ -251,7 +251,7 @@
           </div>
         </div>
 
-        <!--筛选框fixed时替代div123-->
+        <!--筛选框fixed时替代div-->
         <div id="pos_block"></div>
 
         <!--筛选结果start-->

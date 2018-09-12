@@ -20,7 +20,7 @@ Vue.component(Search.name, Search);
 
 
 // 生产环境
-Vue.prototype.$prefix = "http://47.92.145.21:81"//图片前缀
+Vue.prototype.$prefix = "http://omc.urskongjian.com:81"//图片前缀
 Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 
 //测试ip
