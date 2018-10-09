@@ -70,7 +70,7 @@
             Indicator.close()
           });
       },
-      //保存面积信息
+      //保存面积信息12
       saveRegData(){
         var _this = this;
 
