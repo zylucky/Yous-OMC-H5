@@ -96,6 +96,7 @@
     methods:{
       delete_img(index, id, event){
         const tag = $(event.target).attr("tag"), which = {"fy":"imgList", "hx":"hxList", "fm":"fmList"}[tag];
+        alert(id);
         if(id !== 'xxx'){
             this[which][index].isdelete = "1";
         }
