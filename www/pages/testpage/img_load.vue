@@ -1,8 +1,8 @@
 <template>
 	<div class="big_box">
 		<ul class="box_img">
-			<li v-for='(item,index) in images.localId' @click='see_img(item,index)' v-if="item.isdelete==0">
-				<span class="del_img" tag="fy" @click.stop='del_img(index, item.id, $event)'></span>
+			<li v-for='(item,index) in images.localId' @click='see_img(item,index)' v-if="item.isdelete=='0'">
+				<span class="del_img" tag="fy" @click.stop='del_img(index, item.id, $event,item)'></span>
 				<img :src="item.url" alt="">
 			</li>
 			<li class="btns">+</li>
@@ -28,6 +28,7 @@
 		        hx: 0,
 		        fm: 0,
 		        imglist:[],//房源图片列表
+		        gjList:[],
 			}
 		},
 		methods: {
@@ -55,8 +56,8 @@
 			      });
 		      },
 		      // 删除图片
-		      del_img(index, id, event){
-		      	const tag = $(event.target).attr("tag"), which = {"fy":"localId", "hx":"hxList", "fm":"fmList"}[tag];
+		      del_img(index, id, event ,item){
+		      	const tag = $(event.target).attr("tag"), which = {"fy":"localId", "hx":"", "fm":""}[tag];
 		      	MessageBox({
 				  title: '提示',
 				  message: '请确认是否删除?',
@@ -66,9 +67,9 @@
 				}).then(action => {
 		          if(action == 'confirm'){
 		            console.log('确认删除')
-					if(id != ''){
+					// if(id != ''){
 			            this.images[which][index].isdelete = "1";
-			        }
+			        // }
 		          }else{
 		            console.log('取消删除')
 		          }
@@ -97,15 +98,14 @@
 		             spinnerType: 'fading-circle'
 		          });
 		          const url = this.$api + "/yhcms/web/zdfyxx/getLpZdFyTp.do";
-		          let that = this;
+		          let _this = this;
 		          this.$http.post(url, {"parameters":{"fyid":'51562'},"foreEndType":2,"code":"300000059"}).then((res)=>{
 		            Indicator.close()
 		            const data = JSON.parse(res.bodyText).data;
-		            // that.imgList = data.b3;
-		            that.images.localId = data.b3;
-		            that.imglist = data.b3;//房源列表
-		            for (var i = 0; i < that.images.localId.length; i++) {
-		            	that.images.localId[i].url = that.$prefix + '/' + that.images.localId[i].url;
+		            _this.images.localId = data.b3;
+		            _this.gjList = data.b7;
+		            for (var i = 0; i < _this.images.localId.length; i++) {
+		            	_this.images.localId[i].url = _this.$prefix + '/' + _this.images.localId[i].url;
 		            }
 		            console.log(data);
 		          }, (res)=>{
@@ -164,7 +164,6 @@
 	                                upload();
 	                            }
 	                            if(i == length && _this.images.serverId.length !=0){
-				                	alert(123);
 			                    	setTimeout(function(){
 			                    		img_back();
 			                    	},300);
@@ -180,28 +179,22 @@
 	                // 从后台服务器返回
 
 	                function img_back(){
-	                	alert(_this.images.serverId.length);
+	                	// alert(_this.images.serverId.length);
 					    axios.post(_this.$api + '/yhcms/web/jcsj/uploadWxPic.do',{
 							"parameters": {
 								"pic1": _this.images.serverId.join(';').toString(),
 								"pic2": "",
 								"pic3": "",
-								"token": "14_m_Ez1WQPWm1YnTE_GG2BV9o4p8XfL6tutH0ibcNYy08iajF92OAjmLF_xDDJdlIq8SqCkHY8RKix_hkAgN8acS6SGl0pa07LUiOJkZ-DSJUdOCzWg8oPAG8nMIPypb24L_1IZxctaxC3P1pMQPCjAGAUTG"
+								"token": "14_bcQ8UGJ-8BEn7ac2w_K6lsx2MDUeAxMW1e_zelFkbadKRvBxxL7VEhJNtqp3EO2RfV3HipHwc5ajkIevpiW3sXBqBnjw6XNfExw5h6Oti_PjQnbvp07JxBda4N1dxRVJRsBH9E1ZQYY-ichoJVThAHADPN"
 							}
 					    }).then((res)=>{
-					    	var pic1 = res.data.pic1.split(';');
+					    	var pic1 = res.data.pic1.split(';').reverse();
 					    	var arr = _this.images.localId.reverse();
 					    	for(var m=0; m<pic1.length; m++){
 					    		arr[m].url = _this.$prefix + '/' +pic1[m];
 					    	}
+
 					    	_this.images.localId = arr.reverse();
-					    	// for (var i = 0; i < pic1.length; i++) {
-					    	// 	var fyobj = {id:'',fyid:'',isdelete:'0',type:'',url:''};
-					    	// 	fyobj.url = pic1[i];
-					    	// 	_this.imglist.push(fyobj);
-					    	// }
-					    	// alert(JSON.stringify(_this.imglist));
-					    	// alert(_this.imglist.length);
 					    }, (err)=>{
 							console.log(err);
 					    });
@@ -220,49 +213,47 @@
 		        //   text: '保存中...',
 		        //   spinnerType: 'fading-circle'
 		        // });
+		        // 房源图片数据处理
 		        let fp = _this.images.localId.map((item, idx)=>{
-		            return {"id": item.id, "isdelete": item.isdelete, "url": item.url};
+		            return {"id": item.id, "isdelete": item.isdelete, "url": item.url.indexOf(_this.$prefix + '/') != -1?item.url.replace(_this.$prefix + '/',''):item.url};
+		        });
+		        // 提交保存数据
+		        const data = {"parameters":{"fyid":'51562',"fytp":fp,"hxt":[],"gjt":_this.gjList,"fmtp":[]},"foreEndType":2,"code":"300000082"};
+		        _this.$http.post(
+		           _this.$api + "/yhcms/web/zdfyxx/saveZdFyTp.do", data).then((res)=>{
+		          Indicator.close();
+		          var result = JSON.parse(res.bodyText);
+		          if (result.success) {
+		            Toast({
+		                message: '保存成功',
+		                position: 'bottom',
+		                duration: 1000
+		            });
+		            let link = '/fang_detail?house_id=';
+		            // if(this.fyid){
+		            //     link += this.fyid;
+		            // }
+		            /*if(this.zdid){
+		                link += '/' + this.zdid;
+		            }*/
+		            // setTimeout(function(){
+		            //     that.$router.push({path:link});
+		            // },1000);
+		          } else {
+		            Toast({
+		                message: '保存失败: ' + result.message,
+		                position: 'bottom'
+		            });
+		          }
+		        },(res)=>{
+		          Indicator.close();
+		          Toast({
+		              message: '保存失败! 请稍候再试',
+		              position: 'bottom'
+		          });
 		        });
 
-		        console.log(fp)
-		        // alert(JSON.stringify(fp));
-		        alert(JSON.stringify(_this.images.localId));
-		        alert(JSON.stringify(_this.images.localId.length));
-		        alert(JSON.stringify(_this.imglist));
-		        // const data = {"parameters":{"fyid":this.fyid,"fytp":fp,"hxt":hx,"gjt":this.gjList,"fmtp":fm},"foreEndType":2,"code":"300000082"};
-		        // this.$http.post(
-		        //    this.$api + "/yhcms/web/zdfyxx/saveZdFyTp.do", data).then((res)=>{
-		        //   Indicator.close();
-		        //   var result = JSON.parse(res.bodyText);
-		        //   if (result.success) {
-		        //     Toast({
-		        //         message: '保存成功',
-		        //         position: 'bottom',
-		        //         duration: 1000
-		        //     });
-		        //     let link = '/fang_detail?house_id=';
-		        //     if(this.fyid){
-		        //         link += this.fyid;
-		        //     }
-		        //     /*if(this.zdid){
-		        //         link += '/' + this.zdid;
-		        //     }*/
-		        //     setTimeout(function(){
-		        //         that.$router.push({path:link});
-		        //     },1000);
-		        //   } else {
-		        //     Toast({
-		        //         message: '保存失败: ' + result.message,
-		        //         position: 'bottom'
-		        //     });
-		        //   }
-		        // },(res)=>{
-		        //   Indicator.close();
-		        //   Toast({
-		        //       message: '保存失败! 请稍候再试',
-		        //       position: 'bottom'
-		        //   });
-		        // });
+
 		    });
 
 
