@@ -1,12 +1,28 @@
 <template>
 	<div class="big_box">
-		<ul class="box_img">
-			<li v-for='(item,index) in images.localId' @click='see_img(item,index)' v-if="item.isdelete=='0'">
-				<span class="del_img" tag="fy" @click.stop='del_img(index, item.id, $event,item)'></span>
-				<img :src="item.url" alt="">
-			</li>
-			<li class="btns">+</li>
-		</ul>
+		<!-- 房源图 -->
+		<div class="fy_img_box">
+			<p class="fy_title">房源图</p>
+			<ul class="box_img">
+				<li v-for='(item,index) in images.localId' @click='see_img(item,index)' v-if="item.isdelete=='0'">
+					<span class="del_img" tag="fy" @click.stop='del_img(index, item.id, $event,item)'></span>
+					<img :src="item.url" alt="">
+				</li>
+				<li class="btns">+</li>
+			</ul>
+		</div>
+		<div class="fy_img_box">
+			<p class="fy_title">户型图</p>
+			<ul class="box_img">
+				<li class="btns2">+</li>
+			</ul>
+		</div>
+		<div class="fy_img_box">
+			<p class="fy_title">封面图</p>
+			<ul class="box_img">
+				<li class="btns3">+</li>
+			</ul>
+		</div>
 		<div class="upload_btn">保存</div>
 	</div>
 </template>
@@ -213,10 +229,10 @@
 			});
 			// 上传保存图片到自己的服务器
 		    $('.upload_btn').click(function() {
-		        // Indicator.open({
-		        //   text: '保存中...',
-		        //   spinnerType: 'fading-circle'
-		        // });
+		        Indicator.open({
+		          text: '保存中...',
+		          spinnerType: 'fading-circle'
+		        });
 		        // 房源图片数据处理
 		        let fp = _this.images.localId.map((item, idx)=>{
 		            return {"id": item.id, "isdelete": item.isdelete, "url": item.url.indexOf(_this.$prefix + '/') != -1?item.url.replace(_this.$prefix + '/',''):item.url};
@@ -268,16 +284,16 @@
 <style scoped lang='less'>
 	@import "../../resources/css/reset.css";
   	@import "../../resources/css/base.less";
-	.btns{
+	.btns,.btns2,.btns3{
 		font-size: 0.6rem;
 		text-align: center;
 		line-height: 1.26rem;
-		border: 1px solid #000;
+		border: 1px solid #ccc;
+		border-radius: 0.066667rem;
 	}
 	.box_img{
-		width: 7.3rem;
+		width: 100%;
 		margin: 0 auto 0;
-		margin-top: 0.133333rem;
 		display: flex;
 		flex-wrap: wrap;
 	}
@@ -285,8 +301,7 @@
 		position: relative;
 		width: 1.26rem;
 		height: 1.26rem;
-		border: 1px solid red;
-		margin: 0 0 0.133333rem 0.17rem;
+		margin: 0 0 0.266667rem 0.2rem;
 	}
 	.box_img li img{
 		width: 100%;
@@ -316,5 +331,20 @@
 		line-height: 0.346667rem;
 		background: #fff url(../../resources/images/close.png) no-repeat center;
 		background-size: 50% auto;
+	}
+	.fy_img_box{
+		margin-bottom: 1.333333rem;
+	}
+	.box_img{
+		min-height: 2.04rem;
+		height: auto;
+		background: #fff;
+		padding: 0.4rem 0 0.133333rem 0;
+	}
+	.fy_title{
+		height: 0.8rem;
+		line-height: 0.8rem;
+		font-size: 0.266667rem;
+		padding-left: 0.266667rem;
 	}
 </style>
