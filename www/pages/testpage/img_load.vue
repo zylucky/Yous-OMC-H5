@@ -29,7 +29,11 @@
 		        fm: 0,
 		        imglist:[],//房源图片列表
 		        gjList:[],
+		        hourse_id:'',
 			}
+		},
+		created(){
+			this.hourse_id = this.$route.query.house_id;
 		},
 		methods: {
 			wechat_share(){//微信授权获取配置信息
@@ -99,7 +103,7 @@
 		          });
 		          const url = this.$api + "/yhcms/web/zdfyxx/getLpZdFyTp.do";
 		          let _this = this;
-		          this.$http.post(url, {"parameters":{"fyid":'51562'},"foreEndType":2,"code":"300000059"}).then((res)=>{
+		          this.$http.post(url, {"parameters":{"fyid":_this.hourse_id},"foreEndType":2,"code":"300000059"}).then((res)=>{
 		            Indicator.close()
 		            const data = JSON.parse(res.bodyText).data;
 		            _this.images.localId = data.b3;
@@ -218,7 +222,7 @@
 		            return {"id": item.id, "isdelete": item.isdelete, "url": item.url.indexOf(_this.$prefix + '/') != -1?item.url.replace(_this.$prefix + '/',''):item.url};
 		        });
 		        // 提交保存数据
-		        const data = {"parameters":{"fyid":'51562',"fytp":fp,"hxt":[],"gjt":_this.gjList,"fmtp":[]},"foreEndType":2,"code":"300000082"};
+		        const data = {"parameters":{"fyid":_this.hourse_id,"fytp":fp,"hxt":[],"gjt":_this.gjList,"fmtp":[]},"foreEndType":2,"code":"300000082"};
 		        _this.$http.post(
 		           _this.$api + "/yhcms/web/zdfyxx/saveZdFyTp.do", data).then((res)=>{
 		          Indicator.close();
@@ -229,16 +233,15 @@
 		                position: 'bottom',
 		                duration: 1000
 		            });
-		            let link = '/fang_detail?house_id=';
-		            // if(this.fyid){
-		            //     link += this.fyid;
-		            // }
-		            /*if(this.zdid){
-		                link += '/' + this.zdid;
-		            }*/
-		            // setTimeout(function(){
-		            //     that.$router.push({path:link});
-		            // },1000);
+		            setTimeout(function(){
+		                _this.$router.push({
+			                path:'/fang_detail',//跳转到审批页面
+			                query:{
+			                  "house_id":_this.hourse_id,//所传参数
+			            	}
+			            })
+		            },1000);
+
 		          } else {
 		            Toast({
 		                message: '保存失败: ' + result.message,
