@@ -8,7 +8,7 @@
 					<span class="del_img" tag="fy" @click.stop="del_img(index, item.id, $event,item)"></span>
 					<img :src="item.url" alt="">
 				</li>
-				<li class="btns">+</li>
+				<li class="btns" v-if="images.localId.length<8">+</li>
 			</ul>
 		</div>
 		<div class="fy_img_box">
@@ -18,7 +18,7 @@
 					<span class="del_img" tag="hx" @click.stop='del_img2(index, item.id, $event,item)'></span>
 					<img :src="item.url" alt="">
 				</li>
-				<li class="btns2">+</li>
+				<li class="btns2" v-if="images2.localId.length<1">+</li>
 			</ul>
 		</div>
 		<div class="fy_img_box">
@@ -28,7 +28,7 @@
 					<span class="del_img" tag="fm" @click.stop='del_img3(index, item.id, $event,item)'></span>
 					<img :src="item.url" alt="">
 				</li>
-				<li class="btns3">+</li>
+				<li class="btns3" v-if="images3.localId.length<1">+</li>
 			</ul>
 		</div>
 		<div class="upload_btn">保存</div>
@@ -332,13 +332,17 @@
 							// 从后台服务器返回
 
 							function img_back() {
+								Indicator.open({
+									text: '等待中...',
+									spinnerType: 'fading-circle'
+								});
 								// alert(_this.images.serverId.length);
 								axios.post(_this.$api + '/yhcms/web/jcsj/uploadWxPic.do', {
 									"parameters": {
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "14_aA9NHbkghDyF7OiKTzuYjnwROdZ0bC2mDPeuBFPowut_eclfq2n9vgw0SYhpEWHCWbg6xNNHvzuyMgZmsJDY4tQLRxvtqV3kXo8NbQSkHUVAn7kMM7wZ-u9p3oFqJz-RxYO7d3_zyEFXx6wFKOPiABAWAB"
+										"token": "14_R7UWfdoX6-ZKbclEq2-Hpsobe4V7VrD3EPhAry6sR1O9S6m4Mx14_tRWH2HHW9XVfVXE9lIqcj8Xid9AbdFojAQzErK6DylH0xnDXaeuGHgMdcyMePdI3ca1_naTm1IwXXgpaiZhoAPwkkgMTNQhACAFZC"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
@@ -346,8 +350,8 @@
 									for (var m = 0; m < pic1.length; m++) {
 										arr[m].url = _this.$prefix + '/' + pic1[m];
 									}
-
 									_this.images.localId = arr.reverse();
+									Indicator.close();
 								}, (err) => {
 									console.log(err);
 								});
@@ -426,13 +430,17 @@
 							// 从后台服务器返回
 
 							function img_back() {
+								Indicator.open({
+									text: '等待中...',
+									spinnerType: 'fading-circle'
+								});
 								// alert(_this.images.serverId.length);
 								axios.post(_this.$api + '/yhcms/web/jcsj/uploadWxPic.do', {
 									"parameters": {
 										"pic1": "",
 										"pic2": _this.images2.serverId.join(';').toString(),
 										"pic3": "",
-										"token": "14_aA9NHbkghDyF7OiKTzuYjnwROdZ0bC2mDPeuBFPowut_eclfq2n9vgw0SYhpEWHCWbg6xNNHvzuyMgZmsJDY4tQLRxvtqV3kXo8NbQSkHUVAn7kMM7wZ-u9p3oFqJz-RxYO7d3_zyEFXx6wFKOPiABAWAB"
+										"token": "14_R7UWfdoX6-ZKbclEq2-Hpsobe4V7VrD3EPhAry6sR1O9S6m4Mx14_tRWH2HHW9XVfVXE9lIqcj8Xid9AbdFojAQzErK6DylH0xnDXaeuGHgMdcyMePdI3ca1_naTm1IwXXgpaiZhoAPwkkgMTNQhACAFZC"
 									}
 								}).then((res) => {
 									var pic2 = res.data.pic2.split(';').reverse();
@@ -440,8 +448,8 @@
 									for (var m = 0; m < pic2.length; m++) {
 										arr[m].url = _this.$prefix + '/' + pic2[m];
 									}
-
 									_this.images2.localId = arr.reverse();
+									Indicator.close();
 								}, (err) => {
 									console.log(err);
 								});
@@ -519,13 +527,17 @@
 							// 从后台服务器返回
 
 							function img_back() {
+								Indicator.open({
+									text: '等待中...',
+									spinnerType: 'fading-circle'
+								});
 								// alert(_this.images.serverId.length);
 								axios.post(_this.$api + '/yhcms/web/jcsj/uploadWxPic.do', {
 									"parameters": {
 										"pic1": "",
 										"pic2": "",
 										"pic3": _this.images3.serverId.join(';').toString(),
-										"token": "14_aA9NHbkghDyF7OiKTzuYjnwROdZ0bC2mDPeuBFPowut_eclfq2n9vgw0SYhpEWHCWbg6xNNHvzuyMgZmsJDY4tQLRxvtqV3kXo8NbQSkHUVAn7kMM7wZ-u9p3oFqJz-RxYO7d3_zyEFXx6wFKOPiABAWAB"
+										"token": "14_R7UWfdoX6-ZKbclEq2-Hpsobe4V7VrD3EPhAry6sR1O9S6m4Mx14_tRWH2HHW9XVfVXE9lIqcj8Xid9AbdFojAQzErK6DylH0xnDXaeuGHgMdcyMePdI3ca1_naTm1IwXXgpaiZhoAPwkkgMTNQhACAFZC"
 									}
 								}).then((res) => {
 									var pic3 = res.data.pic3.split(';').reverse();
@@ -533,8 +545,8 @@
 									for (var m = 0; m < pic3.length; m++) {
 										arr[m].url = _this.$prefix + '/' + pic3[m];
 									}
-
 									_this.images3.localId = arr.reverse();
+									Indicator.close();
 								}, (err) => {
 									console.log(err);
 								});
@@ -550,6 +562,10 @@
 			});
 			// 上传保存图片到自己的服务器
 			$('.upload_btn').click(function() {
+				if(_this.images.localId.length == 0 && _this.images2.localId.length == 0 && _this.images3.localId.length == 0){
+					alert('保存失败，请尝试再次点击保存！');
+					return;
+				}
 				Indicator.open({
 					text: '保存中...',
 					spinnerType: 'fading-circle'
@@ -673,7 +689,7 @@
 		font-size: 0.32rem;
 		color: #fff;
 		text-align: center;
-		margin: 0 auto 0;
+		margin: 0 auto 1.333333rem;
 		border-radius: 0.133333rem;
 	}
 
@@ -693,7 +709,7 @@
 	}
 
 	.fy_img_box {
-		margin-bottom: 1.333333rem;
+		margin-bottom: 0.8rem;
 	}
 
 	.box_img {
@@ -708,5 +724,8 @@
 		line-height: 0.8rem;
 		font-size: 0.266667rem;
 		padding-left: 0.266667rem;
+	}
+	.big_box{
+		padding-bottom: 0.666667rem;
 	}
 </style>
