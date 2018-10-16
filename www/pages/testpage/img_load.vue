@@ -5,7 +5,7 @@
 			<p class="fy_title">房源图</p>
 			<ul class="box_img">
 				<li v-for="(item,index) in images.localId" @click="see_img(item,index)" v-if="item.isdelete=='0'">
-					<span class="del_img" tag="fy" @click.stop="del_img(index, item.id, $event,item)"></span>
+					<span v-show="fytqxzt" class="del_img" tag="fy" @click.stop="del_img(index, item.id, $event,item)"></span>
 					<img :src="item.url" alt="">
 				</li>
 				<li class="btns" v-if="images.localId.length<8">+</li>
@@ -15,7 +15,7 @@
 			<p class="fy_title">户型图</p>
 			<ul class="box_img">
 				<li v-for='(item,index) in images2.localId' @click='see_img2(item,index)' v-if="item.isdelete=='0'">
-					<span class="del_img" tag="hx" @click.stop='del_img2(index, item.id, $event,item)'></span>
+					<span v-show="fytqxzt" class="del_img" tag="hx" @click.stop='del_img2(index, item.id, $event,item)'></span>
 					<img :src="item.url" alt="">
 				</li>
 				<li class="btns2" v-if="images2.localId.length<1">+</li>
@@ -25,7 +25,7 @@
 			<p class="fy_title">封面图</p>
 			<ul class="box_img">
 				<li v-for='(item,index) in images3.localId' @click='see_img3(item,index)' v-if="item.isdelete=='0'">
-					<span class="del_img" tag="fm" @click.stop='del_img3(index, item.id, $event,item)'></span>
+					<span v-show="fytqxzt" class="del_img" tag="fm" @click.stop='del_img3(index, item.id, $event,item)'></span>
 					<img :src="item.url" alt="">
 				</li>
 				<li class="btns3" v-if="images3.localId.length<1">+</li>
@@ -68,6 +68,7 @@
 				imglist: [], //房源图片列表
 				gjList: [],
 				hourse_id: '',
+				fytqxzt: true, //删除权限控制
 			}
 		},
 		created() {
@@ -95,6 +96,42 @@
 
 				}, (err) => {
 					console.log(err);
+				});
+			},
+			tebqqxpd() {
+				let user22 = JSON.parse(localStorage.getItem('cookxs'));
+				const url = this.$api + "/yhcms/web/wxqx/getXsQx.do";
+				this.$http.post(url, {
+					"cookie": user22.sjs,
+					"fyid": this.$route.query.house_id,
+					"foreEndType": 2,
+					"code": "30000008"
+				}).then((res) => {
+					Indicator.close();
+					const data = JSON.parse(res.bodyText).data;
+					const meg = JSON.parse(res.bodyText).message;
+					console.log(data);
+					console.log(meg);
+					if (data.qxzt == 0) {
+						MessageBox('提示', meg);
+						window.history.go(-1);
+						return;
+					}
+					if (data.qxzt == 2) {
+						MessageBox('提示', "此用户已被禁用，请联系管理员！");
+						this.$router.push({
+							path: '/login'
+						});
+					}
+					//所有权限
+					if (data.qxzt == 3 || data.qxzt == 4) {
+
+					}
+					if (data.qxzt == 5) {
+						this.fytqxzt = false;
+					}
+				}, (res) => {
+					Indicator.close()
 				});
 			},
 			// 删除图片
@@ -254,6 +291,7 @@
 
 		},
 		mounted() {
+			this.tebqqxpd();
 			this.getInitData(); //获取房源图片信息
 			this.wechat_share(); //授权签名方法调用
 			var _this = this;
@@ -342,7 +380,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "14_R7UWfdoX6-ZKbclEq2-Hpsobe4V7VrD3EPhAry6sR1O9S6m4Mx14_tRWH2HHW9XVfVXE9lIqcj8Xid9AbdFojAQzErK6DylH0xnDXaeuGHgMdcyMePdI3ca1_naTm1IwXXgpaiZhoAPwkkgMTNQhACAFZC"
+										"token": "14_AawarB3CnS0ZugMrAGEcFMgH-8Mnvf34YEEA_a9UXZ5wQ5Z7RpgY135tzF7t6JXCI8nsguEPf74lrmFoZU7wYtk_A6D0DCUNJAT296SKNWNrcgoWn4YXf3gk05y9CdyVtMt4W7rCp5sKjteZHEQhAFAVSE"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
@@ -440,7 +478,7 @@
 										"pic1": "",
 										"pic2": _this.images2.serverId.join(';').toString(),
 										"pic3": "",
-										"token": "14_R7UWfdoX6-ZKbclEq2-Hpsobe4V7VrD3EPhAry6sR1O9S6m4Mx14_tRWH2HHW9XVfVXE9lIqcj8Xid9AbdFojAQzErK6DylH0xnDXaeuGHgMdcyMePdI3ca1_naTm1IwXXgpaiZhoAPwkkgMTNQhACAFZC"
+										"token": "14_AawarB3CnS0ZugMrAGEcFMgH-8Mnvf34YEEA_a9UXZ5wQ5Z7RpgY135tzF7t6JXCI8nsguEPf74lrmFoZU7wYtk_A6D0DCUNJAT296SKNWNrcgoWn4YXf3gk05y9CdyVtMt4W7rCp5sKjteZHEQhAFAVSE"
 									}
 								}).then((res) => {
 									var pic2 = res.data.pic2.split(';').reverse();
@@ -537,7 +575,7 @@
 										"pic1": "",
 										"pic2": "",
 										"pic3": _this.images3.serverId.join(';').toString(),
-										"token": "14_R7UWfdoX6-ZKbclEq2-Hpsobe4V7VrD3EPhAry6sR1O9S6m4Mx14_tRWH2HHW9XVfVXE9lIqcj8Xid9AbdFojAQzErK6DylH0xnDXaeuGHgMdcyMePdI3ca1_naTm1IwXXgpaiZhoAPwkkgMTNQhACAFZC"
+										"token": "14_AawarB3CnS0ZugMrAGEcFMgH-8Mnvf34YEEA_a9UXZ5wQ5Z7RpgY135tzF7t6JXCI8nsguEPf74lrmFoZU7wYtk_A6D0DCUNJAT296SKNWNrcgoWn4YXf3gk05y9CdyVtMt4W7rCp5sKjteZHEQhAFAVSE"
 									}
 								}).then((res) => {
 									var pic3 = res.data.pic3.split(';').reverse();
@@ -562,7 +600,7 @@
 			});
 			// 上传保存图片到自己的服务器
 			$('.upload_btn').click(function() {
-				if(_this.images.localId.length == 0 && _this.images2.localId.length == 0 && _this.images3.localId.length == 0){
+				if (_this.images.localId.length == 0 && _this.images2.localId.length == 0 && _this.images3.localId.length == 0) {
 					alert('保存失败，请尝试再次点击保存！');
 					return;
 				}
@@ -689,7 +727,7 @@
 		font-size: 0.32rem;
 		color: #fff;
 		text-align: center;
-		margin: 0 auto 1.333333rem;
+		margin: 0 auto 0.666667rem;
 		border-radius: 0.133333rem;
 	}
 
@@ -725,7 +763,8 @@
 		font-size: 0.266667rem;
 		padding-left: 0.266667rem;
 	}
-	.big_box{
+
+	.big_box {
 		padding-bottom: 0.666667rem;
 	}
 </style>

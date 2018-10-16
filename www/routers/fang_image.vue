@@ -188,7 +188,6 @@
               }
               if(data.qxzt == 5){
                   this.fytqxzt = false;
-                  
               }
               this.getInitData();
           }, (res)=>{
