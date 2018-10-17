@@ -8,7 +8,7 @@
 					<span v-show="fytqxzt" class="del_img" tag="fy" @click.stop="del_img(index, item.id, $event,item)"></span>
 					<img :src="item.url" alt="">
 				</li>
-				<li class="btns" v-if="images.localId.length<8">+</li>
+				<li class="btns" v-show="count<8">+</li>
 			</ul>
 		</div>
 		<div class="fy_img_box">
@@ -18,7 +18,7 @@
 					<span v-show="fytqxzt" class="del_img" tag="hx" @click.stop='del_img2(index, item.id, $event,item)'></span>
 					<img :src="item.url" alt="">
 				</li>
-				<li class="btns2" v-if="images2.localId.length<1">+</li>
+				<li class="btns2" v-show="count2<1">+</li>
 			</ul>
 		</div>
 		<div class="fy_img_box">
@@ -28,7 +28,7 @@
 					<span v-show="fytqxzt" class="del_img" tag="fm" @click.stop='del_img3(index, item.id, $event,item)'></span>
 					<img :src="item.url" alt="">
 				</li>
-				<li class="btns3" v-if="images3.localId.length<1">+</li>
+				<li class="btns3" v-show="count3<1">+</li>
 			</ul>
 		</div>
 		<div class="upload_btn">保存</div>
@@ -69,6 +69,9 @@
 				gjList: [],
 				hourse_id: '',
 				fytqxzt: true, //删除权限控制
+				count:0,//未删减房源图片数量
+				count2:0,//未删减户型图片数量
+				count3:0,//未删减封面图片数量
 			}
 		},
 		created() {
@@ -153,6 +156,13 @@
 						console.log('确认删除')
 						// if(id != ''){
 						this.images[which][index].isdelete = "1";
+						var cout = 0;//统计未删除标识
+						for(var i=0; i<this.images[which].length; i++){
+							if(this.images[which][i].isdelete == '0'){
+								cout += 1;
+							}
+						}
+						this.count = cout;//还可以上传数量
 						// }
 					} else {
 						console.log('取消删除')
@@ -178,6 +188,13 @@
 						console.log('确认删除')
 						// if(id != ''){
 						this.images2[which][index].isdelete = "1";
+						var cout = 0;//统计未删除标识
+						for(var i=0; i<this.images2[which].length; i++){
+							if(this.images2[which][i].isdelete == '0'){
+								cout += 1;
+							}
+						}
+						this.count2 = cout;//还可以上传数量
 						// }
 					} else {
 						console.log('取消删除')
@@ -203,6 +220,13 @@
 						console.log('确认删除')
 						// if(id != ''){
 						this.images3[which][index].isdelete = "1";
+						var cout = 0;//统计未删除标识
+						for(var i=0; i<this.images3[which].length; i++){
+							if(this.images3[which][i].isdelete == '0'){
+								cout += 1;
+							}
+						}
+						this.count3 = cout;//还可以上传数量
 						// }
 					} else {
 						console.log('取消删除')
@@ -274,6 +298,10 @@
 					_this.fy = _this.images.localId.length; //房源图
 					_this.hx = _this.images2.localId.length; //户型图
 					_this.fm = _this.images3.localId.length; //封面图
+					
+					_this.count = _this.images.localId.length;//房源图数量控制
+					_this.count2 = _this.images2.localId.length;//户型图数量控制
+					_this.count3 = _this.images3.localId.length;//封面图数量控制
 
 					for (var i = 0; i < _this.images.localId.length; i++) {
 						_this.images.localId[i].url = _this.$prefix + '/' + _this.images.localId[i].url;
@@ -298,8 +326,9 @@
 			wx.ready(function() {
 				// 点击选择图片上传房源图片
 				$('.btns').click(function() {
+					var max = 8 - _this.count;
 					wx.chooseImage({
-						count: 9, // 默认9
+						count: max, // 默认9
 						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
 						sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
 						success: function(res) {
@@ -308,7 +337,7 @@
 							// if(res.localIds.indexOf("wxlocalresource") != -1){
 							//           res.localIds = res.localIds.replace("wxlocalresource", "wxLocalResource");
 							//       }
-							alert('已选择 ' + res.localIds.length + ' 张图片');
+							// alert('已选择 ' + res.localIds.length + ' 张图片');
 							// 上传预览方法
 							var i = 0,
 								length = res.localIds.length;
@@ -380,7 +409,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "14_AawarB3CnS0ZugMrAGEcFMgH-8Mnvf34YEEA_a9UXZ5wQ5Z7RpgY135tzF7t6JXCI8nsguEPf74lrmFoZU7wYtk_A6D0DCUNJAT296SKNWNrcgoWn4YXf3gk05y9CdyVtMt4W7rCp5sKjteZHEQhAFAVSE"
+										"token": "14_Hama5z5-Pp6mnBEm5lOfvG3JPyojSdJ-zXBg_UyZXUfQOZAxoKqHrVcp0XtHF8kCjuU_U7XGXKINu0zJgTCQUlt4gueqcbnzj4TJEW4w5dM6F6eLIwQrAM_W3XcJVGiAEARDO"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
@@ -389,6 +418,13 @@
 										arr[m].url = _this.$prefix + '/' + pic1[m];
 									}
 									_this.images.localId = arr.reverse();
+									var cout = 0;//统计未删除标识
+									for(var m=0; m<_this.images.localId.length; m++){
+										if(_this.images.localId[m].isdelete == '0'){
+											cout += 1;
+										}
+									}
+									_this.count = cout;//已有有效图片数量
 									Indicator.close();
 								}, (err) => {
 									console.log(err);
@@ -478,7 +514,7 @@
 										"pic1": "",
 										"pic2": _this.images2.serverId.join(';').toString(),
 										"pic3": "",
-										"token": "14_AawarB3CnS0ZugMrAGEcFMgH-8Mnvf34YEEA_a9UXZ5wQ5Z7RpgY135tzF7t6JXCI8nsguEPf74lrmFoZU7wYtk_A6D0DCUNJAT296SKNWNrcgoWn4YXf3gk05y9CdyVtMt4W7rCp5sKjteZHEQhAFAVSE"
+										"token": "14_Hama5z5-Pp6mnBEm5lOfvG3JPyojSdJ-zXBg_UyZXUfQOZAxoKqHrVcp0XtHF8kCjuU_U7XGXKINu0zJgTCQUlt4gueqcbnzj4TJEW4w5dM6F6eLIwQrAM_W3XcJVGiAEARDO"
 									}
 								}).then((res) => {
 									var pic2 = res.data.pic2.split(';').reverse();
@@ -487,6 +523,13 @@
 										arr[m].url = _this.$prefix + '/' + pic2[m];
 									}
 									_this.images2.localId = arr.reverse();
+									var cout = 0;//统计未删除标识
+									for(var m=0; m<_this.images2.localId.length; m++){
+										if(_this.images2.localId[m].isdelete == '0'){
+											cout += 1;
+										}
+									}
+									_this.count2 = cout;//已有有效图片数量
 									Indicator.close();
 								}, (err) => {
 									console.log(err);
@@ -575,7 +618,7 @@
 										"pic1": "",
 										"pic2": "",
 										"pic3": _this.images3.serverId.join(';').toString(),
-										"token": "14_AawarB3CnS0ZugMrAGEcFMgH-8Mnvf34YEEA_a9UXZ5wQ5Z7RpgY135tzF7t6JXCI8nsguEPf74lrmFoZU7wYtk_A6D0DCUNJAT296SKNWNrcgoWn4YXf3gk05y9CdyVtMt4W7rCp5sKjteZHEQhAFAVSE"
+										"token": "14_Hama5z5-Pp6mnBEm5lOfvG3JPyojSdJ-zXBg_UyZXUfQOZAxoKqHrVcp0XtHF8kCjuU_U7XGXKINu0zJgTCQUlt4gueqcbnzj4TJEW4w5dM6F6eLIwQrAM_W3XcJVGiAEARDO"
 									}
 								}).then((res) => {
 									var pic3 = res.data.pic3.split(';').reverse();
@@ -584,6 +627,13 @@
 										arr[m].url = _this.$prefix + '/' + pic3[m];
 									}
 									_this.images3.localId = arr.reverse();
+									var cout = 0;//统计未删除标识
+									for(var m=0; m<_this.images3.localId.length; m++){
+										if(_this.images3.localId[m].isdelete == '0'){
+											cout += 1;
+										}
+									}
+									_this.count3 = cout;//已有有效图片数量
 									Indicator.close();
 								}, (err) => {
 									console.log(err);
@@ -723,7 +773,7 @@
 		width: 2.0rem;
 		height: 0.8rem;
 		line-height: 0.8rem;
-		background: blue;
+		background: #16abdc;
 		font-size: 0.32rem;
 		color: #fff;
 		text-align: center;
