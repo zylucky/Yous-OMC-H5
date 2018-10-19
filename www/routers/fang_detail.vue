@@ -266,7 +266,13 @@
       upload(){
           const that = this;
           setTimeout(function(){
-              that.$router.push({path:'/fang_image/' + that.hourse_id});
+              // that.$router.push({path:'/fang_image/' + that.hourse_id});
+              that.$router.push({
+                path:'/img_load',//跳转到审批页面
+                query:{
+                  "house_id":that.hourse_id,//所传参数
+                }
+              })
           },300);
       },
       wechat_share(){//微信分享

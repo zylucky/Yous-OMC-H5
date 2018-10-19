@@ -452,7 +452,7 @@ var router = new VueRouter({
       path: '/img_load',
       component: require('./pages/testpage/img_load.vue'),
       meta: {
-        title: '测试demo'
+        title: '图片上传'
       }
     },
     
