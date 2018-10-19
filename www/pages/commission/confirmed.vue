@@ -1,6 +1,55 @@
 <style scoped lang='less'>
 	@import "../../resources/css/reset.css";
   	@import "../../resources/css/base.less";
+		/* 新图片上传开始 */
+		.box_img {
+			width: 100%;
+			margin: 0 auto 0;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.box_img_box{background: #fff;padding-top: 0.1px;margin-top: 0.2rem;}
+		.box_img_box .pic{padding-left: 0.3rem;margin-top: 0.2rem;}
+		.box_img_box .pic i{color: #fd7172;}
+		.box_img li {
+			position: relative;
+			width: 1.26rem;
+			height: 1.26rem;
+			margin: 0 0 0.266667rem 0.2rem;
+		}
+	
+		.box_img li img {
+			width: 100%;
+			height: 100%;
+		}
+		.box_img {
+			min-height: 2.04rem;
+			height: auto;
+			background: #fff;
+			padding: 0.4rem 0 0.133333rem 0;
+		}
+		.btns {
+			font-size: 0.6rem;
+			text-align: center;
+			line-height: 1.26rem;
+			border: 1px solid #ccc;
+			border-radius: 0.066667rem;
+		}
+		.del_img {
+			position: absolute;
+			top: -0.16rem;
+			right: -0.16rem;
+			display: block;
+			width: 0.346667rem;
+			height: 0.346667rem;
+			border: 1px solid #ccc;
+			border-radius: 50%;
+			text-align: center;
+			line-height: 0.346667rem;
+			background: #fff url(../../resources/images/close.png) no-repeat center;
+			background-size: 50% auto;
+		}
+			/* 新图片上传样式结束 */
   	.box{
   		position: absolute;
   		left: 0;
@@ -380,7 +429,7 @@
 				</li>
 			</ul>
 			<!--上传图片-->
-			<div class="img_box">
+			<div class="img_box" v-if="false">
 				<p class="pic"><i>*</i>图片</p>
 				<div class="pic_load clearfix">
 					<div class="img_demo fl pr" v-for='(item,index) in imgList'>
@@ -397,6 +446,22 @@
 						<input @change='add_img1($event)' id="file_add" tag="fy" type="file" multiple>
 					</div>
 				</div>
+			</div>
+			<!-- 新图片上传 -->
+			<div class="box_img_box">
+				<p class="pic"><i>*</i>图片</p>
+				<ul class="box_img">
+					<!-- 默认显示发票图片 -->
+					<li v-for="(item,index) in allData.imgList" @click="see_img2(item,index)">
+						<span class="del_img" tag="fy" @click.stop="delete_fpic(item.id,index)" v-if="btnshow==1"></span>
+						<img :src="item.imgFapiao" alt="">
+					</li>
+					<li v-for="(item,index) in images.localId" @click="see_img(item,index)" v-if="item.isdelete=='0'">
+						<span class="del_img" tag="fy" @click.stop="del_img(index, item.id, $event,item)"></span>
+						<img :src="item.url" alt="">
+					</li>
+					<li class="btns" v-show="count<80">+</li>
+				</ul>
 			</div>
 			<!--申请进度-->
 			<div class="plan">
@@ -494,11 +559,15 @@
 
 <script>
 	import axios from 'axios';
+	import wx from 'weixin-js-sdk';
 	import {
-		Toast
+		MessageBox
 	} from 'mint-ui';
 	import {
 		Indicator
+	} from 'mint-ui';
+	import {
+		Toast
 	} from 'mint-ui';
 	export default {
 		data() {
@@ -517,6 +586,12 @@
 				uploaded: 0,
 				bigfpsrc: '', //发票路径
 				fppic: false,
+				images: {
+					localId: [], //发票图片列表
+					serverId: [] //微信服务端图片id
+				},
+				count: 0, //未删减房源图片数量
+
 			}
 		},
 		created() {
@@ -524,6 +599,139 @@
 			this.takexs(); //获取单个销售信息
 		},
 		methods: {
+			wechat_share() { //微信授权获取配置信息
+				const url = "http://omc.urskongjian.com/yhcms/web/weixin/shareYskj.do";
+				var url_share = window.location.href;
+				url_share = url_share.split('#')[0];
+				axios.post(url, {
+					"url": url_share
+				}).then((res) => {
+					let we_cs = res.data;
+					console.log(we_cs);
+					//微信签名调取
+					wx.config({
+						debug: false, // 开启调试模式
+						appId: we_cs.appId, // 必填，公众号的唯一标识
+						timestamp: we_cs.timestamp, // 必填，生成签名的时间戳
+						nonceStr: we_cs.nonceStr, // 必填，生成签名的随机串
+						signature: we_cs.signature, // 必填，签名
+						jsApiList: ["chooseImage", "previewImage", "uploadImage", "downloadImage", "getLocalImgData"]
+					});
+
+				}, (err) => {
+					console.log(err);
+				});
+			},
+			// 删除图片
+			del_img(index, id, event, item) {
+				const tag = $(event.target).attr("tag"),
+					which = {
+						"fy": "localId",
+						"hx": "",
+						"fm": ""
+					} [tag];
+				MessageBox({
+					title: '提示',
+					message: '请确认是否删除?',
+					showCancelButton: true,
+					confirmButtonText: "确认删除",
+					cancelButtonText: "取消删除"
+				}).then(action => {
+					if (action == 'confirm') {
+						console.log('确认删除')
+						this.images[which].splice(index,1);
+						// if(id != ''){
+						this.images[which][index].isdelete = "1";
+						var cout = 0; //统计未删除标识
+						for (var i = 0; i < this.images[which].length; i++) {
+							if (this.images[which][i].isdelete == '0') {
+								cout += 1;
+							}
+						}
+						this.count = cout; //还可以上传数量
+						// }
+					} else {
+						console.log('取消删除')
+					}
+				})
+
+			},
+			// 预览图片
+			see_img(item, index, event) {
+				var _this = this;
+				var url_img = []; //图片列表
+				for (var i = 0; i < _this.images.localId.length; i++) {
+					url_img.push(_this.images.localId[i].url);
+				}
+				wx.ready(function() {
+					wx.previewImage({
+						current: item.url,
+						urls: url_img
+					});
+				});
+			},
+			see_img2(item, index, event) {
+				var _this = this;
+				var url_img = []; //图片列表
+				for (var i = 0; i < _this.allData.imgList.length; i++) {
+					url_img.push(_this.allData.imgList[i].imgFapiao);
+				}
+				wx.ready(function() {
+					wx.previewImage({
+						current: item.imgFapiao,
+						urls: url_img
+					});
+				});
+			},
+			save_img() { // 保存发票图片到审批流
+				Indicator.open({
+					text: '等待中...',
+					spinnerType: 'fading-circle'
+				});
+				const that = this;
+				let fp = that.images.localId.map((item, idx) => {
+					return {
+						"id": item.id,
+						"isdelete": item.isdelete,
+						"url": item.url
+					};
+				});
+				for (var i = 0; i < fp.length; i++) {
+					const data = {
+						"imgFapiao": fp[i].url,
+						"yongjinid": this.$route.query.id,
+						"yongjintype": "1"
+					};
+					this.$http.post(
+						this.$api + "/yhcms/web/qdyongjin/imgadd.do", data).then((res) => {
+						//	        	  Indicator.close();
+						var result = JSON.parse(res.bodyText);
+						if (result.success) {
+							this.imgshow = true;
+							if(i == fp.length){
+								Indicator.close();
+								Toast({
+									message: '保存成功',
+									position: 'bottom',
+									duration: 1000
+								});
+							}
+						} else {
+							Toast({
+								message: '保存失败: ' + result.message,
+								position: 'bottom'
+							});
+						}
+					}, (res) => {
+						Indicator.close();
+						Toast({
+							message: '保存失败! 请稍候再试',
+							position: 'bottom'
+						});
+					});
+				}
+			},
+			// 原始代码开始
 			takexs() { //获取销售人员信息
 				const url = this.$api + "/yhcms/web/qdyongjin/getQdYjForid.do";
 				axios.post(url, {
@@ -587,8 +795,10 @@
 				});
 			},
 			addcopy() { //添加抄送人
-				if (this.imgList.length != 0) {
-					this.saveToserver(); //上传图片	
+				// if (this.imgList.length != 0) {
+				if (this.images.localId.length != 0) {
+					// this.saveToserver(); //上传图片	
+					this.save_img();
 				}
 				this.$router.push({
 					path: '/copy_p', //跳转抄送人页面
@@ -618,8 +828,12 @@
 			consent() { //同意审批
 				console.log("同意");
 
-				if (this.allData.imgList.length == 0 && this.imgList.length != 0) {
-					this.saveToserver(); //上传图片	
+				// if (this.allData.imgList.length == 0 && this.imgList.length != 0) {
+				if (this.allData.imgList.length == 0 && this.images.localId.length != 0) {
+					// this.saveToserver(); //上传图片	
+					
+					this.save_img();
+					
 					this.$router.push({
 						path: '/approval_opinion', //跳转到审批意见功能界面
 						query: {
@@ -628,10 +842,13 @@
 						}
 					})
 				}
-				if (this.allData.imgList.length != 0 && this.imgList.length != 0) {
-					this.saveToserver(); //上传图片		
+				// if (this.allData.imgList.length != 0 && this.imgList.length != 0) {
+				if (this.allData.imgList.length != 0 && this.images.localId.length != 0) {
+					// this.saveToserver(); //上传图片		
+					this.save_img();
 				}
-				if (this.allData.imgList.length != 0 && this.imgList.length == 0) {
+				// if (this.allData.imgList.length != 0 && this.imgList.length == 0) {
+				if (this.allData.imgList.length != 0 && this.images.localId.length == 0) {
 					this.$router.push({
 						path: '/approval_opinion', //跳转到审批意见功能界面
 						query: {
@@ -641,7 +858,8 @@
 					})
 					return
 				}
-				if (this.allData.imgList.length == 0 && this.imgList.length == 0) {
+				// if (this.allData.imgList.length == 0 && this.imgList.length == 0) {
+				if (this.allData.imgList.length == 0 && this.images.localId.length == 0) {
 					Toast({
 						message: '请选择发票图片',
 						position: 'center',
@@ -652,8 +870,11 @@
 
 			},
 			turnto() { //同意驳回
-				if (this.allData.imgList.length == 0 && this.imgList.length != 0) {
-					this.saveToserver(); //上传图片		
+				// if (this.allData.imgList.length == 0 && this.imgList.length != 0) {
+				if (this.allData.imgList.length == 0 && this.images.localId.length != 0) {
+					// this.saveToserver(); //上传图片		
+					this.save_img();
+					
 					this.$router.push({
 						path: '/turn_opinion', //跳转到审批意见功能界面
 						query: {
@@ -662,10 +883,12 @@
 						}
 					})
 				}
-				if (this.allData.imgList.length != 0 && this.imgList.length != 0) {
-					this.saveToserver(); //上传图片		
+				// if (this.allData.imgList.length != 0 && this.imgList.length != 0) {
+				if (this.allData.imgList.length != 0 && this.images.localId.length != 0) {
+					// this.saveToserver(); //上传图片		
+					this.save_img();
 				}
-				if (this.allData.imgList.length != 0 && this.imgList.length == 0) {
+				if (this.allData.imgList.length != 0 && this.images.localId.length == 0) {
 					this.$router.push({
 						path: '/turn_opinion', //跳转到审批意见功能界面
 						query: {
@@ -674,7 +897,8 @@
 						}
 					})
 				}
-				if (this.allData.imgList.length == 0 && this.imgList.length == 0) {
+				// if (this.allData.imgList.length == 0 && this.imgList.length == 0) {
+				if (this.allData.imgList.length == 0 && this.images.localId.length == 0) {
 					this.$router.push({
 						path: '/turn_opinion', //跳转到审批意见功能界面
 						query: {
@@ -888,7 +1112,118 @@
 
 		},
 		mounted() {
+			this.wechat_share();
+			var _this = this;
+			wx.ready(function() {
+				// 点击选择图片上传房源图片
+				$('.btns').click(function() {
+					var max = 80 - _this.count;
+					wx.chooseImage({
+						count: max, // 默认9
+						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+						sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+						success: function(res) {
+							var localIds = res.localIds;
+							// 上传预览方法
+							var i = 0,
+								length = res.localIds.length;
 
+							function upload() {
+								if (window.__wxjs_is_wkwebview) {
+									// ios端缩略图预览方法（兼容）
+									wx.getLocalImgData({
+										localId: res.localIds[i],
+										success: function(res) {
+											var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+											localData = localData.replace('jgp', 'jpeg'); //iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+											var fyobj = {
+												id: '',
+												fyid: '',
+												isdelete: '0',
+												type: '',
+												url: ''
+											};
+											fyobj.url = localData;
+											_this.images.localId.push(fyobj);
+										}
+									});
+								} else {
+									var fyobj = {
+										id: '',
+										fyid: '',
+										isdelete: '0',
+										type: '',
+										url: ''
+									};
+									fyobj.url = res.localIds[i];
+									_this.images.localId.push(fyobj);
+								}
+								// 上传到微信服务器
+								wx.uploadImage({
+									localId: res.localIds[i],
+									isShowProgressTips: 0, // 默认为1，显示进度提示
+									success: function(res) {
+										i++;
+										var media_id = res.serverId;
+										_this.images.serverId.push(res.serverId);
+										if (i < length) {
+											upload();
+										}
+										if (i == length && _this.images.serverId.length != 0) {
+											setTimeout(function() {
+												img_back();
+											}, 300);
+										}
+									},
+									fail: function(res) {
+										alert(JSON.stringify(res));
+									}
+								});
+
+							}
+							upload();
+							// 从后台服务器返回
+
+							function img_back() {
+								Indicator.open({
+									text: '等待中...',
+									spinnerType: 'fading-circle'
+								});
+
+								axios.post(_this.$api + '/yhcms/web/jcsj/uploadWxPic.do', {
+									"parameters": {
+										"pic1": _this.images.serverId.join(';').toString(),
+										"pic2": "",
+										"pic3": "",
+										"token": "14_WC2ION4wJrwpvnMtvh95GNvQkUXA1HDIQiz4pFM_VnFeGFkRdVQmoTgQmpE_sz0RH-oMoaB7U50V6ieXWsfUfF84rG-Z5NZzNqDEdbCA63WOLhROYDFs1gEhYewWOHfAFAJBU"
+									}
+								}).then((res) => {
+									var pic1 = res.data.pic1.split(';').reverse();
+									var arr = _this.images.localId.reverse();
+									for (var m = 0; m < pic1.length; m++) {
+										arr[m].url = _this.$prefix + '/' + pic1[m];
+									}
+									_this.images.localId = arr.reverse();
+
+									// alert(JSON.stringify(_this.images.localId));
+									var cout = 0; //统计未删除标识
+									for (var m = 0; m < _this.images.localId.length; m++) {
+										if (_this.images.localId[m].isdelete == '0') {
+											cout += 1;
+										}
+									}
+									_this.count = cout; //已有有效图片数量
+									Indicator.close();
+								}, (err) => {
+									console.log(err);
+								});
+							}
+
+						}
+					});
+
+				});
+			});
 		},
 	}
 </script>
