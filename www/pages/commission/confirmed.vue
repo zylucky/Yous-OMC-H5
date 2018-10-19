@@ -460,7 +460,7 @@
 						<span class="del_img" tag="fy" @click.stop="del_img(index, item.id, $event,item)"></span>
 						<img :src="item.url" alt="">
 					</li>
-					<li class="btns" v-show="count<80">+</li>
+					<li class="btns" v-show="images.localId.length<80">+</li>
 				</ul>
 			</div>
 			<!--申请进度-->
@@ -641,14 +641,14 @@
 						console.log('确认删除')
 						this.images[which].splice(index,1);
 						// if(id != ''){
-						this.images[which][index].isdelete = "1";
-						var cout = 0; //统计未删除标识
-						for (var i = 0; i < this.images[which].length; i++) {
-							if (this.images[which][i].isdelete == '0') {
-								cout += 1;
-							}
-						}
-						this.count = cout; //还可以上传数量
+						// this.images[which][index].isdelete = "1";
+						// var cout = 0; //统计未删除标识
+// 						for (var i = 0; i < this.images[which].length; i++) {
+// 							if (this.images[which][i].isdelete == '0') {
+// 								cout += 1;
+// 							}
+// 						}
+// 						this.count = cout; //还可以上传数量
 						// }
 					} else {
 						console.log('取消删除')
@@ -1117,7 +1117,7 @@
 			wx.ready(function() {
 				// 点击选择图片上传房源图片
 				$('.btns').click(function() {
-					var max = 80 - _this.count;
+					var max = 9;
 					wx.chooseImage({
 						count: max, // 默认9
 						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -1195,7 +1195,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "14_WC2ION4wJrwpvnMtvh95GNvQkUXA1HDIQiz4pFM_VnFeGFkRdVQmoTgQmpE_sz0RH-oMoaB7U50V6ieXWsfUfF84rG-Z5NZzNqDEdbCA63WOLhROYDFs1gEhYewWOHfAFAJBU"
+										"token": "14_ar6K9CBGiDHEaMGvYwy-DRc4GzGdzG9omMhMlXt24gf78_102rwZA-ZEZNv0j27WZFxowdmCpr9qJFwXFHV8AhO6Jt-P1mCzVWvsd3RYzPIamuGtJqfDFK16oUj_Cfjh72W1X3DN76YiSM11HITiAEAOPA"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
@@ -1206,13 +1206,13 @@
 									_this.images.localId = arr.reverse();
 
 									// alert(JSON.stringify(_this.images.localId));
-									var cout = 0; //统计未删除标识
-									for (var m = 0; m < _this.images.localId.length; m++) {
-										if (_this.images.localId[m].isdelete == '0') {
-											cout += 1;
-										}
-									}
-									_this.count = cout; //已有有效图片数量
+// 									var cout = 0; //统计未删除标识
+// 									for (var m = 0; m < _this.images.localId.length; m++) {
+// 										if (_this.images.localId[m].isdelete == '0') {
+// 											cout += 1;
+// 										}
+// 									}
+// 									_this.count = cout; //已有有效图片数量
 									Indicator.close();
 								}, (err) => {
 									console.log(err);
