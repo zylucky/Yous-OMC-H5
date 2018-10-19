@@ -86,6 +86,16 @@
           <span class="fjldcss" style="width: 100% !important;">房间亮点：</span>
           <span v-text="fangjlidian" style="width: 100% !important;"></span>
         </div>
+        <div class="weixin_head clearfix">
+          <span class="fjldcss" style="width: 100% !important;">房间亮点：</span>
+          <div>
+          	<span style="display: flex;justify-content: center;">房间带看（次）</span>
+	          <span style="display: flex;justify-content: center;">房间收藏（人）</span>
+	          <span v-text="fjdkcshu" style="display: flex;justify-content: center;color: rgb(91, 91, 91);"></span>
+	          <span v-text="fjshoucren" style="display: flex;justify-content: center;color: rgb(91, 91, 91);"></span>
+          </div>
+          
+        </div>
         <div class="weixin_head gift clearfix">
           <span class="row">礼品等级：<i v-text="lpdj"></i></i></span>
         </div>
@@ -148,6 +158,8 @@
         zc: "",
         chqxz: "",
         lpdj: "",
+        fjdkcshu:'',
+        fjshoucren:'',
         building_images: [],
         property: {"1":"写字楼", "2":"公寓","3":"商务楼","4":"住宅","5":"商业","6":"酒店","7":"综合","8":"别墅","9":"商业综合体","10":"酒店式公寓"},
         fangjlidian:"",
@@ -216,6 +228,8 @@
               _this.name = data.name || '暂无数据';
               _this.phone = data.phone || '暂无数据';
               _this.house_image = data.housing_icon.split(";");
+							_this.fjdkcshu = result.dkcount == 0 ? '暂无数据' : result.dkcount;
+							_this.fjshoucren = result.sccount == 0 ? '暂无数据' : result.sccount;
 
               const zc = data.zc || '暂无数据';
               _this.zc = zc === '0' ? '不可注册' : '可注册';
