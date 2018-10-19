@@ -1,5 +1,5 @@
 /**
- * Created by aresn on 16/6/20.
+ * Created by aresn on 16/6/20.12
  */
 import Vue from 'vue';
 import App from './app.vue';
