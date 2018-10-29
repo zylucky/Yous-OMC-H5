@@ -1195,7 +1195,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "14_ar6K9CBGiDHEaMGvYwy-DRc4GzGdzG9omMhMlXt24gf78_102rwZA-ZEZNv0j27WZFxowdmCpr9qJFwXFHV8AhO6Jt-P1mCzVWvsd3RYzPIamuGtJqfDFK16oUj_Cfjh72W1X3DN76YiSM11HITiAEAOPA"
+										"token": ""
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
