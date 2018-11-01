@@ -157,6 +157,7 @@ export default{
             cnt2:0,
             cnt3:0,
             options:[{label:'是',value:'true'}, {label:'否',value:'false'}],
+						isclick:true,//防止重复点击
         }
     },
     created(){//判断跳转
@@ -435,18 +436,18 @@ export default{
             this.mark =true;
         },
         submit(){
-//            if(!this.company||!this.companyId){
-//                MessageBox('提示', '请输入公司');
-//                return;
-//            }
-//            if(!this.person||!this.personId){
-//                MessageBox('提示', '请输入人员');
-//                return;
-//            }
-//            if(!this.tel||!(/^1(3|4|5|7|8)\d{9}$/.test(this.tel))){
-//                MessageBox('提示', '请正确输入手机号');
-//                return;
-//            }
+           if(!this.company||!this.companyId){
+               MessageBox('提示', '请输入公司');
+               return;
+           }
+           if(!this.person){
+               MessageBox('提示', '请输入人员');
+               return;
+           }
+           if(!this.tel||!(/^1(3|4|5|6|7|8)\d{9}$/.test(this.tel))){
+               MessageBox('提示', '请正确输入手机号');
+               return;
+           }
 
             this.property.forEach((item,index)=>{
                 if(!item.loupan||!item.loupanId){
@@ -499,25 +500,35 @@ export default{
                 "cookie":JSON.parse(localStorage.getItem('cookxs')),
                 "shuoming":this.info,
             }
-            this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
-                var response = JSON.parse(JSON.stringify(res.data));
-                if(response.success==true){
-                    Toast({
-                        message: '提交成功',
-                        iconClass: 'icon icon-success'
-                    });
-                    this.$router.push('/daikan_logs');
-                }else{
-                    Toast({
-                        message: response.msg,
-                    });
-                }
-            }).catch(function (error) {
-                Toast({
-                    message: error,
-                    iconClass: ''
-                });
-            });
+						var _this = this;
+								if(_this.isclick){
+						        _this.isclick= false;
+						        //定时器
+										this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
+												var response = JSON.parse(JSON.stringify(res.data));
+												if(response.success==true){
+														Toast({
+																message: '提交成功',
+																iconClass: 'icon icon-success'
+														});
+														this.$router.push('/daikan_logs');
+												}else{
+														Toast({
+																message: response.msg,
+														});
+												}
+										}).catch(function (error) {
+												Toast({
+														message: error,
+														iconClass: ''
+												});
+										});
+						
+						        setTimeout(function(){ 
+						            _this.isclick = true;
+						        }, 2000);
+						    }
+            
         },
         clk(a){
 //      	console.log(a);

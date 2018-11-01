@@ -22,8 +22,8 @@
         <div id="slideBox" class="slideBox">
           <div class="swiper-container">
             <div class="swiper-wrapper">
-              <div class="swiper-slide" v-for="image in house_image">
-                <a href="javascript:;" @click="enlarge">
+              <div class="swiper-slide" v-for="(image,index) in house_image">
+                <a href="javascript:;" @click="see_img(image,index)">
                   <img v-if="image" :src="$prefix + '/' + image" alt="">
                   <img v-else :src="$prefix + '/upload/2017-08-27/6404b4de960b81fc5403c870aefcea34.png'" alt="">
                 </a>
@@ -167,7 +167,20 @@
       }
     },
     methods: {
-
+				// 预览图片
+				see_img(item, index) {
+					var _this = this;
+					var url_img = []; //图片列表
+					for (var i = 0; i < _this.house_image.length; i++) {
+						url_img.push(_this.$prefix + '/' + _this.house_image[i]);
+					}
+					wx.ready(function() {
+						wx.previewImage({
+							current: _this.$prefix + '/' + item,
+							urls: url_img
+						});
+					});
+				},
         daikan_daka(){
             $("#zhezhao").remove();
             $('html').removeAttr("style");
@@ -306,7 +319,7 @@
 					      timestamp: we_cs.timestamp, // 必填，生成签名的时间戳
 					      nonceStr: we_cs.nonceStr, // 必填，生成签名的随机串
 					      signature: we_cs.signature, // 必填，签名
-					      jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone", "getLocation", "scanQRCode", "closeWindow", "addCard", "chooseWxPay"]
+					      jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone", "getLocation", "scanQRCode", "closeWindow", "addCard", "chooseWxPay","chooseImage", "previewImage", "uploadImage", "downloadImage", "getLocalImgData"]
 					});
 					
 	      }, (err)=>{
