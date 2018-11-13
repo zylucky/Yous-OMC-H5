@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "better-scroll": "^1.12.1", 
+    "better-scroll": "^1.12.1",
     "css-loader": "^0.28.7",
     "jquery": "^3.2.1",
     "less": "^2.7.3",
