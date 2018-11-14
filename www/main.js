@@ -22,12 +22,12 @@ Vue.component(Search.name, Search);
 
 
 // 生产环境
-Vue.prototype.$prefix = "http://omc.urskongjian.com:81" //图片前缀
-Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+// Vue.prototype.$prefix = "http://omc.urskongjian.com:81" //图片前缀
+// Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 
 //测试ip
-// Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
-// Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
+Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 
 // Vue.prototype.$api = "http://192.168.0.105:8080" //Mr.Cheng IP Address
 
@@ -467,11 +467,32 @@ var router = new VueRouter({
 				title: '我的渠道'
 			}
 		},
-		{ //测试demo12
+		{
 			path: '/img_load',
 			component: require('./pages/testpage/img_load.vue'),
 			meta: {
 				title: '图片上传'
+			}
+		},
+		{
+			path: '/ctrl',
+			component: require('./pages/order_gd/ctrl.vue'),
+			meta: {
+				title: '亮狮工单'
+			}
+		},
+		{
+			path: '/gs_register',
+			component: require('./pages/order_gd/gs_register.vue'),
+			meta: {
+				title: '工商注册工单'
+			}
+		},
+		{
+			path: '/gtasks',
+			component: require('./pages/order_gd/gtasks.vue'),
+			meta: {
+				title: '我的待办'
 			}
 		},
 

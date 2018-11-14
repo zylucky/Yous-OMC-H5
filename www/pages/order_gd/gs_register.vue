@@ -1,0 +1,411 @@
+<template>
+	<div class="gs_register_box">
+		<!-- 主体 -->
+		<div class="gs_box_top">
+			<!-- 房间信息 -->
+			<ul class="news_box">
+				<p class="title">房间信息</p>
+				<li>
+					<p class="tit"><i>*</i>楼盘</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入楼盘名称">
+					</p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>座栋</p>
+					<p class="inp">
+						<!-- <input type="text" readonly="readonly" placeholder="请选择座栋"> -->
+						<span class="chel_tex">请选择座栋</span>
+					</p>
+					<p class="jt"></p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>房间号</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入房间号">
+					</p>
+				</li>
+			</ul>
+			<!-- 工单类型 -->
+			<ul class="news_box">
+				<p class="title">工单类型</p>
+				<li>
+					<p class="tit"><i>*</i>发起事由</p>
+					<p class="inp">
+						<!-- <input type="text" readonly="readonly" placeholder="请选择发起事由"> -->
+						<span class="chel_tex">请选择发起事由</span>
+					</p>
+					<p class="jt"></p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>需求方属性</p>
+					<p class="inp">
+						<!-- <input type="text" readonly="readonly" placeholder="请选择需求方属性"> -->
+						<span class="chel_tex">请选择需求方属性</span>
+					</p>
+					<p class="jt"></p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>接单来源</p>
+					<p class="inp">
+						<!-- <input type="text" readonly="readonly" placeholder="请选择接单来源"> -->
+						<span class="chel_tex">请选择接单来源</span>
+					</p>
+					<p class="jt"></p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>工单紧急情况</p>
+					<p class="inp">
+						<!-- <input type="text" readonly="readonly" placeholder="请选择工单紧急情况"> -->
+						<span class="chel_tex">请选择工单紧急情况</span>
+					</p>
+					<p class="jt"></p>
+				</li>
+			</ul>
+			<!-- 客户信息 -->
+			<ul class="news_box">
+				<p class="title">客户信息</p>
+				<li>
+					<p class="tit"><i>*</i>客户姓名</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入客户姓名">
+					</p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>联系方式</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入联系方式">
+					</p>
+				</li>
+				<li class="inp_are">
+					<p class="tit inp_are_txt"><i>*</i>告知详情</p>
+					<p class="inp inp_p">
+						<textarea class="text_ar" placeholder="请输入告知详情"></textarea>
+					</p>
+				</li>
+			</ul>
+			<!-- 其他信息 -->
+			<ul class="news_box">
+				<p class="title">其他信息</p>
+				<li>
+					<p class="tit"><i>*</i>管家是否联系</p>
+					<p class="inp" style="display: flex;display: -webkit-flex;">
+						<mt-radio
+						align="left"
+						title=""
+						v-model="value"
+						:options="['是', '否']">
+						</mt-radio>
+					</p>
+				</li>
+				<li>
+					<p class="tit"><i style="visibility: hidden;">*</i>回复客户时间</p>
+					<p class="inp">
+						<span class="chel_tex">请选择客户回复时间</span>
+					</p>
+					<p class="jt"></p>
+				</li>
+				<li class="inp_are">
+					<p class="tit inp_are_txt"><i style="visibility: hidden;">*</i>备注</p>
+					<p class="inp inp_p">
+						<textarea class="text_ar" placeholder="请输入备注"></textarea>
+					</p>
+				</li>
+			</ul>
+			<!-- 图片 -->
+			<ul class="news_box img_tp_box">
+				<p class="img_t"><i style="visibility: hidden;">*</i>图片</p>
+				<ul class="img_list_box">
+					<li>
+						<img src="" alt="">
+						<span class="del_img_btn"></span>
+					</li>
+					<li class="add_img"></li>
+				</ul>
+			</ul>
+			<!-- 跟单人 -->
+			<ul class="news_box img_tp_box">
+				<p class="img_t"><i style="visibility: hidden;">*</i>跟单人</p>
+				<ul class="img_list_box copy_person">
+					<li>
+						<p class="head_img">
+							<img src="../../resources/images/commission/head_img.png" alt="">	
+						</p>
+						<p class="copy_name">张三</p>
+					</li>
+				</ul>
+			</ul>
+			<!-- 抄送人 -->
+			<ul class="news_box img_tp_box">
+				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
+				<ul class="img_list_box copy_person">
+					<li>
+						<p class="head_img">
+							<img src="../../resources/images/commission/head_img.png" alt="">	
+							<span class="del_img_btn"></span>
+						</p>
+						<p class="copy_name">张三</p>
+					</li>
+					<li>
+						<p class="head_img">
+							<img src="../../resources/images/commission/head_img.png" alt="">	
+							<span class="del_img_btn"></span>
+						</p>
+						<p class="copy_name">张三</p>
+					</li>
+					<li>
+						<p class="head_img add_copy_person"></p>
+						<p class="copy_name"></p>
+					</li>
+				</ul>
+			</ul>
+			<div class="see_lct">查看工单流程图</div>
+		</div>
+		<!-- 底部悬浮按钮 -->
+		<div class="gs_box_bottom">
+			<div class="btn_fq">发起工单</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	import { Radio } from 'mint-ui';
+	export default {
+		data(){
+			return{
+				value:''
+			}
+		}
+	}
+</script>
+
+<style scoped lang='less'>
+@import "../../resources/css/reset.css";
+@import "../../resources/css/base.less";
+.gs_register_box,.gs_box_top,.gs_box_bottom{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+}
+.gs_box_top{
+	bottom: 1.2rem;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.gs_box_bottom{
+	height: 1.2rem;
+	top: initial;
+	background: #ffffff;
+}
+.news_box{
+	background: #fff;
+	padding: 0 0 0 0.3rem;
+	margin-bottom: 0.23rem;
+}
+.title{
+	height: 0.76rem;
+	line-height: 0.76rem;
+	font-size: 0.32rem;
+	color: #333;
+	font-weight: bold;
+}
+.news_box li{
+	display: flex;
+	align-items: center;
+	height: 1.1rem;
+	border-bottom: 1px solid #e5e5e5;
+}
+.img_tp_box li{
+	border-bottom: none;
+}
+.news_box li:last-child{
+	border-bottom: none;
+}
+.tit{
+	width: 2rem;
+	font-size: 0.3rem;
+	color: #333;
+	/* font-weight: 500; */
+	text-align: left;
+	margin-right: 0.5rem;
+}
+.tit i{
+	color: #ff6263;
+}
+.inp{
+	width: 4.2rem;
+	height: 1.1rem;
+	line-height: 1.1rem;
+	overflow: hidden!important;
+}
+.inp input{
+	height: 100%;
+	background: none;
+	font-size: 0.3rem;
+	color: #333;
+	padding: 0;
+}
+.jt{
+	width: 0.14rem;
+	height: 0.24rem;
+	background: url(../../resources/images/order_gd/jt_ion.png) no-repeat center;
+	background-size: 100% auto;
+	margin-left: 0.1rem;
+}
+input::-webkit-input-placeholder{
+		color: #c8c8c8;
+		font-size: 0.3rem;
+}
+.text_ar{
+	height: 1.6rem;
+	width: 100%;
+	padding: 0.4rem 0 0 0;
+	background: #fff;
+	border: none;
+	font-size: 0.3rem;
+}
+.text_ar::-webkit-input-placeholder{
+    color:#c8c8c8;
+	font-size: 0.3rem;
+}
+.inp_are{
+	height: auto!important;
+	align-items: flex-start!important;
+}
+.inp_are_txt{
+	padding-top: 0.4rem;
+}
+.inp_p{
+	height: auto!important;
+}
+.inp .mint-radiolist{
+	display: flex!important;
+	align-items: center!important;
+}
+input{-webkit-appearance:none;}
+.inp .chel_tex{
+	display: inline-block;
+	height: 100%;
+	font-size: 0.3rem;
+	color: #c8c8c8;
+}
+.btn_fq{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 6.9rem;
+	height: 0.9rem;
+	line-height: 0.9rem;
+	background: #2896ff;
+	margin: -0.45rem 0 0 -3.45rem;
+	border-radius: 0.05rem;
+	font-size: 0.32rem;
+	color: #fefefe;
+	text-align: center;
+}
+/* 图片 */
+.img_t{
+	font-size: 0.3rem;
+	color: #333333;
+	height: 1rem;
+	line-height: 1rem;
+}
+.img_list_box{
+	display: flex;
+	display: -webkit-flex;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	padding-bottom: 0.65rem;
+	padding-left: 0.1rem;
+	padding-right: 0.3rem;
+}
+.img_list_box li{
+	position: relative;
+	width: 1.25rem;
+	height: 1.25rem;
+	margin: 0 0.45rem 0.3rem 0rem;
+}
+.img_list_box li img{
+	width: 100%;
+	height: auto;
+}
+.add_img{
+	background: #f0eff5 url(../../resources/images/order_gd/add_img_ion.png) no-repeat center;
+	background-size: 50% auto;
+}
+.del_img_btn{
+	display: inline-block;
+	position: absolute;
+	top: -0.14rem;
+	right: -0.14rem;
+	width: 0.36rem;
+	height: 0.36rem;
+	background: url(../../resources/images/order_gd/close.png) no-repeat center;
+	background-size: 100% auto;
+}
+/* 查看流程图 */
+.see_lct{
+	width: 3rem;
+	height: 0.66rem;
+	line-height: 0.66rem;
+	font-size: 0.26rem;
+	color: #2b70d8;
+	text-align: center;
+	margin: 0.46rem auto 0.6rem;
+	background: #fff;
+	border-radius: 0.3rem;
+}
+/* 抄送人 */
+.copy_person{
+	
+}
+.copy_person li{
+	width: auto;
+	height: auto;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+}
+.head_img{
+	position: relative;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+}
+.head_img .del_img_btn{
+	right: -0.1rem;
+	top: -0.1rem;
+}
+.copy_name{
+	font-size: 0.28rem;
+	color: #666666;
+	text-align: center;
+	margin-top: 0.2rem;
+}
+.head_img img{
+	width: 100%;
+	height: auto;
+	border-radius: 50%;
+}
+.add_copy_person{
+	background: #f0eff5 url(../../resources/images/order_gd/add_img_ion.png) no-repeat center;
+	background-size: 50% auto;
+}
+</style>
+<style>
+	.inp .mint-cell-wrapper{
+		background: #fff!important;
+		background-image: none!important;
+		padding: 0!important;
+	}
+	.inp .mint-radiolist-label{
+		padding: 0 1rem 0 0!important;
+	}
+	.inp .mint-radiolist-title{
+		margin: 0!important;
+	}
+</style>
