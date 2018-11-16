@@ -31,7 +31,7 @@
 				<p class="title">工单类型</p>
 				<li>
 					<p class="tit"><i>*</i>发起事由</p>
-					<p class="inp">
+					<p class="inp" @click="sel_fqsy">
 						<!-- <input type="text" readonly="readonly" placeholder="请选择发起事由"> -->
 						<span class="chel_tex">请选择发起事由</span>
 					</p>
@@ -153,7 +153,7 @@
 						</p>
 						<p class="copy_name">张三</p>
 					</li>
-					<li>
+					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
 						<p class="copy_name"></p>
 					</li>
@@ -161,19 +161,54 @@
 			</ul>
 			<div class="see_lct">查看工单流程图</div>
 		</div>
+
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
 			<div class="btn_fq">发起工单</div>
+		</div>
+		<div class="pop_picker">
+			<div class="sel_picker">
+				<p class="sel_qx">取消</p>
+				<p class="sel_qr">确认</p>
+			</div>
+			<mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
 		</div>
 	</div>
 </template>
 
 <script>
 	import { Radio } from 'mint-ui';
+	import { Picker } from 'mint-ui';
 	export default {
 		data(){
 			return{
-				value:''
+				value:'',
+				slots: [
+				{
+				  flex: 1,
+				  values: ['请选择发起事由', '工商注册', '工商备案', '工商迁址', '上传资料', '其他需求','咨询类服务','工商注册/备案/迁址'],
+				  className: 'slot1',
+				  textAlign: 'center',
+				  defaultIndex:  1,
+				}
+			  ]
+			}
+		},
+		methods:{
+			onValuesChange(picker, values) {
+			  // picker.setSlotValue(1, values[0]);
+			  console.log(values);
+			},
+			add_copy(){
+				this.$router.push({
+					path:'/gs_copy',//跳转到审批页面
+					query:{}
+				})
+			},
+			sel_fqsy(){//请选择发起事由
+				$('.pop_picker').animate({
+					bottom: 0
+				},300)
 			}
 		}
 	}
@@ -330,7 +365,7 @@ input{-webkit-appearance:none;}
 }
 .img_list_box li img{
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 .add_img{
 	background: #f0eff5 url(../../resources/images/order_gd/add_img_ion.png) no-repeat center;
@@ -394,6 +429,34 @@ input{-webkit-appearance:none;}
 .add_copy_person{
 	background: #f0eff5 url(../../resources/images/order_gd/add_img_ion.png) no-repeat center;
 	background-size: 50% auto;
+}
+.pop_picker{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+	height: 5.2rem;
+	width: 100%;
+	position: absolute;
+	bottom: -5.2rem;
+	background: #fff;
+}
+.pop_picker .picker{
+	width: 100%!important;
+}
+.sel_picker{
+	position: absolute;
+	top: 0;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 0.45rem;
+	width: 100%;
+	height: 1rem;
+	line-height: 1rem;
+}
+.sel_picker p{
+	font-size: 0.3rem;
+	color: #2b70d8;
 }
 </style>
 <style>

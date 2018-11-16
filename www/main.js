@@ -489,10 +489,31 @@ var router = new VueRouter({
 			}
 		},
 		{
+			path: '/gs_copy',
+			component: require('./pages/order_gd/copy_p.vue'),
+			meta: {
+				title: '添加抄送人'
+			}
+		},
+		{
 			path: '/gtasks',
 			component: require('./pages/order_gd/gtasks.vue'),
 			meta: {
 				title: '我的待办'
+			}
+		},
+		{
+			path: '/gtasks_search',
+			component: require('./pages/order_gd/gtasks_search.vue'),
+			meta: {
+				title: '我的待办'
+			}
+		},
+		{
+			path: '/take_orders',
+			component: require('./pages/order_gd/take_orders.vue'),
+			meta: {
+				title: '工单'
 			}
 		},
 

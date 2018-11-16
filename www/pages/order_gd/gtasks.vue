@@ -3,18 +3,18 @@
 		<!-- 头部 -->
 		<div class="gtasks_box_top">
 			<div class="search_box">
-				<p class="search">
+				<p class="search" @click="to_search">
 					<span class="search_ion"></span>
 					<span class="search_placeholder">搜索楼盘名称/座栋/房间号</span>
 				</p>
 			</div>
 			<div class="term_box">
 				<ul class="term">
-					<li>
+					<li @click="date_px">
 						<span class="term_txt">按更新时间正序</span>
 						<span class="term_ion"></span>
 					</li>
-					<li>
+					<li @click="type_sx">
 						<span class="term_txt">筛选</span>
 						<span class="term_ion"></span>
 					</li>
@@ -23,6 +23,12 @@
 		</div>
 		<!-- 主体 -->
 		<div class="gtasks_box_bottom">
+			<!-- 筛选项 -->
+			<div class="zz_box">
+				<ul class="sx_list">
+					<li v-for="(item,index) in typeData" @click="sel_type(item,index)" :style="item==type?'color:rgb(43, 112, 216)':'color:#333!important'">{{item}}</li>
+				</ul>
+			</div>
 			<!-- 空样式 -->
 			<div class="kong" v-if="false">
 				<p class="k_ion">
@@ -63,7 +69,76 @@
 
 <script>
 	export default {
-		
+		data(){
+			return{
+				time_sort: 0,//0正序，1逆序
+				sx_type: 0,
+				typeData:['全部','工商注册','问题保修','缴费事宜','其他事项','投诉派单','工商注册-费用审批','问题报修-预算单'],
+				type: '',
+			}
+		},
+		methods:{
+			date_px(){//按更新时间排序
+				if(this.time_sort == 0){
+					this.time_sort = 1;
+					$('.term li:first-child span:last-child').css({
+						transform: "rotate(0deg)"
+					});					
+					$('.term li:first-child span:first-child').text('按更新时间倒序');
+				}else{
+					this.time_sort = 0;
+					$('.term li:first-child span:last-child').css({
+						transform: "rotate(180deg)"
+					});
+					$('.term li:first-child span:first-child').text('按更新时间正序');
+				}
+			},
+			type_sx(){//筛选
+				if(this.sx_type == 0){
+					this.sx_type = 1;
+					$('.term li:last-child span:first-child').css('color','#2b70d8');
+					$('.term li:last-child span:last-child').removeClass('sx_active1');
+					$('.term li:last-child span:last-child').addClass('sx_active');
+					$('.zz_box').css({
+						display: 'block'
+					});
+				}else{
+					this.sx_type = 0;
+					$('.term li:last-child span:first-child').css('color','#333');
+					$('.term li:last-child span:last-child').removeClass('sx_active');
+					$('.term li:last-child span:last-child').addClass('sx_active1');
+					$('.zz_box').css({
+						display: 'none'
+					});
+				}
+			},
+			sel_type(item,index){
+				this.type = item;
+				this.sx_type = 0;
+				if(this.type == '全部'){
+					this.sx_type = 0;
+					$('.term li:last-child span:first-child').css('color','#333');
+					$('.term li:last-child span:last-child').removeClass('sx_active');
+					$('.term li:last-child span:last-child').removeClass('sx_active2');
+					$('.term li:last-child span:last-child').addClass('sx_active1');
+				}else{
+					$('.term li:last-child span:first-child').css('color','rgb(43, 112, 216)');
+					$('.term li:last-child span:last-child').removeClass('sx_active');
+					$('.term li:last-child span:last-child').removeClass('sx_active1');
+					$('.term li:last-child span:last-child').addClass('sx_active2');
+				}
+				$('.zz_box').css({
+					display: 'none'
+				});
+			},
+			to_search(){//跳转搜索页
+				this.$router.push({
+					path:'/gtasks_search',//跳转到审批页面
+					query:{}
+				})
+			},
+			
+		}
 	}
 </script>
 
@@ -143,12 +218,37 @@
 .term_ion{
 	width: 0.19rem;
 	height: 0.14rem;
-	background: url(../../resources/images/order_gd/team_ion1.png) no-repeat center;
-	background-size: 100% auto;
 	margin-left: 0.22rem;
 }
-.term_txt{
-	
+.term li:first-child span:last-child{
+	background: url(../../resources/images/order_gd/team_ion2.png) no-repeat center;
+	background-size: 100% auto;
+	transform: rotate(180deg);
+}
+.term li:last-child span:last-child{
+	background: url(../../resources/images/order_gd/team_ion1.png) no-repeat center;
+	background-size: 100% auto;
+}
+.sx_active{
+	background: url(../../resources/images/order_gd/team_ion2.png) no-repeat center!important;
+	background-size: 100% auto!important;
+	transform: rotate(180deg)!important;
+}
+.sx_active1{
+	background: url(../../resources/images/order_gd/team_ion1.png) no-repeat center!important;
+	background-size: 100% auto!important;
+	transform: rotate(0deg)!important;
+}
+.sx_active2{
+	background: url(../../resources/images/order_gd/team_ion2.png) no-repeat center!important;
+	background-size: 100% auto!important;
+	transform: rotate(0deg)!important;
+}
+.term li:first-child span:first-child{
+	color: #2b70d8;
+}
+.term li:first-child span:last-child{
+	color: #333333;
 }
 .term li:first-child::after{
 	position: absolute;
@@ -231,5 +331,29 @@
 		text-align: center;
 		margin-top: 0.46rem;
 	}
+}
+.zz_box{
+	position: fixed;
+	z-index: 9;
+	left: 0;
+	right: 0;
+	top: 1.96rem;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	display: none;
+}
+.sx_list{
+	background: #fff;
+	padding-left: 0.3rem;
+}
+.sx_list li{
+	height: 1rem;
+	line-height: 1rem;
+	font-size: 0.3rem;
+	color: #333333;
+	border-bottom: 1px solid #e5e4e4;
+}
+.sx_list li:last-child{
+	border-bottom: none;
 }
 </style>
