@@ -171,7 +171,7 @@
 		methods:{
 			add_copy(){
 				this.$router.push({
-					path:'/gs_copy',//跳转到审批页面
+					path:'/gs_copy',//跳转到审批页面123
 					query:{}
 				})
 			},
