@@ -516,6 +516,20 @@ var router = new VueRouter({
 				title: '工单'
 			}
 		},
+		{
+			path: '/gd_record',
+			component: require('./pages/order_gd/gd_record.vue'),
+			meta: {
+				title: '处理记录编辑'
+			}
+		},
+		{
+			path: '/gd_sendon',
+			component: require('./pages/order_gd/gd_sendon.vue'),
+			meta: {
+				title: '选择转交人员'
+			}
+		},
 
 	]
 });

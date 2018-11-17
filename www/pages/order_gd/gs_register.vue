@@ -79,7 +79,7 @@
 				</li>
 				<li class="inp_are">
 					<p class="tit inp_are_txt"><i>*</i>告知详情</p>
-					<p class="inp inp_p">
+					<p class="inp inp_p" style="font-size: 0.3rem!important">
 						<textarea class="text_ar" placeholder="请输入告知详情"></textarea>
 					</p>
 				</li>
@@ -107,7 +107,7 @@
 				</li>
 				<li class="inp_are">
 					<p class="tit inp_are_txt"><i style="visibility: hidden;">*</i>备注</p>
-					<p class="inp inp_p">
+					<p class="inp inp_p" style="font-size: 0.3rem!important">
 						<textarea class="text_ar" placeholder="请输入备注"></textarea>
 					</p>
 				</li>
@@ -210,6 +210,29 @@
 					bottom: 0
 				},300)
 			}
+		},
+		mounted(){
+			// 解决键盘弹出底部上浮问题
+			var winHeight = $(window).height();   //获取当前页面高度
+			$(window).resize(function(){
+			   var thisHeight=$(this).height();
+			    if(winHeight - thisHeight >50){
+			         //当软键盘弹出，在这里面操作
+					$(".gs_box_bottom").css({
+						"display":"none"
+					});
+					$(".gs_box_top").css("bottom","0");
+			    }else{
+			        //当软键盘收起，在此处操作
+					$(".gs_box_bottom").css({
+						"display":"block",
+						"height":"1.2rem"
+					});
+					$(".gs_box_top").css({
+						"bottom":"1.2rem",
+					});
+			    }
+			});
 		}
 	}
 </script>
@@ -234,6 +257,7 @@
 	height: 1.2rem;
 	top: initial;
 	background: #ffffff;
+	border-top: 1px solid #e5e5e5;
 }
 .news_box{
 	background: #fff;
@@ -300,7 +324,6 @@ input::-webkit-input-placeholder{
 	padding: 0.4rem 0 0 0;
 	background: #fff;
 	border: none;
-	font-size: 0.3rem;
 }
 .text_ar::-webkit-input-placeholder{
     color:#c8c8c8;

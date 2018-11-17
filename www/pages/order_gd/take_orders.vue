@@ -151,21 +151,36 @@
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
 			<ul class="bottom_nav">
-				<li>接单</li>
+				<li @click="jd_btn">接单</li>
 				<li>拒绝</li>
-				<li>更多</li>
+				<li @click="more_btn">更多</li>
+			</ul>
+		</div>
+		<!-- 遮罩层 -->
+		<div class="zzc_box" v-if="zz_state" @click="zz_state=false">
+			<ul class="more_nav" @click.stop="">
+				<li>
+					<p><img src="../../resources/images/order_gd/zj_btn_ion.png" alt=""></p>
+					<p>转交</p>
+				</li>
+				<li>
+					<p><img src="../../resources/images/order_gd/sqfy_btn_ion.png" alt=""></p>
+					<p>申请费用</p>
+				</li>
 			</ul>
 		</div>
 	</div>
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui';
 	export default {
 		data(){
 			return{
 				value:'',
-				pj_state: false,
-				pj_sta: 'yuan',
+				pj_state: false,//列表折叠
+				pj_sta: 'yuan',//列表折叠状态
+				zz_state: false,//遮罩层显示/隐藏控制
 			}
 		},
 		methods:{
@@ -208,7 +223,26 @@
 						display: "none"
 					});	
 				}
-			}
+			},
+			jd_btn(){//接单
+				MessageBox.confirm('', { 
+					message: '是否确定接单?', 
+					title: '提示', 
+					confirmButtonText: '确认', 
+					cancelButtonText: '取消' 
+				}).then(action => { 
+					if (action == 'confirm') {//确认的回调
+						console.log('确认'); 
+					}
+				}).catch(err => { 
+					if (err == 'cancel') {//取消的回调
+						console.log('取消');
+					} 
+				})
+			},
+			more_btn(){
+				this.zz_state = true;
+			},
 			
 		},
 		mounted(){
@@ -583,6 +617,50 @@
 		font-size: 0.24rem;
 		color: #999999;
 		line-height: 0.36rem;
+	}
+}
+.zzc_box{
+	position: fixed;
+	z-index: 99;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+}
+.more_nav{
+	display: flex;
+	display: -webkit-flex;
+	position: absolute;
+	left: 50%;
+	bottom: 1.3rem;
+	margin-left: -3.45rem;
+	width: 6.9rem;
+	height: 2.6rem;
+	background: #fff;
+	border-radius: 0.05rem;
+	padding: 0.46rem 0 0 0.4rem;
+	li{
+		display: flex;
+		display: -webkit-flex;
+		flex-direction: column;
+		-webkit-flex-direction: column;
+		align-items: center;
+		-webkit-align-items: center;
+		margin-right: 0.7rem;
+		p:first-child{
+			width: 0.97rem;
+			height: 0.97rem;
+			border-radius: 50%;
+			overflow: hidden;
+			img{width: 100%;height: 100%;}
+		}
+		p:last-child{
+			text-align: center;
+			font-size: 0.28rem;
+			color: #666666;
+			margin-top: 0.16rem;
+		}
 	}
 }
 </style>
