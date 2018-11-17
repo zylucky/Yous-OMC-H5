@@ -166,12 +166,15 @@
 		<div class="gs_box_bottom">
 			<div class="btn_fq">发起工单</div>
 		</div>
-		<div class="pop_picker">
-			<div class="sel_picker">
-				<p class="sel_qx">取消</p>
-				<p class="sel_qr">确认</p>
-			</div>
-			<mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+		<!-- 选择框遮罩层 -->
+		<div class="pop_picker_zzc" v-show="zzc_state">
+			<div class="pop_picker">
+				<div class="sel_picker">
+					<p class="sel_qx" @click="sel_calc">取消</p>
+					<p class="sel_qr" @click="sel_betrue">确认</p>
+				</div>
+				<mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+			</div>			
 		</div>
 	</div>
 </template>
@@ -191,7 +194,8 @@
 				  textAlign: 'center',
 				  defaultIndex:  1,
 				}
-			  ]
+			  ],
+			  zzc_state: false,
 			}
 		},
 		methods:{
@@ -206,10 +210,20 @@
 				})
 			},
 			sel_fqsy(){//请选择发起事由
+				this.zzc_state = true;
 				$('.pop_picker').animate({
 					bottom: 0
 				},300)
+			},
+			sel_calc(){//取消选择
+				this.zzc_state = false;
+				$('.pop_picker').css("bottom","-5.2rem");
+			},
+			sel_betrue(){//确认选择
+				this.zzc_state = false;
+				$('.pop_picker').css("bottom","-5.2rem");
 			}
+			
 		},
 		mounted(){
 			// 解决键盘弹出底部上浮问题
@@ -480,6 +494,14 @@ input{-webkit-appearance:none;}
 .sel_picker p{
 	font-size: 0.3rem;
 	color: #2b70d8;
+}
+.pop_picker_zzc{
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	background: rgba(0,0,0,0.5);
 }
 </style>
 <style>
