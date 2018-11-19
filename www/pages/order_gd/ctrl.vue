@@ -5,7 +5,7 @@
 				<img src="../../resources/images/order_gd/top_bg.png" alt="">
 			</div>
 			<ul class="nav_top">
-				<li>
+				<li @click="my_db">
 					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion6.png" alt=""></p>
 					<p class="nav_txt">我的待办</p>
 				</li>
@@ -66,6 +66,14 @@
 		data(){
 			return{
 				navData:["我的待办","我发起的","我经办的","已完成的","抄送我的","我的跟进"],
+			}
+		},
+		methods:{
+			my_db(){
+				this.$router.push({
+					path:'/gtasks',//跳转到我的待办
+					query:{}
+				})
 			}
 		}
 	}

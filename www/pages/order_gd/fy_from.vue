@@ -2,113 +2,44 @@
 	<div class="gs_register_box">
 		<!-- 主体 -->
 		<div class="gs_box_top">
-			<!-- 房间信息 -->
-			<ul class="news_box">
-				<p class="title">房间信息</p>
-				<li>
-					<p class="tit"><i>*</i>楼盘</p>
-					<p class="inp">
-						<input type="text" placeholder="请输入楼盘名称">
-					</p>
-				</li>
-				<li>
-					<p class="tit"><i>*</i>座栋</p>
-					<p class="inp">
-						<!-- <input type="text" readonly="readonly" placeholder="请选择座栋"> -->
-						<span class="chel_tex">请选择座栋</span>
-					</p>
-					<p class="jt"></p>
-				</li>
-				<li>
-					<p class="tit"><i>*</i>房间号</p>
-					<p class="inp">
-						<input type="text" placeholder="请输入房间号">
-					</p>
-				</li>
-			</ul>
-			<!-- 工单类型 -->
-			<ul class="news_box">
-				<p class="title">工单类型</p>
-				<li>
-					<p class="tit"><i>*</i>发起事由</p>
-					<p class="inp" @click="sel_fqsy">
-						<!-- <input type="text" readonly="readonly" placeholder="请选择发起事由"> -->
-						<span class="chel_tex">请选择发起事由</span>
-					</p>
-					<p class="jt"></p>
-				</li>
-				<li>
-					<p class="tit"><i>*</i>需求方属性</p>
-					<p class="inp" @click="sel_xqfsx">
-						<!-- <input type="text" readonly="readonly" placeholder="请选择需求方属性"> -->
-						<span class="chel_tex">请选择需求方属性</span>
-					</p>
-					<p class="jt"></p>
-				</li>
-				<li>
-					<p class="tit"><i>*</i>接单来源</p>
-					<p class="inp" @click="sel_jdly">
-						<!-- <input type="text" readonly="readonly" placeholder="请选择接单来源"> -->
-						<span class="chel_tex">请选择接单来源</span>
-					</p>
-					<p class="jt"></p>
-				</li>
-				<li>
-					<p class="tit"><i>*</i>工单紧急情况</p>
-					<p class="inp" @click="sel_gdjjqk">
-						<!-- <input type="text" readonly="readonly" placeholder="请选择工单紧急情况"> -->
-						<span class="chel_tex">请选择工单紧急情况</span>
-					</p>
-					<p class="jt"></p>
-				</li>
-			</ul>
 			<!-- 客户信息 -->
 			<ul class="news_box">
-				<p class="title">客户信息</p>
+				<!-- <p class="title">客户信息</p> -->
 				<li>
-					<p class="tit"><i>*</i>客户姓名</p>
-					<p class="inp">
-						<input type="text" placeholder="请输入客户姓名">
-					</p>
-				</li>
-				<li>
-					<p class="tit"><i>*</i>联系方式</p>
-					<p class="inp">
-						<input type="text" placeholder="请输入联系方式">
-					</p>
-				</li>
-				<li class="inp_are">
-					<p class="tit inp_are_txt"><i>*</i>告知详情</p>
-					<p class="inp inp_p" style="font-size: 0.3rem!important">
-						<textarea class="text_ar" placeholder="请输入告知详情"></textarea>
-					</p>
-				</li>
-			</ul>
-			<!-- 其他信息 -->
-			<ul class="news_box">
-				<p class="title">其他信息</p>
-				<li>
-					<p class="tit"><i>*</i>管家是否联系</p>
-					<p class="inp" style="display: flex;display: -webkit-flex;">
-						<mt-radio
-						align="left"
-						title=""
-						v-model="value"
-						:options="options" @change="check">
-						</mt-radio>
-					</p>
-				</li>
-				<li>
-					<p class="tit"><i style="visibility: hidden;">*</i>回复客户时间</p>
-					<p class="inp" @click="openPicker">
-						<span class="chel_tex">请选择客户回复时间</span>
+					<p class="tit"><i>*</i>费用承担公司</p>
+					<p class="inp" @click="sel_fqsy">
+						<span class="chel_tex">请选择费用承担公司</span>
 					</p>
 					<p class="jt"></p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>收款人姓名</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入收款人姓名">
+					</p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>开户行</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入开户行名称">
+					</p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>收款账号</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入收款账号">
+					</p>
+				</li>
+				<li>
+					<p class="tit"><i>*</i>申请金额</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入申请金额">
+					</p>
 				</li>
 				<li class="inp_are">
 					<p class="tit inp_are_txt"><i style="visibility: hidden;">*</i>备注</p>
 					<p class="inp inp_p" style="font-size: 0.3rem!important">
-						<textarea class="text_ar" placeholder="请输入备注"></textarea>
+						<textarea class="text_ar" placeholder="请输入"></textarea>
 					</p>
 				</li>
 			</ul>
@@ -119,19 +50,6 @@
 					<li>
 						<img src="" alt="">
 						<span class="del_img_btn"></span>
-					</li>
-					<li class="add_img"></li>
-				</ul>
-			</ul>
-			<!-- 跟单人 -->
-			<ul class="news_box img_tp_box">
-				<p class="img_t"><i style="visibility: hidden;">*</i>跟单人</p>
-				<ul class="img_list_box copy_person">
-					<li>
-						<p class="head_img">
-							<img src="../../resources/images/commission/head_img.png" alt="">	
-						</p>
-						<p class="copy_name">张三</p>
 					</li>
 				</ul>
 			</ul>
@@ -164,7 +82,7 @@
 
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
-			<div class="btn_fq">发起工单</div>
+			<div class="btn_fq">提交申请</div>
 		</div>
 		<!-- 选择框遮罩层 -->
 		<div class="pop_picker_zzc" v-show="zzc_state">
@@ -173,119 +91,57 @@
 					<p class="sel_qx" @click="sel_calc">取消</p>
 					<p class="sel_qr" @click="sel_betrue">确认</p>
 				</div>
-				<mt-picker :slots="soltData" @change="onValuesChange"></mt-picker>
+				<mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
 			</div>			
 		</div>
-		<!-- 日期选择器 -->
-		<mt-datetime-picker
-		  ref="picker"
-		  v-model="pickerVisible"
-		  type="date"
-		  year-format="{value} 年"
-		  month-format="{value} 月"
-		  date-format="{value} 日">
-		</mt-datetime-picker>
-
 	</div>
 </template>
 
 <script>
 	import { Radio } from 'mint-ui';
 	import { Picker } from 'mint-ui';
-	import { DatetimePicker } from 'mint-ui';
 	export default {
 		data(){
 			return{
 				value:'',
-				options: [{
-					label: '是',
-					value: '1',
-				},
+				slots: [
 				{
-					label: '否',
-					value: '0',
-				}],
-				zzc_state: false,
-				sel_solt: '',//选择项
-				pickerVisible:'',
-				handler:function(e){e.preventDefault()},
+				  flex: 1,
+				  values: ['请选择发起事由', '工商注册', '工商备案', '工商迁址', '上传资料', '其他需求','咨询类服务','工商注册/备案/迁址'],
+				  className: 'slot1',
+				  textAlign: 'center',
+				  defaultIndex:  1,
+				}
+			  ],
+			  zzc_state: false,
 			}
 		},
 		methods:{
-			openPicker() {
-				this.$refs.picker.open();
-			},
 			onValuesChange(picker, values) {
-				// picker.setSlotValue(1, values[0]);
-				console.log(values);
+			  // picker.setSlotValue(1, values[0]);
+			  console.log(values);
 			},
 			add_copy(){
 				this.$router.push({
 					path:'/gs_copy',//跳转到审批页面
 					query:{}
-				});
-			},
-			check(value){//管家是否联系1是0否
-				console.log(value);
-			},
-			// 解决iphone页面层级相互影响滑动的问题
-			closeTouch:function(){
-				document.getElementsByTagName("body")[0].addEventListener('touchmove',
-				this.handler,{passive:false});//阻止默认事件
-			},
-			openTouch:function(){
-				document.getElementsByTagName("body")[0].removeEventListener('touchmove',
-				this.handler,{passive:false});//打开默认事件
+				})
 			},
 			sel_fqsy(){//请选择发起事由
-				this.closeTouch();
-				this.sel_solt = ['请选择发起事由', '工商注册', '工商备案', '工商迁址', '上传资料', '其他需求','咨询类服务','工商注册/备案/迁址'];
 				this.zzc_state = true;
-				$('.pop_picker').animate({bottom: 0},300);
-			},
-			sel_xqfsx(){//请选择需求方属性
-				this.closeTouch();
-				this.sel_solt = ['请选择需求方属性','业主','租户'];
-				this.zzc_state = true;
-				$('.pop_picker').animate({bottom: 0},300);
-			},
-			sel_jdly(){//请选择接单来源
-				this.closeTouch();
-				this.sel_solt = ['请选择接单来源','APP扫码','400电话','渠道','内部','其他'];
-				this.zzc_state = true;
-				$('.pop_picker').animate({bottom: 0},300);
-			},
-			sel_gdjjqk(){//请选择工单紧急情况
-				this.closeTouch();
-				this.sel_solt = ['请选择工单紧急情况','常规','紧急','特急'];
-				this.zzc_state = true;
-				$('.pop_picker').animate({bottom: 0},300);
+				$('.pop_picker').animate({
+					bottom: 0
+				},300)
 			},
 			sel_calc(){//取消选择
-				this.openTouch();
 				this.zzc_state = false;
 				$('.pop_picker').css("bottom","-5.2rem");
 			},
 			sel_betrue(){//确认选择
-				this.openTouch();
 				this.zzc_state = false;
 				$('.pop_picker').css("bottom","-5.2rem");
 			}
 			
-		},
-		computed:{
-			soltData(){
-				let slots = [
-				{
-				  flex: 1,
-				  values: this.sel_solt,
-				  className: 'slot1',
-				  textAlign: 'center',
-				  defaultIndex:  1
-				}
-			  ];
-			  return slots;
-			}
 		},
 		mounted(){
 			// 解决键盘弹出底部上浮问题
