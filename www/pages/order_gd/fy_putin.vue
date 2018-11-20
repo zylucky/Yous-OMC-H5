@@ -10,7 +10,7 @@
 				<p class="k_text">暂无费用审批</p>
 			</div>
 			<ul class="backlog_list">
-				<li v-for="i in 8">
+				<li v-for="i in 8" @click="todetail(i)">
 					<div class="list_ion"><img src="../../resources/images/order_gd/fysq_ion.png" alt=""></div>
 					<div class="list_news">
 						<p class="name_time">
@@ -38,7 +38,20 @@
 
 <script>
 	export default {
-		
+		data(){
+			return{
+				
+			}
+		},
+		methods:{
+			todetail(index){//跳转详情处理页
+				this.$router.push({
+					path:'/fy_from',//跳转到审批页面
+					query:{}
+				});
+			},
+			
+		}
 	}
 </script>
 

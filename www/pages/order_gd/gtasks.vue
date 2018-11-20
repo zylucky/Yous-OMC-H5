@@ -37,7 +37,7 @@
 				<p class="k_text">暂无待办工单</p>
 			</div>
 			<ul class="backlog_list">
-				<li v-for="i in 10">
+				<li v-for="i in 10" @click="todetail(i)">
 					<div class="list_ion"><img src="../../resources/images/order_gd/list_ion.png" alt=""></div>
 					<div class="list_news">
 						<p class="name_time">
@@ -135,8 +135,14 @@
 				this.$router.push({
 					path:'/gtasks_search',//跳转到审批页面
 					query:{}
-				})
+				});
 			},
+			todetail(index){//跳转详情处理页
+				this.$router.push({
+					path:'/take_orders',//跳转到审批页面
+					query:{}
+				});
+			}
 			
 		}
 	}
