@@ -33,7 +33,7 @@
 					<p class="tit"><i>*</i>发起事由</p>
 					<p class="inp" @click="sel_fqsy">
 						<!-- <input type="text" readonly="readonly" placeholder="请选择发起事由"> -->
-						<span class="chel_tex">请选择发起事由</span>
+						<span class="chel_tex" :style="fqsy_sel=='请选择发起事由'?'color:#c8c8c8;':'color:#333;'">{{fqsy_sel}}</span>
 					</p>
 					<p class="jt"></p>
 				</li>
@@ -41,7 +41,7 @@
 					<p class="tit"><i>*</i>需求方属性</p>
 					<p class="inp" @click="sel_xqfsx">
 						<!-- <input type="text" readonly="readonly" placeholder="请选择需求方属性"> -->
-						<span class="chel_tex">请选择需求方属性</span>
+						<span class="chel_tex" :style="xqfsx_sel=='请选择需求方属性'?'color:#c8c8c8;':'color:#333;'">{{xqfsx_sel}}</span>
 					</p>
 					<p class="jt"></p>
 				</li>
@@ -49,7 +49,7 @@
 					<p class="tit"><i>*</i>接单来源</p>
 					<p class="inp" @click="sel_jdly">
 						<!-- <input type="text" readonly="readonly" placeholder="请选择接单来源"> -->
-						<span class="chel_tex">请选择接单来源</span>
+						<span class="chel_tex" :style="jdly_sel=='请选择接单来源'?'color:#c8c8c8;':'color:#333;'">{{jdly_sel}}</span>
 					</p>
 					<p class="jt"></p>
 				</li>
@@ -57,7 +57,7 @@
 					<p class="tit"><i>*</i>工单紧急情况</p>
 					<p class="inp" @click="sel_gdjjqk">
 						<!-- <input type="text" readonly="readonly" placeholder="请选择工单紧急情况"> -->
-						<span class="chel_tex">请选择工单紧急情况</span>
+						<span class="chel_tex" :style="gdjjqk_sel=='请选择工单紧急情况'?'color:#c8c8c8;':'color:#333;'">{{gdjjqk_sel}}</span>
 					</p>
 					<p class="jt"></p>
 				</li>
@@ -101,7 +101,7 @@
 				<li>
 					<p class="tit"><i style="visibility: hidden;">*</i>回复客户时间</p>
 					<p class="inp" @click="openPicker">
-						<span class="chel_tex">请选择客户回复时间</span>
+						<span class="chel_tex" :style="hf_date=='请选择客户回复时间'?'color:#c8c8c8;':'color:#333;'">{{hf_date | formatDate}}</span>
 					</p>
 					<p class="jt"></p>
 				</li>
@@ -181,9 +181,10 @@
 		  ref="picker"
 		  v-model="pickerVisible"
 		  type="date"
-		  year-format="{value} 年"
-		  month-format="{value} 月"
-		  date-format="{value} 日">
+		  :startDate = "startDate"
+          :endDate = "endDate"
+		  @confirm = "handleConfirm"
+		  @cancel = "cancelbtn">
 		</mt-datetime-picker>
 
 	</div>
@@ -207,17 +208,25 @@
 				}],
 				zzc_state: false,
 				sel_solt: '',//选择项
-				pickerVisible:'',
-				handler:function(e){e.preventDefault()},
+				pickerVisible: '',//定义当前显示时间
+				startDate: new Date(),//设置开始时间
+				endDate: new Date('2088-01-01'),//设置结束时间
+				handler:function(e){e.preventDefault()},//阻止默认
+				hf_date: '请选择客户回复时间',
+				seltype: '',//判断选择的是哪一项
+				sel_value: '',//赋值
+				fqsy_sel: "请选择发起事由",
+				xqfsx_sel: "请选择需求方属性",
+				jdly_sel: "请选择接单来源",
+				gdjjqk_sel: "请选择工单紧急情况",
+				
 			}
 		},
 		methods:{
-			openPicker() {
-				this.$refs.picker.open();
-			},
 			onValuesChange(picker, values) {
 				// picker.setSlotValue(1, values[0]);
 				console.log(values);
+				this.sel_value = values[0];
 			},
 			add_copy(){
 				this.$router.push({
@@ -239,24 +248,28 @@
 			},
 			sel_fqsy(){//请选择发起事由
 				this.closeTouch();
+				this.seltype = 'fysqsel';
 				this.sel_solt = ['请选择发起事由', '工商注册', '工商备案', '工商迁址', '上传资料', '其他需求','咨询类服务','工商注册/备案/迁址'];
 				this.zzc_state = true;
 				$('.pop_picker').animate({bottom: 0},300);
 			},
 			sel_xqfsx(){//请选择需求方属性
 				this.closeTouch();
+				this.seltype = 'xqfsxsel';
 				this.sel_solt = ['请选择需求方属性','业主','租户'];
 				this.zzc_state = true;
 				$('.pop_picker').animate({bottom: 0},300);
 			},
 			sel_jdly(){//请选择接单来源
 				this.closeTouch();
+				this.seltype = 'jdlysel';
 				this.sel_solt = ['请选择接单来源','APP扫码','400电话','渠道','内部','其他'];
 				this.zzc_state = true;
 				$('.pop_picker').animate({bottom: 0},300);
 			},
 			sel_gdjjqk(){//请选择工单紧急情况
 				this.closeTouch();
+				this.seltype = 'gdjjqksel';
 				this.sel_solt = ['请选择工单紧急情况','常规','紧急','特急'];
 				this.zzc_state = true;
 				$('.pop_picker').animate({bottom: 0},300);
@@ -268,9 +281,35 @@
 			},
 			sel_betrue(){//确认选择
 				this.openTouch();
+				if(this.seltype == 'fysqsel'){
+					this.fqsy_sel = this.sel_value;
+				}
+				if(this.seltype == "xqfsxsel"){
+					this.xqfsx_sel = this.sel_value;
+				}
+				if(this.seltype == "jdlysel"){
+					this.jdly_sel = this.sel_value;
+				}
+				if(this.seltype == "gdjjqksel"){
+					this.gdjjqk_sel = this.sel_value;
+				}
 				this.zzc_state = false;
 				$('.pop_picker').css("bottom","-5.2rem");
-			}
+			},
+			openPicker() {//回复日期选择
+				this.closeTouch();
+				this.$refs.picker.open();
+			},
+			cancelbtn(){//日期选择取消
+				this.openTouch();
+				console.log('取消');
+				this.hf_date = '请选择客户回复时间';
+			},
+			handleConfirm(value){//琪琪选择确认
+				this.openTouch();
+				console.log(value);
+				this.hf_date = value;
+			},
 			
 		},
 		computed:{
@@ -309,7 +348,29 @@
 					});
 			    }
 			});
-		}
+		},
+		filters: {
+			formatDate(time) {//时间转换
+				var currentdate = ''
+				if(time == '请选择客户回复时间'){
+					currentdate = '请选择客户回复时间';
+					return currentdate;
+				}
+				var date = new Date(time);
+				var seperator1 = "-";
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				currentdate = year + seperator1 + month + seperator1 + strDate;
+				return currentdate
+			}
+	    }
 	}
 </script>
 

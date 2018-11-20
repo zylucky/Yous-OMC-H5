@@ -84,6 +84,10 @@
 	}
 </style>
 <style>
+	.mint-field .mint-cell-value{
+		height: 100%!important;
+		padding-right: 0.1rem!important;
+	}
 	.search_inp .mint-field-core{
 		font-size: 0.28rem!important;
 		color: #b7b7b7!important;
