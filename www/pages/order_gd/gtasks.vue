@@ -36,7 +36,7 @@
 				</p>
 				<p class="k_text">暂无待办工单</p>
 			</div>
-			<ul class="backlog_list">
+			<ul class="backlog_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 				<li v-for="i in 10" @click="todetail(i)">
 					<div class="list_ion"><img src="../../resources/images/order_gd/list_ion.png" alt=""></div>
 					<div class="list_news">
@@ -68,6 +68,10 @@
 </template>
 
 <script>
+	import axios from 'axios';
+	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
+	import { InfiniteScroll } from 'mint-ui';
 	export default {
 		data(){
 			return{
@@ -75,7 +79,12 @@
 				sx_type: 0,
 				typeData:['全部','工商注册','问题保修','缴费事宜','其他事项','投诉派单','工商注册-费用审批','问题报修-预算单'],
 				type: '',
+				allData: [],//待办列表
+				loading: false,
 			}
+		},
+		created(){
+			this.list_data();
 		},
 		methods:{
 			date_px(){//按更新时间排序
@@ -142,6 +151,34 @@
 					path:'/take_orders',//跳转到审批页面
 					query:{}
 				});
+			},
+			list_data(){//模糊查询渠道人员信息
+				const url = this.$api + "/yhcms/web/activitibusinessreg/handleList.do";
+				axios.post(url,{
+					"search_keywork":"",//关键词搜索
+					"timeSort":"",//
+					"worList":"",//工单类型
+					"curr_page":"1",
+					"items_perpage":"10",
+					"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs
+				}).then((res)=>{
+					console.log(res.data.data);
+					this.allData = res.data.data;
+				}, (err)=>{
+					console.log(err);
+				});
+			},
+			loadMore() {
+			  this.loading = true;
+			  setTimeout(() => {
+				// let last = this.list[10 - 1];
+				// for (let i = 1; i <= 10; i++) {
+				  // this.list.push(last + i);
+				  // $('.backlog_list').append('<li>i</li>');
+				// }
+				console.log(1);
+				this.loading = false;
+			  }, 2500);
 			}
 			
 		}

@@ -1,60 +1,28 @@
 <template>
 	<div class="ctrl_box">
 		<div class="ctrl_top">
-			<div class="ctrl_top_headimg">
-				<img src="../../resources/images/order_gd/top_bg.png" alt="">
+			<div class="ctrl_top_headimg" v-for="item in banner">
+				<img :src="item.pic" alt="">
 			</div>
 			<ul class="nav_top">
-				<li @click="my_db">
-					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion6.png" alt=""></p>
-					<p class="nav_txt">我的待办</p>
-				</li>
-				<li>
-					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion7.png" alt=""></p>
-					<p class="nav_txt">我发起的</p>
-				</li>
-				<li>
-					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion8.png" alt=""></p>
-					<p class="nav_txt">我经办的</p>
-				</li>
-				<li>
-					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion9.png" alt=""></p>
-					<p class="nav_txt">已完成的</p>
-				</li>
-				<li>
-					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion10.png" alt=""></p>
-					<p class="nav_txt">抄送我的</p>
-				</li>
-				<li>
-					<p class="nav_ion"><img src="../../resources/images/order_gd/ctrl_ion11.png" alt=""></p>
-					<p class="nav_txt">我的跟进</p>
+				<li v-for="(item,index) in navData" @click="my_db(item)">
+					<p class="nav_ion"><img :src="item.pic" alt=""></p>
+					<p class="nav_txt">{{item.typeName}}</p>
 				</li>
 			</ul>
 		</div>
 		<div class="ctrl_bottom">
 			<p class="ctrl_bottom_txt">400工单</p>
 			<ul class="nav_bottom">
-				<li>
-					<p class="nav_ion_b"><img src="../../resources/images/order_gd/ctrl_ion1.png" alt=""></p>
-					<p class="nav_ion_t">工商注册</p>
-				</li>
-				<li>
-					<p class="nav_ion_b"><img src="../../resources/images/order_gd/ctrl_ion2.png" alt=""></p>
-					<p class="nav_ion_t">问题报修</p>
-				</li>
-				<li>
-					<p class="nav_ion_b"><img src="../../resources/images/order_gd/ctrl_ion3.png" alt=""></p>
-					<p class="nav_ion_t">缴费事宜</p>
-				</li>
-				<li>
-					<p class="nav_ion_b"><img src="../../resources/images/order_gd/ctrl_ion4.png" alt=""></p>
-					<p class="nav_ion_t">其他事项</p>
+				<li v-for="(item,index) in navData1" @click="gd_click(item)" v-if="index<4">
+					<p class="nav_ion_b"><img :src="item.pic" alt=""></p>
+					<p class="nav_ion_t">{{item.typeName}}</p>
 				</li>
 			</ul>
 			<ul class="nav_bottom" style="margin-top: 0.5rem;">
-				<li>
-					<p class="nav_ion_b"><img src="../../resources/images/order_gd/ctrl_ion5.png" alt=""></p>
-					<p class="nav_ion_t">投诉派单</p>
+				<li v-for="(item,index) in navData1" v-if="index>3">
+					<p class="nav_ion_b"><img :src="item.pic" alt=""></p>
+					<p class="nav_ion_t">{{item.typeName}}</p>
 				</li>
 			</ul>
 		</div>
@@ -62,19 +30,55 @@
 </template>
 
 <script>
+	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
+	import axios from 'axios';
 	export default {
 		data(){
 			return{
 				navData:["我的待办","我发起的","我经办的","已完成的","抄送我的","我的跟进"],
+				banner:[],
+				navData: [],//工单菜单
+				navData1: [],//400菜单
 			}
 		},
+		created(){
+			this.ctrl_data();
+		},
 		methods:{
-			my_db(){
+			my_db(item){
 				this.$router.push({
-					path:'/gtasks',//跳转到我的待办
+					path:item.jumpUrl,//跳转到我的待办
 					query:{}
-				})
-			}
+				});
+			},
+			gd_click(item){
+				this.$router.push({
+					path:item.jumpUrl,//跳转到我的待办
+					query:{}
+				});
+			},
+			ctrl_data(){//模糊查询渠道人员信息
+				const url = this.$api + "/yhcms/web/activitibusinessreg/getConsole.do";
+				axios.post(url,{
+					
+				}).then((res)=>{
+					var datas = res.data.data;
+					for(var i=0; i<datas.length; i++){
+						if(datas[i].status == "1"){//轮播
+							this.banner.push(datas[i]);
+						}
+						if(datas[i].status == "2"){//我的菜单
+							this.navData.push(datas[i]);
+						}
+						if(datas[i].status == "3"){//400菜单
+							this.navData1.push(datas[i]);
+						}
+					}
+				}, (err)=>{
+					console.log(err);
+				});
+			},
 		}
 	}
 </script>
@@ -119,6 +123,9 @@
 		-webkit-flex-direction: column;
 		display: -webkit-flex;
 		align-items: center;
+		-webkit-align-items: center;
+		justify-content: space-between;
+		-webkit-justify-content: center;
 		width: 33.333%;
 		margin-top: 0.5rem;
 	}
