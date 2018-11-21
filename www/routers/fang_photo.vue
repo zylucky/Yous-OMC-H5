@@ -54,6 +54,7 @@
 .tagClass{font-size: 0.26rem !important;padding-left:.12rem;padding-right:.12rem;}
 #filter-state ul li{padding-left:0 !important;margin-bottom:.1rem}
 #filter-state ul li a{width:100%;text-align:center}
+.filtrate-nav li{width: 50%!important;}
 </style>
 <template>
   <div>
