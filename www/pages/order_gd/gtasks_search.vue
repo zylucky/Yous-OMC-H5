@@ -74,6 +74,12 @@
 	}
 </style>
 <style>
+	.search_inp .mint-field .mint-cell-value{
+		height: 100%!important;
+	}
+	.search_inp .mint-field-core{
+		height: 100%!important;
+	}
 	.search_inp .mint-field-core{
 		font-size: 0.26rem!important;
 		color: #333!important;
@@ -98,13 +104,13 @@
 				<p class="search_inp">
 					<mt-field placeholder="搜索楼盘名称/座栋/房间号" v-model="username"></mt-field>
 				</p>
-				<p class="search_exit">取消</p>
+				<p class="search_exit" @click="search_cancel">取消</p>
 			</div>
 		</div>
 		<div class="copy_bottom">
 			<!-- 搜索的待办列表 -->
-			<ul class="db_list">
-				<li v-for="i in 3">建外SOHO 2-2908</li>
+			<ul class="db_list" :style="username!=''?'border-bottom: 1px solid #e5e5e5;':'border-bottom: none;'">
+				<li v-for="item in listData" @click="link_db(item)">{{item.lpname}} {{item.zdname}}-{{item.fyname}}</li>
 			</ul>
 		</div>
 	</div>
@@ -112,21 +118,54 @@
 
 <script>
 import axios from 'axios';
-import { Field } from 'mint-ui';
+import { Toast } from 'mint-ui';
+import { Indicator } from 'mint-ui';
 	export default {
 		data() {
 			return {
-				username:'',
+				username: '',
+				list_data: [],
 			}
 		},
 		methods: {
-			
+			search_cancel(){//取消搜索
+				this.$router.push({
+					path:'/gtasks',//回退到列表
+					query:{}
+				});
+			},
+			link_db(item){//
+				this.$router.push({
+					path:'/gtasks',//回退到列表
+					query:{
+						search_key: item.lpname
+					}
+				});
+			},
+
 		},
 		mounted() {
-
+			
 		},
 		computed: {
-
+			listData(){//模糊查询渠道人员信息
+				if(this.username != ''){
+					const url = this.$api + "/yhcms/web/activitibusinessreg/handleList.do";
+					axios.post(url,{
+						"search_keywork": this.username,//关键词搜索
+						"timeSort": "D",//时间排序
+						"worList": "",//工单类型
+						"curr_page": '1',
+						"items_perpage":"10",
+						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs
+					}).then((res)=>{
+						this.list_data = res.data.data;
+					}, (err)=>{
+						console.log(err);
+					});
+					return this.list_data;
+				}
+			}
 		},
 		watch: {
 			

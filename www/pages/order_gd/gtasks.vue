@@ -30,38 +30,45 @@
 				</ul>
 			</div>
 			<!-- 空样式 -->
-			<div class="kong" v-if="false">
+			<div class="kong" v-if="kong_state && allData.length==0">
 				<p class="k_ion">
 					<img src="../../resources/images/commission/k_icon.png" alt="" />
 				</p>
 				<p class="k_text">暂无待办工单</p>
 			</div>
 			<ul class="backlog_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-				<li v-for="i in 10" @click="todetail(i)">
-					<div class="list_ion"><img src="../../resources/images/order_gd/list_ion.png" alt=""></div>
+				<li v-for="(item,index) in allData" @click="todetail(item,index)">
+					<div class="list_ion">
+						<img src="../../resources/images/order_gd/list_ion.png" alt="" v-if="item.workType=='工商注册'"/>
+						<img src="../../resources/images/order_gd/fysq_ion.png" alt="" v-if="item.workType=='工商注册-费用审批' || item.workType=='工商注册费用审批'"/>
+					</div>
 					<div class="list_news">
 						<p class="name_time">
-							<span>工商注册</span>
-							<span>2018-11-10  11:10</span>
+							<span>{{item.workType}}</span>
+							<span>{{item.launchtime}}</span>
 						</p>
 						<p class="lpzd_zt">
-							<span>商都南塔 2-2907</span>
-							<span>接单</span>
+							<span>{{item.lpname}} {{item.zdname}}-{{item.fyname}}</span>
+							<span>{{item.status2}}</span>
 						</p>
 						<p class="fqr">
-							<span>发起人：张三</span>
+							<span>发起人：{{item.uname}}</span>
 							<span></span>
 						</p>
 						<p class="gd_number">
-							<span>工单编号：201712161111</span>
+							<span>工单编号：{{item.codenum}}</span>
 							<span></span>
 						</p>
 						<p class="gd_state">
-							<span>工单状态：处理中</span>
+							<span>工单状态：{{item.status}}</span>
 							<span></span>
 						</p>
 					</div>
 				</li>
+				<!-- 加载状态 -->
+				<div class="jzzt" v-if="allData.length > 4">
+					<mt-spinner type="fading-circle" color="#2b70d8"></mt-spinner>
+				</div>
 			</ul>
 		</div>
 	</div>
@@ -70,6 +77,7 @@
 <script>
 	import axios from 'axios';
 	import { Toast } from 'mint-ui';
+	import { Spinner } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import { InfiniteScroll } from 'mint-ui';
 	export default {
@@ -78,28 +86,42 @@
 				time_sort: 0,//0正序，1逆序
 				sx_type: 0,
 				typeData:['全部','工商注册','问题保修','缴费事宜','其他事项','投诉派单','工商注册-费用审批','问题报修-预算单'],
-				type: '',
+				type: '',//类型筛选
 				allData: [],//待办列表
+				page: 1,
+				data_length: 10,
 				loading: false,
+				kong_state: false,
+				timeSort: "D",//B大到小A小到大
+				search_key: '',//模糊搜索
 			}
 		},
 		created(){
-			this.list_data();
+			// this.list_data(this.page);
+			this.search_key = this.$route.query.search_key;
 		},
 		methods:{
 			date_px(){//按更新时间排序
 				if(this.time_sort == 0){
 					this.time_sort = 1;
 					$('.term li:first-child span:last-child').css({
-						transform: "rotate(0deg)"
+						transform: "rotate(180deg)"
 					});					
 					$('.term li:first-child span:first-child').text('按更新时间倒序');
+					this.allData.length = 0;
+					this.timeSort = "A";
+					this.page = 1;
+					this.list_data(this.page,this.timeSort,this.type);//调用
 				}else{
+					this.allData.length = 0;
 					this.time_sort = 0;
+					this.page = 1;
 					$('.term li:first-child span:last-child').css({
-						transform: "rotate(180deg)"
+						transform: "rotate(0deg)"
 					});
 					$('.term li:first-child span:first-child').text('按更新时间正序');
+					this.timeSort = "D";
+					this.list_data(this.page,this.timeSort,this.type);//调用
 				}
 			},
 			type_sx(){//筛选
@@ -122,7 +144,14 @@
 				}
 			},
 			sel_type(item,index){
-				this.type = item;
+				if(item == "全部"){
+					this.type = "";
+				}else{
+					this.type = item;
+				}
+				this.allData.length = 0;
+				this.page = 1;
+				this.list_data(this.page,this.timeSort,this.type);//调用
 				this.sx_type = 0;
 				if(this.type == '全部'){
 					this.sx_type = 0;
@@ -146,39 +175,55 @@
 					query:{}
 				});
 			},
-			todetail(index){//跳转详情处理页
-				this.$router.push({
-					path:'/take_orders',//跳转到审批页面
-					query:{}
-				});
+			todetail(item,index){//跳转详情处理页
+				// 工商注册费用审批跳转
+				if(item.jumPath == '/activiticostapproval/approvalPage.do'){
+					this.$router.push({
+						path:'/fy_detail',//跳转到审批页面
+						query:{
+							gdid: item.gdid,//工单id
+						}
+					});
+				}
+				// 工商注册跳转
+				if(item.jumPath == '/activitibusinessreg/personLiablePage.do'){
+					this.$router.push({
+						path:'/take_orders',//跳转到审批页面
+						query:{
+							gdid: item.gdid,//工单id
+						}
+					});					
+				}
 			},
-			list_data(){//模糊查询渠道人员信息
+			list_data(page,timeSort,type,search_key){
 				const url = this.$api + "/yhcms/web/activitibusinessreg/handleList.do";
 				axios.post(url,{
-					"search_keywork":"",//关键词搜索
-					"timeSort":"",//
-					"worList":"",//工单类型
-					"curr_page":"1",
+					"search_keywork": search_key,//关键词搜索
+					"timeSort": timeSort,//时间排序
+					"worList": type,//工单类型
+					"curr_page":page,
 					"items_perpage":"10",
 					"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs
 				}).then((res)=>{
-					console.log(res.data.data);
-					this.allData = res.data.data;
+					this.data_length = res.data.data.length;
+					if(this.data_length<10){
+						this.loading = true;//禁止无限滚动
+						$('.jzzt').text('已经到底了哦!');
+					}
+					this.allData = this.allData.concat(res.data.data);
+					if(this.allData.length == 0){
+						this.kong_state = true;
+					}
+					this.loading = false;//如果该属性的值为true，则将禁用无限滚动
+					this.page++;
 				}, (err)=>{
 					console.log(err);
 				});
 			},
 			loadMore() {
-			  this.loading = true;
 			  setTimeout(() => {
-				// let last = this.list[10 - 1];
-				// for (let i = 1; i <= 10; i++) {
-				  // this.list.push(last + i);
-				  // $('.backlog_list').append('<li>i</li>');
-				// }
-				console.log(1);
-				this.loading = false;
-			  }, 2500);
+				this.list_data(this.page,this.timeSort,this.type,this.search_key);//调用
+			  },100);
 			}
 			
 		}
@@ -266,7 +311,7 @@
 .term li:first-child span:last-child{
 	background: url(../../resources/images/order_gd/team_ion2.png) no-repeat center;
 	background-size: 100% auto;
-	transform: rotate(180deg);
+	transform: rotate(0deg);
 }
 .term li:last-child span:last-child{
 	background: url(../../resources/images/order_gd/team_ion1.png) no-repeat center;
@@ -398,5 +443,13 @@
 }
 .sx_list li:last-child{
 	border-bottom: none;
+}
+.jzzt{
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	-webkit-justify-content: center;
+	padding: 0.2rem 0;
+	font-size: 0.28rem;
 }
 </style>

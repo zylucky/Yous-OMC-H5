@@ -29,7 +29,7 @@ Vue.component(Search.name, Search);
 Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 
-// Vue.prototype.$api = "http://192.168.0.105:8080" //Mr.Cheng IP Address
+// Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //Mr.Cheng IP Address
 
 
 Vue.config.debug = true; // 开启debug模式
@@ -509,9 +509,16 @@ var router = new VueRouter({
 				title: '我的待办'
 			}
 		},
-		{//接单
+		{//工商注册详情
 			path: '/take_orders',
 			component: require('./pages/order_gd/take_orders.vue'),
+			meta: {
+				title: '工单'
+			}
+		},
+		{//工商注册费用审批详情
+			path: '/take_orders1',
+			component: require('./pages/order_gd/take_orders1.vue'),
 			meta: {
 				title: '工单'
 			}

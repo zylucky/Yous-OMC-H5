@@ -13,10 +13,10 @@
 			<!-- 工单信息展示 -->
 			<ul class="news_box">
 				<ul class="gd_news">
-					<p class="gd_lp">建外SOHO 2-2908</p>
+					<p class="gd_lp">{{allData.lpname }} {{ allData.zdname}}-{{allData.fyname}}</p>
 					<li>
 						<span class="gd_news_tit">工单编号：</span>
-						<span class="gd_news_con">SG201811121111</span>
+						<span class="gd_news_con">{{approvalDto.codenum}}</span>
 					</li>
 				</ul>
 			</ul>
@@ -25,23 +25,23 @@
 				<ul class="gd_new">
 					<li>
 						<span class="gd_new_tit">费用承担公司</span>
-						<span class="gd_new_con">幼狮</span>
+						<span class="gd_new_con">{{approvalDto.costcompany}}</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">收款人户名</span>
-						<span class="gd_new_con">租户</span>
+						<span class="gd_new_con">{{approvalDto.receivablesname}}</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">开户行</span>
-						<span class="gd_new_con">张三</span>
+						<span class="gd_new_con">{{approvalDto.bankname}}</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">收款账号</span>
-						<span class="gd_new_con">15936866025</span>
+						<span class="gd_new_con">{{approvalDto.accountnumber}}</span>
 					</li>
 					<li class="gd_tip">
 						<span class="gd_new_tit">备注</span>
-						<span class="gd_new_con">租户希望我们可以待办租户希望我们尽快处理</span>
+						<span class="gd_new_con">{{approvalDto.remark==''?'无':approvalDto.remark}}</span>
 					</li>
 				</ul>
 			</ul>
@@ -49,15 +49,16 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>图片</p>
 				<ul class="img_list_box">
-					<li>
-						<img src="../../resources/images/banner/banner03.png" alt="">
+					<li v-for="(item,index) in picurl">
+						<img :src="$prefix+'/'+item" alt="">
 					</li>
+					<p v-if="picurl.length==0">{{picurl.length==0?'无':''}}</p>
 				</ul>
 			</ul>
 			<ul class="news_box">
 				<!-- 审批流程显示 -->
 				<ul class="spl_box">
-					<li v-for="(i,index) in 3">
+					<li v-for="(item,index) in infos">
 						<div class="spl_bigbox">
 							<div class="spl_headimg">
 								<img src="../../resources/images/commission/head_img.png" alt="">
@@ -65,24 +66,24 @@
 							</div>
 							<div class="spl_con">
 								<p class="spl_name">
-									<span>400-张三</span>
-									<span>11/04 10:50</span>
+									<span>{{item.assignee}}</span>
+									<span>{{item.endTime}}</span>
 								</p>
-								<p class="spl_state">发起申请</p>
+								<p class="spl_state">{{item.nodeName}}</p>
 							</div>
-							<div class="see_pj" v-show="i!=2" @click="ckpj(i,index)">
+							<div class="see_pj" v-show="item.com.length>0" @click="ckpj(item,index)">
 								<span>查看评价</span>
 								<span>></span>
 							</div>							
 						</div>
 						<!-- 评价信息 -->
-						<div class="plxx_box" v-show="i!=2">
-							<div class="pjxx" v-for="i in 3">
+						<div class="plxx_box">
+							<div class="pjxx" v-for="(item1,index) in item.com">
 								<p class="pj_name_t">
-									<span>工商管家-李四</span>
-									<span>11/04 10:50</span>
+									<span>{{item1.userName}}</span>
+									<span>{{item1.time}}</span>
 								</p>
-								<p class="pj_txt">业务处理比较麻烦，可能没有那么快，业务处理比较麻烦，可能没有那么快</p>
+								<p class="pj_txt">{{item1.fullMessage}}</p>
 							</div>
 							<div class="plxx_box_after"></div>
 						</div>
@@ -93,19 +94,13 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li>
+					<li v-for="(item,index) in sendDto">
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn"></span>
+							<span class="del_img_btn" v-if="false"></span>
+							<span class="admin_ion"></span>
 						</p>
-						<p class="copy_name">张三</p>
-					</li>
-					<li>
-						<p class="head_img">
-							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn"></span>
-						</p>
-						<p class="copy_name">张三</p>
+						<p class="copy_name">{{item.name}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -127,20 +122,52 @@
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui';
+	import axios from 'axios';
+	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
+	import { MessageBox } from 'mint-ui';
 	export default {
 		data(){
 			return{
 				value:'',
 				pj_state: false,//列表折叠
 				pj_sta: 'yuan',//列表折叠状态
-				zz_state: false,//遮罩层显示/隐藏控制
+				gd_id: '',//路由接受的工单id
+				allData: {},//所有返回信息
+				approvalDto: {},//展示信息
+				picurl: [],//图片处理
+				infos: [],//审批流
+				sendDto: [],//抄送人
 			}
 		},
+		created(){
+			this.gd_id = this.$route.query.gdid;
+			this.gd_detail();
+		},
 		methods:{
+			gd_detail(){
+				const url = this.$api + "/yhcms/web/activitibusinessreg/getApprovalViewHandle.do";
+				axios.post(url,{
+					"id": this.gd_id
+				}).then((res)=>{
+					console.log(res.data.data);
+					this.allData = res.data.data;
+					this.approvalDto = res.data.data.approvalDto;
+					if(this.approvalDto.picurl != ''){
+						this.picurl = this.approvalDto.picurl.split(";");//图片处理
+					}else{
+						this.picurl = [];
+					}
+					this.infos = this.allData.infos;//审批流
+					this.sendDto = this.allData.sendDto;//抄送人
+					console.log(this.sendDto);
+				}, (err)=>{
+					console.log(err);
+				});					
+			},
 			add_copy(){
 				this.$router.push({
-					path:'/gs_copy',//跳转到审批页面123
+					path:'/gs_copy',//跳转到审批页面
 					query:{}
 				})
 			},
@@ -319,6 +346,16 @@ import { MessageBox } from 'mint-ui';
 .copy_person{
 	
 }
+.admin_ion{
+	position: absolute;
+	right: 0;
+	bottom: 0.07rem;
+	display: block;
+	width: 0.3rem;
+	height: 0.3rem;
+	background: url(../../resources/images/order_gd/admin_ion.png);
+	background-size: 100% auto;
+}
 .copy_person li{
 	width: auto;
 	height: auto;
@@ -455,7 +492,7 @@ import { MessageBox } from 'mint-ui';
 	align-items: flex-start!important;
 	-webkit-align-items: flex-start!important;
 	.gd_new_con{
-		line-height: initial!important;
+		/* line-height: initial!important; */
 	}
 }
 /* 审批流 */

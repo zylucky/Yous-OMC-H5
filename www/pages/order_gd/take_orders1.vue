@@ -6,21 +6,21 @@
 			<ul class="news_box gd_take_order">
 				<li>
 					<div class="gd_ion"><img src="../../resources/images/order_gd/list_ion.png" alt=""></div>
-					<div class="gd_tit">{{objDto.workType}}</div>
-					<div class="gd_state">{{objDto.liststyle}}</div>
+					<div class="gd_tit">工商注册-费用审批</div>
+					<div class="gd_state">紧急</div>
 				</li>
 			</ul>
 			<!-- 工单信息展示 -->
 			<ul class="news_box">
 				<ul class="gd_news">
-					<p class="gd_lp">{{ allData.lpname }} {{allData.zdname}}-{{allData.fyname}}</p>
+					<p class="gd_lp">建外SOHO 2-2908</p>
 					<li>
 						<span class="gd_news_tit">工单编号：</span>
-						<span class="gd_news_con">{{objDto.codenum}}</span>
+						<span class="gd_news_con">SG201811121111</span>
 					</li>
 					<li>
 						<span class="gd_news_tit">发起事由：</span>
-						<span class="gd_news_con">{{objDto.initiatcause}}</span>
+						<span class="gd_news_con">工商注册</span>
 					</li>
 				</ul>
 			</ul>
@@ -29,23 +29,23 @@
 				<ul class="gd_new">
 					<li>
 						<span class="gd_new_tit">接单来源</span>
-						<span class="gd_new_con">{{objDto.singlesource}}</span>
+						<span class="gd_new_con">APP扫码</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">需求方属性</span>
-						<span class="gd_new_con">{{objDto.demandattribute}}</span>
+						<span class="gd_new_con">租户</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">客户姓名</span>
-						<span class="gd_new_con">{{objDto.customername}}</span>
+						<span class="gd_new_con">张三</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">联系方式</span>
-						<span class="gd_new_con">{{objDto.customerphone}}</span>
+						<span class="gd_new_con">15936866025</span>
 					</li>
 					<li class="gd_tip">
 						<span class="gd_new_tit">告知详情</span>
-						<span class="gd_new_con">{{objDto.informingdetail}}</span>
+						<span class="gd_new_con">租户希望我们可以待办</span>
 					</li>
 				</ul>
 			</ul>
@@ -53,15 +53,15 @@
 				<ul class="gd_new">
 					<li>
 						<span class="gd_new_tit">管家是否联系</span>
-						<span class="gd_new_con">{{objDto.housekeepercontact==1?'是':'否'}}</span>
+						<span class="gd_new_con">是</span>
 					</li>
 					<li>
 						<span class="gd_new_tit">回复客户时间</span>
-						<span class="gd_new_con">{{objDto.recoverytime | times}}</span>
+						<span class="gd_new_con">2018-11-16</span>
 					</li>
 					<li class="gd_tip">
-						<span class="gd_new_tit">备注</span>
-						<span class="gd_new_con">{{objDto.remark}}</span>
+						<span class="gd_new_tit">告知详情</span>
+						<span class="gd_new_con">租户对于办理要求很多，希望进度快速</span>
 					</li>
 				</ul>
 			</ul>
@@ -69,15 +69,15 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>图片</p>
 				<ul class="img_list_box">
-					<li v-for="(item,index) in picurl">
-						<img :src="$prefix+'/'+item" alt="">
+					<li>
+						<img src="../../resources/images/banner/banner03.png" alt="">
 					</li>
 				</ul>
 			</ul>
 			<ul class="news_box">
 				<!-- 审批流程显示 -->
 				<ul class="spl_box">
-					<li v-for="(item,index) in infos">
+					<li v-for="(i,index) in 3">
 						<div class="spl_bigbox">
 							<div class="spl_headimg">
 								<img src="../../resources/images/commission/head_img.png" alt="">
@@ -85,24 +85,24 @@
 							</div>
 							<div class="spl_con">
 								<p class="spl_name">
-									<span>{{item.assigneeName}}</span>
-									<span>{{item.endTime}}</span>
+									<span>400-张三</span>
+									<span>11/04 10:50</span>
 								</p>
-								<p class="spl_state">{{item.nodeName}}</p>
+								<p class="spl_state">发起申请</p>
 							</div>
-							<div class="see_pj" v-show="item.com.length>0" @click="ckpj(item,index)">
+							<div class="see_pj" v-show="i!=2" @click="ckpj(i,index)">
 								<span>查看评价</span>
 								<span>></span>
 							</div>							
 						</div>
 						<!-- 评价信息 -->
-						<div class="plxx_box">
-							<div class="pjxx" v-for="(item1,index) in item.com">
+						<div class="plxx_box" v-show="i!=2">
+							<div class="pjxx" v-for="i in 3">
 								<p class="pj_name_t">
-									<span>{{item1.userName}}</span>
-									<span>{{item1.time}}</span>
+									<span>工商管家-李四</span>
+									<span>11/04 10:50</span>
 								</p>
-								<p class="pj_txt">{{item1.fullMessage}}</p>
+								<p class="pj_txt">业务处理比较麻烦，可能没有那么快，业务处理比较麻烦，可能没有那么快</p>
 							</div>
 							<div class="plxx_box_after"></div>
 						</div>
@@ -113,11 +113,11 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>跟单人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="item in singleDto">
+					<li>
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
 						</p>
-						<p class="copy_name">{{item.name}}</p>
+						<p class="copy_name">张三</p>
 					</li>
 				</ul>
 			</ul>
@@ -125,13 +125,19 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="item in sendDto">
+					<li>
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn" v-if="false"></span>
-							<span class="admin_ion"></span>
+							<span class="del_img_btn"></span>
 						</p>
-						<p class="copy_name">{{item.name}}</p>
+						<p class="copy_name">张三</p>
+					</li>
+					<li>
+						<p class="head_img">
+							<img src="../../resources/images/commission/head_img.png" alt="">	
+							<span class="del_img_btn"></span>
+						</p>
+						<p class="copy_name">张三</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -145,22 +151,8 @@
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
 			<ul class="bottom_nav">
-				<li @click="jd_btn">接单</li>
-				<li>拒绝</li>
-				<li @click="more_btn">更多</li>
-			</ul>
-		</div>
-		<!-- 遮罩层 -->
-		<div class="zzc_box" v-if="zz_state" @click="zz_state=false">
-			<ul class="more_nav" @click.stop="">
-				<li>
-					<p><img src="../../resources/images/order_gd/zj_btn_ion.png" alt=""></p>
-					<p>转交</p>
-				</li>
-				<li>
-					<p><img src="../../resources/images/order_gd/sqfy_btn_ion.png" alt=""></p>
-					<p>申请费用</p>
-				</li>
+				<li @click="jd_btn">通过</li>
+				<li>驳回</li>
 			</ul>
 		</div>
 	</div>
@@ -177,15 +169,7 @@ import { MessageBox } from 'mint-ui';
 				value:'',
 				pj_state: false,//列表折叠
 				pj_sta: 'yuan',//列表折叠状态
-				zz_state: false,//遮罩层显示/隐藏控制
 				gd_id: '',//路由接受的工单id
-				allData: {},//页面数据
-				objDto: {},
-				picurl: [],//图片列表
-				singleDto: [],//跟单人
-				sendDto: [],//抄送人
-				infos: [],//审批流
-				
 			}
 		},
 		created(){
@@ -198,12 +182,7 @@ import { MessageBox } from 'mint-ui';
 				axios.post(url,{
 					"id": this.gd_id
 				}).then((res)=>{
-					this.allData = res.data.data;
-					this.objDto = res.data.data.objDto;//详细信息
-					this.picurl = this.objDto.picurl.split(";");//图片处理
-					this.singleDto = this.allData.singleDto;//跟单人
-					this.sendDto = this.allData.sendDto;//抄送人
-					this.infos = this.allData.infos;//审批流
+					console.log(res);
 				}, (err)=>{
 					console.log(err);
 				});					
@@ -214,7 +193,7 @@ import { MessageBox } from 'mint-ui';
 					query:{}
 				})
 			},
-			ckpj(item,index){
+			ckpj(i,index){
 				this.ckpj_sreset();
 				if(this.pj_sta == 'yuan'){
 					this.pj_sta = index;
@@ -265,7 +244,7 @@ import { MessageBox } from 'mint-ui';
 				})
 			},
 			more_btn(){
-				this.zz_state = true;
+				
 			},
 			
 		},
@@ -377,16 +356,6 @@ import { MessageBox } from 'mint-ui';
 .copy_person{
 	
 }
-.admin_ion{
-	position: absolute;
-	right: 0;
-	bottom: 0.07rem;
-	display: block;
-	width: 0.3rem;
-	height: 0.3rem;
-	background: url(../../resources/images/order_gd/admin_ion.png);
-	background-size: 100% auto;
-}
 .copy_person li{
 	width: auto;
 	height: auto;
@@ -426,7 +395,7 @@ import { MessageBox } from 'mint-ui';
 	border-top: 1px solid #e5e5e5;
 	li{
 		position: relative;
-		width: 33.333%;
+		width: 50%;
 		line-height: 1rem;
 		font-size: 0.3rem;
 		color: #2b70d8;
@@ -523,7 +492,7 @@ import { MessageBox } from 'mint-ui';
 	align-items: flex-start!important;
 	-webkit-align-items: flex-start!important;
 	.gd_new_con{
-		/* line-height: initial!important; */
+		line-height: initial!important;
 	}
 }
 /* 审批流 */
