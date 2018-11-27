@@ -102,13 +102,20 @@
 						</p>
 						<p class="copy_name">{{item.name}}</p>
 					</li>
+					<li v-for="(items,index) in copy_p">
+						<p class="head_img">
+							<img src="../../resources/images/commission/head_img.png" alt="">	
+							<span class="del_img_btn" v-if="true"></span>
+						</p>
+						<p class="copy_name">{{items.topic}}</p>
+					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
 						<p class="copy_name"></p>
 					</li>
 				</ul>
 			</ul>
-			<div class="see_lct">查看工单流程图</div>
+			<div class="see_lct" @click="see_flowimg">查看工单流程图</div>
 		</div>
 
 		<!-- 底部悬浮按钮 -->
@@ -133,15 +140,19 @@
 				pj_state: false,//列表折叠
 				pj_sta: 'yuan',//列表折叠状态
 				gd_id: '',//路由接受的工单id
+				taskid: '',//路由接受的工单taskid
 				allData: {},//所有返回信息
 				approvalDto: {},//展示信息
 				picurl: [],//图片处理
 				infos: [],//审批流
 				sendDto: [],//抄送人
+				copy_p: [],//
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
+			this.taskid = this.$route.query.taskid;
+			this.copy_p = this.$store.state.copyData;//获取添加的抄送人
 			this.gd_detail();
 		},
 		methods:{
@@ -150,7 +161,6 @@
 				axios.post(url,{
 					"id": this.gd_id
 				}).then((res)=>{
-					console.log(res.data.data);
 					this.allData = res.data.data;
 					this.approvalDto = res.data.data.approvalDto;
 					if(this.approvalDto.picurl != ''){
@@ -160,7 +170,6 @@
 					}
 					this.infos = this.allData.infos;//审批流
 					this.sendDto = this.allData.sendDto;//抄送人
-					console.log(this.sendDto);
 				}, (err)=>{
 					console.log(err);
 				});					
@@ -168,7 +177,10 @@
 			add_copy(){
 				this.$router.push({
 					path:'/gs_copy',//跳转到审批页面
-					query:{}
+					query:{
+						gdid: this.$route.query.gdid,//工单id
+						laiyuan: '/fy_detail',
+					}
 				})
 			},
 			ckpj(i,index){
@@ -237,6 +249,15 @@
 					} 
 				})
 			},
+			see_flowimg(){//查看工单流程图
+				const url = this.$api_lct + "/lswapi/processOpt/showImage.do?taskId=382833";
+				this.$http.get(
+				url
+				).then((res) => {
+					console.log(res);
+				}, (response) => {});
+			},
+			
 		},
 		mounted(){
 			
@@ -357,12 +378,13 @@
 	background-size: 100% auto;
 }
 .copy_person li{
-	width: auto;
+	width: 25%;
 	height: auto;
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
+	margin-right: 0!important;
 }
 .head_img{
 	position: relative;

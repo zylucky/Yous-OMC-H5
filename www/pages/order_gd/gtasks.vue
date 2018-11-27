@@ -182,6 +182,7 @@
 						path:'/fy_detail',//跳转到审批页面
 						query:{
 							gdid: item.gdid,//工单id
+							taskid: item.taskid,
 						}
 					});
 				}
@@ -191,6 +192,7 @@
 						path:'/take_orders',//跳转到审批页面
 						query:{
 							gdid: item.gdid,//工单id
+							taskid: item.taskid,
 						}
 					});					
 				}

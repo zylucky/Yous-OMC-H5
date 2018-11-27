@@ -185,6 +185,7 @@ import { MessageBox } from 'mint-ui';
 				singleDto: [],//跟单人
 				sendDto: [],//抄送人
 				infos: [],//审批流
+				copy_p: [],//添加抄送人
 				
 			}
 		},
@@ -211,7 +212,10 @@ import { MessageBox } from 'mint-ui';
 			add_copy(){
 				this.$router.push({
 					path:'/gs_copy',//跳转到抄送
-					query:{}
+					query:{
+						gdid: this.$route.query.gdid,//工单id
+						laiyuan: '/take_orders',
+					}
 				})
 			},
 			ckpj(item,index){

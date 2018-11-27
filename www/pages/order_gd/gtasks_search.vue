@@ -69,7 +69,7 @@
 			border-bottom: 1px solid #e5e5e5;
 		}
 		li:last-child{
-			border-bottom: none;
+			border-bottom: none!important;
 		}
 	}
 </style>
@@ -110,7 +110,8 @@
 		<div class="copy_bottom">
 			<!-- 搜索的待办列表 -->
 			<ul class="db_list" :style="username!=''?'border-bottom: 1px solid #e5e5e5;':'border-bottom: none;'">
-				<li v-for="item in listData" @click="link_db(item)">{{item.lpname}} {{item.zdname}}-{{item.fyname}}</li>
+				<li v-for="item in listData" @click="link_db(item)" v-text="item.lpname+' '+item.zdname+'-'+item.fyname"></li>
+				<p style="line-height: 0.5rem;font-size: 0.3rem;text-align: center;color: #999;">{{list_data.length!=0 && username!=''?'':'暂无搜索结果'}}</p>
 			</ul>
 		</div>
 	</div>
@@ -136,7 +137,7 @@ import { Indicator } from 'mint-ui';
 			},
 			link_db(item){//
 				this.$router.push({
-					path:'/gtasks',//回退到列表
+					path:'/gtasks',
 					query:{
 						search_key: item.lpname
 					}

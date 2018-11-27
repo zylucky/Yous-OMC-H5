@@ -16,8 +16,17 @@ export default new Vuex.Store({
 		total1:0,
 		total2:0,
 		total3:0,
+		copyData:[],//抄送人
+		form_obj: '',//表单数据暂存
 	},
 	mutations:{
+		form_set(state,obj){
+			state.form_obj = obj;
+			// localStorage.setItem("form_obj",JSON.stringify(state.form_obj));
+		},
+		add_copy(state,obj){
+			state.copyData.push(obj);//存储抄送人
+		},
 		openRed(state,obj){//滚动条位置
 			state.scollposion = obj;
 		},

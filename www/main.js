@@ -28,6 +28,7 @@ Vue.component(Search.name, Search);
 //测试ip
 Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+Vue.prototype.$api_lct = "http://116.62.68.26:8082" //查看工单流程图
 
 // Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //Mr.Cheng IP Address
 
