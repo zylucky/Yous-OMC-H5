@@ -565,19 +565,19 @@
 			   var thisHeight=$(this).height();
 			    if(winHeight - thisHeight >50){
 			         //当软键盘弹出，在这里面操作
-					$(".gs_box_bottom").css({
-						"display":"none"
-					});
-					$(".gs_box_top").css("bottom","0");
+						$(".gs_box_bottom").css({
+							"display":"none"
+						});
+						$(".gs_box_top").css("bottom","0");
 			    }else{
 			        //当软键盘收起，在此处操作
-					$(".gs_box_bottom").css({
-						"display":"block",
-						"height":"1.2rem"
-					});
-					$(".gs_box_top").css({
-						"bottom":"1.2rem",
-					});
+						$(".gs_box_bottom").css({
+							"display":"block",
+							"height":"1.2rem"
+						});
+						$(".gs_box_top").css({
+							"bottom":"1.2rem",
+						});
 			    }
 			});
 			// 图片上传

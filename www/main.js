@@ -503,11 +503,25 @@ var router = new VueRouter({
 				title: '我的待办'
 			}
 		},
+		{//我发起的列表
+			path: '/gtasks_fq',
+			component: require('./pages/order_gd/gtasks_fq.vue'),
+			meta: {
+				title: '我发起的'
+			}
+		},
 		{//待办列表搜索
 			path: '/gtasks_search',
 			component: require('./pages/order_gd/gtasks_search.vue'),
 			meta: {
 				title: '我的待办'
+			}
+		},
+		{//我发起的列表搜索
+			path: '/gtasks_search_fq',
+			component: require('./pages/order_gd/gtasks_search_fq.vue'),
+			meta: {
+				title: '我发起的'
 			}
 		},
 		{//工商注册详情
