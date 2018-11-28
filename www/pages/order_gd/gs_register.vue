@@ -329,6 +329,12 @@
 				}
 				//this.$store.commit('form_set',this.form_obj);
 				if(JSON.parse(sessionStorage.getItem('form_obj'))){
+					var obj_data = JSON.parse(sessionStorage.getItem('form_obj'));
+					for(var key in obj_data){
+						if(obj_data[key] != this[key]){
+							sessionStorage.setItem("form_obj",JSON.stringify(this.form_obj));
+						}
+					}
 					console.log(JSON.parse(sessionStorage.getItem('form_obj')));
 					this.$router.push({
 						path:'/gs_copy',//跳转到添加抄送人
@@ -654,7 +660,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": ""
+										"token": "16_tThVQTdZbHf2Zl7Eha6zseqVlJxTNl1Lq4vUFlt09_KlIZC0VNX8sjXGJM-6OJ_vaXi2_RtTfbQI05TAxc29At5egWqwJFDy9Y_3cl7l9yq5KEddoZaQCfHIMkas7ekEts-uCxgnpfpb97WsGOZcAFAJRC"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
