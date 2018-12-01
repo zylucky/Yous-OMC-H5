@@ -5,7 +5,7 @@
 			<ul class="inp_card">
 				<li v-for="(module,index) in modules">
 					<p class="inp_box">
-						<input type="text" v-model="module.text" placeholder="请输入VIP卡序列号"/>
+						<input type="text" v-model="module.text" placeholder="请输入VIP卡序列号" @input="cinp(index,module.text)"/>
 					</p>
 					<p class="inp_btnbox">
 						<span class="add_btn" @click="add(index)" v-if="module.isshow=='s' && index<9"></span>
@@ -14,6 +14,17 @@
 				</li>
 				<p class="btn_c" @click="bound">绑定VIP卡</p>
 			</ul>
+		</div>
+		<div class="zcc_box" v-if="tip_state">
+			<div class="tip_err">
+				<p class="tip_t">提示</p>
+				<p class="tip_c">
+					<span v-for="(item,index) in err_tip">
+						{{index}}:&nbsp;{{item}}
+					</span>
+				</p>
+				<p class="tip_btn" @click="tip_state=false">知道了</p>
+			</div>
 		</div>
 		<!-- 注意事项 -->
 		<div class="card_bottom">
@@ -47,6 +58,8 @@ import { Toast } from 'mint-ui';
 					isshow:'s'
 				}],
 				card_number:[],
+				err_tip: {},
+				tip_state: false,
 			}
 		},
 		methods:{
@@ -62,10 +75,17 @@ import { Toast } from 'mint-ui';
 				this.card_number.splice(index,1);
 				console.log(this.card_number);//输出查看
 			},
+			cinp(index,txt){
+				this.modules[index].text = txt;
+			},
 			bound(){//绑定卡片
+				console.log(this.modules);
 				for(var i=0; i<this.modules.length; i++){
 					if(this.modules[i].text != ''){
 						this.card_number[i]=this.modules[i].text;
+					}
+					if(this.modules[i].text == ''){
+						this.card_number.splice(i,1);
 					}
 				}
 				if(this.card_number.length == 0){
@@ -80,30 +100,31 @@ import { Toast } from 'mint-ui';
 				}).then((res)=>{
 					if(res.data.success){
 						if(!res.data.status){
-							var card_obj = res.data.data;
-							for(var i=0; i<this.card_number.length; i++){
-								for(var key in card_obj){
-									if(this.card_number[i] == key && card_obj[key] == "此卡序列号已被绑定！"){
-										$('.inp_box').eq(i).css({
-											"-webkit-box-shadow":"0px 0px 8px #EEF51B",
-											"box-shadow":"0px 0px 8px #EEF51B"
-										});
-										MessageBox('提示', '已绑定！');
-									}else{
-										$('.inp_box').eq(i).css({
-											"-webkit-box-shadow": 'none',
-											"box-shadow": 'none'
-										});
-									}
-									if(this.card_number[i] == key && card_obj[key] == "此卡序列号错误！"){
-										$('.inp_box').eq(i).css({
-											"-webkit-box-shadow":"0px 0px 8px #FF1900",
-											"box-shadow":"0px 0px 8px #FF1900"
-										});
-										MessageBox('提示', '此卡序列号错误！');
-									}
-								}
-							}					
+							var card_obj = JSON.parse(res.data.vipcard);
+							this.err_tip = card_obj;
+							this.tip_state = true;
+// 							for(var i=0; i<this.card_number.length; i++){
+// 								for(var key in card_obj){
+// 									if(this.card_number[i] == key){
+// 										$('.inp_box').eq(i).css({
+// 											"-webkit-box-shadow":"0px 0px 8px #FF1900",
+// 											"box-shadow":"0px 0px 8px #FF1900"
+// 										});
+// 									}else{
+// 										$('.inp_box').eq(i).css({
+// 											"-webkit-box-shadow": 'none',
+// 											"box-shadow": 'none'
+// 										});
+// 									}
+// // 									if(this.card_number[i] == key && card_obj[key] == "此卡序列号错误！"){
+// // 										$('.inp_box').eq(i).css({
+// // 											"-webkit-box-shadow":"0px 0px 8px #FF1900",
+// // 											"box-shadow":"0px 0px 8px #FF1900"
+// // 										});
+// // 										MessageBox('提示', '此卡序列号错误！');
+// // 									}
+// 								}
+// 							}					
 						}else{
 							Toast({
 							  message: '绑定VIP成功！',
@@ -252,5 +273,54 @@ import { Toast } from 'mint-ui';
 	font-size: 0.24rem;
 	color: #acacac;
 	line-height: 0.48rem;
+}
+.zcc_box{
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+}
+.tip_err{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 6.4rem;
+	height: 3.5rem;
+	margin: -1.75rem 0 0 -3.2rem;
+	background: #fff;
+	border-radius: 0.15rem;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+}
+.tip_t{
+	height: 0.8rem;
+	line-height: 0.8rem;
+	font-size: 0.36rem;
+	font-weight: 500;
+	color: #000;
+	text-align: center;
+}
+.tip_btn{
+	height: 0.8rem;
+	line-height: 0.8rem;
+	text-align: center;
+	font-size: 0.36rem;
+	color: #007AFF;
+	border-top: 1px solid #dddddd;
+}
+.tip_c{
+	flex: 1;
+	-webkit-flex: 1;
+	padding: 0 0.5rem;
+	overflow: auto;
+	span{
+		display: inline-block;
+	}
 }
 </style>

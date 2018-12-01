@@ -3,10 +3,10 @@
 		<!-- 顶部 -->
 		<div class="card_top" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 			<h3 style="margin-top: 0.35rem;">VIP会员卡：</h3>
-			<p class="card_tg" style="margin-bottom: 0.35rem;">已分发会员卡：<i>8</i>张，已产生消费金额总计：<i>10000</i>元</p>
+			<p class="card_tg" style="margin-bottom: 0.35rem;">已分发会员卡：<i>{{vipa_data.cardNum}}</i>张，已产生消费金额总计：<i>{{vipa_data.totalConsume}}</i>元</p>
 			<h3>VIP储值卡：</h3>
-			<p class="card_tg">已绑定储值卡总计：<i>2</i>张，卡面额总计：<i>25000</i>元</p>
-			<p class="card_tg">实际销售储值卡总计：<i>1</i>张，卡面额总计：<i>10000</i>元</p>	
+			<p class="card_tg">已绑定储值卡总计：<i>{{vipc_data.cardNum}}</i>张，卡面额总计：<i>{{vipc_data.totalConsume}}</i>元</p>
+			<p class="card_tg">实际销售储值卡总计：<i>{{vipcc_data.cardNum}}</i>张，卡面额总计：<i>{{vipcc_data.totalConsume}}</i>元</p>	
 			<!-- 卡片列表 -->
 			<div class="list_bigbox">
 				<ul class="list_box">
@@ -50,11 +50,14 @@ import { InfiniteScroll } from 'mint-ui';
 				loading: false,
 				allData: [],
 				kong_state: false,
+				vipa_data: {},//会员卡
+				vipc_data: {},//储值卡
+				vipcc_data: {},//实际销售
 			}
 		},
 		created() {
 			// this.get_list();
-			// this.all_access();
+			this.all_access();
 		},
 		methods:{
 			get_list(page){
@@ -65,17 +68,19 @@ import { InfiniteScroll } from 'mint-ui';
 					"pageNum": "10"
 				}).then((res)=>{
 					if(res.data.success){
-						this.data_length = res.data.data.length;
-						if(this.data_length<10){
-							this.loading = true;//禁止无限滚动
-							$('.jzzt').text('已经到底了哦!');
+						if(res.data.data != ''){
+							this.data_length = res.data.data.length;
+							if(this.data_length<10){
+								this.loading = true;//禁止无限滚动
+								$('.jzzt').text('已经到底了哦!');
+							}
+							this.allData = this.allData.concat(res.data.data);
+							if(this.allData.length == 0){
+								this.kong_state = true;
+							}
+							this.loading = false;//如果该属性的值为true，则将禁用无限滚动
+							this.page++;													
 						}
-						this.allData = this.allData.concat(res.data.data);
-						if(this.allData.length == 0){
-							this.kong_state = true;
-						}
-						this.loading = false;//如果该属性的值为true，则将禁用无限滚动
-						this.page++;						
 					}
 				}, (err)=>{
 					console.log(err);
@@ -92,7 +97,9 @@ import { InfiniteScroll } from 'mint-ui';
 					"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,
 				}).then((res)=>{
 					if(res.data.success){
-						console.log(res);
+						this.vipa_data = JSON.parse(res.data.VIPA); 
+						this.vipc_data = JSON.parse(res.data.VIPC);
+						this.vipcc_data = JSON.parse(res.data.VIPCC);
 					}
 				}, (err)=>{
 					console.log(err);
