@@ -22,14 +22,15 @@ Vue.component(Search.name, Search);
 
 
 // 生产环境
-Vue.prototype.$prefix = "http://omc.urskongjian.com:81" //图片前缀
-Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+// Vue.prototype.$prefix = "http://omc.urskongjian.com:81" //图片前缀
+// Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
 
 //测试ip
-// Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
-// Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
+Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
+Vue.prototype.$api_lct = "http://116.62.68.26:8082" //查看工单流程图
 
-// Vue.prototype.$api = "http://192.168.0.105:8080" //Mr.Cheng IP Address
+// Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //Mr.Cheng IP Address
 
 
 Vue.config.debug = true; // 开启debug模式
@@ -467,11 +468,123 @@ var router = new VueRouter({
 				title: '我的渠道'
 			}
 		},
-		{ //测试demo12
+		{
 			path: '/img_load',
 			component: require('./pages/testpage/img_load.vue'),
 			meta: {
 				title: '图片上传'
+			}
+		},
+		{//控制台
+			path: '/ctrl',
+			component: require('./pages/order_gd/ctrl.vue'),
+			meta: {
+				title: '亮狮工单'
+			}
+		},
+		{//工商发起表单
+			path: '/gs_register',
+			component: require('./pages/order_gd/gs_register.vue'),
+			meta: {
+				title: '工商注册工单'
+			}
+		},
+		{
+			path: '/gs_copy',
+			component: require('./pages/order_gd/copy_p.vue'),
+			meta: {
+				title: '添加抄送人'
+			}
+		},
+		{//待办列表
+			path: '/gtasks',
+			component: require('./pages/order_gd/gtasks.vue'),
+			meta: {
+				title: '我的待办'
+			}
+		},
+		{//我发起的列表
+			path: '/gtasks_fq',
+			component: require('./pages/order_gd/gtasks_fq.vue'),
+			meta: {
+				title: '我发起的'
+			}
+		},
+		{//待办列表搜索
+			path: '/gtasks_search',
+			component: require('./pages/order_gd/gtasks_search.vue'),
+			meta: {
+				title: '我的待办'
+			}
+		},
+		{//我发起的列表搜索
+			path: '/gtasks_search_fq',
+			component: require('./pages/order_gd/gtasks_search_fq.vue'),
+			meta: {
+				title: '我发起的'
+			}
+		},
+		{//工商注册详情
+			path: '/take_orders',
+			component: require('./pages/order_gd/take_orders.vue'),
+			meta: {
+				title: '工单'
+			}
+		},
+		{//工商注册费用审批详情
+			path: '/take_orders1',
+			component: require('./pages/order_gd/take_orders1.vue'),
+			meta: {
+				title: '工单'
+			}
+		},
+		{//驳回意见
+			path: '/gd_record',
+			component: require('./pages/order_gd/gd_record.vue'),
+			meta: {
+				title: '处理记录编辑'
+			}
+		},
+		{//转交说明
+			path: '/gd_sendon',
+			component: require('./pages/order_gd/gd_sendon.vue'),
+			meta: {
+				title: '选择转交人员'
+			}
+		},
+		{//费用审批列表页
+			path: '/fy_putin',
+			component: require('./pages/order_gd/fy_putin.vue'),
+			meta: {
+				title: '费用申请'
+			}
+		},
+		{//费用申批详情页
+			path: '/fy_detail',
+			component: require('./pages/order_gd/fy_detail.vue'),
+			meta: {
+				title: '费用申请'
+			}
+		},
+		{//费用申批表单页
+			path: '/fy_from',
+			component: require('./pages/order_gd/fy_from.vue'),
+			meta: {
+				title: '费用申请'
+			}
+		},
+		{//会员卡
+			path: '/add_card',
+			component: require('./pages/vip_card/add_card.vue'),
+			meta: {
+				title: '请绑定VIP卡'
+			}
+		},
+		{//已绑定会员卡列表
+			path: '/card_list',
+			component: require('./pages/vip_card/card_list.vue'),
+			meta: {
+				title: '绑卡统计'
 			}
 		},
 
