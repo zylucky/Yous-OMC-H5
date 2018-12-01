@@ -573,7 +573,20 @@ var router = new VueRouter({
 				title: '费用申请'
 			}
 		},
-		
+		{//会员卡
+			path: '/add_card',
+			component: require('./pages/vip_card/add_card.vue'),
+			meta: {
+				title: '请绑定VIP卡'
+			}
+		},
+		{//已绑定会员卡列表
+			path: '/card_list',
+			component: require('./pages/vip_card/card_list.vue'),
+			meta: {
+				title: '绑卡统计'
+			}
+		},
 
 	]
 });
