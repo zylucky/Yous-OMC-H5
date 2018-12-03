@@ -1,7 +1,7 @@
 <template>
 	<div class="add_card_box">
 		<!-- 顶部 -->
-		<div class="card_top" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+		<div class="card_top" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="20">
 			<h3 style="margin-top: 0.35rem;">VIP会员卡：</h3>
 			<p class="card_tg" style="margin-bottom: 0.35rem;">已分发会员卡：<i>{{vipa_data.cardNum}}</i>张，已产生消费金额总计：<i>{{vipa_data.totalConsume}}</i>元</p>
 			<h3>VIP储值卡：</h3>
@@ -27,6 +27,7 @@
 				</ul>
 			</div>
 			<!-- 加载状态 -->
+			<div class="jzzt" v-if="allData.length == 0">暂无绑卡记录！</div>
 			<div class="jzzt" v-if="allData.length > 4">
 				<mt-spinner type="fading-circle" color="#2b70d8"></mt-spinner>
 			</div>
@@ -56,7 +57,6 @@ import { InfiniteScroll } from 'mint-ui';
 			}
 		},
 		created() {
-			// this.get_list();
 			this.all_access();
 		},
 		methods:{
@@ -73,13 +73,19 @@ import { InfiniteScroll } from 'mint-ui';
 							if(this.data_length<10){
 								this.loading = true;//禁止无限滚动
 								$('.jzzt').text('已经到底了哦!');
+							}else{
+								this.loading = false;//如果该属性的值为true，则将禁用无限滚动
 							}
-							this.allData = this.allData.concat(res.data.data);
+							var list_data = [];
+							list_data = res.data.data;
+							this.allData = this.allData.concat(list_data);
 							if(this.allData.length == 0){
 								this.kong_state = true;
 							}
-							this.loading = false;//如果该属性的值为true，则将禁用无限滚动
-							this.page++;													
+							if(this.data_length>0){
+								this.page++;
+								console.log(this.page);
+							}
 						}
 					}
 				}, (err)=>{

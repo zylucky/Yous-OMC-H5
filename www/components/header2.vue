@@ -53,6 +53,7 @@
   #header{
   	line-height: inherit;
   }
+	.ys_function a{padding: .2rem 0;}
 </style>
 <template>
   <div header>
@@ -84,7 +85,7 @@
             <!--<router-link :to="{path:'/list2'}" id="first_list_link">房源列表</router-link>
             <a href="javascript:;">房源信息采集</a>
             <a href="javascript:;">待办任务</a>-->
-
+						<a href="javascript:;" @click="coupon_card">优惠卡</a>
             <a href="javascript:;" @click="daikan_daka" v-if='now_hash!="daikan"'>带看打卡</a>
 
             <a href="javascript:;" @click="daikan_logs" v-if='now_hash!="daikan_logs"'>带看记录</a>
@@ -252,6 +253,12 @@
           $("body").removeAttr("style");
           this.$router.push({path:'/modify_pwd'});
       },
+			coupon_card(){//优惠卡
+					$("#zhezhao").remove();
+					$('html').removeAttr("style");
+					$("body").removeAttr("style");
+					this.$router.push({path:'/add_card'});
+			},
       daikan_daka(){//带看打卡
           $("#zhezhao").remove();
           $('html').removeAttr("style");

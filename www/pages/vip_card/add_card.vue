@@ -1,46 +1,53 @@
 <template>
 	<div class="add_card_box">
-		<div class="card_top">
-			<!-- 输入卡号 -->
-			<ul class="inp_card">
-				<li v-for="(module,index) in modules">
-					<p class="inp_box">
-						<input type="number" v-model="module.text" placeholder="请输入VIP卡序列号" @input="cinp(index,module.text)"/>
+		<div class="top_cardbox">
+			<div class="card_top">
+				<!-- 输入卡号 -->
+				<ul class="inp_card">
+					<li v-for="(module,index) in modules">
+						<p class="inp_box">
+							<input type="number" oninput="this.value=this.value.replace(/[^0-9.]+/,'');" v-model="module.text" placeholder="请输入VIP卡序列号" @input="cinp(index,module.text)"/>
+						</p>
+						<p class="inp_btnbox">
+							<span class="add_btn" @click="add(index)" v-if="module.isshow=='s' && index<9"></span>
+							<span class="del_btn" @click="del(index)" v-if="module.isshow=='h' || index==9"></span>
+						</p>
+					</li>
+					<p class="btn_c" @click="bound">绑定VIP卡</p>
+				</ul>
+			</div>
+			<div class="zcc_box" v-if="tip_state">
+				<div class="tip_err">
+					<p class="tip_t">提示</p>
+					<p class="tip_c">
+						<span v-for="(item,index) in err_tip">
+							{{index}}:&nbsp;{{item}}
+						</span>
 					</p>
-					<p class="inp_btnbox">
-						<span class="add_btn" @click="add(index)" v-if="module.isshow=='s' && index<9"></span>
-						<span class="del_btn" @click="del(index)" v-if="module.isshow=='h' || index==9"></span>
-					</p>
-				</li>
-				<p class="btn_c" @click="bound">绑定VIP卡</p>
-			</ul>
-		</div>
-		<div class="zcc_box" v-if="tip_state">
-			<div class="tip_err">
-				<p class="tip_t">提示</p>
-				<p class="tip_c">
-					<span v-for="(item,index) in err_tip">
-						{{index}}:&nbsp;{{item}}
-					</span>
+					<p class="tip_btn" @click="tip_state=false">知道了</p>
+				</div>
+			</div>
+			<!-- 注意事项 -->
+			<div class="card_bottom">
+				<p class="tit_box">
+					<span class="tit_l"></span>
+					<span class="tit">注意事项</span>
+					<span class="tit_r"></span>
 				</p>
-				<p class="tip_btn" @click="tip_state=false">知道了</p>
+				<!-- 事项 -->
+				<div class="tip_box">
+					<p>1、VIP系列卡序列号均为8位数随机码，不记名；</p>
+					<p>2、一个序列号只能被销售绑定一次；</p>
+					<p>3、客户手机号必须与商城订单买家手机号一致；</p>
+					<p>4、商城订单的买家留言里必须填写激活码，否则不认定业绩；</p>
+					<p>5、最终解释权归亮狮企服商城所有。</p>
+				</div>
 			</div>
 		</div>
-		<!-- 注意事项 -->
-		<div class="card_bottom">
-			<p class="tit_box">
-				<span class="tit_l"></span>
-				<span class="tit">注意事项</span>
-				<span class="tit_r"></span>
-			</p>
-			<!-- 事项 -->
-			<div class="tip_box">
-				<p>1、VIP系列卡序列号均为8位数随机码，不记名；</p>
-				<p>2、一个序列号只能被销售绑定一次；</p>
-				<p>3、客户手机号必须与商城订单买家手机号一致；</p>
-				<p>4、商城订单的买家留言里必须填写激活码，否则不认定业绩；</p>
-				<p>5、最终解释权归亮狮企服商城所有。</p>
-			</div>
+		<!-- 底部按钮 -->
+		<div class="bottom_cardbox">
+			<p @click="to_home">返回首页</p>
+			<p @click="to_cardlist">绑定列表</p>
 		</div>
 	</div>
 </template>
@@ -141,6 +148,18 @@ import { Toast } from 'mint-ui';
 					console.log(err);
 				});
 			},
+			to_home(){//返回首页
+				this.$router.push({
+					path:'/',//跳转到绑卡列表
+					query:{}
+				});
+			},
+			to_cardlist(){//绑卡列表
+				this.$router.push({
+					path:'/card_list',//跳转到绑卡列表
+					query:{}
+				});
+			},
 		}
 	}
 </script>
@@ -155,8 +174,41 @@ import { Toast } from 'mint-ui';
 	left: 0;
 	right: 0;
 	background: #00040e;
+	overflow: hidden;
+}
+.top_cardbox{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 1rem;
+	padding-bottom: 0.5rem;
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
+}
+.bottom_cardbox{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 1rem;
+	padding: 0 0.3rem;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	align-items: flex-start;
+	-webkit-align-items: flex-start;
+}
+.bottom_cardbox p{
+	width: 48%;
+	height: 0.8rem;
+	line-height: 0.8rem;
+	font-size: 0.3rem;
+	color: #b68f3a;
+	text-align: center;
+	border: 1px solid #b68f3a;
+	border-radius: 0.15rem;
 }
 .card_top{
 	width: 100%;
