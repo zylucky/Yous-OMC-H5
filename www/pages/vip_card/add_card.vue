@@ -5,7 +5,7 @@
 			<ul class="inp_card">
 				<li v-for="(module,index) in modules">
 					<p class="inp_box">
-						<input type="text" v-model="module.text" placeholder="请输入VIP卡序列号" @input="cinp(index,module.text)"/>
+						<input type="number" v-model="module.text" placeholder="请输入VIP卡序列号" @input="cinp(index,module.text)"/>
 					</p>
 					<p class="inp_btnbox">
 						<span class="add_btn" @click="add(index)" v-if="module.isshow=='s' && index<9"></span>
