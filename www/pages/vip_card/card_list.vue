@@ -46,7 +46,7 @@ import { InfiniteScroll } from 'mint-ui';
 	export default {
 		data(){
 			return{
-				page: 1,
+				page: 0,
 				data_length: 10,
 				loading: false,
 				allData: [],
@@ -82,10 +82,10 @@ import { InfiniteScroll } from 'mint-ui';
 							if(this.allData.length == 0){
 								this.kong_state = true;
 							}
-							if(this.data_length>0){
-								this.page++;
-								console.log(this.page);
-							}
+// 							if(this.data_length>0){
+// 								
+// 								console.log(this.page);
+// 							}
 						}
 					}
 				}, (err)=>{
@@ -94,6 +94,7 @@ import { InfiniteScroll } from 'mint-ui';
 			},
 			loadMore() {
 				setTimeout(() => {
+					this.page++;
 					this.get_list(this.page);//调用
 				},100);
 			},

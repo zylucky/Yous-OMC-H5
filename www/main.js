@@ -782,7 +782,7 @@ var router = new VueRouter({
 // 		}
 // 	}
 // });
-// 
+
 router.beforeEach(function(to, from, next) {
  if (to.meta.title) {
    document.title = to.meta.title;
