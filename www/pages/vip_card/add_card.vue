@@ -143,6 +143,8 @@ import { Toast } from 'mint-ui';
 								query:{}
 							});
 						}
+					}else{
+						MessageBox('提示', res.data.message);
 					}
 				}, (err)=>{
 					console.log(err);
