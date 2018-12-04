@@ -42,6 +42,7 @@ import axios from 'axios';
 import { MessageBox } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 import { Spinner } from 'mint-ui';
+import { Toast } from 'mint-ui';
 import { InfiniteScroll } from 'mint-ui';
 	export default {
 		data(){
@@ -67,6 +68,7 @@ import { InfiniteScroll } from 'mint-ui';
 					"page": page,
 					"pageNum": "10"
 				}).then((res)=>{
+					console.log(res);
 					if(res.data.success){
 						if(res.data.data != ''){
 							this.data_length = res.data.data.length;
@@ -90,6 +92,13 @@ import { InfiniteScroll } from 'mint-ui';
 					}
 				}, (err)=>{
 					console.log(err);
+					if(this.$api = "http://116.62.68.26:8080"){
+						Toast({
+						  message: '网络异常请稍后再试！',
+						  position: 'center',
+						  duration: 5000
+						});
+					}
 				});				
 			},
 			loadMore() {

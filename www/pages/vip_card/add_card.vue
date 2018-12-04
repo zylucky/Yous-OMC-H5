@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import wx from 'weixin-js-sdk';
 import axios from 'axios';
 import { MessageBox } from 'mint-ui';
 import { Indicator } from 'mint-ui';
@@ -67,6 +68,7 @@ import { Toast } from 'mint-ui';
 				card_number:[],
 				err_tip: {},
 				tip_state: false,
+				networktypes: '',//网络状态
 			}
 		},
 		methods:{
@@ -86,7 +88,14 @@ import { Toast } from 'mint-ui';
 				this.modules[index].text = txt;
 			},
 			bound(){//绑定卡片
-				console.log(this.modules);
+// 				if(this.networktypes != 'wifi' && this.networktypes != '' && this.$api == 'http://116.62.68.26:8080'){
+// 					Toast({
+// 						message: '网络异常请稍后再试！',
+// 						position: 'center',
+// 						duration: 5000
+// 					});
+// 					return
+// 				}
 				for(var i=0; i<this.modules.length; i++){
 					if(this.modules[i].text != ''){
 						this.card_number[i]=this.modules[i].text;
@@ -148,6 +157,13 @@ import { Toast } from 'mint-ui';
 					}
 				}, (err)=>{
 					console.log(err);
+					if(this.$api = "http://116.62.68.26:8080"){
+						Toast({
+						message: '网络异常请稍后再试！',
+						position: 'center',
+						duration: 5000
+						});
+					}
 				});
 			},
 			to_home(){//返回首页
@@ -162,6 +178,37 @@ import { Toast } from 'mint-ui';
 					query:{}
 				});
 			},
+			wechat_share() { //微信授权获取配置信息
+				const url = "http://omc.urskongjian.com/yhcms/web/weixin/shareYskj.do";
+				var url_share = window.location.href;
+				url_share = url_share.split('#')[0];
+				axios.post(url, {
+					"url": url_share
+				}).then((res) => {
+					let we_cs = res.data;
+					wx.config({
+						debug: false,
+						appId: we_cs.appId,
+						timestamp: we_cs.timestamp,
+						nonceStr: we_cs.nonceStr,
+						signature: we_cs.signature,
+						jsApiList: ["getNetworkType"]
+					});
+				}, (err) => {
+					console.log(err);
+				});
+			},
+		},
+		mounted() {
+			var _this = this;
+			this.wechat_share();
+			wx.ready(function() {
+				wx.getNetworkType({
+					success: function (res) {
+						_this.networktypes = res.networkType; // 返回网络类型2g，3g，4g，wifi
+					}
+				});				
+			});
 		}
 	}
 </script>
