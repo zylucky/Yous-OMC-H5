@@ -531,6 +531,13 @@ var router = new VueRouter({
 				title: '工单'
 			}
 		},
+		{//工商注册详情
+			path: '/take_orders_clz',
+			component: require('./pages/order_gd/take_orders_clz.vue'),
+			meta: {
+				title: '工单处理中'
+			}
+		},
 		{//工商注册费用审批详情
 			path: '/take_orders1',
 			component: require('./pages/order_gd/take_orders1.vue'),
@@ -543,6 +550,13 @@ var router = new VueRouter({
 			component: require('./pages/order_gd/gd_record.vue'),
 			meta: {
 				title: '处理记录编辑'
+			}
+		},
+		{//填写评论信息
+			path: '/gd_record1',
+			component: require('./pages/order_gd/gd_record1.vue'),
+			meta: {
+				title: '评论'
 			}
 		},
 		{//转交说明
@@ -822,7 +836,7 @@ router.beforeEach(function(to, from, next) {
                                  position: 'bottom'
                              });
                          } else {
-                             next({path: '/login'});
+                            next({path: '/login'});
                          }
                      }
                      //alert(data); // John

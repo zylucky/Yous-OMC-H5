@@ -176,6 +176,8 @@
 				});
 			},
 			todetail(item,index){//跳转详情处理页
+				console.log(item.jumPath);
+				console.log(item.nodeName);
 				// 工商注册费用审批跳转
 				if(item.jumPath == '/activiticostapproval/approvalPage.do'){
 					this.$router.push({
@@ -187,14 +189,30 @@
 					});
 				}
 				// 工商注册跳转
-				if(item.jumPath == '/activitibusinessreg/personLiablePage.do'){
+				if(item.jumPath == '/activitibusinessreg/receiptPage.do'){
 					this.$router.push({
-						path:'/take_orders',//跳转到审批页面
+						path:'/take_orders',//跳转到接单页面
 						query:{
 							gdid: item.gdid,//工单id
 							taskid: item.taskid,
+							nodeName: item.nodeName,//工单当前处理状态
 						}
 					});					
+				}
+				// 跳转业务处理页面
+				if(item.jumPath == '/activitibusinessreg/handlePage.do'){
+					this.$router.push({
+						path:'/take_orders_clz',//跳转到接单页面
+						query:{
+							gdid: item.gdid,//工单id
+							taskid: item.taskid,
+							nodeName: item.nodeName,//工单当前处理状态
+						}
+					});	
+				}
+				// 工商注册跳转(负责人确认)
+				if(item.jumPath == '/activitibusinessreg/personLiablePage.do'){
+					
 				}
 			},
 			list_data(page,timeSort,type,search_key){

@@ -121,9 +121,9 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>图片</p>
 				<ul class="img_list_box">
-					<li v-for="(item,index) in images.localId">
+					<li v-for="(item,index) in images.localId" @click="see_img(item,index)" v-if="item.isdelete=='0'">
 						<img :src="item.url" alt="">
-						<span class="del_img_btn"></span>
+						<span class="del_img_btn" tag="tp" @click.stop="del_img(index,$event,item)"></span>
 					</li>
 					<li class="add_img btns"></li>
 				</ul>
@@ -146,10 +146,10 @@
 				<ul class="img_list_box copy_person">
 					<li v-for="item in copy_data">
 						<p class="head_img">
-							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn"></span>
+							<img src="../../resources/images/commission/head_img.png" alt="">
+							<span class="del_img_btn" v-if="item.isdelete!=0"></span>
 						</p>
-						<p class="copy_name">{{item.topic}}</p>
+						<p class="copy_name">{{item.topic || item.name}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -235,6 +235,7 @@
 				zd_state: false,//座栋号状态
 				gdr_data: [],//跟单人
 				copy_data: [],//抄送人
+				cs_person: [],//默认抄送人
 				form_obj: {},//表单数据暂存
 				client_name: '',//客户姓名
 				telphone: '',//联系电话
@@ -245,10 +246,12 @@
 					localId: [], //图片列表
 					serverId: [] //微信服务端图片id
 				},
+				count:0,//未删减图片数量
 			}
 		},
 		created() {
 			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
+			this.get_cs_person();//默认抄送人
 			if(JSON.parse(sessionStorage.getItem('form_obj'))){
 				this.form_obj = JSON.parse(sessionStorage.getItem('form_obj'));
 				this.lpname = this.form_obj.lpname;//楼盘
@@ -295,6 +298,46 @@
 				}, (err) => {
 					console.log(err);
 				});
+			},
+			see_img(item, index) { // 预览图片
+				var _this = this;
+				var url_img = []; //图片列表
+				for (var i = 0; i < _this.images.localId.length; i++) {
+					url_img.push(_this.images.localId[i].url);
+				}
+				wx.ready(function() {
+					wx.previewImage({
+						current: item.url,
+						urls: url_img
+					});
+				});
+			},
+			del_img(index, event, item) { // 删除图片
+				const tag = $(event.target).attr("tag"),
+					which = {
+						"tp": "localId",
+					} [tag];
+				MessageBox({
+					title: '提示',
+					message: '请确认是否删除?',
+					showCancelButton: true,
+					confirmButtonText: "确认删除",
+					cancelButtonText: "取消删除"
+				}).then(action => {
+					if (action == 'confirm') {
+						console.log('确认删除')
+						this.images[which][index].isdelete = "1";
+						var cout = 0;//统计未删除标识
+						for(var i=0; i<this.images[which].length; i++){
+							if(this.images[which][i].isdelete == '0'){
+								cout += 1;
+							}
+						}
+						this.count = cout;//还可以上传数量
+					} else {
+						console.log('取消删除')
+					}
+				})
 			},
 			client(){//客户姓名
 				this.form_obj.client_name = this.client_name;//暂存
@@ -518,12 +561,41 @@
 					console.log(err);
 				});
 			},
+			get_cs_person(){//发起工单默认抄送人
+				const url = this.$api + "/yhcms/web/activitibusinessreg/getFindSendPer.do";
+				axios.post(url,{
+					"type": 'gszc'//工单类型
+				}).then((res)=>{
+					// this.copy_data = res.data.data;
+					let cs_person = [{"id":775,"name":"孙丽娟"}];
+					// 房源图片数据处理
+					this.cs_person = cs_person.map((item, idx) => {
+						return {
+							"id": item.id,
+							"isdelete": 0,
+							"topic": item.name
+						};
+					});
+					this.copy_data = this.copy_data.concat(this.cs_person);
+				}, (err)=>{
+					console.log(err);
+				});
+			},
 			see_flowimg(){//查看工单流程图
 				const url = this.$api_lct + "/lswapi/processOpt/processImage.do?actKeyType=gszc";
 				this.$http.get(
 				url
 				).then((res) => {
+					var _this = this;
 					console.log(res);
+					var url_img = []; //图片列表
+					url_img.push(res.url);
+					wx.ready(function() {
+						wx.previewImage({
+							current: res.url,
+							urls: url_img
+						});
+					});
 				}, (response) => {});
 			},
 			
@@ -660,7 +732,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "16_tThVQTdZbHf2Zl7Eha6zseqVlJxTNl1Lq4vUFlt09_KlIZC0VNX8sjXGJM-6OJ_vaXi2_RtTfbQI05TAxc29At5egWqwJFDy9Y_3cl7l9yq5KEddoZaQCfHIMkas7ekEts-uCxgnpfpb97WsGOZcAFAJRC"
+										"token": "18_oS-Y360BgrbCJGwztFpr8WcfIh9_FqCHUYCXjvJJtrfUTVSuYryq9nMm8apaylyweDH6rToY5GRsOMoYcAOLCkXjzxZRsA4f4D9ZbnrdZLNHKHIQgR7iNOB50H4bQN9yzOsd95AF8-1kIVUcSCNiADAXHS"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
@@ -748,6 +820,7 @@
 	font-size: 0.32rem;
 	color: #333;
 	font-weight: bold;
+	background: #fff;
 }
 .news_box li{
 	position: relative;

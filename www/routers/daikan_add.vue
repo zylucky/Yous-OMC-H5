@@ -501,33 +501,37 @@ export default{
                 "shuoming":this.info,
             }
 						var _this = this;
-								if(_this.isclick){
-						        _this.isclick= false;
-						        //定时器
-										this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
-												var response = JSON.parse(JSON.stringify(res.data));
-												if(response.success==true){
-														Toast({
-																message: '提交成功',
-																iconClass: 'icon icon-success'
-														});
-														this.$router.push('/daikan_logs');
-												}else{
-														Toast({
-																message: response.msg,
-														});
-												}
-										}).catch(function (error) {
-												Toast({
-														message: error,
-														iconClass: ''
-												});
-										});
-						
-						        setTimeout(function(){ 
-						            _this.isclick = true;
-						        }, 2000);
-						    }
+						if(_this.isclick){
+					        _this.isclick= false;
+							console.log(_this.isclick);
+					        //定时器
+							this.$http.post(this.$api+'/yhcms/web/qddaka/updateQdDaka.do',para).then((res)=>{
+								var response = JSON.parse(JSON.stringify(res.data));
+								if(response.success==true){
+									setTimeout(function(){
+							            _this.isclick = true;
+										console.log(_this.isclick);
+							        });
+									Toast({
+										message: '提交成功',
+										iconClass: 'icon icon-success'
+									});
+									this.$router.push('/daikan_logs');
+								}else{
+									Toast({
+										message: response.msg,
+									});
+								}
+							}).catch(function (error) {
+									Toast({
+											message: error,
+											iconClass: ''
+									});
+							});
+// 						        setTimeout(function(){ 
+// 						            _this.isclick = true;
+// 						        }, 2000);
+					    }
             
         },
         clk(a){

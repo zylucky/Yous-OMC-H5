@@ -102,8 +102,9 @@
 		margin-top: 0.2rem;
 	}
 	.ctrl_top_headimg{
-		width: 6.91rem;
-		height: 2.75rem;
+		padding: 0 0.3rem;
+		/* width: 6.91rem; */
+		/* height: 2.75rem; */
 		overflow: hidden;
 		margin: 0.25rem auto 0.1rem;
 	}

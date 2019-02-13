@@ -146,8 +146,8 @@
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
 			<ul class="bottom_nav">
-				<li @click="jd_btn">接单</li>
-				<li>拒绝</li>
+				<li @click="pl_btn">评论</li>
+				<li @click="finnsh">完成</li>
 				<li @click="more_btn">更多</li>
 			</ul>
 		</div>
@@ -290,9 +290,15 @@ import { MessageBox } from 'mint-ui';
 					});	
 				}
 			},
-			jd_btn(){//接单
+			pl_btn(){//评论
+				this.$router.push({
+					path:'/gd_record1',//跳转到评论
+					query:{}
+				});
+			},
+			finnsh(){//完成
 				MessageBox.confirm('', { 
-					message: '是否确定接单?', 
+					message: '确定完成?', 
 					title: '提示', 
 					confirmButtonText: '确认', 
 					cancelButtonText: '取消' 

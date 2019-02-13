@@ -161,6 +161,7 @@
                 isActive1:'',
                 isActive2:'',
                 isActive3:'',
+				isclick:true,//防止重复点击
             }
         },
         methods:{
@@ -280,7 +281,7 @@
                         "kehuyetai":this.yt=='请选择'?'':this.yt,
                         "kehuyusuan":this.kehuyusuan,
                         "kehumianji":this.kehumianji,
-                        "bangongrenshu":this.kehumianji,
+                        "bangongrenshu":this.bangongrenshu,
                         "kehuqvyv":this.kehuqvyv,
                         "kehumianji":this.kehumianji,
                         "shifoufuzeren":this.shifoufuzeren=='请选择'?'':this.shifoufuzeren,
@@ -289,16 +290,27 @@
                     },
                     "fangzis":this.property,
                 }
-                this.$http.post(this.$api+'/yhcms/web/qddaka/savePingJia.do',params ).then((res)=>{
-                    var response = JSON.parse(JSON.stringify(res.data));
-                    if(response.success==true){
-                        Toast({
-                            message: '提交成功',
-                            iconClass: 'icon icon-success'
-                        });
-                        this.$router.push('/daikan_logs');
-                    }
-                });
+				
+				var _this = this;
+				if(_this.isclick){
+			        _this.isclick= false;
+					console.log(_this.isclick);
+					this.$http.post(this.$api+'/yhcms/web/qddaka/savePingJia.do',params ).then((res)=>{
+						var response = JSON.parse(JSON.stringify(res.data));
+						if(response.success==true){
+							setTimeout(function(){
+					            _this.isclick = true;
+								console.log(_this.isclick);
+					        });
+							Toast({
+								message: '提交成功',
+								iconClass: 'icon icon-success'
+							});
+							this.$router.push('/daikan_logs');
+						}
+					});
+				}
+				
             },
         },
         mounted(){
