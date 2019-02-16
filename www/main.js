@@ -538,6 +538,27 @@ var router = new VueRouter({
 				title: '工单处理中'
 			}
 		},
+		{//工单发起后发起人查看
+			path: '/take_orders_see',
+			component: require('./pages/order_gd/take_orders_see.vue'),
+			meta: {
+				title: '工单查看'
+			}
+		},
+		{//工商负责人确认
+			path: '/take_orders_qr',
+			component: require('./pages/order_gd/take_orders_qr.vue'),
+			meta: {
+				title: '工单确认'
+			}
+		},
+		{//400回访页面
+			path: '/take_orders_hf',
+			component: require('./pages/order_gd/take_orders_hf.vue'),
+			meta: {
+				title: '工单回访'
+			}
+		},
 		{//工商注册费用审批详情
 			path: '/take_orders1',
 			component: require('./pages/order_gd/take_orders1.vue'),

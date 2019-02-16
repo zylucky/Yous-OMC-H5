@@ -18,14 +18,25 @@ export default new Vuex.Store({
 		total3:0,
 		copyData:[],//抄送人
 		form_obj: '',//表单数据暂存
+		arrImg: [],//图片列表
 	},
 	mutations:{
+		save_img(state,obj){
+			state.arrImg = obj;
+		},
 		form_set(state,obj){
 			state.form_obj = obj;
 			// localStorage.setItem("form_obj",JSON.stringify(state.form_obj));
 		},
 		add_copy(state,obj){
 			state.copyData.push(obj);//存储抄送人
+		},
+		del_copy(state,obj){//删除抄送人
+			for(var i=0; i<state.copyData.length; i++){
+				if(state.copyData[i].id == obj){
+					state.copyData.splice(i,1);
+				}
+			}
 		},
 		openRed(state,obj){//滚动条位置
 			state.scollposion = obj;

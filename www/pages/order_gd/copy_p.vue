@@ -178,8 +178,14 @@ import { MessageBox } from 'mint-ui'
 						}
 					}
 				}
-				this.$store.commit('add_copy',item);
-				console.log(this.$store.state.copyData);
+				var obj = {
+					"id": item.id,
+					"admin": 0,
+					"isdelete": 1,
+					"topic": item.topic					
+				}
+				this.$store.commit('add_copy',obj);
+				// console.log(this.$store.state.copyData);
 				this.$router.push({
 					path:this.$route.query.laiyuan,//回退到列表
 					query:{

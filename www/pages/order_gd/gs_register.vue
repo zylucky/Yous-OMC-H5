@@ -122,7 +122,7 @@
 				<p class="img_t"><i style="visibility: hidden;">*</i>图片</p>
 				<ul class="img_list_box">
 					<li v-for="(item,index) in images.localId" @click="see_img(item,index)" v-if="item.isdelete=='0'">
-						<img :src="item.url" alt="">
+						<img :src="$prefix+'/' + item.url" alt="">
 						<span class="del_img_btn" tag="tp" @click.stop="del_img(index,$event,item)"></span>
 					</li>
 					<li class="add_img btns"></li>
@@ -144,10 +144,11 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="item in copy_data">
+					<li v-for="(item,index) in copy_data" v-show="item.isdelete==1">
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">
-							<span class="del_img_btn" v-if="item.isdelete!=0"></span>
+							<span class="del_img_btn" v-if="item.admin!=1" @click="del_copy(item,index)"></span>
+							<span class="admin_ion" v-if="item.admin==1"></span>
 						</p>
 						<p class="copy_name">{{item.topic || item.name}}</p>
 					</li>
@@ -162,7 +163,7 @@
 
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
-			<div class="btn_fq">发起工单</div>
+			<div class="btn_fq" @click="start_order">发起工单</div>
 		</div>
 		<!-- 选择框遮罩层 -->
 		<div class="pop_picker_zzc" v-show="zzc_state">
@@ -247,9 +248,11 @@
 					serverId: [] //微信服务端图片id
 				},
 				count:0,//未删减图片数量
+				imgArr: [],
 			}
 		},
 		created() {
+			this.images.localId = this.$store.state.arrImg;//获取图片
 			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.get_cs_person();//默认抄送人
 			if(JSON.parse(sessionStorage.getItem('form_obj'))){
@@ -273,6 +276,7 @@
 				this.telphone = this.form_obj.telphone;//联系电话
 				this.gz_detail = this.form_obj.gz_detail;//告知详情
 				this.tip_detail = this.form_obj.tip_detail;//备注
+				this.get_gdr();//跟单人
 			}
 			
 		},
@@ -303,7 +307,7 @@
 				var _this = this;
 				var url_img = []; //图片列表
 				for (var i = 0; i < _this.images.localId.length; i++) {
-					url_img.push(_this.images.localId[i].url);
+					url_img.push(_this.$prefix + '/' + _this.images.localId[i].url);
 				}
 				wx.ready(function() {
 					wx.previewImage({
@@ -379,12 +383,23 @@
 						}
 					}
 					console.log(JSON.parse(sessionStorage.getItem('form_obj')));
+					// 保存图片
+					this.$store.commit('save_img',this.images.localId);
+// 					var arr = [{
+// 								url: '123',
+// 								type: '21',
+// 								isdelete: 0,
+// 								state: 1,
+// 								endesc: ""
+// 							}]
+// 					this.$store.commit('save_img',arr);
+// 					console.log(this.$store.state.arrImg);
 					this.$router.push({
 						path:'/gs_copy',//跳转到添加抄送人
 						query:{
 							laiyuan: '/gs_register',
 						}
-					})					
+					})
 				}else{
 					sessionStorage.setItem("form_obj",JSON.stringify(this.form_obj));
 					console.log(JSON.parse(sessionStorage.getItem('form_obj')));
@@ -572,8 +587,17 @@
 					this.cs_person = cs_person.map((item, idx) => {
 						return {
 							"id": item.id,
-							"isdelete": 0,
+							"admin": 1,
+							"isdelete": 1,
 							"topic": item.name
+						};
+					});
+					this.copy_data = this.copy_data.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 0,
+							"isdelete": 1,
+							"topic": item.topic
 						};
 					});
 					this.copy_data = this.copy_data.concat(this.cs_person);
@@ -597,6 +621,85 @@
 						});
 					});
 				}, (response) => {});
+			},
+			formatTen(num) { //时间
+				return num > 9 ? (num + "") : ("0" + num); 
+			},
+			formatDate(date) { //时间转化年月日
+				var year = date.getFullYear(); 
+				var month = date.getMonth() + 1; 
+				var day = date.getDate(); 
+				var hour = date.getHours(); 
+				var minute = date.getMinutes();
+				var second = date.getSeconds(); 
+				return year + "-" + this.formatTen(month) + "-" + this.formatTen(day); 
+			},
+			start_order(){//发起工单
+				var _this = this;
+				let csr_id = _this.copy_data.map((item, idx) => {
+					return item.id
+				});
+				console.log(csr_id);
+				console.log(_this.client_name);
+				console.log(_this.telphone);
+				console.log(_this.xqfsx_sel);
+				let gdr_id = _this.gdr_data.map((item, idx) => {
+					return item.id
+				});
+				console.log(gdr_id);//跟单人id
+				console.log(_this.fj_id);
+				console.log(_this.value);
+				console.log(_this.gz_detail);
+				console.log(_this.fqsy_sel);
+				console.log(_this.gdjjqk_sel);
+				console.log(_this.lp_id);
+				console.log(_this.tip_detail);
+				console.log(_this.jdly_sel);
+				console.log(_this.zd_id);
+				var d1 = new Date(_this.hf_date);
+				_this.hf_date = _this.formatDate(d1);
+				console.log(_this.hf_date);
+				// return//测试时暂停提交
+				const url = this.$api + "/yhcms/web/activitibusinessreg/saveBusReg.do";
+				axios.post(url,{
+					"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+					"ActivitiBusinessReg":{
+						"customername": _this.client_name,//客户姓名
+						"customerphone": _this.telphone,//联系方式
+						"demandattribute": _this.xqfsx_sel,//需求方属性
+						"documentaryper": gdr_id.join(","),//跟单人
+						"fyid": _this.fj_id,//房源ID
+						"housekeepercontact": _this.value,//管家是否联系 1是0否
+						"informingdetail": _this.gz_detail,//告知详情
+						"initiatcause": _this.fqsy_sel,//发起事由
+						"liststyle": _this.gdjjqk_sel,//工单紧急情况
+						"lpid": _this.lp_id,//楼盘ID
+						"remark": _this.tip_detail,//备注
+						"singlesource": _this.jdly_sel,//接单来源
+						"zdid": _this.zd_id,//'座栋ID
+						"recoverytime": _this.hf_date,//回复时间
+					},
+					"pic": _this.images.localId,//图片地址
+					"copyname": csr_id.join(","),//抄送人
+				}).then((res)=>{
+					console.log(res);
+					alert(res.data.success);
+				}, (err)=>{
+					console.log(err);
+				});
+			},
+			del_copy(item,index){
+				item.isdelete = 0;
+				var newcopy = [];
+				for (var i=0; i<this.copy_data.length; i++) {
+					if(this.copy_data[i].isdelete==1){
+						newcopy.push(this.copy_data[i]);
+					}
+				}
+				this.copy_data = newcopy;
+				this.$store.commit('del_copy',item.id);
+				console.log(this.$store.state.copyData);
+				console.log(this.copy_data);
 			},
 			
 			
@@ -626,7 +729,8 @@
 					});
 					return this.list_lp;
 				}
-			}
+			},
+			
 		},
 		mounted(){
 			var _this = this;
@@ -674,11 +778,13 @@
 											var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
 											localData = localData.replace('jgp', 'jpeg'); //iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
 											var fyobj = {
-												id: '',
-												fyid: '',
-												isdelete: '0',
+// 												id: '',
+// 												fyid: '',
+												url: '',
 												type: '',
-												url: ''
+												isdelete: 0,
+												state: 1,
+												endesc: ""
 											};
 											fyobj.url = localData;
 											_this.images.localId.push(fyobj);
@@ -686,11 +792,13 @@
 									});
 								} else {
 									var fyobj = {
-										id: '',
-										fyid: '',
-										isdelete: '0',
+// 										id: '',
+// 										fyid: '',
+										url: '',
 										type: '',
-										url: ''
+										isdelete: 0,
+										state: 1,
+										endesc: ""
 									};
 									fyobj.url = res.localIds[i];
 									_this.images.localId.push(fyobj);
@@ -732,15 +840,25 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "18_oS-Y360BgrbCJGwztFpr8WcfIh9_FqCHUYCXjvJJtrfUTVSuYryq9nMm8apaylyweDH6rToY5GRsOMoYcAOLCkXjzxZRsA4f4D9ZbnrdZLNHKHIQgR7iNOB50H4bQN9yzOsd95AF8-1kIVUcSCNiADAXHS"
+										"token": "18_rG4nHmXqMCT3Gzrz5fS9g7kZ7E-dWlrgIL2_pinsiEVu4FFJWjGaKiz7K5QmKzUwNM_MQYoSqCmitSTlHKnD5MYbihE9tofCdqYqgVAaUikQZixB0ivGrE_RFP5_a45zovmkTq6hvUEivzFDAHEbAAAOVS"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
 									var arr = _this.images.localId.reverse();
+									// var arr1 = _this.images.localId.reverse();
 									for (var m = 0; m < pic1.length; m++) {
-										arr[m].url = _this.$prefix + '/' + pic1[m];
+										// arr[m].url = _this.$prefix + '/' + pic1[m];
+										// 工单提交时的图片格式
+										arr[m].url = pic1[m];
+										arr[m].type = 21;
+										arr[m].isdelete = 0;
+										arr[m].state = 1;
+										arr[m].endesc = "";
 									}
+									// 上传前的页面显示图片格式
 									_this.images.localId = arr.reverse();
+									// 工单提交时的图片格式
+									// _this.imgArr = arr1.reverse();
 									var cout = 0;//统计未删除标识
 									for(var m=0; m<_this.images.localId.length; m++){
 										if(_this.images.localId[m].isdelete == '0'){
@@ -749,6 +867,7 @@
 									}
 									// _this.count = cout;//已有有效图片数量
 									Indicator.close();
+									// alert(JSON.stringify(_this.images.localId));//图片包含地址
 								}, (err) => {
 									console.log(err);
 								});
@@ -987,6 +1106,16 @@ input{-webkit-appearance:none;}
 /* 抄送人 */
 .copy_person{
 	
+}
+.admin_ion{
+	position: absolute;
+	right: 0;
+	bottom: 0.07rem;
+	display: block;
+	width: 0.3rem;
+	height: 0.3rem;
+	background: url(../../resources/images/order_gd/admin_ion.png);
+	background-size: 100% auto;
 }
 .copy_person li{
 	width: 25%;

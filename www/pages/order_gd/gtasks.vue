@@ -212,7 +212,23 @@
 				}
 				// 工商注册跳转(负责人确认)
 				if(item.jumPath == '/activitibusinessreg/personLiablePage.do'){
-					
+					this.$router.push({
+						path:'/take_orders_qr',
+						query:{
+							gdid: item.gdid,//工单id
+							taskid: item.taskid,
+						}
+					});	
+				}
+				// 400回访
+				if(item.jumPath == '/activitibusinessreg/returnVisitPage.do'){
+					this.$router.push({
+						path:'/take_orders_hf',
+						query:{
+							gdid: item.gdid,//工单id
+							taskid: item.taskid,
+						}
+					});	
 				}
 			},
 			list_data(page,timeSort,type,search_key){

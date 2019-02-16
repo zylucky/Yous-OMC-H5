@@ -32,8 +32,8 @@
         <div style="background-color:rgb(235,235,235);height: 15px;width: 100%;"></div>
         <mt-cell :class="isActive1+' unique-kehu'" title="客户业态" is-link   v-model="yt" @click.native="yetai()">
         </mt-cell>
-        <mt-field label="客户预算" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehuyusuan"></mt-field>
-        <mt-field label="需求面积" style="color: #333;"  type="number" placeholder="请输入数字" v-model="kehumianji"></mt-field>
+        <mt-field label="客户预算" style="color: #333;"  type="text" placeholder="请输入数字" v-model="kehuyusuan"></mt-field>
+        <mt-field label="需求面积" style="color: #333;"  type="text" placeholder="请输入数字" v-model="kehumianji"></mt-field>
         <mt-field label="办公人数" style="color: #333;"  type="text" placeholder="请输入办公人数" v-model="bangongrenshu"></mt-field>
         <mt-field label="客户所选区域" style="color: #333;"  type="text" placeholder="请输入所选区域" v-model="kehuqvyv"></mt-field>
         <mt-cell :class="isActive2+' unique-kehu'" title="客户用房时间" is-link :value="kehuyongfangshijian" @click.native="yongfangshijian()">
@@ -164,6 +164,10 @@
 				isclick:true,//防止重复点击
             }
         },
+		created() {
+			console.log(this.kehuyusuan);
+			console.log(this.kehumianji);
+		},
         methods:{
             confirm(){
                 this.yt = this.yttmp;
@@ -283,7 +287,6 @@
                         "kehumianji":this.kehumianji,
                         "bangongrenshu":this.bangongrenshu,
                         "kehuqvyv":this.kehuqvyv,
-                        "kehumianji":this.kehumianji,
                         "shifoufuzeren":this.shifoufuzeren=='请选择'?'':this.shifoufuzeren,
                         "xiaciqvdaoshuoming":this.xiaciqvdaoshuoming,
                         "kehuyongfangshijian":this.kehuyongfangshijian=='请选择'?'':this.kehuyongfangshijian,
