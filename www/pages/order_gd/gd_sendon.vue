@@ -4,27 +4,116 @@
 			<li>
 				<p class="tit">转交人员</p>
 				<p class="inp">
-					<input type="text" placeholder="请输入转交人员姓名">
+					<input type="text" placeholder="请输入转交人员姓名" v-model="username" @input="set_state">
 				</p>
 			</li>
+			<!-- 搜索的抄送列表 -->
+			<ul class="copy_list" v-show="username!='' && state">
+				<li v-for="item in listData" @click="add_person(item)">
+					<div class="head_img"><img src="../../resources/images/commission/head_img.png" alt=""></div>
+					<div class="copy_news">
+						<p class="name">{{item.topic}}</p>
+						<p class="tel">{{item.fybh}}</p>
+					</div>
+				</li>
+			</ul>
 		</ul>
 		<ul class="sendon_box">
 			<li class="zjsm">
 				<p class="tit">转交说明</p>
 				<p class="inp inp1">
-					<textarea placeholder="请输入转交说明"></textarea>
+					<textarea placeholder="请输入转交说明" v-model="explain"></textarea>
 				</p>
 			</li>
 		</ul>
-		<div class="record_btn" id="record_btn">确认转交</div>
+		<div class="record_btn" id="record_btn" @click="careof">确认转交</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios';
+import { Field } from 'mint-ui';
+import { MessageBox } from 'mint-ui'
 	export default {
 		data(){
 			return{
+				username:'',
+				username_id:'',
+				list_data: [],
+				explain: '',
+				state: true,//列表块
+				isclick:true,//防止重复点击
+				middleId: '',//中间表id
+			}
+		},
+		created(){
+			this.taskid = this.$route.query.taskid;
+			this.gd_id = this.$route.query.gdid;
+			this.csr_id = this.$route.query.csr_id;
+			this.middleId = this.$route.query.middleId;
+		},
+		methods:{
+			add_person(item){//选择转交人员
+				this.state = false;
+				this.username = item.topic;
+				this.username_id = item.id;
+				console.log(item);
+			},
+			set_state(){
+				this.state = true;
+			},
+			careof(){//转交
+				var _this = this;
+				if(_this.username_id == ''){
+					MessageBox('提示', '请输入转交人员名称');
+					return;
+				}
+				if(_this.explain == ''){
+					MessageBox('提示', '转交说明不能为空');
+					return;
+				}
 				
+				return;//ceshi
+				
+				if(_this.isclick){
+			        _this.isclick= false;
+					const url = this.$api + "/yhcms/web/activitibusinessreg/getTransfer.do";
+					axios.post(url,{
+						"taskid": _this.taskid,
+						"middleId": _this.middleId,
+						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie,
+						"workListId": _this.gd_id,
+						"copyname": csr_id.join(","),
+						"assigneeReamrk": _this.explain,
+						"assignee": _this.username_id
+					}).then((res)=>{
+						if(res.data.success){
+							setTimeout(function(){
+					            _this.isclick = true;
+					        });
+							console.log(res);
+							// 跳转
+						}
+					}, (err)=>{
+						console.log(err);
+					});
+				}
+			}
+			
+		},
+		computed: {
+			listData(){//模糊查询渠道人员信息
+				if(this.username != ''){
+					const url = this.$api + "/yhcms/web/activitibusinessreg/getPersonnel.do";
+					axios.post(url,{
+						"search_keywork": this.username,//关键词搜索
+					}).then((res)=>{
+						this.list_data = res.data.data;
+					}, (err)=>{
+						console.log(err);
+					});
+					return this.list_data;
+				}
 			}
 		},
 		mounted(){
@@ -58,6 +147,7 @@
 	overflow: hidden;
 }
 .sendon_box{
+	position: relative;
 	background: #fff;
 	padding: 0 0.3rem;
 	margin-bottom: 0.2rem;
@@ -133,5 +223,46 @@
 	text-align: center;
 	background: #30b1ff;
 	border-radius: 0.05rem;
+}
+.copy_list{
+	overflow: auto;
+    position: fixed;
+    z-index: 9;
+    background: #fff;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 1.1rem;
+	padding-left: 0.34rem;
+	li{
+		display: flex;
+		margin-top: 0.12rem;
+	}
+	.head_img{
+		width: 0.75rem;
+		height: 0.75rem;
+		border-radius: 50%;
+		margin-right: 0.25rem;
+		overflow: hidden;
+		img{
+			width: 100%;
+			height: auto;
+		}
+	}
+	.copy_news{
+		flex: 1;
+		border-bottom: 1px solid #e5e4e4;
+		padding-bottom: 0.25rem;
+		p{line-height: 0.43rem;}
+		.name{
+			font-size: 0.3rem;
+			color: #333333;
+		}
+		.tel{
+			font-size: 0.26rem;
+			color: #999999;
+		}
+	}
 }
 </style>

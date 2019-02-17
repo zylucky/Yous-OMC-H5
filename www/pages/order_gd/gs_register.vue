@@ -94,7 +94,7 @@
 				<p class="title">其他信息</p>
 				<li>
 					<p class="tit"><i>*</i>管家是否联系</p>
-					<p class="inp" style="display: flex;display: -webkit-flex;">
+					<p class="inp" style="display: flex;display: -webkit-flex;" id="gjtouch">
 						<mt-radio
 						align="left"
 						title=""
@@ -199,6 +199,7 @@
 	import axios from 'axios';
 	import { MessageBox } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	export default {
 		data(){
 			return{
@@ -249,6 +250,7 @@
 				},
 				count:0,//未删减图片数量
 				imgArr: [],
+				isclick:true,//防止重复点击
 			}
 		},
 		created() {
@@ -582,7 +584,7 @@
 					"type": 'gszc'//工单类型
 				}).then((res)=>{
 					// this.copy_data = res.data.data;
-					let cs_person = [{"id":775,"name":"孙丽娟"}];
+					let cs_person = res.data.data;
 					// 房源图片数据处理
 					this.cs_person = cs_person.map((item, idx) => {
 						return {
@@ -656,37 +658,110 @@
 				console.log(_this.tip_detail);
 				console.log(_this.jdly_sel);
 				console.log(_this.zd_id);
-				var d1 = new Date(_this.hf_date);
-				_this.hf_date = _this.formatDate(d1);
+				if(_this.hf_date != '请选择客户回复时间'){
+					var d1 = new Date(_this.hf_date);
+					_this.hf_date = _this.formatDate(d1);
+				}
 				console.log(_this.hf_date);
+				// 验证
+				if(_this.lp_id == ''){
+					MessageBox('提示', '请输入楼盘');
+					return;
+				}
+				if(_this.zd_id == ''){
+					MessageBox('提示', '请选择座栋');
+					return;
+				}
+				if(_this.fj_id == ''){
+					MessageBox('提示', '请选择房间号');
+					return;
+				}
+				if(_this.fqsy_sel == '请选择发起事由'){
+					MessageBox('提示', '请选择发起事由');
+					return;
+				}
+				if(_this.xqfsx_sel == '请选择需求方属性'){
+					MessageBox('提示', '请选择需求方属性');
+					return;
+				}
+				if(_this.jdly_sel == '请选择接单来源'){
+					MessageBox('提示', '请选择接单来源');
+					return;
+				}
+				if(_this.gdjjqk_sel == '请选择工单紧急情况'){
+					MessageBox('提示', '请选择工单紧急情况');
+					return;
+				}
+				if(_this.client_name == ''){
+					MessageBox('提示', '客户姓名不能为空');
+					return;
+				}
+				if(_this.telphone == ''){
+					MessageBox('提示', '联系方式不能为空');
+					return;
+				}
+				if(_this.gz_detail == ''){
+					MessageBox('提示', '请填写告知详情');
+					return;
+				}
+				if(_this.value == ''){
+					MessageBox('提示', '请选择管家是否联系');
+					return;
+				}
+				if(_this.hf_date == '请选择客户回复时间'){
+					MessageBox('提示', '请选择客户回复时间');
+					return;
+				}
+				if(_this.tip_detail == ''){
+					MessageBox('提示', '请填写备注');
+					return;
+				}
+				
 				// return//测试时暂停提交
-				const url = this.$api + "/yhcms/web/activitibusinessreg/saveBusReg.do";
-				axios.post(url,{
-					"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
-					"ActivitiBusinessReg":{
-						"customername": _this.client_name,//客户姓名
-						"customerphone": _this.telphone,//联系方式
-						"demandattribute": _this.xqfsx_sel,//需求方属性
-						"documentaryper": gdr_id.join(","),//跟单人
-						"fyid": _this.fj_id,//房源ID
-						"housekeepercontact": _this.value,//管家是否联系 1是0否
-						"informingdetail": _this.gz_detail,//告知详情
-						"initiatcause": _this.fqsy_sel,//发起事由
-						"liststyle": _this.gdjjqk_sel,//工单紧急情况
-						"lpid": _this.lp_id,//楼盘ID
-						"remark": _this.tip_detail,//备注
-						"singlesource": _this.jdly_sel,//接单来源
-						"zdid": _this.zd_id,//'座栋ID
-						"recoverytime": _this.hf_date,//回复时间
-					},
-					"pic": _this.images.localId,//图片地址
-					"copyname": csr_id.join(","),//抄送人
-				}).then((res)=>{
-					console.log(res);
-					alert(res.data.success);
-				}, (err)=>{
-					console.log(err);
-				});
+				
+				if(_this.isclick){
+			        _this.isclick= false;
+					const url = this.$api + "/yhcms/web/activitibusinessreg/saveBusReg.do";
+					axios.post(url,{
+						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+						"ActivitiBusinessReg":{
+							"customername": _this.client_name,//客户姓名
+							"customerphone": _this.telphone,//联系方式
+							"demandattribute": _this.xqfsx_sel,//需求方属性
+							"documentaryper": gdr_id.join(","),//跟单人
+							"fyid": _this.fj_id,//房源ID
+							"housekeepercontact": _this.value,//管家是否联系 1是0否
+							"informingdetail": _this.gz_detail,//告知详情
+							"initiatcause": _this.fqsy_sel,//发起事由
+							"liststyle": _this.gdjjqk_sel,//工单紧急情况
+							"lpid": _this.lp_id,//楼盘ID
+							"remark": _this.tip_detail,//备注
+							"singlesource": _this.jdly_sel,//接单来源
+							"zdid": _this.zd_id,//'座栋ID
+							"recoverytime": _this.hf_date,//回复时间
+						},
+						"pic": _this.images.localId,//图片地址
+						"copyname": csr_id.join(","),//抄送人
+					}).then((res)=>{
+						if(res.data.success){//成功后
+							sessionStorage.removeItem("form_obj");//清除表单缓存存储信息
+							setTimeout(function(){
+					            _this.isclick = true;
+					        });
+							Toast({
+							  message: '工单已发起',
+							  position: 'center',
+							  duration: 5000
+							});
+							_this.$router.push({
+								path: '/gtasks_fq',//跳转到我发起的
+								query: {}
+							});
+						}
+					}, (err)=>{
+						console.log(err);
+					});
+				}
 			},
 			del_copy(item,index){
 				item.isdelete = 0;
@@ -698,8 +773,8 @@
 				}
 				this.copy_data = newcopy;
 				this.$store.commit('del_copy',item.id);
-				console.log(this.$store.state.copyData);
-				console.log(this.copy_data);
+				// console.log(this.$store.state.copyData);
+				// console.log(this.copy_data);
 			},
 			
 			
@@ -840,7 +915,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "18_rG4nHmXqMCT3Gzrz5fS9g7kZ7E-dWlrgIL2_pinsiEVu4FFJWjGaKiz7K5QmKzUwNM_MQYoSqCmitSTlHKnD5MYbihE9tofCdqYqgVAaUikQZixB0ivGrE_RFP5_a45zovmkTq6hvUEivzFDAHEbAAAOVS"
+										"token": "18_ceJb0o61IsPV0NQbZLv6QemnHiGz_4LDN_F6u4Lb2uphKlxpxgHzZouy9TsA5cOYBg2NUPT-Mckichyuhcn51P822MTmAnyCZ85K45fUcms39N_bSyR8DUTHn3O78ngUkuO8wX1L4htIhuGeALIhADASDA"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
@@ -1199,5 +1274,20 @@ input{-webkit-appearance:none;}
 	}
 	.inp .mint-radiolist-title{
 		margin: 0!important;
+	}
+</style>
+<style>
+	#gjtouch .mint-radio-input:checked+.mint-radio-core:after {
+		background-color: #fff!important;
+		transform: scale(1);
+	}
+	#gjtouch .mint-radio-input:checked+.mint-radio-core {
+		background-color: #26a2ff!important;
+		border-color: #26a2ff;
+	}
+	#gjtouch .mint-radio-core{
+		border: 1px solid #ccc !important;
+		border-color: #ccc !important;
+		background: none !important;
 	}
 </style>

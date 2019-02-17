@@ -580,6 +580,13 @@ var router = new VueRouter({
 				title: '评论'
 			}
 		},
+		{//填写拒绝理由
+			path: '/gd_record2',
+			component: require('./pages/order_gd/gd_record2.vue'),
+			meta: {
+				title: '拒绝原因'
+			}
+		},
 		{//转交说明
 			path: '/gd_sendon',
 			component: require('./pages/order_gd/gd_sendon.vue'),

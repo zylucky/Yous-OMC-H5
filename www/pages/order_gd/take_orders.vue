@@ -126,13 +126,13 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="item in sendDto">
+					<li v-for="(item,index) in sendDto" v-show="item.isdelete==1">
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn" v-if="false"></span>
-							<span class="admin_ion"></span>
+							<span class="del_img_btn" v-if="item.admin!=1" @click="del_copy(item,index)"></span>
+							<span class="admin_ion" v-if="item.admin==1"></span>
 						</p>
-						<p class="copy_name">{{item.name}}</p>
+						<p class="copy_name">{{item.topic}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -147,14 +147,14 @@
 		<div class="gs_box_bottom">
 			<ul class="bottom_nav">
 				<li @click="jd_btn">接单</li>
-				<li>拒绝</li>
+				<li @click="jj_btn">拒绝</li>
 				<li @click="more_btn">更多</li>
 			</ul>
 		</div>
 		<!-- 遮罩层 -->
 		<div class="zzc_box" v-if="zz_state" @click="zz_state=false">
 			<ul class="more_nav" @click.stop="">
-				<li>
+				<li @click="careof">
 					<p><img src="../../resources/images/order_gd/zj_btn_ion.png" alt=""></p>
 					<p>转交</p>
 				</li>
@@ -189,11 +189,16 @@ import { MessageBox } from 'mint-ui';
 				infos: [],//审批流
 				copy_p: [],//添加抄送人
 				nodeName: '',//工单当前处理状态
+				copy_data: [],//添加抄送人
+				taskid: '',//任务id
+				middleId: '',//中间表id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
+			this.taskid = this.$route.query.taskid;
 			this.nodeName = this.$route.query.nodeName;
+			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.gd_detail();
 		},
 		methods:{
@@ -237,11 +242,32 @@ import { MessageBox } from 'mint-ui';
 				axios.post(url,{
 					"id": this.gd_id
 				}).then((res)=>{
+					this.middleId = res.data.data.middleId;//中间表id
 					this.allData = res.data.data;
 					this.objDto = res.data.data.objDto;//详细信息
 					this.picurl = this.objDto.picurl.split(";");//图片处理
 					this.singleDto = this.allData.singleDto;//跟单人
 					this.sendDto = this.allData.sendDto;//抄送人
+					let cs_person = this.allData.sendDto;
+					// 抄送人处理
+					this.sendDto = cs_person.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 1,
+							"isdelete": 1,
+							"topic": item.name
+						};
+					});
+					this.copy_data = this.copy_data.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 0,
+							"isdelete": 1,
+							"topic": item.topic
+						};
+					});
+					this.sendDto = this.sendDto.concat(this.copy_data);
+					// console.log(this.sendDto);//抄送人
 					this.infos = this.allData.infos;//审批流
 				}, (err)=>{
 					console.log(err);
@@ -291,6 +317,7 @@ import { MessageBox } from 'mint-ui';
 				}
 			},
 			jd_btn(){//接单
+				var _this = this;
 				MessageBox.confirm('', { 
 					message: '是否确定接单?', 
 					title: '提示', 
@@ -298,7 +325,57 @@ import { MessageBox } from 'mint-ui';
 					cancelButtonText: '取消' 
 				}).then(action => { 
 					if (action == 'confirm') {//确认的回调
-						console.log('确认'); 
+						console.log('确认');
+						// 结单接口
+						let csr_id = _this.sendDto.map((item, idx) => {
+							return item.id
+						});
+						
+						return//测试
+						
+						const url = this.$api + "/yhcms/web/activitibusinessreg/getReceipt.do";
+						axios.post(url,{
+							"taskid": _this.taskid,
+							"middleId": _this.middleId,
+							"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie,
+							"workListId": _this.gd_id,
+							"copyname": csr_id.join(",")
+						}).then((res)=>{
+							console.log(res);
+						}, (err)=>{
+							console.log(err);
+						});
+					}
+				}).catch(err => { 
+					if (err == 'cancel') {//取消的回调
+						console.log('取消');
+					} 
+				})
+			},
+			jj_btn(){//拒绝
+				var _this = this;
+				MessageBox.confirm('', { 
+					message: '是否拒绝?', 
+					title: '提示', 
+					confirmButtonText: '确认', 
+					cancelButtonText: '取消' 
+				}).then(action => { 
+					if (action == 'confirm') {//确认的回调
+						console.log('确认');
+						let csr_id = _this.sendDto.map((item, idx) => {
+							return item.id
+						});
+						_this.$router.push({
+							path:'/gd_record2',//跳转到评论
+							query:{
+								workType: this.objDto.workType,//工单类型
+								codenum: this.objDto.codenum,//工单编号
+								taskid: this.taskid,//任务id
+								gdid: this.gd_id,//工单id
+								csr_id: csr_id,//抄送人id
+								middleId: this.middleId
+							}
+						});
 					}
 				}).catch(err => { 
 					if (err == 'cancel') {//取消的回调
@@ -308,6 +385,21 @@ import { MessageBox } from 'mint-ui';
 			},
 			more_btn(){
 				this.zz_state = true;
+			},
+			careof(){//转交
+				var _this = this;
+				let csr_id = _this.sendDto.map((item, idx) => {
+					return item.id
+				});
+				_this.$router.push({
+					path:'/gd_sendon',//跳转到评论
+					query:{
+						taskid: this.taskid,//任务id
+						gdid: this.gd_id,//工单id
+						csr_id: csr_id,//抄送人id
+						middleId: this.middleId
+					}
+				});
 			},
 			see_flowimg(){//查看工单流程图
 				const url = this.$api_lct + "/lswapi/processOpt/processImage.do?actKeyType=gszc";
@@ -325,6 +417,17 @@ import { MessageBox } from 'mint-ui';
 						});
 					});
 				}, (response) => {});
+			},
+			del_copy(item,index){
+				item.isdelete = 0;
+				var newcopy = [];
+				for (var i=0; i<this.sendDto.length; i++) {
+					if(this.sendDto[i].isdelete==1){
+						newcopy.push(this.sendDto[i]);
+					}
+				}
+				this.sendDto = newcopy;
+				this.$store.commit('del_copy',item.id);
 			},
 			
 		},

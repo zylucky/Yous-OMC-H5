@@ -130,11 +130,11 @@
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
 							<span class="del_img_btn" v-if="false"></span>
-							<span class="admin_ion"></span>
+							<!-- <span class="admin_ion"></span> -->
 						</p>
 						<p class="copy_name">{{item.name}}</p>
 					</li>
-					<li @click="add_copy">
+					<li @click="add_copy" v-if="false">
 						<p class="head_img add_copy_person"></p>
 						<p class="copy_name"></p>
 					</li>
@@ -189,10 +189,12 @@ import { MessageBox } from 'mint-ui';
 				infos: [],//审批流
 				copy_p: [],//添加抄送人
 				nodeName: '',//工单当前处理状态
+				taskid: '',//任务id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
+			this.taskid = this.$route.query.taskid;//工单任务id
 			this.nodeName = this.$route.query.nodeName;
 			this.gd_detail();
 		},
@@ -253,7 +255,7 @@ import { MessageBox } from 'mint-ui';
 					path:'/gs_copy',//跳转到抄送
 					query:{
 						gdid: this.$route.query.gdid,//工单id
-						laiyuan: '/take_orders',
+						laiyuan: '/take_orders_see',
 					}
 				})
 			},
@@ -294,7 +296,11 @@ import { MessageBox } from 'mint-ui';
 			pl_btn(){//评论
 				this.$router.push({
 					path:'/gd_record1',//跳转到评论
-					query:{}
+					query:{
+						workType: this.objDto.workType,//工单类型
+						codenum: this.objDto.codenum,//工单编号
+						taskid: this.taskid,
+					}
 				});
 			},
 			finnsh(){//完成

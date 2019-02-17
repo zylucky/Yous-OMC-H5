@@ -185,7 +185,7 @@ import { MessageBox } from 'mint-ui'
 					"topic": item.topic					
 				}
 				this.$store.commit('add_copy',obj);
-				// console.log(this.$store.state.copyData);
+				console.log(this.$store.state.copyData);
 				this.$router.push({
 					path:this.$route.query.laiyuan,//回退到列表
 					query:{
