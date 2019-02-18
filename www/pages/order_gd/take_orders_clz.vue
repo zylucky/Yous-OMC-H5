@@ -154,11 +154,11 @@
 		<!-- 遮罩层 -->
 		<div class="zzc_box" v-if="zz_state" @click="zz_state=false">
 			<ul class="more_nav" @click.stop="">
-				<li>
+				<li @click="careof">
 					<p><img src="../../resources/images/order_gd/zj_btn_ion.png" alt=""></p>
 					<p>转交</p>
 				</li>
-				<li v-if="nodeName!='接单'">
+				<li v-if="nodeName!='接单'" @click="send_cost">
 					<p><img src="../../resources/images/order_gd/sqfy_btn_ion.png" alt=""></p>
 					<p>申请费用</p>
 				</li>
@@ -189,11 +189,16 @@ import { MessageBox } from 'mint-ui';
 				infos: [],//审批流
 				copy_p: [],//添加抄送人
 				nodeName: '',//工单当前处理状态
+				copy_data: [],//添加抄送人
+				taskid: '',//任务id
+				middleId: '',//中间表id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
 			this.nodeName = this.$route.query.nodeName;
+			this.taskid = this.$route.query.taskid;//工单任务id
+			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.gd_detail();
 		},
 		methods:{
@@ -238,21 +243,41 @@ import { MessageBox } from 'mint-ui';
 					"id": this.gd_id
 				}).then((res)=>{
 					this.allData = res.data.data;
+					this.middleId = res.data.data.middleId;//中间表id
 					this.objDto = res.data.data.objDto;//详细信息
 					this.picurl = this.objDto.picurl.split(";");//图片处理
 					this.singleDto = this.allData.singleDto;//跟单人
 					this.sendDto = this.allData.sendDto;//抄送人
+					let cs_person = this.allData.sendDto;
+					// 抄送人处理
+					this.sendDto = cs_person.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 1,
+							"isdelete": 1,
+							"topic": item.name
+						};
+					});
+					this.copy_data = this.copy_data.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 0,
+							"isdelete": 1,
+							"topic": item.topic
+						};
+					});
+					this.sendDto = this.sendDto.concat(this.copy_data);
 					this.infos = this.allData.infos;//审批流
 				}, (err)=>{
 					console.log(err);
-				});					
+				});
 			},
 			add_copy(){
 				this.$router.push({
 					path:'/gs_copy',//跳转到抄送
 					query:{
 						gdid: this.$route.query.gdid,//工单id
-						laiyuan: '/take_orders',
+						laiyuan: '/take_orders_clz',
 					}
 				})
 			},
@@ -292,11 +317,16 @@ import { MessageBox } from 'mint-ui';
 			},
 			pl_btn(){//评论
 				this.$router.push({
-					path:'/gd_record1',//跳转到评论
-					query:{}
+					path:'/gd_record3',//跳转到评论
+					query:{
+						workType: this.objDto.workType,//工单类型
+						codenum: this.objDto.codenum,//工单编号
+						taskid: this.taskid,
+					}
 				});
 			},
 			finnsh(){//完成
+				var _this = this;
 				MessageBox.confirm('', { 
 					message: '确定完成?', 
 					title: '提示', 
@@ -304,7 +334,29 @@ import { MessageBox } from 'mint-ui';
 					cancelButtonText: '取消' 
 				}).then(action => { 
 					if (action == 'confirm') {//确认的回调
-						console.log('确认'); 
+						console.log('确认');
+						let csr_id = _this.sendDto.map((item, idx) => {
+							return item.id
+						});
+						const url = _this.$api + "/yhcms/web/activitibusinessreg/getHandle.do";
+						axios.post(url,{
+							"taskid": _this.taskid,
+							"middleId": _this.middleId,
+							"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+							"workListId": _this.gd_id,
+							"copyname": csr_id.join(",")
+						}).then((res)=>{
+							console.log(res);
+							if(res.data.success){
+								// 跳转已经完成的列表
+								_this.$router.push({
+									path:'/gtasks_wc',
+									query:{}
+								});
+							}
+						}, (err)=>{
+							console.log(err);
+						});
 					}
 				}).catch(err => { 
 					if (err == 'cancel') {//取消的回调
@@ -314,6 +366,30 @@ import { MessageBox } from 'mint-ui';
 			},
 			more_btn(){
 				this.zz_state = true;
+			},
+			careof(){//转交
+				var _this = this;
+				let csr_id = _this.sendDto.map((item, idx) => {
+					return item.id
+				});
+				_this.$router.push({
+					path:'/gd_sendon',//跳转到评论
+					query:{
+						taskid: this.taskid,//任务id
+						gdid: this.gd_id,//工单id
+						csr_id: csr_id,//抄送人id
+						middleId: this.middleId
+					}
+				});
+			},
+			send_cost(){
+				var _this = this;
+				_this.$router.push({
+					path:'/fy_putin',//跳转到评论
+					query:{
+						gdid: _this.gd_id,//工单id
+					}
+				});
 			},
 			see_flowimg(){//查看工单流程图
 				const url = this.$api_lct + "/lswapi/processOpt/processImage.do?actKeyType=gszc";

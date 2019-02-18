@@ -73,7 +73,7 @@ import { MessageBox } from 'mint-ui'
 					return;
 				}
 				
-				return;//ceshi
+				// return;//ceshi
 				
 				if(_this.isclick){
 			        _this.isclick= false;
@@ -83,7 +83,7 @@ import { MessageBox } from 'mint-ui'
 						"middleId": _this.middleId,
 						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie,
 						"workListId": _this.gd_id,
-						"copyname": csr_id.join(","),
+						"copyname": _this.csr_id.join(","),
 						"assigneeReamrk": _this.explain,
 						"assignee": _this.username_id
 					}).then((res)=>{
@@ -92,7 +92,11 @@ import { MessageBox } from 'mint-ui'
 					            _this.isclick = true;
 					        });
 							console.log(res);
-							// 跳转
+							// 跳转我经办的
+							_this.$router.push({
+								path:'/gtasks_jb',//跳转我的待办
+								query:{}
+							});
 						}
 					}, (err)=>{
 						console.log(err);

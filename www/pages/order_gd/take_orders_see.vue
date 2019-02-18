@@ -294,6 +294,8 @@ import { MessageBox } from 'mint-ui';
 				}
 			},
 			pl_btn(){//评论
+				alert(this.taskid);
+				return;
 				this.$router.push({
 					path:'/gd_record1',//跳转到评论
 					query:{

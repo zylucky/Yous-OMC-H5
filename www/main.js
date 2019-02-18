@@ -503,6 +503,34 @@ var router = new VueRouter({
 				title: '我的待办'
 			}
 		},
+		{//我的经办
+			path: '/gtasks_jb',
+			component: require('./pages/order_gd/gtasks_jb.vue'),
+			meta: {
+				title: '我经办的'
+			}
+		},
+		{//已完成的
+			path: '/gtasks_wc',
+			component: require('./pages/order_gd/gtasks_wc.vue'),
+			meta: {
+				title: '已完成的'
+			}
+		},
+		{//已完成的
+			path: '/gtasks_cs',
+			component: require('./pages/order_gd/gtasks_cs.vue'),
+			meta: {
+				title: '抄送我的'
+			}
+		},
+		{//我的跟进
+			path: '/gtasks_gj',
+			component: require('./pages/order_gd/gtasks_gj.vue'),
+			meta: {
+				title: '我的跟进'
+			}
+		},
 		{//我发起的列表
 			path: '/gtasks_fq',
 			component: require('./pages/order_gd/gtasks_fq.vue'),
@@ -521,7 +549,7 @@ var router = new VueRouter({
 			path: '/gtasks_search_fq',
 			component: require('./pages/order_gd/gtasks_search_fq.vue'),
 			meta: {
-				title: '我发起的'
+				title: '搜索'
 			}
 		},
 		{//工商注册详情
@@ -576,6 +604,13 @@ var router = new VueRouter({
 		{//填写评论信息
 			path: '/gd_record1',
 			component: require('./pages/order_gd/gd_record1.vue'),
+			meta: {
+				title: '评论'
+			}
+		},
+		{//填写评论信息
+			path: '/gd_record3',
+			component: require('./pages/order_gd/gd_record3.vue'),
 			meta: {
 				title: '评论'
 			}

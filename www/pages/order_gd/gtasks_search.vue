@@ -130,14 +130,15 @@ import { Indicator } from 'mint-ui';
 		},
 		methods: {
 			search_cancel(){//取消搜索
-				this.$router.push({
-					path:'/gtasks',//回退到列表
-					query:{}
-				});
+				// this.$router.push({
+				// 	path:'/gtasks',//回退到列表
+				// 	query:{}
+				// });
+				history.go(-1);//返回上一页
 			},
 			link_db(item){//
 				this.$router.push({
-					path:'/gtasks',
+					path: this.$route.query.laiyuan,//回退到列表
 					query:{
 						search_key: item.lpname
 					}

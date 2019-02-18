@@ -5,7 +5,7 @@
 			<span>{{codenum}}</span>
 		</p>
 		<p class="record_tip_box">
-			<textarea class="text_ar" placeholder="请填拒绝理由" v-model="comment"></textarea>
+			<textarea class="text_ar" placeholder="请填写评论" v-model="comment"></textarea>
 		</p>
 		<div class="record_btn" id="record_btn" @click="btn_comment">确认添加</div>
 	</div>
@@ -20,10 +20,7 @@ import { MessageBox } from 'mint-ui';
 				workType: '',//工单类型
 				codenum: '',//工单编号
 				taskid: '',//任务id
-				comment: '',//理由
-				gd_id: '',//工单id
-				csr_id: '',//抄送人id
-				middleId: '',//中间表id
+				comment: '',//评论
 				isclick:true,//防止重复点击
 			}
 		},
@@ -31,41 +28,28 @@ import { MessageBox } from 'mint-ui';
 			this.workType = this.$route.query.workType;
 			this.codenum = this.$route.query.codenum;
 			this.taskid = this.$route.query.taskid;
-			this.gd_id = this.$route.query.gdid;
-			this.csr_id = this.$route.query.csr_id;
-			this.middleId = this.$route.query.middleId;
 		},
 		methods:{
-			btn_comment(){//确认添加
+			btn_comment(){//确认评论
 				var _this = this;
 				if(_this.comment == ''){
-					MessageBox('提示', '拒绝理由不能为空');
+					MessageBox('提示', '评论信息不能为空');
 					return;
 				}
-				
-				// return;//ceshi
-				
 				if(_this.isclick){
 			        _this.isclick= false;
-					const url = this.$api + "/yhcms/web/activitibusinessreg/getRefuse.do";
+					const url = this.$api + "/yhcms/web/activitibusinessreg/getComment.do";
 					axios.post(url,{
-						"taskid": _this.taskid,
-						"middleId": _this.middleId,
-						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie,
-						"workListId": _this.gd_id,
-						"copyname": _this.csr_id.join(","),
-						"remark": _this.comment
+						"taskid": this.taskid,
+						"remark": this.comment,
+						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
 					}).then((res)=>{
+						console.log(res);
 						if(res.data.success){
 							setTimeout(function(){
 					            _this.isclick = true;
 					        });
-							console.log(res);
-							_this.$router.push({
-								path:'/gtasks',//跳转我的待办
-								query:{}
-							});
-							// 跳转
+							history.go(-1);//返回上一页
 						}
 					}, (err)=>{
 						console.log(err);

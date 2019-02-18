@@ -331,7 +331,7 @@ import { MessageBox } from 'mint-ui';
 							return item.id
 						});
 						
-						return//测试
+						// return//测试
 						
 						const url = this.$api + "/yhcms/web/activitibusinessreg/getReceipt.do";
 						axios.post(url,{
@@ -341,7 +341,16 @@ import { MessageBox } from 'mint-ui';
 							"workListId": _this.gd_id,
 							"copyname": csr_id.join(",")
 						}).then((res)=>{
-							console.log(res);
+							if(res.data.success){
+								_this.$router.push({//跳转业务处理中
+									path:'/take_orders_clz',//跳转到接单页面
+									query:{
+										gdid: _this.gd_id,//工单id
+										taskid: _this.taskid,
+										nodeName: '业务处理',//工单当前处理状态
+									}
+								});
+							}
 						}, (err)=>{
 							console.log(err);
 						});

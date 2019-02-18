@@ -171,15 +171,25 @@
 			},
 			to_search(){//跳转搜索页
 				this.$router.push({
-					path:'/gtasks_search',//跳转到审批页面
+					path:'/gtasks_search',
 					query:{
-						laiyuan: '/gtasks'
+						laiyuan: '/gtasks_cs'
 					}
 				});
 			},
 			todetail(item,index){//跳转详情处理页
 				console.log(item.jumPath);
 				console.log(item.nodeName);
+				//工单发起 发起人查看详情（可以评论）；
+				if(item.jumPath == '/activitibusinessreg/basePage.do'){
+					this.$router.push({
+						path:'/take_orders_see',//跳转到查看
+						query:{
+							gdid: item.gdid,//工单id
+							taskid: item.taskid,
+						}
+					});
+				}
 				// 工商注册费用审批跳转
 				if(item.jumPath == '/activiticostapproval/approvalPage.do'){
 					this.$router.push({
@@ -210,7 +220,7 @@
 							taskid: item.taskid,
 							nodeName: item.nodeName,//工单当前处理状态
 						}
-					});
+					});	
 				}
 				// 工商注册跳转(负责人确认)
 				if(item.jumPath == '/activitibusinessreg/personLiablePage.do'){
@@ -233,8 +243,8 @@
 					});	
 				}
 			},
-			list_data(page,timeSort,type,search_key){
-				const url = this.$api + "/yhcms/web/activitibusinessreg/handleList.do";
+			list_data(page,timeSort,type,search_key){//抄送我的
+				const url = this.$api + "/yhcms/web/activitibusinessreg/sendList.do";
 				axios.post(url,{
 					"search_keywork": search_key,//关键词搜索
 					"timeSort": timeSort,//时间排序
