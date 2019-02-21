@@ -496,6 +496,20 @@ var router = new VueRouter({
 				title: '添加抄送人'
 			}
 		},
+		{
+			path: '/gs_copy1',
+			component: require('./pages/order_gd/copy_p1.vue'),
+			meta: {
+				title: '添加抄送人'
+			}
+		},
+		{
+			path: '/gs_copy2',
+			component: require('./pages/order_gd/copy_p2.vue'),
+			meta: {
+				title: '添加抄送人'
+			}
+		},
 		{//待办列表
 			path: '/gtasks',
 			component: require('./pages/order_gd/gtasks.vue'),

@@ -1,23 +1,103 @@
 <template>
 	<div class="record_box">
 		<p class="record_head_box">
-			<span>工商注册</span>
-			<span>GS201811051234</span>
+			<span>{{workType}}</span>
+			<span>{{codenum}}</span>
 		</p>
 		<!-- 驳回理由 -->
 		<p class="record_tip_box">
-			<textarea class="text_ar" placeholder="请输入备注/驳回理由"></textarea>
+			<textarea class="text_ar" placeholder="请输入备注/驳回理由" v-model="comment"></textarea>
 		</p>
-		<div class="record_btn" id="record_btn">确认添加</div>
+		<div class="record_btn" id="record_btn" @click="btn_comment">确认添加</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios';
+import { MessageBox } from 'mint-ui';
 	export default {
 		data(){
 			return{
-				
+				workType: '',//工单类型
+				codenum: '',//工单编号
+				comment: '',//评论
+				isclick:true,//防止重复点击
+				taskid: '',//任务id
+				id: '',//费用id
+				middleId: '',//中间表id
+				csr_id: '',//抄送人id
+				sp_state: '',//审批状态
 			}
+		},
+		created(){
+			this.workType = this.$route.query.workType;
+			this.codenum = this.$route.query.codenum;
+			this.taskid = this.$route.query.taskid;
+			this.id = this.$route.query.id;
+			this.middleId = this.$route.query.middleId;
+			this.csr_id = this.$route.query.csr_id;
+			this.sp_state = this.$route.query.sp_state;
+		},
+		methods:{
+			btn_comment(){//确认评论
+				var _this = this;
+				if(_this.comment == ''){
+					MessageBox('提示', '评论信息不能为空');
+					return;
+				}
+				if(_this.isclick){
+			        _this.isclick= false;
+					if(this.sp_state == 'tg'){
+						const url = this.$api + "/yhcms/web/activitibusinessreg/getAuditPass.do";
+						axios.post(url,{
+							"taskid": this.taskid,
+							"remark": this.comment,
+							"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+							"middleId": this.middleId,
+							"workListId": this.id,
+							"copyname": this.csr_id
+						}).then((res)=>{
+							console.log(res);
+							if(res.data.success){
+								setTimeout(function(){
+						            _this.isclick = true;
+						        });
+								_this.$router.push({
+									path:'/gtasks_jb',//跳转到我经办的
+									query:{}
+								})
+							}
+						}, (err)=>{
+							console.log(err);
+						});
+					}else{
+						const url = this.$api + "/yhcms/web/activitibusinessreg/getAuditRejected.do";
+						axios.post(url,{
+							"taskid": this.taskid,
+							"remark": this.comment,
+							"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+							"middleId": this.middleId,
+							"workListId": this.id,
+							"copyname": this.csr_id
+						}).then((res)=>{
+							console.log(res);
+							if(res.data.success){
+								setTimeout(function(){
+						            _this.isclick = true;
+						        });
+								_this.$router.push({
+									path:'/gtasks_wc',//跳转到已完成
+									query:{}
+								})
+							}
+						}, (err)=>{
+							console.log(err);
+						});
+					}
+					
+				}
+			},
+
 		},
 		mounted(){
 			// 解决键盘弹出底部上浮问题

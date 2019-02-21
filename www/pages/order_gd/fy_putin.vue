@@ -10,7 +10,7 @@
 				<p class="k_text">暂无费用审批</p>
 			</div>
 			<ul class="backlog_list">
-				<li v-for="(item,index) in listData" @click="todetail()">
+				<li v-for="(item,index) in listData" @click="todetail(item)">
 					<div class="list_ion"><img src="../../resources/images/order_gd/fysq_ion.png" alt=""></div>
 					<div class="list_news">
 						<p class="name_time">
@@ -22,7 +22,7 @@
 							<span>{{item.bankname}}</span>
 						</p>
 						<p class="gd_number">
-							<span>工单编号：GS201712161111</span>
+							<span>工单编号：{{item.codenum}}</span>
 							<span></span>
 						</p>
 					</div>
@@ -44,23 +44,40 @@ import axios from 'axios';
 				gd_id: '',//路由接受的工单id
 				listData: [],
 				kong_state: false,
+				taskid: '',//任务id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
+			this.taskid = this.$route.query.taskid;
 			this.list();//费用列表
 		},
 		methods:{
-			todetail(){//跳转详情处理页
-// 				this.$router.push({
-// 					path:'/fy_from',//跳转到审批页面
-// 					query:{}
-// 				});
+			todetail(item){//跳转详情处理页
+				var _this = this;
+				this.$router.push({
+					path:'/fy_detail',//跳转到审批页面
+					query:{
+						gdid: _this.gd_id,//工单id
+						taskid: _this.taskid,
+						id: item.id
+					}
+				});
 			},
 			send_approve(){
+				var _this = this;
 				this.$router.push({
 					path:'/fy_from',//跳转到审批页面
-					query:{}
+					query:{
+						gdid: _this.gd_id,//工单id
+						taskid: _this.taskid,//任务id
+						busId: _this.$route.query.busId,
+						documentaryper: _this.$route.query.documentaryper,
+						fyid: _this.$route.query.fyid,
+						lpid: _this.$route.query.lpid,
+						zdid: _this.$route.query.zdid,
+						responsible: _this.$route.query.responsible
+					}
 				});
 			},
 			list(){
@@ -70,28 +87,6 @@ import axios from 'axios';
 				}).then((res)=>{
 					console.log(res.data.data);
 					this.listData = res.data.data;
-					this.listData = [{
-						"accountnumber": "380304", 
-						"applicationamount": "263",
-						"bankname": "工商负责人审批",
-						"documentaryper": "2018-11-20 16:10:48",
-						"id": 35,
-						"status": "处理中"
-					}, {
-						"accountnumber": "380314",
-						"applicationamount": "289",
-						"bankname": "工商负责人审批",
-						"documentaryper": "2018-11-20 16:11:54",
-						"id": 36,
-						"status": "处理中"
-					}, {
-						"accountnumber": "380324",
-						"applicationamount": "328",
-						"bankname": "工商负责人审批",
-						"documentaryper": "2018-11-20 16:27:43",
-						"id": 37,
-						"status": "处理中",
-					}];
 					if(this.listData.length == 0){
 						this.kong_state = true;
 					}

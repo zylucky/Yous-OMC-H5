@@ -8,7 +8,7 @@
 				<li>
 					<p class="tit"><i>*</i>费用承担公司</p>
 					<p class="inp" @click="sel_fqsy">
-						<span class="chel_tex" :style="fycdgs=='请选择公司名称'?'color:#c8c8c8;':'color:#333;'">{{fycdgs}}</span>
+						<span class="chel_tex" :style="fycdgs=='请选择费用承担公司'?'color:#c8c8c8;':'color:#333;'">{{fycdgs}}</span>
 					</p>
 					<p class="jt"></p>
 				</li>
@@ -77,7 +77,7 @@
 
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom">
-			<div class="btn_fq">提交申请</div>
+			<div class="btn_fq" @click="commit_btn">提交申请</div>
 		</div>
 		<!-- 选择框遮罩层 -->
 		<div class="pop_picker_zzc" v-show="zzc_state">
@@ -107,10 +107,10 @@
 				value:'',
 				slots: [{
 					flex: 1,
-					values: ['请选择公司名称', '幼狮', '华亮', '航远投资', '华亮致新', '幼狮装饰'],
+					values: ['请选择费用承担公司', '幼狮', '华亮', '航远投资', '华亮致新', '幼狮装饰'],
 					className: 'slot1',
 					textAlign: 'center',
-					defaultIndex:  0,
+					// defaultIndex:  0,
 				}],
 				zzc_state: false,
 				fycdgs: '请选择费用承担公司',//费用承担公司
@@ -127,11 +127,37 @@
 				copy_data: [],//抄送人
 				cs_person: [],//默认抄送人
 				form_obj: {},//表单数据暂存
+				seltype: '',//判断选择的是哪一项
+				sel_value: '',//当前选中value
+				isclick:true,//防止重复点击
+				busId: '',
+				documentaryper: '',
+				fyid: '',
+				lpid: '',
+				zdid: '',
+				responsible: '',
+				taskid: '',//任务id
 			}
 		},
 		created() {
-			// this.images.localId = this.$store.state.arrImg;//获取图片
+			this.taskid = this.$route.query.taskid;
+			this.busId = this.$route.query.busId;
+			this.documentaryper = this.$route.query.documentaryper;
+			this.fyid = this.$route.query.fyid;
+			this.lpid = this.$route.query.lpid;
+			this.zdid = this.$route.query.zdid;
+			this.responsible = this.$route.query.responsible;
+			
+// 			this.form_obj.busId = this.busId;//暂存
+// 			this.form_obj.documentaryper = this.documentaryper;//暂存
+// 			this.form_obj.fyid = this.fyid;//暂存
+// 			this.form_obj.lpid = this.lpid;//暂存
+// 			this.form_obj.zdid = this.zdid;//暂存
+// 			this.form_obj.responsible = this.responsible;//暂存
+			
+			this.images.localId = this.$store.state.arrImg;//获取图片
 			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
+			this.get_cs_person();//默认抄送人
 			if(JSON.parse(sessionStorage.getItem('form_obj'))){
 				this.form_obj = JSON.parse(sessionStorage.getItem('form_obj'));
 				this.fycdgs = this.form_obj.fycdgs;//费用承担公司
@@ -140,6 +166,13 @@
 				this.bank_number = this.form_obj.bank_number;//收款账号
 				this.sq_money = this.form_obj.sq_money;//申请金额
 				this.remark = this.form_obj.remark;//备注
+				
+// 				this.busId = this.form_obj.busId;
+// 				this.documentaryper = this.form_obj.documentaryper;
+// 				this.fyid = this.form_obj.fyid;
+// 				this.lpid = this.form_obj.lpid;
+// 				this.zdid = this.form_obj.zdid;
+// 				this.responsible = this.form_obj.responsible;
 			}
 		},
 		methods:{
@@ -160,11 +193,11 @@
 			},
 			onValuesChange(picker, values) {
 			  // picker.setSlotValue(0, values[0]);
-			  console.log(values[0]);
-			  this.fycdgs = values[0];
-			  this.form_obj.fycdgs = this.fycdgs;//暂存
+			  // console.log(values[0]);
+			  this.sel_value = values[0];
 			},
 			add_copy(){
+				var _this = this;
 				if(JSON.stringify(this.form_obj) == "{}"){
 					MessageBox('提示', '请先填写表单信息');
 					return;
@@ -181,23 +214,40 @@
 					// 保存图片
 					this.$store.commit('save_img',this.images.localId);
 					this.$router.push({
-						path:'/gs_copy',//跳转到添加抄送人
+						path:'/gs_copy1',//跳转到添加抄送人
 						query:{
-							laiyuan: '/gs_register',
+							laiyuan: '/fy_from',
+							gdid: _this.$route.query.gdid,//工单id
+							taskid: _this.$route.query.taskid,//任务id
+							busId: _this.$route.query.busId,
+							documentaryper: _this.$route.query.documentaryper,
+							fyid: _this.$route.query.fyid,
+							lpid: _this.$route.query.lpid,
+							zdid: _this.$route.query.zdid,
+							responsible: _this.$route.query.responsible
 						}
 					})
 				}else{
 					sessionStorage.setItem("form_obj",JSON.stringify(this.form_obj));
 					console.log(JSON.parse(sessionStorage.getItem('form_obj')));
 					this.$router.push({
-						path:'/gs_copy',//跳转到添加抄送人
+						path:'/gs_copy1',//跳转到添加抄送人
 						query:{
 							laiyuan: '/fy_from',
+							gdid: _this.$route.query.gdid,//工单id
+							taskid: _this.$route.query.taskid,//任务id
+							busId: _this.$route.query.busId,
+							documentaryper: _this.$route.query.documentaryper,
+							fyid: _this.$route.query.fyid,
+							lpid: _this.$route.query.lpid,
+							zdid: _this.$route.query.zdid,
+							responsible: _this.$route.query.responsible
 						}
 					})
 				}
 			},
-			sel_fqsy(){//请选择发起事由
+			sel_fqsy(){//请选择公司
+				this.seltype = 'cdgs_sel';
 				this.zzc_state = true;
 				$('.pop_picker').animate({
 					bottom: 0
@@ -208,6 +258,10 @@
 				$('.pop_picker').css("bottom","-5.2rem");
 			},
 			sel_betrue(){//确认选择
+				if(this.seltype == 'cdgs_sel'){
+					this.fycdgs = this.sel_value;
+					this.form_obj.fycdgs = this.fycdgs;//暂存
+				}
 				this.zzc_state = false;
 				$('.pop_picker').css("bottom","-5.2rem");
 			},
@@ -301,6 +355,112 @@
 				}, (err)=>{
 					console.log(err);
 				});
+			},
+			del_copy(item,index){
+				item.isdelete = 0;
+				var newcopy = [];
+				for (var i=0; i<this.copy_data.length; i++) {
+					if(this.copy_data[i].isdelete==1){
+						newcopy.push(this.copy_data[i]);
+					}
+				}
+				this.copy_data = newcopy;
+				this.$store.commit('del_copy',item.id);
+			},
+			commit_btn(){//提交申请
+				var _this = this;
+				// 验证
+				if(_this.fycdgs == '请选择费用承担公司'){
+					MessageBox('提示', '请选择费用承担公司');
+					return;
+				}
+				if(_this.skr_name == ''){
+					MessageBox('提示', '请输入收款人姓名');
+					return;
+				}
+				if(_this.khh_bank == ''){
+					MessageBox('提示', '请输入开户行名称');
+					return;
+				}
+				if(_this.bank_number == ''){
+					MessageBox('提示', '请输入收款账号');
+					return;
+				}
+				if(_this.sq_money == ''){
+					MessageBox('提示', '请输入申请金额');
+					return;
+				}
+				console.log(this.fycdgs);
+				console.log(this.skr_name);
+				console.log(this.khh_bank);
+				console.log(this.bank_number);
+				console.log(this.sq_money);
+				console.log(this.remark);
+				console.log(this.busId);
+				console.log(this.documentaryper);
+				console.log(this.fyid);
+				console.log(this.lpid);
+				console.log(this.zdid);
+				console.log(this.responsible);
+				let csr_id = _this.copy_data.map((item, idx) => {
+					return item.id
+				});
+				console.log(csr_id);
+				
+				// return//测试时暂停提交
+				
+				if(_this.isclick){
+			        _this.isclick= false;
+					const url = this.$api + "/yhcms/web/activitibusinessreg/saveCostApproval.do";
+					axios.post(url,{
+						"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+						"ActivitiCostApproval":{
+							"accountnumber": _this.bank_number,
+							"applicationamount": _this.sq_money,
+							"bankname": _this.khh_bank,
+							"busId": _this.busId,
+							"costcompany": _this.fycdgs,
+							"documentaryper": _this.documentaryper,
+							"fyid": _this.fyid,
+							"lpid": _this.lpid,
+							"receivablesname": _this.skr_name,
+							"remark": _this.remark,
+							"responsible": _this.responsible,
+							"zdid": _this.zdid
+						},
+						"pic": _this.images.localId,//图片地址
+						"copyname": csr_id.join(","),//抄送人
+					}).then((res)=>{
+						console.log(res);
+						if(res.data.success){//成功后
+							sessionStorage.removeItem("form_obj");//清除表单缓存存储信息
+							setTimeout(function(){
+					            _this.isclick = true;
+					        });
+							Toast({
+							  message: '申请已提交',
+							  position: 'center',
+							  duration: 3000
+							});
+							_this.$router.push({
+								path:'/fy_putin',//跳转到审批页面
+								query:{
+									gdid: _this.$route.query.gdid,//工单id
+									taskid: _this.$route.query.taskid,//任务id
+									busId: _this.$route.query.busId,
+									documentaryper: _this.$route.query.documentaryper,
+									fyid: _this.$route.query.fyid,
+									lpid: _this.$route.query.lpid,
+									zdid: _this.$route.query.zdid,
+									responsible: _this.$route.query.responsible
+								}
+							});
+						}
+					}, (err)=>{
+						console.log(err);
+					});
+				}
+				
 			},
 			
 		},
@@ -422,7 +582,7 @@
 										// arr[m].url = _this.$prefix + '/' + pic1[m];
 										// 工单提交时的图片格式
 										arr[m].url = pic1[m];
-										arr[m].type = 21;
+										arr[m].type = 22;
 										arr[m].isdelete = 0;
 										arr[m].state = 1;
 										arr[m].endesc = "";

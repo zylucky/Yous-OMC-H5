@@ -39,6 +39,10 @@
 						<span class="gd_new_tit">收款账号</span>
 						<span class="gd_new_con">{{approvalDto.accountnumber}}</span>
 					</li>
+					<li>
+						<span class="gd_new_tit">申请金额</span>
+						<span class="gd_new_con">{{approvalDto.applicationamount}}</span>
+					</li>
 					<li class="gd_tip">
 						<span class="gd_new_tit">备注</span>
 						<span class="gd_new_con">{{approvalDto.remark==''?'无':approvalDto.remark}}</span>
@@ -49,7 +53,7 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>图片</p>
 				<ul class="img_list_box">
-					<li v-for="(item,index) in picurl">
+					<li v-for="(item,index) in picurl" @click="see_img(item,index)">
 						<img :src="$prefix+'/'+item" alt="">
 					</li>
 					<p v-if="picurl.length==0">{{picurl.length==0?'无':''}}</p>
@@ -94,20 +98,13 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="(item,index) in sendDto">
+					<li v-for="(item,index) in sendDto" v-show="item.isdelete==1">
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn" v-if="false"></span>
-							<span class="admin_ion"></span>
+							<span class="del_img_btn" v-if="item.admin!=1" @click="del_copy(item,index)"></span>
+							<span class="admin_ion" v-if="item.admin==1"></span>
 						</p>
-						<p class="copy_name">{{item.name}}</p>
-					</li>
-					<li v-for="(items,index) in copy_p">
-						<p class="head_img">
-							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn" v-if="true"></span>
-						</p>
-						<p class="copy_name">{{items.topic}}</p>
+						<p class="copy_name">{{item.topic}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -129,6 +126,7 @@
 </template>
 
 <script>
+	import wx from 'weixin-js-sdk';
 	import axios from 'axios';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -147,22 +145,50 @@
 				infos: [],//审批流
 				sendDto: [],//抄送人
 				copy_p: [],//
+				id: '',//费用审批工单id
+				copy_data: [],//添加抄送人
+				middleId: '',//中间表id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
 			this.taskid = this.$route.query.taskid;
+			this.id = this.$route.query.id;
 			this.copy_p = this.$store.state.copyData;//获取添加的抄送人
+			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.gd_detail();
 		},
 		methods:{
+			wechat_share() { //微信授权获取配置信息
+				const url = "http://omc.urskongjian.com/yhcms/web/weixin/shareYskj.do";
+				var url_share = window.location.href;
+				url_share = url_share.split('#')[0];
+				axios.post(url, {
+					"url": url_share
+				}).then((res) => {
+					let we_cs = res.data;
+					console.log(we_cs);
+					//微信签名调取
+					wx.config({
+						debug: false, // 开启调试模式
+						appId: we_cs.appId, // 必填，公众号的唯一标识
+						timestamp: we_cs.timestamp, // 必填，生成签名的时间戳
+						nonceStr: we_cs.nonceStr, // 必填，生成签名的随机串
+						signature: we_cs.signature, // 必填，签名
+						jsApiList: ["chooseImage", "previewImage", "uploadImage", "downloadImage", "getLocalImgData"]
+					});
+				}, (err) => {
+					console.log(err);
+				});
+			},
 			gd_detail(){
 				const url = this.$api + "/yhcms/web/activitibusinessreg/getApprovalViewHandle.do";
 				axios.post(url,{
-					"id": this.gd_id
+					"id": this.id
 				}).then((res)=>{
 					this.allData = res.data.data;
 					this.approvalDto = res.data.data.approvalDto;
+					this.middleId = res.data.data.middleId;
 					if(this.approvalDto.picurl != ''){
 						this.picurl = this.approvalDto.picurl.split(";");//图片处理
 					}else{
@@ -170,15 +196,36 @@
 					}
 					this.infos = this.allData.infos;//审批流
 					this.sendDto = this.allData.sendDto;//抄送人
+					let cs_person = this.allData.sendDto;
+					// 抄送人处理
+					this.sendDto = cs_person.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 1,
+							"isdelete": 1,
+							"topic": item.name
+						};
+					});
+					this.copy_data = this.copy_data.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 0,
+							"isdelete": 1,
+							"topic": item.topic
+						};
+					});
+					this.sendDto = this.sendDto.concat(this.copy_data);
 				}, (err)=>{
 					console.log(err);
 				});					
 			},
 			add_copy(){
 				this.$router.push({
-					path:'/gs_copy',//跳转到审批页面
+					path:'/gs_copy2',
 					query:{
 						gdid: this.$route.query.gdid,//工单id
+						taskid: this.taskid,
+						id: this.id,//费用id
 						laiyuan: '/fy_detail',
 					}
 				})
@@ -217,7 +264,22 @@
 					});	
 				}
 			},
+			del_copy(item,index){
+				item.isdelete = 0;
+				var newcopy = [];
+				for (var i=0; i<this.sendDto.length; i++) {
+					if(this.sendDto[i].isdelete==1){
+						newcopy.push(this.sendDto[i]);
+					}
+				}
+				this.sendDto = newcopy;
+				this.$store.commit('del_copy',item.id);
+			},
 			pass_btn(){//审批通过
+				var _this = this;
+				let csr_id = _this.sendDto.map((item, idx) => {
+					return item.id
+				});
 				MessageBox.confirm('', { 
 					message: '是否确定通过?', 
 					title: '提示', 
@@ -225,7 +287,19 @@
 					cancelButtonText: '取消' 
 				}).then(action => { 
 					if (action == 'confirm') {//确认的回调
-						console.log('确认'); 
+						console.log('确认');
+						_this.$router.push({
+							path:'/gd_record',//跳转到评论
+							query:{
+								workType: _this.approvalDto.workType,//工单类型
+								codenum: _this.approvalDto.codenum,//工单编号
+								id: _this.id,//费用id
+								taskid: _this.taskid,
+								middleId: _this.middleId,
+								csr_id: csr_id.join(","),
+								sp_state: 'tg'//审批状态
+							}
+						});
 					}
 				}).catch(err => { 
 					if (err == 'cancel') {//取消的回调
@@ -234,6 +308,10 @@
 				})
 			},
 			unpass_btn(){//审批驳回
+				var _this = this;
+				let csr_id = _this.sendDto.map((item, idx) => {
+					return item.id
+				});
 				MessageBox.confirm('', { 
 					message: '是否确定驳回?', 
 					title: '提示', 
@@ -242,6 +320,18 @@
 				}).then(action => { 
 					if (action == 'confirm') {//确认的回调
 						console.log('确认'); 
+						_this.$router.push({
+							path:'/gd_record',//跳转到评论
+							query:{
+								workType: _this.approvalDto.workType,//工单类型
+								codenum: _this.approvalDto.codenum,//工单编号
+								id: _this.id,//费用id
+								taskid: _this.taskid,
+								middleId: _this.middleId,
+								csr_id: csr_id.join(","),
+								sp_state: 'bh'//审批状态
+							}
+						});
 					}
 				}).catch(err => { 
 					if (err == 'cancel') {//取消的回调
@@ -249,18 +339,39 @@
 					} 
 				})
 			},
+			see_img(item, index) { // 预览图片
+				var _this = this;
+				var url_img = []; //图片列表
+				for (var i = 0; i < _this.picurl.length; i++) {
+					url_img.push(_this.$prefix + '/' + _this.picurl[i]);
+				}
+				wx.ready(function() {
+					wx.previewImage({
+						current: item.url,
+						urls: url_img
+					});
+				});
+			},
 			see_flowimg(){//查看工单流程图
-				const url = this.$api_lct + "/lswapi/processOpt/showImage.do?taskId=382833";
+				const url = this.$api_lct + "/lswapi/processOpt/showImage.do?taskId=" + this.taskid;
 				this.$http.get(
 				url
 				).then((res) => {
 					console.log(res);
+					var url_img = []; //图片列表
+					url_img.push(res.url);
+					wx.ready(function() {
+						wx.previewImage({
+							current: res.url,
+							urls: url_img
+						});
+					});
 				}, (response) => {});
 			},
 			
 		},
 		mounted(){
-			
+			this.wechat_share(); //授权签名方法调用
 		},
 		
 	}

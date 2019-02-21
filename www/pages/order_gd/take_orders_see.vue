@@ -158,7 +158,7 @@
 					<p><img src="../../resources/images/order_gd/zj_btn_ion.png" alt=""></p>
 					<p>转交</p>
 				</li>
-				<li v-if="nodeName!='接单'">
+				<li v-if="nodeName!='接单'" @click="send_cost">
 					<p><img src="../../resources/images/order_gd/sqfy_btn_ion.png" alt=""></p>
 					<p>申请费用</p>
 				</li>
@@ -295,7 +295,6 @@ import { MessageBox } from 'mint-ui';
 			},
 			pl_btn(){//评论
 				alert(this.taskid);
-				return;
 				this.$router.push({
 					path:'/gd_record1',//跳转到评论
 					query:{
@@ -323,6 +322,15 @@ import { MessageBox } from 'mint-ui';
 			},
 			more_btn(){
 				this.zz_state = true;
+			},
+			send_cost(){
+				var _this = this;
+				_this.$router.push({
+					path:'/fy_putin',//
+					query:{
+						gdid: _this.gd_id,//工单id
+					}
+				});
 			},
 			see_flowimg(){//查看工单流程图
 				const url = this.$api_lct + "/lswapi/processOpt/processImage.do?actKeyType=gszc";

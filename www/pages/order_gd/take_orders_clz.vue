@@ -126,13 +126,13 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="item in sendDto">
+					<li v-for="(item,index) in sendDto" v-show="item.isdelete==1">
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn" v-if="false"></span>
-							<span class="admin_ion"></span>
+							<span class="del_img_btn" v-if="item.admin!=1" @click="del_copy(item,index)"></span>
+							<span class="admin_ion" v-if="item.admin==1"></span>
 						</p>
-						<p class="copy_name">{{item.name}}</p>
+						<p class="copy_name">{{item.topic}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -281,6 +281,17 @@ import { MessageBox } from 'mint-ui';
 					}
 				})
 			},
+			del_copy(item,index){
+				item.isdelete = 0;
+				var newcopy = [];
+				for (var i=0; i<this.sendDto.length; i++) {
+					if(this.sendDto[i].isdelete==1){
+						newcopy.push(this.sendDto[i]);
+					}
+				}
+				this.sendDto = newcopy;
+				this.$store.commit('del_copy',item.id);
+			},
 			ckpj(item,index){
 				this.ckpj_sreset();
 				if(this.pj_sta == 'yuan'){
@@ -385,9 +396,16 @@ import { MessageBox } from 'mint-ui';
 			send_cost(){
 				var _this = this;
 				_this.$router.push({
-					path:'/fy_putin',//跳转到评论
+					path:'/fy_putin',//
 					query:{
 						gdid: _this.gd_id,//工单id
+						taskid: _this.taskid,//任务id
+						busId: _this.objDto.id,
+						documentaryper: _this.objDto.documentaryper,
+						fyid: _this.objDto.fyid,
+						lpid: _this.objDto.lpid,
+						zdid: _this.objDto.zdid,
+						responsible: _this.objDto.demandattribute
 					}
 				});
 			},

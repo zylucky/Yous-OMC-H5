@@ -751,7 +751,7 @@
 							Toast({
 							  message: '工单已发起',
 							  position: 'center',
-							  duration: 5000
+							  duration: 3000
 							});
 							_this.$router.push({
 								path: '/gtasks_fq',//跳转到我发起的
