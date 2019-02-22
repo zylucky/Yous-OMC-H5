@@ -185,8 +185,9 @@
 					this.$router.push({
 						path:'/fy_detail',//跳转到审批页面
 						query:{
-							gdid: item.gdid,//工单id
+							id: item.gdid,//工单id
 							taskid: item.taskid,
+							// id: item.id
 						}
 					});
 				}
@@ -213,7 +214,7 @@
 					});
 				}
 				// 工商注册跳转(负责人确认)
-				if(item.jumPath == '/activitibusinessreg/personLiablePage.do'){
+				if(item.jumPath == '/activitibusinessreg/personLiablePage.do' || item.jumPath == '/activitibusinessreg/housekeeperPage.do'){
 					this.$router.push({
 						path:'/take_orders_qr',
 						query:{

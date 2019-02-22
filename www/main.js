@@ -623,6 +623,20 @@ var router = new VueRouter({
 			}
 		},
 		{//填写评论信息
+			path: '/gd_record4',
+			component: require('./pages/order_gd/gd_record4.vue'),
+			meta: {
+				title: '评论'
+			}
+		},
+		{//填写评论信息
+			path: '/gd_record5',
+			component: require('./pages/order_gd/gd_record5.vue'),
+			meta: {
+				title: '评论'
+			}
+		},
+		{//填写评论信息
 			path: '/gd_record3',
 			component: require('./pages/order_gd/gd_record3.vue'),
 			meta: {
@@ -653,6 +667,13 @@ var router = new VueRouter({
 		{//费用申批详情页
 			path: '/fy_detail',
 			component: require('./pages/order_gd/fy_detail.vue'),
+			meta: {
+				title: '费用申请'
+			}
+		},
+		{//费用申批详情页
+			path: '/fy_detail1',
+			component: require('./pages/order_gd/fy_detail1.vue'),
 			meta: {
 				title: '费用申请'
 			}

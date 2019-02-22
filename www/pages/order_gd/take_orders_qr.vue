@@ -189,10 +189,13 @@ import { MessageBox } from 'mint-ui';
 				infos: [],//审批流
 				copy_p: [],//添加抄送人
 				nodeName: '',//工单当前处理状态
+				taskid: '',//任务id
+				middleId: '',//中间表id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
+			this.taskid = this.$route.query.taskid;//工单任务id
 			this.gd_detail();
 		},
 		methods:{
@@ -237,6 +240,7 @@ import { MessageBox } from 'mint-ui';
 					"id": this.gd_id
 				}).then((res)=>{
 					this.allData = res.data.data;
+					this.middleId = res.data.data.middleId;//中间表id
 					this.objDto = res.data.data.objDto;//详细信息
 					this.picurl = this.objDto.picurl.split(";");//图片处理
 					this.singleDto = this.allData.singleDto;//跟单人
@@ -291,11 +295,16 @@ import { MessageBox } from 'mint-ui';
 			},
 			pl_btn(){//评论
 				this.$router.push({
-					path:'/gd_record1',//跳转到评论
-					query:{}
+					path:'/gd_record3',//跳转到评论
+					query:{
+						workType: this.objDto.workType,//工单类型
+						codenum: this.objDto.codenum,//工单编号
+						taskid: this.taskid,
+					}
 				});
 			},
 			finnsh(){//完成
+				var _this = this;
 				MessageBox.confirm('', { 
 					message: '确定完成?', 
 					title: '提示', 
@@ -304,6 +313,28 @@ import { MessageBox } from 'mint-ui';
 				}).then(action => { 
 					if (action == 'confirm') {//确认的回调
 						console.log('确认'); 
+						let csr_id = _this.sendDto.map((item, idx) => {
+							return item.id
+						});
+						const url = _this.$api + "/yhcms/web/activitibusinessreg/getHandle.do";
+						axios.post(url,{
+							"taskid": _this.taskid,
+							"middleId": _this.middleId,
+							"cookie": JSON.parse(localStorage.getItem('cookxs')).sjs,//用户cookie
+							"workListId": _this.gd_id,
+							"copyname": csr_id.join(",")
+						}).then((res)=>{
+							console.log(res);
+							if(res.data.success){
+								// 跳转已经完成的列表
+								_this.$router.push({
+									path:'/gtasks_wc',
+									query:{}
+								});
+							}
+						}, (err)=>{
+							console.log(err);
+						});
 					}
 				}).catch(err => { 
 					if (err == 'cancel') {//取消的回调
@@ -716,6 +747,7 @@ import { MessageBox } from 'mint-ui';
 		font-size: 0.24rem;
 		color: #999999;
 		line-height: 0.36rem;
+		word-wrap: break-word;
 	}
 }
 .zzc_box{

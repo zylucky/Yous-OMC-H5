@@ -1,7 +1,7 @@
 <template>
 	<div class="gs_register_box">
 		<!-- 主体 -->
-		<div class="gs_box_top">
+		<div class="gs_box_top" :style="objDto.status == '已完成'?'bottom: 0;':'bottom:1rem;'">
 			<!-- 头部 -->
 			<ul class="news_box gd_take_order">
 				<li>
@@ -144,11 +144,15 @@
 		</div>
 
 		<!-- 底部悬浮按钮 -->
-		<div class="gs_box_bottom">
-			<ul class="bottom_nav">
+		<div class="gs_box_bottom" v-if="objDto.status != '已完成'">
+			<ul class="bottom_nav" v-if="ryState==0">
 				<li @click="pl_btn">评论</li>
 				<!-- <li @click="finnsh">完成</li> -->
 				<!-- <li @click="more_btn">更多</li> -->
+			</ul>
+			<ul class="bottom_nav bottom_nav1" v-if="ryState==1">
+				<li @click="pl_btn">评论</li>
+				<li @click="send_cost">费用审批</li>
 			</ul>
 		</div>
 		<!-- 遮罩层 -->
@@ -190,12 +194,15 @@ import { MessageBox } from 'mint-ui';
 				copy_p: [],//添加抄送人
 				nodeName: '',//工单当前处理状态
 				taskid: '',//任务id
+				ryState: 0,//是否为当前接单人  1是  0否
+				laiyuan: '',
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
 			this.taskid = this.$route.query.taskid;//工单任务id
 			this.nodeName = this.$route.query.nodeName;
+			this.laiyuan = this.$route.query.laiyuan;
 			this.gd_detail();
 		},
 		methods:{
@@ -246,6 +253,7 @@ import { MessageBox } from 'mint-ui';
 					this.singleDto = this.allData.singleDto;//跟单人
 					this.sendDto = this.allData.sendDto;//抄送人
 					this.infos = this.allData.infos;//审批流
+					this.ryState = res.data.data.ryState;
 				}, (err)=>{
 					console.log(err);
 				});					
@@ -294,15 +302,37 @@ import { MessageBox } from 'mint-ui';
 				}
 			},
 			pl_btn(){//评论
-				alert(this.taskid);
-				this.$router.push({
-					path:'/gd_record1',//跳转到评论
-					query:{
-						workType: this.objDto.workType,//工单类型
-						codenum: this.objDto.codenum,//工单编号
-						taskid: this.taskid,
-					}
-				});
+				console.log(this.laiyuan);
+				if(this.laiyuan == '/gtasks_fq'){
+					this.$router.push({
+						path:'/gd_record1',//跳转到评论
+						query:{
+							workType: this.objDto.workType,//工单类型
+							codenum: this.objDto.codenum,//工单编号
+							taskid: this.taskid,
+						}
+					});
+				}else if(this.laiyuan == '/gtasks_jb'){
+					this.$router.push({
+						path:'/gd_record4',//跳转到评论
+						query:{
+							workType: this.objDto.workType,//工单类型
+							codenum: this.objDto.codenum,//工单编号
+							taskid: this.taskid,
+						}
+					});
+				}else if(this.laiyuan == '/gtasks_wc'){
+					this.$router.push({
+						path:'/gd_record5',//跳转到评论
+						query:{
+							workType: this.objDto.workType,//工单类型
+							codenum: this.objDto.codenum,//工单编号
+							taskid: this.taskid,
+						}
+					});
+				}else{
+					
+				}
 			},
 			finnsh(){//完成
 				MessageBox.confirm('', { 
@@ -329,6 +359,13 @@ import { MessageBox } from 'mint-ui';
 					path:'/fy_putin',//
 					query:{
 						gdid: _this.gd_id,//工单id
+						taskid: _this.taskid,//任务id
+						busId: _this.objDto.id,
+						documentaryper: _this.objDto.documentaryper,
+						fyid: _this.objDto.fyid,
+						lpid: _this.objDto.lpid,
+						zdid: _this.objDto.zdid,
+						responsible: _this.objDto.demandattribute
 					}
 				});
 			},
@@ -515,6 +552,11 @@ import { MessageBox } from 'mint-ui';
 		text-align: center;
 	}
 }
+.bottom_nav1{
+	li{
+		width: 50%;
+	}
+}
 .bottom_nav li::after{
 	content: "";
 	position: absolute;
@@ -546,6 +588,7 @@ import { MessageBox } from 'mint-ui';
 		font-size: 0.32rem;
 		color: #333333;
 		font-weight: bold;
+		word-wrap: break-word;
 	}
 	.gd_state{
 		width: 0.87rem;

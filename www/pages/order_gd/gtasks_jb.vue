@@ -179,7 +179,19 @@
 			},
 			todetail(item,index){//跳转详情处理页
 				console.log(item.jumPath);
-				console.log(item.nodeName);
+				console.log(item.id);
+				// 费用审批单独查看页面
+				if(item.jumPath == '/activiticostapproval/basePage.do'){
+					this.$router.push({
+						path:'/fy_detail1',//跳转到查看
+						query:{
+							gdid: item.gdid,//工单id
+							taskid: item.taskid,
+							id: item.id,
+							laiyuan: '/gtasks_jb'
+						}
+					});
+				}
 				//工单发起 发起人查看详情（可以评论）；
 				if(item.jumPath == '/activitibusinessreg/basePage.do'){
 					this.$router.push({
@@ -187,6 +199,7 @@
 						query:{
 							gdid: item.gdid,//工单id
 							taskid: item.taskid,
+							laiyuan: '/gtasks_jb'
 						}
 					});
 				}

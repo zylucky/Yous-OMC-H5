@@ -1,7 +1,7 @@
 <template>
 	<div class="gs_register_box">
 		<!-- 主体 -->
-		<div class="gs_box_top":style="approvalDto.status == '已完成'?'bottom: 0;':'bottom:1rem;'">
+		<div class="gs_box_top" :style="approvalDto.status == '已完成'?'bottom: 0;':'bottom:1rem;'">
 			<!-- 头部 -->
 			<ul class="news_box gd_take_order">
 				<li>
@@ -106,7 +106,7 @@
 						</p>
 						<p class="copy_name">{{item.topic}}</p>
 					</li>
-					<li @click="add_copy">
+					<li @click="add_copy" v-if="approvalDto.status != '已完成'">
 						<p class="head_img add_copy_person"></p>
 						<p class="copy_name"></p>
 					</li>
@@ -118,8 +118,9 @@
 		<!-- 底部悬浮按钮 -->
 		<div class="gs_box_bottom" v-if="approvalDto.status != '已完成'">
 			<ul class="bottom_nav">
-				<li @click="pass_btn">通过</li>
-				<li @click="unpass_btn">驳回</li>
+				<li @click="pl_btn">评论</li>
+				<!-- <li @click="pass_btn">通过</li> -->
+				<!-- <li @click="unpass_btn">驳回</li> -->
 			</ul>
 		</div>
 	</div>
@@ -148,12 +149,14 @@
 				id: '',//费用审批工单id
 				copy_data: [],//添加抄送人
 				middleId: '',//中间表id
+				laiyuan: '',//来源
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
 			this.taskid = this.$route.query.taskid;
 			this.id = this.$route.query.id;
+			this.laiyuan = this.$route.query.laiyuan;
 			this.copy_p = this.$store.state.copyData;//获取添加的抄送人
 			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.gd_detail();
@@ -184,7 +187,7 @@
 			gd_detail(){
 				const url = this.$api + "/yhcms/web/activitibusinessreg/getApprovalViewHandle.do";
 				axios.post(url,{
-					"id": this.id
+					"id": this.gd_id
 				}).then((res)=>{
 					this.allData = res.data.data;
 					this.approvalDto = res.data.data.approvalDto;
@@ -226,7 +229,7 @@
 						gdid: this.$route.query.gdid,//工单id
 						taskid: this.taskid,
 						id: this.id,//费用id
-						laiyuan: '/fy_detail',
+						laiyuan: '/fy_detail1',
 					}
 				})
 			},
@@ -353,7 +356,11 @@
 				});
 			},
 			see_flowimg(){//查看工单流程图
-				const url = this.$api_lct + "/lswapi/processOpt/showImage.do?taskId=" + this.taskid;
+				if(this.approvalDto.status == '已完成'){
+					var url = this.$api_lct + "/lswapi/processOpt/processFlowImage.do?processInstanceId=" + this.approvalDto.instanceid;
+				}else{
+					var url = this.$api_lct + "/lswapi/processOpt/showImage.do?taskId=" + this.taskid;
+				}
 				this.$http.get(
 				url
 				).then((res) => {
@@ -366,7 +373,39 @@
 							urls: url_img
 						});
 					});
-				}, (response) => {});
+				}, (response) => {});					
+			},
+			pl_btn(){//评论
+				if(this.laiyuan == '/gtasks_fq'){
+					this.$router.push({
+						path:'/gd_record1',//跳转到评论
+						query:{
+							workType: this.approvalDto.workType,//工单类型
+							codenum: this.approvalDto.codenum,//工单编号
+							taskid: this.taskid
+						}
+					});					
+				}else if(this.laiyuan == '/gtasks_jb'){
+					this.$router.push({
+						path:'/gd_record4',//跳转到评论
+						query:{
+							workType: this.approvalDto.workType,//工单类型
+							codenum: this.approvalDto.codenum,//工单编号
+							taskid: this.taskid
+						}
+					});	
+				}else if(this.laiyuan == '/gtasks_wc'){
+					this.$router.push({
+						path:'/gd_record5',//跳转到评论
+						query:{
+							workType: this.approvalDto.workType,//工单类型
+							codenum: this.approvalDto.codenum,//工单编号
+							taskid: this.taskid
+						}
+					});	
+				}else{
+					
+				}
 			},
 			
 		},
@@ -528,7 +567,7 @@
 	border-top: 1px solid #e5e5e5;
 	li{
 		position: relative;
-		width: 50%;
+		width: 100%;
 		line-height: 1rem;
 		font-size: 0.3rem;
 		color: #2b70d8;
