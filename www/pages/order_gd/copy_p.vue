@@ -169,6 +169,7 @@ import { MessageBox } from 'mint-ui'
 				});
 			},
 			add_person(item){
+				console.log(this.$store.state.copyData.length);
 				if(this.$store.state.copyData.length != 0){
 					this.copy_data = this.$store.state.copyData;
 					for(var i=0; i<this.copy_data.length; i++){
@@ -182,10 +183,10 @@ import { MessageBox } from 'mint-ui'
 					"id": item.id,
 					"admin": 0,
 					"isdelete": 1,
-					"topic": item.topic					
+					"topic": item.topic
 				}
 				this.$store.commit('add_copy',obj);
-				console.log(this.$store.state.copyData);
+				// console.log(this.$store.state.copyData);
 				this.$router.push({
 					path:this.$route.query.laiyuan,//回退到列表
 					query:{

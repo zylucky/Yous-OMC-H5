@@ -150,7 +150,7 @@
 							<span class="del_img_btn" v-if="item.admin!=1" @click="del_copy(item,index)"></span>
 							<span class="admin_ion" v-if="item.admin==1"></span>
 						</p>
-						<p class="copy_name">{{item.topic || item.name}}</p>
+						<p class="copy_name">{{item.topic}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -591,7 +591,7 @@
 							"id": item.id,
 							"admin": 1,
 							"isdelete": 1,
-							"topic": item.name
+							"topic": item.topic
 						};
 					});
 					this.copy_data = this.copy_data.map((item, idx) => {
@@ -603,6 +603,16 @@
 						};
 					});
 					this.copy_data = this.copy_data.concat(this.cs_person);
+					// 抄送人去重
+					for(var i=0;i<this.copy_data.length;i++){
+					  for(var j=i+1;j<this.copy_data.length;j++){
+						if(this.copy_data[i].id===this.copy_data[j].id){
+						  this.copy_data.splice(i,1);
+						  i--;
+						}
+					  }
+					}
+
 				}, (err)=>{
 					console.log(err);
 				});
@@ -915,7 +925,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "18_ceJb0o61IsPV0NQbZLv6QemnHiGz_4LDN_F6u4Lb2uphKlxpxgHzZouy9TsA5cOYBg2NUPT-Mckichyuhcn51P822MTmAnyCZ85K45fUcms39N_bSyR8DUTHn3O78ngUkuO8wX1L4htIhuGeALIhADASDA"
+										"token": "18_MkLIlLyEQ9OYmzMuecGsLLQj15OvUm5ZbSDJEML3p2D2XoFgtbezOgMYqBqZj28OPStr--YZxv67HtKRBdIbHnzIvYVIUmmOgZRUdD2YCXwjPwGOm3CouxXEz8nmZZXSYl3rHHykHF3AitF5UMGbAHANFZ"
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();

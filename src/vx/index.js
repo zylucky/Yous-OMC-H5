@@ -32,7 +32,12 @@ export default new Vuex.Store({
 			state.copyData.push(obj);//存储抄送人
 		},
 		add_copy1(state,obj){
-			state.copyData = obj;//存储抄送人
+			for(var i = 0; i < state.copyData.length; i++){
+				if(obj.id === state.copyData[i].id){
+					alert('存在');
+				}
+			}
+			// state.copyData = obj;//存储抄送人
 		},
 		del_copy(state,obj){//删除抄送人
 			for(var i=0; i<state.copyData.length; i++){

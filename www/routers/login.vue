@@ -83,6 +83,7 @@
             "foreEndType": 2,
             "code": "300000045",
             "cookie":user22.sjs,
+						"openid": "oet4202nToMpylo-DmKPKbFaZMcw"
           }
         ).then(function (res) {
           Indicator.close();

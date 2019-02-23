@@ -255,7 +255,7 @@ import { MessageBox } from 'mint-ui';
 					path:'/gs_copy',//跳转到抄送
 					query:{
 						gdid: this.$route.query.gdid,//工单id
-						laiyuan: '/take_orders',
+						laiyuan: '/take_orders_qr',
 					}
 				})
 			},

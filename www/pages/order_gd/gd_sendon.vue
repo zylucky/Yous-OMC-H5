@@ -94,7 +94,7 @@ import { MessageBox } from 'mint-ui'
 							console.log(res);
 							// 跳转我经办的
 							_this.$router.push({
-								path:'/gtasks_jb',//跳转我的待办
+								path:'/gtasks_jb',//跳转我的经办
 								query:{}
 							});
 						}

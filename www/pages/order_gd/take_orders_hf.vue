@@ -126,13 +126,13 @@
 			<ul class="news_box img_tp_box">
 				<p class="img_t"><i style="visibility: hidden;">*</i>抄送人</p>
 				<ul class="img_list_box copy_person">
-					<li v-for="item in sendDto">
+					<li v-for="(item,index) in sendDto" v-show="item.isdelete==1">
 						<p class="head_img">
 							<img src="../../resources/images/commission/head_img.png" alt="">	
-							<span class="del_img_btn" v-if="false"></span>
-							<span class="admin_ion"></span>
+							<span class="del_img_btn" v-if="item.admin!=1" @click="del_copy(item,index)"></span>
+							<span class="admin_ion" v-if="item.admin==1"></span>
 						</p>
-						<p class="copy_name">{{item.name}}</p>
+						<p class="copy_name">{{item.topic}}</p>
 					</li>
 					<li @click="add_copy">
 						<p class="head_img add_copy_person"></p>
@@ -147,7 +147,7 @@
 		<div class="gs_box_bottom">
 			<ul class="bottom_nav">
 				<li @click="jd_btn">结单</li>
-				<li @click="finnsh">转交</li>
+				<li @click="careof">转交</li>
 				<!-- <li @click="more_btn">更多</li> -->
 			</ul>
 		</div>
@@ -189,10 +189,15 @@ import { MessageBox } from 'mint-ui';
 				infos: [],//审批流
 				copy_p: [],//添加抄送人
 				nodeName: '',//工单当前处理状态
+				copy_data: [],//添加抄送人
+				taskid: '',//任务id
+				middleId: '',//中间表id
 			}
 		},
 		created(){
 			this.gd_id = this.$route.query.gdid;
+			this.taskid = this.$route.query.taskid;//工单任务id
+			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.gd_detail();
 		},
 		methods:{
@@ -237,10 +242,31 @@ import { MessageBox } from 'mint-ui';
 					"id": this.gd_id
 				}).then((res)=>{
 					this.allData = res.data.data;
+					this.middleId = res.data.data.middleId;//中间表id
 					this.objDto = res.data.data.objDto;//详细信息
 					this.picurl = this.objDto.picurl.split(";");//图片处理
 					this.singleDto = this.allData.singleDto;//跟单人
 					this.sendDto = this.allData.sendDto;//抄送人
+					let cs_person = this.allData.sendDto;
+					// 抄送人处理
+					this.sendDto = cs_person.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 1,
+							"isdelete": 1,
+							"topic": item.name
+						};
+					});
+					this.copy_data = this.copy_data.map((item, idx) => {
+						return {
+							"id": item.id,
+							"admin": 0,
+							"isdelete": 1,
+							"topic": item.topic
+						};
+					});
+					this.sendDto = this.sendDto.concat(this.copy_data);
+					console.log(this.sendDto);
 					this.infos = this.allData.infos;//审批流
 				}, (err)=>{
 					console.log(err);
@@ -251,9 +277,20 @@ import { MessageBox } from 'mint-ui';
 					path:'/gs_copy',//跳转到抄送
 					query:{
 						gdid: this.$route.query.gdid,//工单id
-						laiyuan: '/take_orders',
+						laiyuan: '/take_orders_hf',
 					}
 				})
+			},
+			del_copy(item,index){
+				item.isdelete = 0;
+				var newcopy = [];
+				for (var i=0; i<this.sendDto.length; i++) {
+					if(this.sendDto[i].isdelete==1){
+						newcopy.push(this.sendDto[i]);
+					}
+				}
+				this.sendDto = newcopy;
+				this.$store.commit('del_copy',item.id);
 			},
 			ckpj(item,index){
 				this.ckpj_sreset();
@@ -289,12 +326,36 @@ import { MessageBox } from 'mint-ui';
 					});	
 				}
 			},
-			jd_btn(){//评论
-				alert('跳转评论页带五角星')
-// 				this.$router.push({
-// 					path:'/gd_record1',//跳转到结单
-// 					query:{}
-// 				});
+			jd_btn(){//结单
+				var _this = this;
+				MessageBox.confirm('', { 
+					message: '是否确认结单?', 
+					title: '提示', 
+					confirmButtonText: '确认', 
+					cancelButtonText: '取消' 
+				}).then(action => { 
+					if (action == 'confirm') {//确认的回调
+						console.log('确认'); 
+						let csr_id = _this.sendDto.map((item, idx) => {
+							return item.id
+						});
+						this.$router.push({
+							path:'/gd_record6',//跳转到结单
+							query:{
+								workType: _this.objDto.workType,//工单类型
+								codenum: _this.objDto.codenum,//工单编号
+								taskid: _this.taskid,
+								gdid: _this.gd_id,//工单id
+								csr_id: csr_id,//抄送人id
+								middleId: _this.middleId
+							}
+						});
+					}
+				}).catch(err => { 
+					if (err == 'cancel') {//取消的回调
+						console.log('取消');
+					} 
+				})
 			},
 			finnsh(){//完成
 				MessageBox.confirm('', { 
@@ -311,6 +372,21 @@ import { MessageBox } from 'mint-ui';
 						console.log('取消');
 					} 
 				})
+			},
+			careof(){//转交
+				var _this = this;
+				let csr_id = _this.sendDto.map((item, idx) => {
+					return item.id
+				});
+				_this.$router.push({
+					path:'/gd_sendon',//跳转到评论
+					query:{
+						taskid: this.taskid,//任务id
+						gdid: this.gd_id,//工单id
+						csr_id: csr_id,//抄送人id
+						middleId: this.middleId
+					}
+				});
 			},
 			more_btn(){
 				this.zz_state = true;

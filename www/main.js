@@ -10,6 +10,8 @@ import VueResource from 'vue-resource';
 import search from './routers/search.vue';
 import store from '../src/vx';
 import 'mint-ui/lib/style.css';
+import urlLink from '../src/assets/public.js'//返回地址重定向
+Vue.use(urlLink);//返回地址重定向
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
@@ -632,6 +634,13 @@ var router = new VueRouter({
 		{//填写评论信息
 			path: '/gd_record5',
 			component: require('./pages/order_gd/gd_record5.vue'),
+			meta: {
+				title: '评论'
+			}
+		},
+		{//填写评论信息
+			path: '/gd_record6',
+			component: require('./pages/order_gd/gd_record6.vue'),
 			meta: {
 				title: '评论'
 			}

@@ -192,6 +192,7 @@ import { MessageBox } from 'mint-ui';
 				copy_data: [],//添加抄送人
 				taskid: '',//任务id
 				middleId: '',//中间表id
+				instanceid: '',
 			}
 		},
 		created(){
@@ -245,6 +246,7 @@ import { MessageBox } from 'mint-ui';
 					this.allData = res.data.data;
 					this.middleId = res.data.data.middleId;//中间表id
 					this.objDto = res.data.data.objDto;//详细信息
+					this.instanceid = this.objDto.instanceid;//流程实例id
 					this.picurl = this.objDto.picurl.split(";");//图片处理
 					this.singleDto = this.allData.singleDto;//跟单人
 					this.sendDto = this.allData.sendDto;//抄送人
@@ -268,6 +270,7 @@ import { MessageBox } from 'mint-ui';
 					});
 					this.sendDto = this.sendDto.concat(this.copy_data);
 					this.infos = this.allData.infos;//审批流
+					this.take_newtaskId();
 				}, (err)=>{
 					console.log(err);
 				});
@@ -334,6 +337,19 @@ import { MessageBox } from 'mint-ui';
 						codenum: this.objDto.codenum,//工单编号
 						taskid: this.taskid,
 					}
+				});
+			},
+			take_newtaskId(){//获取新的任务id
+				const url = this.$api + "/yhcms/web/activitibusinessreg/getTask.do";
+				axios.post(url,{
+					"instanceId": this.instanceid
+				}).then((res)=>{
+					if(res.data.success){
+						console.log(res.data.msg);
+						this.taskid = res.data.msg;
+					}
+				}, (err)=>{
+					console.log(err);
 				});
 			},
 			finnsh(){//完成
