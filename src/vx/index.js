@@ -19,8 +19,12 @@ export default new Vuex.Store({
 		copyData:[],//抄送人
 		form_obj: '',//表单数据暂存
 		arrImg: [],//图片列表
+		messageBos: true,
 	},
 	mutations:{
+		set_messageBos(state,obj){
+			state.messageBos = obj;
+		},
 		save_img(state,obj){
 			state.arrImg = obj;
 		},

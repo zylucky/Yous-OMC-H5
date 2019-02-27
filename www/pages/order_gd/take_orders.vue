@@ -268,6 +268,7 @@ import { MessageBox } from 'mint-ui';
 					});
 					this.sendDto = this.sendDto.concat(this.copy_data);
 					// console.log(this.sendDto);//抄送人
+					this.copy_res(this.sendDto);
 					this.infos = this.allData.infos;//审批流
 				}, (err)=>{
 					console.log(err);
@@ -349,6 +350,12 @@ import { MessageBox } from 'mint-ui';
 										taskid: _this.taskid,
 										nodeName: '业务处理',//工单当前处理状态
 									}
+								});
+							}else{
+								MessageBox.alert('该工单已被接单啦！').then(action => {
+								 	_this.$router.push({
+										path: "/gtasks",//形参跳转的路由名称
+									});
 								});
 							}
 						}, (err)=>{
@@ -442,6 +449,7 @@ import { MessageBox } from 'mint-ui';
 		},
 		mounted(){
 			this.wechat_share(); //授权签名方法调用
+			this.to_page("/gtasks");//返回地址重定向
 		},
 		
 	}

@@ -139,7 +139,8 @@ import { Indicator } from 'mint-ui';
 				this.$router.push({
 					path:'/gtasks_fq',
 					query:{
-						search_key: item.lpname
+						// search_key: item.lpname,
+						search_key: item.lpname+item.zdname+item.fyname
 					}
 				});
 			},

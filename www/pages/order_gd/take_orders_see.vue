@@ -330,6 +330,24 @@ import { MessageBox } from 'mint-ui';
 							taskid: this.taskid,
 						}
 					});
+				}else if(this.laiyuan == '/gtasks_cs'){
+					this.$router.push({
+						path:'/gd_record7',//跳转到评论
+						query:{
+							workType: this.objDto.workType,//工单类型
+							codenum: this.objDto.codenum,//工单编号
+							taskid: this.taskid,
+						}
+					});
+				}else if(this.laiyuan == '/gtasks_gj'){
+					this.$router.push({
+						path:'/gd_record8',//跳转到评论
+						query:{
+							workType: this.objDto.workType,//工单类型
+							codenum: this.objDto.codenum,//工单编号
+							taskid: this.taskid,
+						}
+					});
 				}else{
 					
 				}
@@ -390,6 +408,7 @@ import { MessageBox } from 'mint-ui';
 		},
 		mounted(){
 			this.wechat_share(); //授权签名方法调用
+			this.to_page(this.laiyuan);//返回地址重定向
 		},
 		
 	}

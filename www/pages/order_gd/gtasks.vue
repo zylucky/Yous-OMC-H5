@@ -265,6 +265,9 @@
 			  },100);
 			}
 			
+		},
+		mounted() {
+			this.to_page("/ctrl");//返回地址重定向
 		}
 	}
 </script>

@@ -305,6 +305,8 @@ import { MessageBox } from 'mint-ui';
 			},
 			finnsh(){//完成
 				var _this = this;
+				// alert(_this.$store.state.messageBos);
+				// this.$store.commit('set_dlState', res.data.success);
 				MessageBox.confirm('', { 
 					message: '确定完成?', 
 					title: '提示', 
@@ -366,6 +368,7 @@ import { MessageBox } from 'mint-ui';
 		},
 		mounted(){
 			this.wechat_share(); //授权签名方法调用
+			this.to_page("/gtasks");//返回地址重定向
 		},
 		
 	}

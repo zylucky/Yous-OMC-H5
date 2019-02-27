@@ -36,7 +36,7 @@
 	export default {
 		data(){
 			return{
-				navData:["我的待办","我发起的","我经办的","已完成的","抄送我的","我的跟进"],
+				// navData:["我的待办","我发起的","我经办的","已完成的","抄送我的","我的跟进"],
 				banner:[],
 				navData: [],//工单菜单
 				navData1: [],//400菜单
@@ -79,6 +79,9 @@
 					console.log(err);
 				});
 			},
+		},
+		mounted() {
+			// this.close_page();//返回关闭页面
 		}
 	}
 </script>

@@ -372,6 +372,7 @@
 		},
 		mounted(){
 			this.wechat_share(); //授权签名方法调用
+			this.to_page("/gtasks");//返回地址重定向
 		},
 		
 	}

@@ -646,6 +646,20 @@ var router = new VueRouter({
 			}
 		},
 		{//填写评论信息
+			path: '/gd_record7',
+			component: require('./pages/order_gd/gd_record7.vue'),
+			meta: {
+				title: '评论'
+			}
+		},
+		{//填写评论信息
+			path: '/gd_record8',
+			component: require('./pages/order_gd/gd_record8.vue'),
+			meta: {
+				title: '评论'
+			}
+		},
+		{//填写评论信息
 			path: '/gd_record3',
 			component: require('./pages/order_gd/gd_record3.vue'),
 			meta: {

@@ -172,7 +172,9 @@
 			to_search(){//跳转搜索页
 				this.$router.push({
 					path:'/gtasks_search_fq',//跳转到审批页面
-					query:{}
+					query:{
+						
+					}
 				});
 			},
 			todetail(item,index){//跳转详情处理页
@@ -284,7 +286,10 @@
 			  },100);
 			}
 			
-		}
+		},
+		mounted(){
+			this.to_page("/ctrl");//返回地址重定向
+		},
 	}
 </script>
 

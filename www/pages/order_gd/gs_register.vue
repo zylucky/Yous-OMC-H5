@@ -16,20 +16,36 @@
 				</li>
 				<li>
 					<p class="tit"><i>*</i>座栋</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入座栋名称" v-model="zdname" @focus="zd_stat">
+					</p>
+					<p class="box_list" v-show="list_zd.length>0 && zdname != ''" v-if="zd_state1">
+						<span v-for="item in listzd" @click="sel_zd1(item)">{{item.zdh}}</span>
+					</p>
+				</li>
+				<!-- <li>
+					<p class="tit"><i>*</i>座栋</p>
 					<p class="inp" @click="sel_zd">
-						<!-- <input type="text" readonly="readonly" placeholder="请选择座栋"> -->
 						<span class="chel_tex" :style="zdxx_sel.zdh=='请选择座栋'?'color:#c8c8c8;':'color:#333;'">{{zdxx_sel.zdh}}</span>
 					</p>
 					<p class="jt"></p>
-				</li>
+				</li> -->
 				<li>
 					<p class="tit"><i>*</i>房间号</p>
+					<p class="inp">
+						<input type="text" placeholder="请输入房间号" v-model="fjbh" @focus="fybh_stat">
+					</p>
+					<p class="box_list" v-show="list_fybh.length>0 && fjbh != ''" v-if="fybh_state">
+						<span v-for="item in listfybh" @click="sel_fybh(item)">{{item.fybh}}</span>
+					</p>
+				</li>
+				<!-- <li>
+					<p class="tit"><i>*</i>房间号</p>
 					<p class="inp" @click="sel_fjxx">
-						<!-- <input type="text" placeholder="请输入房间号"> -->
 						<span class="chel_tex" :style="fjxx_sel.fybh=='请选择房间号'?'color:#c8c8c8;':'color:#333;'">{{fjxx_sel.fybh}}</span>
 						<p class="jt"></p>
 					</p>
-				</li>
+				</li> -->
 			</ul>
 			<!-- 工单类型 -->
 			<ul class="news_box">
@@ -226,9 +242,15 @@
 				jdly_sel: "请选择接单来源",
 				gdjjqk_sel: "请选择工单紧急情况",
 				list_lp: '',//楼盘列表
+				list_zd: '',//座栋列表（新增）
+				list_fybh: '',//房间号列表（新增）
 				lpname: '',//楼盘名称
+				zdname: '',//座栋名称（新增）
+				fjbh: '',//房间号（新增）
 				lp_id: '',//楼盘id
 				lp_state: true,//显示状态
+				zd_state1: true,//显示状态（添加）
+				fybh_state: true,//显示状态（添加）
 				zdxx_sel: {id:0,zdh:"请选择座栋"},//座栋
 				zd_id: '',//座栋id
 				fjxx_sel: {id:0,fybh:"请选择房间号"},// 房源信息
@@ -260,11 +282,15 @@
 			if(JSON.parse(sessionStorage.getItem('form_obj'))){
 				this.form_obj = JSON.parse(sessionStorage.getItem('form_obj'));
 				this.lpname = this.form_obj.lpname;//楼盘
+				this.zdname = this.form_obj.zdname;//座栋(新增)
+				this.fjbh = this.form_obj.fjbh;//房间编号(新增)
 				this.lp_id = this.form_obj.lp_id;//楼盘id
 				this.lp_state = this.form_obj.lp_state;//座栋
 				this.zd_id = this.form_obj.zd_id;//座栋id
 				this.zdxx_sel = this.form_obj.zdxx_sel;//座栋名
 				this.zd_state = this.form_obj.zd_state;//座栋显示状态
+				this.zd_state1 = this.form_obj.zd_state1;//座栋显示状态（新增）
+				this.fybh_state = this.form_obj.fybh_state;//房间号显示状态（新增）
 				this.fjxx_sel = this.form_obj.fjxx_sel;//房源名
 				this.fy_state = this.form_obj.fy_state;//房源显示状态
 				this.fj_id = this.form_obj.fj_id;//房源id
@@ -442,8 +468,38 @@
 				this.form_obj.lp_state = this.lp_state;//暂存
 				this.form_obj.lp_id = this.lp_id;//暂存
 			},
+			sel_zd1(item){//选择座栋
+				this.zdname = item.zdh;
+				this.zd_id = item.id;
+				this.zd_state1 = false;
+				this.form_obj.zdname = item.zdh;//暂存
+				this.form_obj.zd_state1 = this.zd_state1;//暂存
+				this.form_obj.zd_id = this.zd_id;//暂存
+			},
+			sel_fybh(item){
+				this.fjbh = item.fybh;
+				this.fj_id = item.id;
+				this.fybh_state = false;
+				this.form_obj.fjbh = item.fybh;//暂存
+				this.form_obj.fybh_state = this.fybh_state;//暂存
+				this.form_obj.fj_id = this.fj_id;//暂存
+			},
 			lp_stat(){//获取焦点
 				this.lp_state = true;
+			},
+			zd_stat(){//获取焦点
+				if(this.lp_id == ''){
+					MessageBox('提示', '请先输入楼盘信息');
+					return;
+				}
+				this.zd_state1 = true;
+			},
+			fybh_stat(){
+				if(this.zd_id == ''){
+					MessageBox('提示', '请先输入座栋信息');
+					return;
+				}
+				this.fybh_state = true;
 			},
 			sel_zd(){//选取座栋
 				this.zd_state = true;
@@ -802,7 +858,7 @@
 			  ];
 			  return slots;
 			},
-			listLp(){//模糊查询渠道人员信息
+			listLp(){//模糊查询楼盘
 				if(this.lpname != ''){
 					const url = this.$api + "/yhcms/web/activitibusinessreg/getBuild.do";
 					axios.post(url,{
@@ -815,11 +871,40 @@
 					return this.list_lp;
 				}
 			},
+			listzd(){//模糊查询座栋
+				if(this.zdname != ''){
+					const url = this.$api + "/yhcms/web/activitibusinessreg/getPedestal.do";
+					axios.post(url,{
+						"lpid": this.lp_id,
+						"zdh": this.zdname
+					}).then((res)=>{
+						this.list_zd = res.data.data;
+					}, (err)=>{
+						console.log(err);
+					});
+					return this.list_zd;
+				}
+			},
+			listfybh(){
+				if(this.fjbh != ''){
+					const url = this.$api + "/yhcms/web/activitibusinessreg/getHouse.do";
+					axios.post(url,{
+						"zdid": this.zd_id,
+						"fybh": this.fjbh
+					}).then((res)=>{
+						this.list_fybh = res.data.data;
+					}, (err)=>{
+						console.log(err);
+					});
+					return this.list_fybh;
+				}
+			}
 			
 		},
 		mounted(){
 			var _this = this;
 			this.wechat_share(); //授权签名方法调用
+			this.to_page("/ctrl");//返回地址重定向
 			// 解决键盘弹出底部上浮问题
 			var winHeight = $(window).height();   //获取当前页面高度
 			$(window).resize(function(){
