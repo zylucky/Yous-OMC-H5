@@ -44,11 +44,15 @@ import { MessageBox } from 'mint-ui'
 				state: true,//列表块
 				isclick:true,//防止重复点击
 				middleId: '',//中间表id
+				nodeName: '',
+				laiyuan: '',
 			}
 		},
 		created(){
 			this.taskid = this.$route.query.taskid;
 			this.gd_id = this.$route.query.gdid;
+			this.nodeName = this.$route.query.nodeName;
+			this.laiyuan = this.$route.query.laiyuan;
 			this.csr_id = this.$route.query.csr_id;
 			this.middleId = this.$route.query.middleId;
 		},
@@ -121,6 +125,7 @@ import { MessageBox } from 'mint-ui'
 			}
 		},
 		mounted(){
+			this.to_page_zj(this.laiyuan,this.gd_id,this.taskid,this.nodeName);//返回地址重定向
 			// 解决键盘弹出底部上浮问题
 			var winHeight = $(window).height();   //获取当前页面高度
 			$(window).resize(function(){

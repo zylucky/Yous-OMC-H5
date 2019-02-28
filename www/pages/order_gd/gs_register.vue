@@ -95,7 +95,7 @@
 				<li>
 					<p class="tit"><i>*</i>联系方式</p>
 					<p class="inp">
-						<input type="text" placeholder="请输入联系方式" v-model="telphone" @input="phone_tel">
+						<input type="text" placeholder="请输入联系方式" v-model="telphone" maxlength="11" @input="phone_tel">
 					</p>
 				</li>
 				<li class="inp_are">
@@ -375,7 +375,17 @@
 				this.form_obj.client_name = this.client_name;//暂存
 			},
 			phone_tel(){//联系方式
-				this.form_obj.telphone = this.telphone;//暂存
+				if(this.telphone != ''){
+					this.telphone = this.telphone.replace(/[^\d]/g,'');//限制只能输入数字
+					var pattern = /^1[345678]\d{9}$/;
+					if(this.telphone != '' && this.telphone.length == 11){
+						if (pattern.test(this.telphone)) {
+							this.form_obj.telphone = this.telphone;//暂存
+						}else{
+							MessageBox.alert('请输入正确的手机号码！').then(action => {});
+						}
+					}
+				}
 			},
 			detail_gz(){//告知详情
 				this.form_obj.gz_detail = this.gz_detail;//暂存
@@ -904,7 +914,7 @@
 		mounted(){
 			var _this = this;
 			this.wechat_share(); //授权签名方法调用
-			this.to_page("/ctrl");//返回地址重定向
+			this.to_page1("/ctrl");//返回地址重定向
 			// 解决键盘弹出底部上浮问题
 			var winHeight = $(window).height();   //获取当前页面高度
 			$(window).resize(function(){

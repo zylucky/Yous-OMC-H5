@@ -405,7 +405,9 @@ import { MessageBox } from 'mint-ui';
 						taskid: this.taskid,//任务id
 						gdid: this.gd_id,//工单id
 						csr_id: csr_id,//抄送人id
-						middleId: this.middleId
+						middleId: this.middleId,
+						nodeName: this.nodeName,
+						laiyuan: '/take_orders_clz',
 					}
 				});
 			},

@@ -15,6 +15,7 @@ Vue.use(urlLink);//返回地址重定向
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
+import { MessageBox } from 'mint-ui';
 
 
 import {
@@ -969,7 +970,10 @@ router.beforeEach(function(to, from, next) {
      }
  }
 });
-
+// 关闭页面中的message消息提示框
+router.afterEach(route => { 
+	MessageBox.close(false);
+})
 
 new Vue({
 	el: '#app',

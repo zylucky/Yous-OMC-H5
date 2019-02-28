@@ -27,7 +27,7 @@
 				<li>
 					<p class="tit"><i>*</i>收款账号</p>
 					<p class="inp">
-						<input type="text" placeholder="请输入收款账号" v-model="bank_number" @input="news_ipt3">
+						<input type="text" placeholder="请输入收款账号" v-model="bank_number" maxlength="30" @input="news_ipt3">
 					</p>
 				</li>
 				<li>
@@ -72,7 +72,7 @@
 					</li>
 				</ul>
 			</ul>
-			<div class="see_lct">查看工单流程图</div>
+			<div class="see_lct" @click="see_flowimg">查看工单流程图</div>
 		</div>
 
 		<!-- 底部悬浮按钮 -->
@@ -148,13 +148,6 @@
 			this.zdid = this.$route.query.zdid;
 			this.responsible = this.$route.query.responsible;
 			
-// 			this.form_obj.busId = this.busId;//暂存
-// 			this.form_obj.documentaryper = this.documentaryper;//暂存
-// 			this.form_obj.fyid = this.fyid;//暂存
-// 			this.form_obj.lpid = this.lpid;//暂存
-// 			this.form_obj.zdid = this.zdid;//暂存
-// 			this.form_obj.responsible = this.responsible;//暂存
-			
 			this.images.localId = this.$store.state.arrImg;//获取图片
 			this.copy_data = this.$store.state.copyData;//获取添加的抄送人
 			this.get_cs_person();//默认抄送人
@@ -166,13 +159,6 @@
 				this.bank_number = this.form_obj.bank_number;//收款账号
 				this.sq_money = this.form_obj.sq_money;//申请金额
 				this.remark = this.form_obj.remark;//备注
-				
-// 				this.busId = this.form_obj.busId;
-// 				this.documentaryper = this.form_obj.documentaryper;
-// 				this.fyid = this.form_obj.fyid;
-// 				this.lpid = this.form_obj.lpid;
-// 				this.zdid = this.form_obj.zdid;
-// 				this.responsible = this.form_obj.responsible;
 			}
 		},
 		methods:{
@@ -183,10 +169,21 @@
 				this.form_obj.khh_bank = this.khh_bank;//暂存
 			},
 			news_ipt3(){
-				this.form_obj.bank_number = this.bank_number;//暂存
+				if(this.bank_number != ''){
+					this.bank_number = this.bank_number.replace(/[^\d]/g,'');//限制只能输入数字
+					this.form_obj.bank_number = this.bank_number;//暂存
+				}
 			},
 			news_ipt4(){
-				this.form_obj.sq_money = this.sq_money;//暂存
+
+				if(this.sq_money != ''){
+					this.sq_money = this.sq_money.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+					this.sq_money = this.sq_money.replace(/^\./g,""); //验证第一个字符是数字而不是字符          
+					this.sq_money = this.sq_money.replace(/\.{2,}/g,"."); //只保留第一个.清除多余的       
+					this.sq_money = this.sq_money.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+					this.sq_money = this.sq_money.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+					this.form_obj.sq_money = this.sq_money;//暂存
+				}
 			},
 			news_ipt5(){
 				this.form_obj.remark = this.remark;//暂存
@@ -462,6 +459,24 @@
 				}
 				
 			},
+			see_flowimg(){//查看工单流程图
+				const url = this.$api_lct + "/lswapi/processOpt/processImage.do?actKeyType=fysq";
+				this.$http.get(
+				url
+				).then((res) => {
+					var _this = this;
+					console.log(res);
+					var url_img = []; //图片列表
+					url_img.push(res.url);
+					wx.ready(function() {
+						wx.previewImage({
+							current: res.url,
+							urls: url_img
+						});
+					});
+				}, (response) => {});
+			},
+
 			
 		},
 		mounted(){

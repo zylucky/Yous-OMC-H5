@@ -30,7 +30,6 @@ export default {
 			var _this = this;
 			pushHistory();
 			window.addEventListener("popstate", function(e) {
-				_this.openTouch();//打开默认事件
 				_this.$router.push({
 					path: linkUrl,//形参跳转的路由名称
 				});
@@ -43,6 +42,46 @@ export default {
 				window.history.pushState(state, state.title, state.url);
 			}
 		};
+		Vue.prototype.to_page1=function(linkUrl){//跳转地址重定向到指定页面
+			var _this = this;
+			pushHistory();
+			window.addEventListener("popstate", function(e) {
+				_this.openTouch();//打开默认
+				_this.$router.push({
+					// path: linkUrl,//形参跳转的路由名称
+					path: "ctrl",//形参跳转的路由名称
+				});
+			}, false);
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, state.title, state.url);
+			}
+		};
+		Vue.prototype.to_page_zj=function(linkUrl,gdid,taskid,nodeName){//跳转地址重定向到指定页面(转交)
+			var _this = this;
+			pushHistory();
+			window.addEventListener("popstate", function(e) {
+				_this.$router.push({
+					path: linkUrl,//形参跳转的路由名称
+					query:{
+						"gdid": gdid,//工单id
+						"taskid": taskid,
+						"nodeName": nodeName,//工单当前处理状态
+					}
+				});
+			}, false);
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, state.title, state.url);
+			}
+		};
+		
 		
 	}
 }
