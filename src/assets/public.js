@@ -81,6 +81,72 @@ export default {
 				window.history.pushState(state, state.title, state.url);
 			}
 		};
+		Vue.prototype.to_page_cs=function(linkUrl,gdid){//跳转地址重定向到指定页面(抄送)
+			var _this = this;
+			pushHistory();
+			window.addEventListener("popstate", function(e) {
+				_this.$router.push({
+					path: linkUrl,//形参跳转的路由名称
+					query:{
+						"gdid": gdid,//工单id
+					}
+				});
+			}, false);
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, state.title, state.url);
+			}
+		};
+		Vue.prototype.to_page_cs1=function(linkUrl,gdid,taskid,id){//跳转地址重定向到指定页面(抄送)
+			var _this = this;
+			pushHistory();
+			window.addEventListener("popstate", function(e) {
+				_this.$router.push({
+					path: linkUrl,//形参跳转的路由名称
+					query:{
+						"gdid": gdid,//工单id
+						"taskid": taskid,
+						"id": id,//费用id
+					}
+				});
+			}, false);
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, state.title, state.url);
+			}
+		};
+		Vue.prototype.to_page_cs2=function(linkUrl,gdid,taskid,busId,documentaryper,fyid,lpid,zdid,responsible){//跳转地址重定向到指定页面(抄送)
+			var _this = this;
+			pushHistory();
+			window.addEventListener("popstate", function(e) {
+				_this.$router.push({
+					path: linkUrl,//形参跳转的路由名称
+					query:{
+						"gdid": gdid,//工单id
+						"taskid": taskid,
+						"busId": busId,//费用id
+						"documentaryper": documentaryper,
+						"fyid": fyid,
+						"lpid": lpid,
+						"zdid": zdid,
+						"responsible": responsible
+					}
+				});
+			}, false);
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, state.title, state.url);
+			}
+		};
 		
 		
 	}

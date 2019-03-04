@@ -53,6 +53,7 @@
 				});
 			},
 			gd_click(item){
+				sessionStorage.removeItem("form_obj");//清除表单缓存存储信息
 				this.$router.push({
 					path:item.jumpUrl,//跳转到我的待办
 					query:{}

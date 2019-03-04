@@ -148,7 +148,8 @@ import { Indicator } from 'mint-ui';
 
 		},
 		mounted() {
-			
+			$("input").trigger("click").focus();
+			this.to_page(this.$route.query.laiyuan);//返回地址重定向
 		},
 		computed: {
 			listData(){//模糊查询渠道人员信息

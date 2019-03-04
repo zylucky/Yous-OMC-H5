@@ -222,7 +222,7 @@ import { MessageBox } from 'mint-ui'
 			
 		},
 		mounted() {
-
+			this.to_page_cs2(this.$route.query.laiyuan,this.$route.query.gdid,this.$route.query.taskid,this.$route.query.busId,this.$route.query.documentaryper,this.$route.query.fyid,this.$route.query.lpid,this.$route.query.zdid,this.$route.query.responsible);
 		},
 		computed: {
 			listData(){//模糊查询渠道人员信息

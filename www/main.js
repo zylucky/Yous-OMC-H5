@@ -32,6 +32,7 @@ Vue.component(Search.name, Search);
 Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 Vue.prototype.$api_lct = "http://116.62.68.26:8082" //查看工单流程图
+Vue.prototype.$token = "19_bLEMtcyz1WPIDOi_Z6J76QhJG4vb8ZPuvhb_KXSsBLcy9aU-uOok7Z-jR04uJl8gWkd3FjsEgtGTeLtii9hC-fW5XGgqfSBxS_9nihDhBDinjLRplNDnO1k6wrZImw62t6z9IWdjvbGNwPAZVUJdAHANMB" //微信上传图片token
 
 // Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //Mr.Cheng IP Address
 

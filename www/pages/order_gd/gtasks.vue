@@ -38,6 +38,8 @@
 			</div>
 			<ul class="backlog_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 				<li v-for="(item,index) in allData" @click="todetail(item,index)">
+					<span class="urgent_style urgent_jj" v-if="item.urgentStyle == '紧急'"></span>
+					<span class="urgent_style urgent_tj" v-if="item.urgentStyle == '特急'"></span>
 					<div class="list_ion">
 						<img src="../../resources/images/order_gd/list_ion.png" alt="" v-if="item.workType=='工商注册'"/>
 						<img src="../../resources/images/order_gd/fysq_ion.png" alt="" v-if="item.workType=='工商注册-费用审批' || item.workType=='工商注册费用审批'"/>
@@ -92,7 +94,7 @@
 				data_length: 10,
 				loading: false,
 				kong_state: false,
-				timeSort: "D",//B大到小A小到大
+				timeSort: "",//B大到小A小到大
 				search_key: '',//模糊搜索
 			}
 		},
@@ -103,6 +105,10 @@
 		methods:{
 			date_px(){//按更新时间排序
 				if(this.time_sort == 0){
+					$('.term li:first-child span:first-child').css('color','#2b70d8');
+					$('.term li:first-child span:last-child').removeClass('sx_active1');
+					$('.term li:first-child span:last-child').removeClass('sx_active2');
+					$('.term li:first-child span:last-child').addClass('sx_active');
 					this.time_sort = 1;
 					$('.term li:first-child span:last-child').css({
 						transform: "rotate(180deg)"
@@ -113,6 +119,9 @@
 					this.page = 1;
 					this.list_data(this.page,this.timeSort,this.type);//调用
 				}else{
+					$('.term li:first-child span:first-child').css('color','#2b70d8');
+					$('.term li:first-child span:last-child').removeClass('sx_active1');
+					$('.term li:first-child span:last-child').addClass('sx_active2');
 					this.allData.length = 0;
 					this.time_sort = 0;
 					this.page = 1;
@@ -351,7 +360,8 @@
 	margin-left: 0.22rem;
 }
 .term li:first-child span:last-child{
-	background: url(../../resources/images/order_gd/team_ion2.png) no-repeat center;
+	/* background: url(../../resources/images/order_gd/team_ion2.png) no-repeat center; */
+	background: url(../../resources/images/order_gd/team_ion1.png) no-repeat center;
 	background-size: 100% auto;
 	transform: rotate(0deg);
 }
@@ -375,7 +385,7 @@
 	transform: rotate(0deg)!important;
 }
 .term li:first-child span:first-child{
-	color: #2b70d8;
+	/* color: #2b70d8; */
 }
 .term li:first-child span:last-child{
 	color: #333333;
@@ -392,7 +402,25 @@
 .backlog_list{
 	
 }
+/* 紧急情况 */
+.urgent_style{
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: inline-block;
+	width: 0.79rem;
+	height: 0.79rem;
+}
+.urgent_jj{
+	background: url(../../resources/images/order_gd/jj_ion.png) no-repeat center;
+	background-size: 100% 100%;
+}
+.urgent_tj{
+	background: url(../../resources/images/order_gd/tj_ion.png) no-repeat center;
+	background-size: 100% 100%;
+}
 .backlog_list li{
+	position: relative;
 	display: flex;
 	justify-content: space-between;
 	padding: 0.5rem 0.3rem;

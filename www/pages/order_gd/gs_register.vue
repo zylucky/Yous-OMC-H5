@@ -101,7 +101,7 @@
 				<li class="inp_are">
 					<p class="tit inp_are_txt"><i>*</i>告知详情</p>
 					<p class="inp inp_p" style="font-size: 0.3rem!important">
-						<textarea class="text_ar" placeholder="请输入告知详情" v-model="gz_detail" @input="detail_gz"></textarea>
+						<textarea class="text_ar" placeholder="请输入告知详情" v-model="gz_detail" @input="detail_gz" style="font-size: 0.3rem!important"></textarea>
 					</p>
 				</li>
 			</ul>
@@ -129,7 +129,7 @@
 				<li class="inp_are">
 					<p class="tit inp_are_txt"><i style="visibility: hidden;">*</i>备注</p>
 					<p class="inp inp_p" style="font-size: 0.3rem!important">
-						<textarea class="text_ar" placeholder="请输入备注" v-model="tip_detail" @input="detail_tip"></textarea>
+						<textarea class="text_ar" placeholder="请输入备注" v-model="tip_detail" @input="detail_tip" style="font-size: 0.3rem!important"></textarea>
 					</p>
 				</li>
 			</ul>
@@ -273,6 +273,7 @@
 				count:0,//未删减图片数量
 				imgArr: [],
 				isclick:true,//防止重复点击
+				list_fybh_state: true,
 			}
 		},
 		created() {
@@ -485,6 +486,7 @@
 				this.form_obj.zdname = item.zdh;//暂存
 				this.form_obj.zd_state1 = this.zd_state1;//暂存
 				this.form_obj.zd_id = this.zd_id;//暂存
+				this.get_gdr();//获取跟单人
 			},
 			sel_fybh(item){
 				this.fjbh = item.fybh;
@@ -510,6 +512,7 @@
 					return;
 				}
 				this.fybh_state = true;
+				this.list_fybh_state = true;
 			},
 			sel_zd(){//选取座栋
 				this.zd_state = true;
@@ -896,13 +899,20 @@
 				}
 			},
 			listfybh(){
-				if(this.fjbh != ''){
+				var _this = this;
+				if(this.fjbh != '' && this.list_fybh_state){
 					const url = this.$api + "/yhcms/web/activitibusinessreg/getHouse.do";
 					axios.post(url,{
 						"zdid": this.zd_id,
 						"fybh": this.fjbh
 					}).then((res)=>{
 						this.list_fybh = res.data.data;
+						if(res.data.data.length == 0){
+							this.list_fybh_state = false;
+							MessageBox.alert('没有找到该房间').then(action => {
+								_this.fjbh = '';
+							});
+						}
 					}, (err)=>{
 						console.log(err);
 					});
@@ -1020,7 +1030,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "18_MkLIlLyEQ9OYmzMuecGsLLQj15OvUm5ZbSDJEML3p2D2XoFgtbezOgMYqBqZj28OPStr--YZxv67HtKRBdIbHnzIvYVIUmmOgZRUdD2YCXwjPwGOm3CouxXEz8nmZZXSYl3rHHykHF3AitF5UMGbAHANFZ"
+										"token": _this.$token
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();

@@ -210,7 +210,7 @@ import { MessageBox } from 'mint-ui'
 			
 		},
 		mounted() {
-
+			this.to_page_cs1(this.$route.query.laiyuan,this.$route.query.gdid,this.$route.query.taskid,this.$route.query.id);
 		},
 		computed: {
 			listData(){//模糊查询渠道人员信息

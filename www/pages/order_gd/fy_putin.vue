@@ -65,6 +65,7 @@ import axios from 'axios';
 				});
 			},
 			send_approve(){
+				sessionStorage.removeItem("form_obj");//清除表单缓存存储信息
 				var _this = this;
 				this.$router.push({
 					path:'/fy_from',//跳转到审批页面

@@ -481,6 +481,7 @@
 		},
 		mounted(){
 			var _this = this;
+			this.to_page_cs2('/fy_from',this.$route.query.gdid,this.$route.query.taskid,this.$route.query.busId,this.$route.query.documentaryper,this.$route.query.fyid,this.$route.query.lpid,this.$route.query.zdid,this.$route.query.responsible);//从定向默认返回键
 			this.wechat_share(); //授权签名方法调用
 			// 解决键盘弹出底部上浮问题
 			var winHeight = $(window).height();   //获取当前页面高度
@@ -587,7 +588,7 @@
 										"pic1": _this.images.serverId.join(';').toString(),
 										"pic2": "",
 										"pic3": "",
-										"token": "18_MkLIlLyEQ9OYmzMuecGsLLQj15OvUm5ZbSDJEML3p2D2XoFgtbezOgMYqBqZj28OPStr--YZxv67HtKRBdIbHnzIvYVIUmmOgZRUdD2YCXwjPwGOm3CouxXEz8nmZZXSYl3rHHykHF3AitF5UMGbAHANFZ"
+										"token": _this.$token
 									}
 								}).then((res) => {
 									var pic1 = res.data.pic1.split(';').reverse();
