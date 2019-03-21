@@ -39,7 +39,7 @@
 				<li class="inp_are">
 					<p class="tit inp_are_txt"><i style="visibility: hidden;">*</i>备注</p>
 					<p class="inp inp_p" style="font-size: 0.3rem!important">
-						<textarea class="text_ar" placeholder="请输入" v-model="remark" @input="news_ipt5"></textarea>
+						<textarea class="text_ar" placeholder="请输入" v-model="remark" @input="news_ipt5" style="font-size: 0.3rem!important"></textarea>
 					</p>
 				</li>
 			</ul>

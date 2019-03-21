@@ -16,6 +16,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUI);
 import { MessageBox } from 'mint-ui';
+import { Toast } from 'mint-ui';
 
 
 import {
@@ -27,13 +28,14 @@ Vue.component(Search.name, Search);
 // 生产环境
 // Vue.prototype.$prefix = "http://omc.urskongjian.com:81" //图片前缀
 // Vue.prototype.$api = "http://omc.urskongjian.com" //api地址
+// Vue.prototype.$url_share = "http://omc.urskongjian.com/yskg_public/#/wecome?invite_code=";//销售分享测试
 
 //测试ip
 Vue.prototype.$prefix = "http://116.62.68.26:80" //图片前缀
 Vue.prototype.$api = "http://116.62.68.26:8080" //api地址116的地址
 Vue.prototype.$api_lct = "http://116.62.68.26:8082" //查看工单流程图
-Vue.prototype.$token = "19_bLEMtcyz1WPIDOi_Z6J76QhJG4vb8ZPuvhb_KXSsBLcy9aU-uOok7Z-jR04uJl8gWkd3FjsEgtGTeLtii9hC-fW5XGgqfSBxS_9nihDhBDinjLRplNDnO1k6wrZImw62t6z9IWdjvbGNwPAZVUJdAHANMB" //微信上传图片token
-
+Vue.prototype.$token = "19_zrbluUYbCm7JBbOlKDyclT2Vohi1tG9hPclNAliZV-2wXpvZDmuiXWQbwXHqNSfhAcqt6yaeOZw5cPYjzuyhTdYqEeIrIKvkGVfoHdExNFQQPClvwcDWJ3vmdcgJAAhAHAARR" //微信上传图片token
+Vue.prototype.$url_share = "http://omc.urskongjian.com/yskg_test/#/wecome?invite_code=";//销售分享测试
 // Vue.prototype.$api = "http://yhcms.tunnel.qydev.com" //Mr.Cheng IP Address
 
 
@@ -724,6 +726,14 @@ var router = new VueRouter({
 				title: '绑卡统计'
 			}
 		},
+		{//邀请渠道
+			path:'/invite',
+			name:'invite',
+			component: require('./pages/invite/invite.vue'),
+			meta:{
+				title:'邀请好友'
+			}
+		},
 
 	]
 });
@@ -944,7 +954,7 @@ router.beforeEach(function(to, from, next) {
                  next({path: '/login'});
 
              }
-             $.post("http://omc.urskongjian.com/yhcms/web/wxqx/getXsLogin.do", {
+             $.post("http://116.62.68.26:8080/yhcms/web/wxqx/getXsLogin.do", {
                      "foreEndType": 2,
                      "code": "300000045",
                      "cookie": user22.sjs,

@@ -4,11 +4,11 @@
 			<li>
 				<p class="tit">转交人员</p>
 				<p class="inp">
-					<input type="text" placeholder="请输入转交人员姓名" v-model="username" @input="set_state">
+					<input type="text" placeholder="请输入转交人员姓名" v-model="username" @input="set_state" @focus="list_stat">
 				</p>
 			</li>
 			<!-- 搜索的抄送列表 -->
-			<ul class="copy_list" v-show="username!='' && state">
+			<ul class="copy_list" v-show="username!='' && state && list_stat">
 				<li v-for="item in listData" @click="add_person(item)">
 					<div class="head_img"><img src="../../resources/images/commission/head_img.png" alt=""></div>
 					<div class="copy_news">
@@ -16,13 +16,14 @@
 						<p class="tel">{{item.fybh}}</p>
 					</div>
 				</li>
+				<!-- <p style="line-height: 0.5rem;font-size: 0.3rem;text-align: center;color: #999;">{{list_data.length!=0 && username!=''?'':'系统中暂无该人员'}}</p> -->
 			</ul>
 		</ul>
 		<ul class="sendon_box">
 			<li class="zjsm">
 				<p class="tit">转交说明</p>
-				<p class="inp inp1">
-					<textarea placeholder="请输入转交说明" v-model="explain"></textarea>
+				<p class="inp inp1" style="font-size: 0.3rem!important">
+					<textarea placeholder="请输入转交说明" v-model="explain" style="font-size: 0.3rem!important"></textarea>
 				</p>
 			</li>
 		</ul>
@@ -32,6 +33,7 @@
 
 <script>
 import axios from 'axios';
+import { Toast } from 'mint-ui';
 import { Field } from 'mint-ui';
 import { MessageBox } from 'mint-ui'
 	export default {
@@ -46,6 +48,7 @@ import { MessageBox } from 'mint-ui'
 				middleId: '',//中间表id
 				nodeName: '',
 				laiyuan: '',
+				list_data_state: true,
 			}
 		},
 		created(){
@@ -57,6 +60,9 @@ import { MessageBox } from 'mint-ui'
 			this.middleId = this.$route.query.middleId;
 		},
 		methods:{
+			list_stat(){
+				this.list_data_state = true;
+			},
 			add_person(item){//选择转交人员
 				this.state = false;
 				this.username = item.topic;
@@ -111,12 +117,18 @@ import { MessageBox } from 'mint-ui'
 		},
 		computed: {
 			listData(){//模糊查询渠道人员信息
-				if(this.username != ''){
+				if(this.username != '' && this.list_data_state){
 					const url = this.$api + "/yhcms/web/activitibusinessreg/getPersonnel.do";
 					axios.post(url,{
 						"search_keywork": this.username,//关键词搜索
 					}).then((res)=>{
 						this.list_data = res.data.data;
+						if(res.data.data.length == 0){
+							this.list_data_state = false;
+							MessageBox.alert('没有找到该人员').then(action => {
+								this.username = '';
+							});
+						}
 					}, (err)=>{
 						console.log(err);
 					});

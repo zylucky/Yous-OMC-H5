@@ -1,11 +1,11 @@
 <style scoped lang='less'>
 	@import "../resources/css/reset.css";
   	@import "../resources/css/base.less";
-  	.lager{border-bottom: 1px solid #d5d5d5;border-top: 1px solid #d5d5d5;width: 100%;height: 0.86rem;background-color: #f2f2f2;display: flex;align-items: center;justify-content: center;}
-  	.ssuokonghi{width: 4.8rem;height: 0.64rem;display: flex;border-radius: 5px;background-color: #e0e0e2;align-items: center;}
+  	.lager{border-bottom: 1px solid #e5e5e5;border-top: 1px solid #e5e5e5;width: 100%;height: 0.86rem;background-color: #f2f2f2;display: flex;align-items: center;justify-content: center;}
+  	.ssuokonghi{width: 4.8rem;height: 0.64rem;display: flex;border-radius: 5px;background-color: #e8e8ea;align-items: center;}
   	.suosyou{margin-left: 0.17rem;width: 0.28rem;height: 0.3rem;background: url(../resources/images/my_qd/sousuo.png) no-repeat center;background-size: 100% auto;}
   	.suosuokong{margin-left: 0.26rem;height: 0.64rem;display: flex;align-items: center;}
-  	#keyword{width:3.7rem;font-size: 0.24rem;color: #666666;background-color: #e0e0e2;height: 0.64rem;text-align: left;}
+  	#keyword{width:3.7rem;font-size: 0.24rem;color: #666666;background-color: #e8e8ea;height: 0.64rem;text-align: left;}
 	.shanchu{width: 0.32rem;height: 0.32rem;background: url(../resources/images/my_qd/chanchuioc.png) no-repeat center;background-size: 100% auto;}
 	.listdata{position: absolute;top: 0.86rem;bottom: 0rem;left: 0rem;right: 0rem;background-color: #FFFFFF;overflow: hidden;}
 	.qvixaoer{margin-left: 0.42rem;font-size: 0.28rem;color: #666666;}
