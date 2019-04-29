@@ -31,21 +31,44 @@
 <script>
 	import axios from 'axios';
 	import wx from 'weixin-js-sdk';
+	import {Indicator} from 'mint-ui';
+	import {Toast} from 'mint-ui';
 	export default {
 	    data () {
 	      return {
 	      	qcode: '',//二维码
 	      	qcode_num: [],//邀请码
+			invite_code: '',//销售邀请码
 	      }
 	  	},
 	  	created(){
-	  		this.init();
+			this.get_inviteCode();
+	  		
 	  	},
 	  	methods:{
+			get_inviteCode(){
+				const user22 = JSON.parse(localStorage.getItem('cookxs'));
+				this.$http.post(this.$api + "/yhcms/web/wxqx/getSaleNum.do",{"cookie":user22.sjs}).then((res)=>{
+				Indicator.close();
+				var result = JSON.parse(res.bodyText);
+				if(result.success){
+					this.invite_code = result.saleNum;
+					console.log(this.invite_code);
+					this.init();
+				}else{
+					Toast({
+						message: result.message,
+						position: 'bottom'
+					});
+				}
+			  }, (res)=>{
+				  Indicator.close();
+			  });
+			},
 	  		init(){
 	  			const url = this.$api + "/yhcms/web/wxqx/getQRcode.do";
 				axios.post(url,{
-					"code": this.$route.query.invitecode
+					"code": this.invite_code
 				}).then((res)=>{
 					var qcode_num = res.data.code;
 					this.qcode = res.data.image;

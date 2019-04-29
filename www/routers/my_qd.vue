@@ -202,7 +202,7 @@
 									<p>暂无渠道</p>
 									<p>您还没有邀请过渠道哦</p>
 								</div>
-								<div class="invite_btn" @click="to_invite1" v-if="false">立即邀请</div>
+								<div class="invite_btn" @click="to_invite1">立即邀请</div>
 							</div>
 						</div>
 				      	<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"       :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore" class="blankdis balkneor">
