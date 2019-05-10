@@ -83,7 +83,7 @@
             "foreEndType": 2,
             "code": "300000045",
             "cookie":user22.sjs,
-						"openid": "oet4202nToMpylo-DmKPKbFaZMcw"
+						"openid": JSON.parse(localStorage.getItem('wxopenid'))
           }
         ).then(function (res) {
           Indicator.close();
@@ -106,8 +106,8 @@
 //	            },1000);
 //						}else{
 							setTimeout(function(){
-//							    _this.$router.push({path:'/index'});
-							    history.go(-1);
+							    _this.$router.push({path:localStorage.getItem('from_router')});
+							    // history.go(-1);
 							},1000);							
 //						}
 
@@ -124,10 +124,34 @@
               position: 'bottom'
           });
         });
-      }
+      },
+			// beforeRouteEnter(to, from, next) {
+				// let fullPath = from;
+				// console.log(from);
+				// if (fullPath == '/dashboard') {
+				// 		next((vm) => { //参数vm就是当前组件的实例。
+				// 				vm.checkStatus = '3'
+				// 				vm.init();
+				// 				vm.initDict();
+				// 		})
+				// } else {
+				// 		next((vm) => {
+				// 				vm.checkStatus = ''
+				// 				vm.init();
+				// 				vm.initDict();
+				// 		})
+				// }
+			// },
+			
     },
     mounted(){
         $('title').html("幼狮科技");
     },
+		watch : {
+			'$route' (to, from) {
+					// from 对象中要 router 来源信息.
+					// do your want
+			}
+		}
   }
 </script>
